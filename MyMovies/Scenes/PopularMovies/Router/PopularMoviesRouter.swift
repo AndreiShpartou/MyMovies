@@ -7,8 +7,7 @@
 
 import UIKit
 
-protocol PopularMoviesRouterProtocol: AnyObject{
-    
+protocol PopularMoviesRouterProtocol: AnyObject {
 }
 
 class PopularMoviesRouter: PopularMoviesRouterProtocol {

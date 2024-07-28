@@ -7,7 +7,10 @@
 
 import UIKit
 
-class MovieDetailsBuilder {
+protocol MovieDetailsBuilderProtocol: AnyObject {
+}
+
+final class MovieDetailsBuilder: MovieDetailsBuilderProtocol {
     static func build() -> UIViewController {
         return MovieDetailsViewController()
     }

@@ -7,7 +7,10 @@
 
 import UIKit
 
-class MovieListBuilder {
+protocol MovieListBuilderProtocol: AnyObject {
+}
+
+final class MovieListBuilder: MovieListBuilderProtocol {
     static func build() -> UIViewController {
         return MovieListViewController()
     }

@@ -8,7 +8,6 @@
 import UIKit
 
 protocol WishlistRouterProtocol: AnyObject {
-    
 }
 
 class WishlistRouter {

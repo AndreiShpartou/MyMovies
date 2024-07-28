@@ -8,7 +8,6 @@
 import UIKit
 
 protocol MovieDetailsRouterProtocol: AnyObject {
-    
 }
 
 class MovieDetailsRouter: MovieDetailsRouterProtocol {

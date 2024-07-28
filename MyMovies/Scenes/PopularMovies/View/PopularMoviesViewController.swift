@@ -9,11 +9,4 @@ import UIKit
 
 class PopularMoviesViewController: UIViewController, PopularMoviesViewProtocol {
     var presenter: PopularMoviesPresenterProtocol?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
 }

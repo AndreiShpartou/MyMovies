@@ -12,6 +12,13 @@ protocol SearchPresenterProtocol: AnyObject {
 
 class SearchPresenter: SearchPresenterProtocol {
     weak var view: SearchViewProtocol?
-    var interactor: SearchInteractorProtocol?
-    var router: SearchRouterProtocol?
+    var interactor: SearchInteractorProtocol
+    var router: SearchRouterProtocol
+
+    // MARK: - Init
+    init(view: SearchViewProtocol?, interactor: SearchInteractorProtocol, router: SearchRouterProtocol) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+    }
 }

@@ -8,7 +8,6 @@
 import UIKit
 
 protocol WishlistViewProtocol: AnyObject {
-    
 }
 
 class WishlistView: UIView {

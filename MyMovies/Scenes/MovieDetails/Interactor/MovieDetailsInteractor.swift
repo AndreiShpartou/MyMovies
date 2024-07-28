@@ -8,7 +8,6 @@
 import Foundation
 
 protocol MovieDetailsInteractorProtocol: AnyObject {
-    
 }
 
 class MovieDetailsInteractor: MovieDetailsInteractorProtocol {

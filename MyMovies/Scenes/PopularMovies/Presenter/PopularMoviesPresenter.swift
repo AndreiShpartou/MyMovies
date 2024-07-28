@@ -8,7 +8,6 @@
 import Foundation
 
 protocol PopularMoviesPresenterProtocol: AnyObject {
-    
 }
 
 class PopularMoviesPresenter: PopularMoviesPresenterProtocol {
