@@ -8,7 +8,6 @@
 import Foundation
 
 protocol MovieListPresenterProtocol: AnyObject {
-        
 }
 
 class MovieListPresenter: MovieListPresenterProtocol {

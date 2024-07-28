@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WishlistBuilder {
+enum WishlistBuilder {
     static func build() -> UIViewController {
         return WishlistViewController()
     }

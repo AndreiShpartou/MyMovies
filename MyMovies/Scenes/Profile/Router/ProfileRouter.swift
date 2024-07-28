@@ -11,7 +11,7 @@ protocol ProfileRouterProtocol: AnyObject {}
 
 class ProfileRouter: ProfileRouterProtocol {
     weak var viewController: UIViewController?
-    
+
     // MARK: - Init
     init(viewController: UIViewController?) {
         self.viewController = viewController

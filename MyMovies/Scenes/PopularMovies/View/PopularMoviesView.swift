@@ -7,9 +7,7 @@
 
 import UIKit
 
-
 protocol PopularMoviesViewProtocol: AnyObject {
-    
 }
 
 class PopularMoviesView: UIView {

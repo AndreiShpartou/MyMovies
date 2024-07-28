@@ -9,10 +9,4 @@ import UIKit
 
 class MovieListViewController: UIViewController, MovieListViewProtocol {
     var presenter: MovieListPresenterProtocol?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-
 }

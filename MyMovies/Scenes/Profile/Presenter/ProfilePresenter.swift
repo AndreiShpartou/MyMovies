@@ -8,14 +8,13 @@
 import Foundation
 
 protocol ProfilePresenterProtocol: AnyObject {
-    
 }
 
 class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfileViewProtocol?
     var interactor: ProfileInteractorProtocol
     var router: ProfileRouterProtocol
-    
+
     // MARK: - Init
     init(view: ProfileViewProtocol?, interactor: ProfileInteractorProtocol, router: ProfileRouterProtocol) {
         self.view = view

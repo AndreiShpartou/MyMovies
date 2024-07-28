@@ -14,7 +14,7 @@ class MainPresenter: MainPresenterProtocol {
     weak var view: MainViewProtocol?
     var interactor: MainInteractorProtocol
     var router: MainRouterProtocol
-    
+
     // MARK: - Init
     init(view: MainViewProtocol?, interactor: MainInteractorProtocol, router: MainRouterProtocol) {
         self.view = view

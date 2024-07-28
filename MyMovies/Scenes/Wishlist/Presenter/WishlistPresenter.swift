@@ -8,7 +8,6 @@
 import Foundation
 
 protocol WishlistPresenterProtocol: AnyObject {
-    
 }
 
 class WishlistPresenter: WishlistPresenterProtocol {

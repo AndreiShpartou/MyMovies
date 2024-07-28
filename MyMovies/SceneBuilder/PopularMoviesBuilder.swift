@@ -7,8 +7,11 @@
 
 import UIKit
 
-class PopularMoviesBuilder {
-    static func vuild() -> UIViewController {
+protocol PopularMoviesBuilderProtocol: AnyObject {
+}
+
+final class PopularMoviesBuilder: PopularMoviesBuilderProtocol {
+    static func build() -> UIViewController {
         return PopularMoviesViewController()
     }
 }
