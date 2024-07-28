@@ -52,7 +52,6 @@
 		6CC604D92C55805400241EF2 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D82C55805400241EF2 /* ProfileInteractor.swift */; };
 		6CC604DB2C55807E00241EF2 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */; };
 		6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DC2C55808C00241EF2 /* ProfileView.swift */; };
-		6CC604DF2C55810700241EF2 /* ProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DE2C55810700241EF2 /* ProfileBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,7 +102,6 @@
 		6CC604D82C55805400241EF2 /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
 		6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6CC604DC2C55808C00241EF2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		6CC604DE2C55810700241EF2 /* ProfileBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +163,6 @@
 				6C59AF192C54FB16006A7BDB /* Presenter */,
 				6C59AF182C54FAF7006A7BDB /* Entity */,
 				6C59AF172C54FAE2006A7BDB /* Router */,
-				6CC604DE2C55810700241EF2 /* ProfileBuilder.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -204,8 +201,8 @@
 		6C59AF1B2C54FB21006A7BDB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */,
 				6CC604DC2C55808C00241EF2 /* ProfileView.swift */,
+				6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -218,7 +215,6 @@
 				6C59AF1F2C54FB8A006A7BDB /* Presenter */,
 				6C59AF1E2C54FB84006A7BDB /* Entity */,
 				6C59AF1D2C54FB7F006A7BDB /* Router */,
-				6CC604C62C557D0000241EF2 /* MovieDetailsBuilder.swift */,
 			);
 			path = MovieDetails;
 			sourceTree = "<group>";
@@ -324,7 +320,6 @@
 				6C59AF2B2C54FC46006A7BDB /* Presenter */,
 				6C59AF2A2C54FC3F006A7BDB /* Entity */,
 				6C59AF292C54FC20006A7BDB /* Router */,
-				6CC604BA2C557B3100241EF2 /* PopularMoviesBuilder.swift */,
 			);
 			path = PopularMovies;
 			sourceTree = "<group>";
@@ -372,7 +367,6 @@
 		6C59AF2E2C54FC7C006A7BDB /* MovieList */ = {
 			isa = PBXGroup;
 			children = (
-				6CC604AE2C5578F900241EF2 /* MovieListBuilder.swift */,
 				6C59AF332C54FC9A006A7BDB /* View */,
 				6C59AF322C54FC95006A7BDB /* Interactor */,
 				6C59AF312C54FC8D006A7BDB /* Presenter */,
@@ -583,6 +577,9 @@
 			isa = PBXGroup;
 			children = (
 				6C7737362C563B6600E5F2CC /* SceneBuilder.swift */,
+				6CC604AE2C5578F900241EF2 /* MovieListBuilder.swift */,
+				6CC604BA2C557B3100241EF2 /* PopularMoviesBuilder.swift */,
+				6CC604C62C557D0000241EF2 /* MovieDetailsBuilder.swift */,
 			);
 			path = SceneBuilder;
 			sourceTree = "<group>";
@@ -660,7 +657,6 @@
 				6C59AF022C54F10D006A7BDB /* AppDelegate.swift in Sources */,
 				6CC604C72C557D0000241EF2 /* MovieDetailsBuilder.swift in Sources */,
 				6CC604BD2C557B7300241EF2 /* MovieDetailsRouter.swift in Sources */,
-				6CC604DF2C55810700241EF2 /* ProfileBuilder.swift in Sources */,
 				6C59AF4E2C551ADE006A7BDB /* MainRouter.swift in Sources */,
 				6C59AF542C551FDE006A7BDB /* SearchPresenter.swift in Sources */,
 				6CC604BF2C557BA800241EF2 /* MovieDetailsPresenter.swift in Sources */,

@@ -51,6 +51,23 @@ final class SceneBuilder {
     }
     
     static func buildProfileScene() -> UIViewController {
-        return UIViewController()
+        let view = ProfileView()
+        let viewController = ProfileViewController(profileView: view)
+        let router = ProfileRouter(viewController: viewController)
+        let interactor = ProfileInteractor()
+        let presenter = ProfilePresenter(view: viewController, interactor: interactor, router: router)
+        
+        view.presenter = presenter
+        viewController.presenter = presenter
+        interactor.presenter = presenter
+        
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.tabBarItem = UITabBarItem(
+            title: "Profile",
+            image: UIImage(systemName: "person"),
+            tag: 2
+        )
+        
+        return navigationController
     }
 }

@@ -39,5 +39,6 @@ class SearchViewController: UIViewController, SearchViewProtocol {
 // MARK: - Setup
 extension SearchViewController {
     private func setupViewController() {
+        title = "Search"
     }
 }
