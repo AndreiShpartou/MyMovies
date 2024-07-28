@@ -12,4 +12,9 @@ protocol MainRouterProtocol: AnyObject {
 
 class MainRouter: MainRouterProtocol {
     weak var viewController: UIViewController?
+    
+    // MARK: - Init
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
+    }
 }
