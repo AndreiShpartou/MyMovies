@@ -10,9 +10,11 @@ import UIKit
 final class RootRouter {
     static func createRootViewController() -> UITabBarController {
         let tabBarController = UITabBarController()
-        let homeVC = SceneBuilder.buildHomeModule()
+        let homeVC = SceneBuilder.buildHomeScene()
+        let searchVC = SceneBuilder.buildSearchScene()
+        let profileVC = SceneBuilder.buildProfileScene()
         
-        tabBarController.viewControllers = [homeVC]
+        tabBarController.viewControllers = [homeVC, searchVC, profileVC]
         
         return tabBarController
     }

@@ -12,4 +12,9 @@ protocol SearchRouterProtocol: AnyObject {
 
 class SearchRouter: SearchRouterProtocol {
     weak var viewController: UIViewController?
+    
+    // MARK: - Init
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
+    }
 }
