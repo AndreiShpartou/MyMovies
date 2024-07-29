@@ -31,6 +31,7 @@ final class MainViewController: UIViewController, MainViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
+        presenter?.viewDidLoad()
     }
 }
 
@@ -38,5 +39,16 @@ final class MainViewController: UIViewController, MainViewProtocol {
 extension MainViewController {
     private func setupViewController() {
         title = "Home"
+    }
+}
+
+// MARK: - MainViewDelegate
+extension MainViewController: MainViewDelegate {
+    func didTapSeeAllMovieListButton() {
+        // Handle "See All" action for movie list
+    }
+
+    func didTapSeeAllPopularMoviesButton() {
+        // Handle "See All" action for popular movies
     }
 }

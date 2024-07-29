@@ -8,6 +8,7 @@
 import UIKit
 
 protocol MainRouterProtocol: AnyObject {
+    func navigateToMovieDetails(with movie: Movie)
 }
 
 class MainRouter: MainRouterProtocol {
@@ -16,5 +17,10 @@ class MainRouter: MainRouterProtocol {
     // MARK: - Init
     init(viewController: UIViewController?) {
         self.viewController = viewController
+    }
+
+    func navigateToMovieDetails(with movie: Movie) {
+        // let movieDetailsVC = SceneBuilder.buildMovieDetailsScene()
+        // viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }
 }
