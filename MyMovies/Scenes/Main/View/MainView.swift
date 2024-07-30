@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol MainViewProtocol: AnyObject {}
 
@@ -70,6 +71,13 @@ final class MainView: UIView {
 // MARK: - Setup
 extension MainView {
     private func setupView() {
+        backgroundColor = .primaryBackground
+        addSubviews(
+            avatarImageView,
+            helloLabel,
+            favouriteButton,
+            searchBar
+        )
         setupTargets()
     }
 
@@ -130,5 +138,22 @@ extension MainView {
 // MARK: - Constraints
 extension MainView {
     private func setupConstraints() {
+        // Profile avatar section
+        avatarImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(safeAreaLayoutGuide).offset(16)
+            make.width.height.equalTo(40)
+        }
+
+        helloLabel.snp.makeConstraints { make in
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(8)
+            make.centerY.equalTo(avatarImageView)
+        }
+
+        favouriteButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(avatarImageView)
+        }
     }
 }
