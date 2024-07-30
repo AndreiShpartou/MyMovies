@@ -28,15 +28,14 @@ extension UIView {
 // MARK: - UILabel
 extension UILabel {
     static func createLabel(
-        fontSize: CGFloat,
-        weight: UIFont.Weight,
+        font: UIFont,
         numberOfLines: Int = 1,
         textAlignment: NSTextAlignment = .left,
         textColor: UIColor? = nil,
         text: String? = nil
     ) -> UILabel {
         let label = UILabel()
-        label.font = .systemFont(ofSize: fontSize, weight: weight)
+        label.font = font
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = numberOfLines
         label.textAlignment = textAlignment
@@ -113,19 +112,57 @@ extension UIColor {
 
     // MARK: - StaticColors
     // Primary
-    static let primaryBackground: UIColor = .init(hex: "1F1D2B")
-    static let primarySoft: UIColor = .init(hex: "252836")
-    static let primaryBlueAccent: UIColor = .init(hex: "12CDD9")
+    static var primaryBackground: UIColor {
+        return .init(hex: "1F1D2B")
+    }
+    static var primarySoft: UIColor {
+        return .init(hex: "252836")
+    }
+    static var primaryBlueAccent: UIColor {
+        return .init(hex: "12CDD9")
+    }
     // Secondary
-    static let secondaryGreen: UIColor = .init(hex: "22B07D")
-    static let secondaryOrange: UIColor = .init(hex: "FF8700")
-    static let secondaryRed: UIColor = .init(hex: "FF7256")
+    static var secondaryGreen: UIColor {
+        return .init(hex: "22B07D")
+    }
+    static var secondaryOrange: UIColor {
+        return .init(hex: "FF8700")
+    }
+    static var secondaryRed: UIColor {
+        return .init(hex: "FF7256")
+    }
     // TextColors
-    static let textColorBlack: UIColor = .init(hex: "171725")
-    static let textColorDarkGrey: UIColor = .init(hex: "696974")
-    static let textColorGrey: UIColor = .init(hex: "92929D")
-    static let textColorWhiteGrey: UIColor = .init(hex: "F1F1F5")
-    static let textColorWhite: UIColor = .init(hex: "FFFFFF")
-    static let textColorLineDark: UIColor = .init(hex: "EAEAEA")
-    
+    static var textColorBlack: UIColor {
+        return .init(hex: "171725")
+    }
+    static var textColorDarkGrey: UIColor {
+        return .init(hex: "696974")
+    }
+    static var textColorGrey: UIColor {
+        return .init(hex: "92929D")
+    }
+    static var textColorWhiteGrey: UIColor {
+        return .init(hex: "F1F1F5")
+    }
+    static var textColorWhite: UIColor {
+        return .init(hex: "FFFFFF")
+    }
+    static var textColorLineDark: UIColor {
+        return .init(hex: "EAEAEA")
+    }
+}
+
+// MARK: - UIFont
+extension UIFont {
+    static func montserratRegular(size: CGFloat) -> UIFont {
+        return .init(name: FontName.regular, size: size) ?? .systemFont(ofSize: size)
+    }
+
+    static func montserratMedium(size: CGFloat) -> UIFont {
+        return .init(name: FontName.medium, size: size) ?? .systemFont(ofSize: size)
+    }
+
+    static func montserratSemiBold(size: CGFloat) -> UIFont {
+        return .init(name: FontName.semiBold, size: size) ?? .systemFont(ofSize: size)
+    }
 }

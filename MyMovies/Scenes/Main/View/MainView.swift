@@ -26,9 +26,8 @@ final class MainView: UIView {
         cornerRadius: 20
     )
     private let helloLabel: UILabel = .createLabel(
-        fontSize: 20,
-        weight: .bold,
-        textColor: .white,
+        font: Typography.SemiBold.title,
+        textColor: .textColorWhite,
         text: "Hello, Smith"
     )
     private let favouriteButton: UIButton = .createFavouriteButton()
@@ -39,17 +38,15 @@ final class MainView: UIView {
     private lazy var seeAllMovieListButton: UIButton = createSeeAllButton()
     // Categories section
     private let categoriesLabel: UILabel = .createLabel(
-        fontSize: 18,
-        weight: .bold,
-        textColor: .white,
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
         text: "Categories"
     )
     private let categoriesView: UIView = .createCommonView()
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
-        fontSize: 18,
-        weight: .bold,
-        textColor: .white,
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
         text: "Most popular"
     )
     private lazy var seeAllPopularMoviesButton: UIButton = createSeeAllButton()
@@ -103,7 +100,7 @@ extension MainView {
     private func createSeeAllButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("See All", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.primaryBlueAccent, for: .normal)
 
         return button
     }
