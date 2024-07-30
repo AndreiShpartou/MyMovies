@@ -24,7 +24,7 @@ final class MainView: UIView {
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
         cornerRadius: 20,
-        image: UIImage(named: "avatar-mock")
+        image: Asset.Avatars.avatarMock.image
     )
     private let helloLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
