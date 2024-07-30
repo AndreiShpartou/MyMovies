@@ -50,11 +50,17 @@ extension UILabel {
 
 // MARK: - UIImageView
 extension UIImageView {
-    static func createImageView(contentMode: UIView.ContentMode, clipsToBounds: Bool = false, cornerRadius: CGFloat = 0) -> UIImageView {
+    static func createImageView(
+        contentMode: UIView.ContentMode,
+        clipsToBounds: Bool = false,
+        cornerRadius: CGFloat = 0,
+        image: UIImage?
+    ) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = contentMode
         imageView.clipsToBounds = clipsToBounds
         imageView.layer.cornerRadius = cornerRadius
+        imageView.image = image
 
         return imageView
     }

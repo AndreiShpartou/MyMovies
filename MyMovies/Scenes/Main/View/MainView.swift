@@ -23,7 +23,8 @@ final class MainView: UIView {
     private let avatarImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
-        cornerRadius: 20
+        cornerRadius: 20,
+        image: UIImage(named: "avatar-mock")
     )
     private let helloLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
@@ -143,7 +144,7 @@ extension MainView {
         }
 
         helloLabel.snp.makeConstraints { make in
-            make.leading.equalTo(avatarImageView.snp.trailing).offset(8)
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
             make.centerY.equalTo(avatarImageView)
         }
 
