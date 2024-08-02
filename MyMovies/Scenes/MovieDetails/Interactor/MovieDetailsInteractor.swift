@@ -7,9 +7,6 @@
 
 import Foundation
 
-protocol MovieDetailsInteractorProtocol: AnyObject {
-}
-
 class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     weak var presenter: MovieDetailsPresenterProtocol?
 }

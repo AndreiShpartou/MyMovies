@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol SearchViewProtocol: AnyObject {
-}
-
 class SearchView: UIView {
     var presenter: SearchPresenterProtocol?
 

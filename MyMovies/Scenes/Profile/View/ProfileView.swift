@@ -7,8 +7,6 @@
 
 import UIKit
 
-protocol ProfileViewProtocol: AnyObject {}
-
 class ProfileView: UIView {
     var presenter: ProfilePresenterProtocol?
 

@@ -8,8 +8,6 @@
 import UIKit
 import SnapKit
 
-protocol MainViewProtocol: AnyObject {}
-
 protocol MainViewDelegate: AnyObject {
     func didTapSeeAllMovieListButton()
     func didTapSeeAllPopularMoviesButton()
@@ -145,13 +143,19 @@ extension MainView {
 
         helloLabel.snp.makeConstraints { make in
             make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
+            make.trailing.equalTo(favouriteButton.snp.leading).offset(-16)
             make.centerY.equalTo(avatarImageView)
         }
 
         favouriteButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(32)
             make.centerY.equalTo(avatarImageView)
+        }
+
+        searchBar.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
+            make.top.equalTo(avatarImageView.snp.bottom).offset(16)
         }
     }
 }

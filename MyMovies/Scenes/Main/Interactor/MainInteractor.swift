@@ -7,13 +7,6 @@
 
 import Foundation
 
-protocol MainInteractorProtocol: AnyObject {
-    var presenter: MainPresenterProtocol? { get set }
-
-    func fetchMovies()
-    func fetchCategories()
-}
-
 class MainInteractor: MainInteractorProtocol {
     weak var presenter: MainPresenterProtocol?
 

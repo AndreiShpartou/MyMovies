@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol WishlistViewProtocol: AnyObject {
-}
-
 class WishlistView: UIView {
     var presenter: WishlistPresenterProtocol?
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 // MARK: - UIView
 extension UIView {
@@ -36,7 +37,6 @@ extension UILabel {
     ) -> UILabel {
         let label = UILabel()
         label.font = font
-        label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = numberOfLines
         label.textAlignment = textAlignment
         label.text = text
@@ -81,18 +81,28 @@ extension UIButton {
     static func createFavouriteButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.tintColor = .red
+        button.backgroundColor = .primarySoft
+        button.layer.cornerRadius = 10
+        button.tintColor = .secondaryRed
 
         return button
     }
 }
 
-// MARK: - HeadingUISearchBar
+// MARK: - UISearchBar
 extension UISearchBar {
     static func createSearchBar(style: UISearchBar.Style = .minimal, placeholder: String) -> UISearchBar {
         let searchBar = UISearchBar()
         searchBar.placeholder = placeholder
         searchBar.searchBarStyle = style
+
+        guard let textField = searchBar.value(forKey: "searchField") as? UITextField else {
+            return searchBar
+        }
+
+        textField.snp.makeConstraints { make in
+            make.leading.trailing.top.bottom.equalTo(searchBar)
+        }
 
         return searchBar
     }

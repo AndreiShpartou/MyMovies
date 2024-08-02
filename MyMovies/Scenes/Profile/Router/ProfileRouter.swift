@@ -7,8 +7,6 @@
 
 import UIKit
 
-protocol ProfileRouterProtocol: AnyObject {}
-
 class ProfileRouter: ProfileRouterProtocol {
     weak var viewController: UIViewController?
 

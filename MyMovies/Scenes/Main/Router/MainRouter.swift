@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol MainRouterProtocol: AnyObject {
-    func navigateToMovieDetails(with movie: Movie)
-}
-
 class MainRouter: MainRouterProtocol {
     weak var viewController: UIViewController?
 

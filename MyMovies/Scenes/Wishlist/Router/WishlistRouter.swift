@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol WishlistRouterProtocol: AnyObject {
-}
-
 class WishlistRouter {
     weak var viewController: UIViewController?
 }

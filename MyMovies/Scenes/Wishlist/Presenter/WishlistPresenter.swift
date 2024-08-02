@@ -7,9 +7,6 @@
 
 import Foundation
 
-protocol WishlistPresenterProtocol: AnyObject {
-}
-
 class WishlistPresenter: WishlistPresenterProtocol {
     weak var view: WishlistViewProtocol?
     var interactor: WishlistInteractorProtocol?

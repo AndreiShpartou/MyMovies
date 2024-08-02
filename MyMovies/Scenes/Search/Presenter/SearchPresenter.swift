@@ -7,9 +7,6 @@
 
 import Foundation
 
-protocol SearchPresenterProtocol: AnyObject {
-}
-
 class SearchPresenter: SearchPresenterProtocol {
     weak var view: SearchViewProtocol?
     var interactor: SearchInteractorProtocol

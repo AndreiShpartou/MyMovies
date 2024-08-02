@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol MovieDetailsRouterProtocol: AnyObject {
-}
-
 class MovieDetailsRouter: MovieDetailsRouterProtocol {
     weak var viewController: UIViewController?
 }

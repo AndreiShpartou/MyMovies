@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol MovieDetailsViewProtocol: AnyObject {
-}
-
 class MovieDetailsView: UIView {
     var presenter: MovieDetailsPresenterProtocol?
 }
