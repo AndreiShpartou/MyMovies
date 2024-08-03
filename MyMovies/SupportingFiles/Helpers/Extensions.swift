@@ -10,9 +10,14 @@ import SnapKit
 
 // MARK: - UIView
 extension UIView {
-    static func createCommonView(clipsToBounds: Bool = false, cornderRadius: CGFloat = 0) -> UIView {
+    static func createCommonView(
+        clipsToBounds: Bool = false,
+        cornderRadius: CGFloat = 0,
+        backgroundColor: UIColor? = nil
+    ) -> UIView {
         let view = UIView()
         view.clipsToBounds = clipsToBounds
+        view.backgroundColor = backgroundColor
         view.layer.cornerRadius = cornderRadius
 
         return view
@@ -54,7 +59,7 @@ extension UIImageView {
         contentMode: UIView.ContentMode,
         clipsToBounds: Bool = false,
         cornerRadius: CGFloat = 0,
-        image: UIImage?
+        image: UIImage? = nil
     ) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = contentMode

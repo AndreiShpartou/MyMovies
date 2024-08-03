@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class CategoryCollectionViewCell: UICollectionViewCell {
     static let identifier = "CategoryCollectionViewCell"
@@ -26,6 +27,11 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Public
+    func configure(with text: String) {
+        categoryLabel.text = text
     }
 }
 
