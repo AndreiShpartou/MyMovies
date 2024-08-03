@@ -100,9 +100,16 @@ extension UISearchBar {
             return searchBar
         }
 
+        textField.backgroundColor = .primarySoft
         textField.snp.makeConstraints { make in
             make.leading.trailing.top.bottom.equalTo(searchBar)
         }
+
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.textColorGrey,
+            .font: Typography.Medium.subhead
+        ]
+        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: placeholderAttributes)
 
         return searchBar
     }

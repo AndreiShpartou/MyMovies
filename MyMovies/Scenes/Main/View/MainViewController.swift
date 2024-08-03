@@ -44,7 +44,7 @@ extension MainViewController {
 
 // MARK: - MainViewDelegate
 extension MainViewController: MainViewDelegate {
-    func didTapSeeAllMovieListButton() {
+    func didTapSeeAllCategoriesButton() {
         // Handle "See All" action for movie list
     }
 

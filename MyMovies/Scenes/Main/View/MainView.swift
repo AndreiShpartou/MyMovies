@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 protocol MainViewDelegate: AnyObject {
-    func didTapSeeAllMovieListButton()
+    func didTapSeeAllCategoriesButton()
     func didTapSeeAllPopularMoviesButton()
 }
 
@@ -34,14 +34,14 @@ final class MainView: UIView {
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
     // MovieList
     private lazy var movieListCollectionView: UICollectionView = createMovieListCollectionView()
-    private lazy var seeAllMovieListButton: UIButton = createSeeAllButton()
+    private lazy var seeAllCategoriesButton: UIButton = createSeeAllButton()
     // Categories section
     private let categoriesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Categories"
     )
-    private let categoriesView: UIView = .createCommonView()
+    private lazy var categoriesCollectionView: UICollectionView = createCategoriesCollectionView()
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
@@ -72,13 +72,20 @@ extension MainView {
             avatarImageView,
             helloLabel,
             favouriteButton,
-            searchBar
+            searchBar,
+            movieListCollectionView,
+            categoriesLabel,
+            seeAllCategoriesButton,
+            categoriesCollectionView,
+            popularMoviesLabel,
+            seeAllPopularMoviesButton,
+            popularMoviesCollectionView
         )
         setupTargets()
     }
 
     private func setupTargets() {
-        seeAllMovieListButton.addTarget(self, action: #selector(didTapSeeAllMovieListButton), for: .touchUpInside)
+        seeAllCategoriesButton.addTarget(self, action: #selector(didTapSeeAllCategoriesButton), for: .touchUpInside)
         seeAllPopularMoviesButton.addTarget(self, action: #selector(didTapSeeAllPopularMoviesButton), for: .touchUpInside)
     }
 }
@@ -86,11 +93,13 @@ extension MainView {
 // MARK: - ActionMethods
 extension MainView {
     @objc
-    private func didTapSeeAllMovieListButton(_ sender: UIButton) {
+    private func didTapSeeAllCategoriesButton(_ sender: UIButton) {
+        delegate?.didTapSeeAllCategoriesButton()
     }
 
     @objc
     private func didTapSeeAllPopularMoviesButton(_ sender: UIButton) {
+        delegate?.didTapSeeAllPopularMoviesButton()
     }
 }
 
@@ -108,11 +117,26 @@ extension MainView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 250, height: 150)
+        layout.itemSize = CGSize(width: 250, height: 170)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        // collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
         collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        // collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+
+        return collectionView
+    }
+
+    private func createCategoriesCollectionView() -> UICollectionView {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 16
+        layout.itemSize = CGSize(width: 100, height: 40)
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        // collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCollectionViewCell")
 
         return collectionView
     }
@@ -121,11 +145,12 @@ extension MainView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 150, height: 250)
+        layout.itemSize = CGSize(width: 150, height: 230)
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        // collectionView.register(PopularMoviesCollectionViewCell.self, forCellWithReuseIdentifier: "PopularMoviesCollectionViewCell")
         collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        // collectionView.register(PopularMoviesCollectionViewCell.self, forCellWithReuseIdentifier: "PopularMoviesCollectionViewCell")
 
         return collectionView
     }
@@ -136,7 +161,7 @@ extension MainView {
     private func setupConstraints() {
         // Profile avatar section
         avatarImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
             make.top.equalTo(safeAreaLayoutGuide).offset(16)
             make.width.height.equalTo(40)
         }
@@ -148,7 +173,7 @@ extension MainView {
         }
 
         favouriteButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
             make.width.height.equalTo(32)
             make.centerY.equalTo(avatarImageView)
         }
@@ -156,6 +181,51 @@ extension MainView {
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             make.top.equalTo(avatarImageView.snp.bottom).offset(16)
+            make.height.equalTo(41)
         }
+
+        // Moive list section
+        movieListCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(searchBar.snp.bottom).offset(16)
+            make.height.equalTo(150)
+        }
+        movieListCollectionView.backgroundColor = .primarySoft // temporary
+
+        // Categories section
+        categoriesLabel.snp.makeConstraints { make in
+            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
+            make.top.equalTo(movieListCollectionView.snp.bottom).offset(24)
+        }
+
+        seeAllCategoriesButton.snp.makeConstraints { make in
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.centerY.equalTo(categoriesLabel)
+        }
+
+        categoriesCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(categoriesLabel.snp.bottom).offset(16)
+            make.height.equalTo(40)
+        }
+        categoriesCollectionView.backgroundColor = .primarySoft
+
+        // Popular movies section
+        popularMoviesLabel.snp.makeConstraints { make in
+            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
+            make.top.equalTo(categoriesCollectionView.snp.bottom).offset(24)
+        }
+
+        seeAllPopularMoviesButton.snp.makeConstraints { make in
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.centerY.equalTo(popularMoviesLabel)
+        }
+
+        popularMoviesCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(popularMoviesLabel.snp.bottom).offset(16)
+            make.height.equalTo(230)
+        }
+        popularMoviesCollectionView.backgroundColor = .primarySoft // temporary
     }
 }

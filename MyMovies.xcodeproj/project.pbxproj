@@ -89,6 +89,7 @@
 		6CC604D92C55805400241EF2 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D82C55805400241EF2 /* ProfileInteractor.swift */; };
 		6CC604DB2C55807E00241EF2 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */; };
 		6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DC2C55808C00241EF2 /* ProfileView.swift */; };
+		6CCC4F772C5E4F0A00BA7B8D /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F762C5E4F0A00BA7B8D /* CategoryCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -176,6 +177,7 @@
 		6CC604D82C55805400241EF2 /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
 		6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6CC604DC2C55808C00241EF2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		6CCC4F762C5E4F0A00BA7B8D /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		842AFCB10AF48B694D373115 /* libPods-MyMovies.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyMovies.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCAF3C27BA8771421C410786 /* Pods-MyMovies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyMovies.release.xcconfig"; path = "Target Support Files/Pods-MyMovies/Pods-MyMovies.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -667,6 +669,7 @@
 				6C83384F2C5CE430000D0399 /* MainViewProtocol.swift */,
 				6C59AF472C55176D006A7BDB /* MainView.swift */,
 				6C59AF452C551737006A7BDB /* MainViewController.swift */,
+				6CCC4F752C5E4EDC00BA7B8D /* CollectionViewCells */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -730,6 +733,14 @@
 				6C90536C2C5906260068E2BC /* Constants.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6CCC4F752C5E4EDC00BA7B8D /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				6CCC4F762C5E4F0A00BA7B8D /* CategoryCollectionViewCell.swift */,
+			);
+			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -888,6 +899,7 @@
 				6C8338722C5D0737000D0399 /* MovieDetailsInteractorProtocol.swift in Sources */,
 				6C8338702C5D0724000D0399 /* MovieDetailsViewProtocol.swift in Sources */,
 				6CC604D92C55805400241EF2 /* ProfileInteractor.swift in Sources */,
+				6CCC4F772C5E4F0A00BA7B8D /* CategoryCollectionViewCell.swift in Sources */,
 				6C59AF522C551FBE006A7BDB /* SearchRouter.swift in Sources */,
 				6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */,
 				6CC604D12C557EDD00241EF2 /* WishlistViewController.swift in Sources */,
