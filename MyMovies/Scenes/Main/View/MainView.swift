@@ -113,52 +113,60 @@ extension MainView {
         return button
     }
 
-    private func createMovieListCollectionView() -> UICollectionView {
+    private func createCollectionView(
+        itemSize: CGSize,
+        cellType: UICollectionViewCell.Type,
+        reuseIdentifier: String
+    ) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 250, height: 170)
+        layout.itemSize = itemSize
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
-        // collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "MovieCollectionViewCell")
+        collectionView.register(cellType, forCellWithReuseIdentifier: reuseIdentifier)
 
         return collectionView
+    }
+
+    private func createMovieListCollectionView() -> UICollectionView {
+        return createCollectionView(
+            itemSize: CGSize(width: 250, height: 170),
+            cellType: MovieListCollectionViewCell.self,
+            reuseIdentifier: "MovieListCollectionViewCell"
+        )
     }
 
     private func createCategoriesCollectionView() -> UICollectionView {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 100, height: 40)
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCollectionViewCell")
-
-        return collectionView
+        return createCollectionView(
+            itemSize: CGSize(width: 100, height: 40),
+            cellType: CategoryCollectionViewCell.self,
+            reuseIdentifier: "CategoryCollectionViewCell"
+        )
     }
 
     private func createPopularMoviesCollectionView() -> UICollectionView {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
-        layout.itemSize = CGSize(width: 150, height: 230)
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.showsHorizontalScrollIndicator = false
-        // collectionView.register(PopularMoviesCollectionViewCell.self, forCellWithReuseIdentifier: "PopularMoviesCollectionViewCell")
-
-        return collectionView
+        return createCollectionView(
+            itemSize: CGSize(width: 150, height: 230),
+            cellType: PopularMoviesCollectionViewCell.self,
+            reuseIdentifier: "PopularMoviesCollectionViewCell"
+        )
     }
 }
 
 // MARK: - Constraints
 extension MainView {
     private func setupConstraints() {
+        setupAvatarSectionConstraints()
+        setupSearchBarConstraints()
+        setupMovieListSectionConstraints()
+        setupCategoriesSectionConstraints()
+        setupPopularMoviesSectionConstraints()
+    }
+
+    private func setupAvatarSectionConstraints() {
         // Profile avatar section
         avatarImageView.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
@@ -177,13 +185,17 @@ extension MainView {
             make.width.height.equalTo(32)
             make.centerY.equalTo(avatarImageView)
         }
+    }
 
+    private func setupSearchBarConstraints() {
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             make.top.equalTo(avatarImageView.snp.bottom).offset(16)
             make.height.equalTo(41)
         }
+    }
 
+    private func setupMovieListSectionConstraints() {
         // Moive list section
         movieListCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -191,7 +203,9 @@ extension MainView {
             make.height.equalTo(150)
         }
         movieListCollectionView.backgroundColor = .primarySoft // temporary
+    }
 
+    private func setupCategoriesSectionConstraints() {
         // Categories section
         categoriesLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
@@ -209,7 +223,9 @@ extension MainView {
             make.height.equalTo(40)
         }
         categoriesCollectionView.backgroundColor = .primarySoft
+    }
 
+    private func setupPopularMoviesSectionConstraints() {
         // Popular movies section
         popularMoviesLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
