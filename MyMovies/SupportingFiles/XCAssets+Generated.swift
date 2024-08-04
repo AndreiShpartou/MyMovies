@@ -29,6 +29,14 @@ internal enum Asset {
     internal static let avatarDefault = ImageAsset(name: "avatar-default")
     internal static let avatarMock = ImageAsset(name: "avatar-mock")
   }
+  internal enum TabBarIcons {
+    internal static let home = ImageAsset(name: "Home")
+    internal static let homeSelected = ImageAsset(name: "HomeSelected")
+    internal static let profile = ImageAsset(name: "Profile")
+    internal static let profileSelected = ImageAsset(name: "ProfileSelected")
+    internal static let search = ImageAsset(name: "Search")
+    internal static let searchSelected = ImageAsset(name: "SearchSelected")
+  }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

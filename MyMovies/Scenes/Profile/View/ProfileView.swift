@@ -26,6 +26,7 @@ class ProfileView: UIView {
 // MARK: - Setup
 extension ProfileView {
     private func setupView() {
+        backgroundColor = .primaryBackground
     }
 }
 

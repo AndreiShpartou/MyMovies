@@ -25,6 +25,7 @@ class SearchView: UIView {
 // MARK: - Setup
 extension SearchView {
     private func setupView() {
+        backgroundColor = .primaryBackground
     }
 }
 

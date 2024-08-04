@@ -38,7 +38,7 @@ final class MainViewController: UIViewController, MainViewProtocol {
 // MARK: - Setup
 extension MainViewController {
     private func setupViewController() {
-        title = "Home"
+        //
     }
 }
 

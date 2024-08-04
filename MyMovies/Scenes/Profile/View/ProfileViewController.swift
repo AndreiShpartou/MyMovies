@@ -38,6 +38,5 @@ class ProfileViewController: UIViewController, ProfileViewProtocol {
 // MARK: - Setup
 extension ProfileViewController {
     private func setupViewController() {
-        title = "Profile"
     }
 }

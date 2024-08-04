@@ -13,13 +13,15 @@ protocol RootRouterProtocol: AnyObject {
 
 final class RootRouter: RootRouterProtocol {
     static func createRootViewController() -> UITabBarController {
-        let tabBarController = UITabBarController()
-        let homeVC = SceneBuilder.buildHomeScene()
-        let searchVC = SceneBuilder.buildSearchScene()
-        let profileVC = SceneBuilder.buildProfileScene()
+//        let tabBarController = UITabBarController()
 
-        tabBarController.viewControllers = [homeVC, searchVC, profileVC]
+//        let homeVC = SceneBuilder.buildHomeScene()
+//        let searchVC = SceneBuilder.buildSearchScene()
+//        let profileVC = SceneBuilder.buildProfileScene()
 
-        return tabBarController
+//        tabBarController.viewControllers = [homeVC, searchVC, profileVC]
+
+//        return tabBarController
+        return CustomTabBarController()
     }
 }

@@ -27,11 +27,12 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.tabBarItem = UITabBarItem(
-            title: "Home",
-            image: UIImage(systemName: "house"),
-            tag: 0
-        )
+//        navigationController.tabBarItem = UITabBarItem(
+//            title: nil,
+//            image: UIImage(systemName: "house"),
+//            tag: 0
+//        )
+        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }
@@ -48,11 +49,12 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.tabBarItem = UITabBarItem(
-            title: "Search",
-            image: UIImage(systemName: "magnifyingglass"),
-            tag: 1
-        )
+//        navigationController.tabBarItem = UITabBarItem(
+//            title: "Search",
+//            image: UIImage(systemName: "magnifyingglass"),
+//            tag: 1
+//        )
+        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }
@@ -69,11 +71,12 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.tabBarItem = UITabBarItem(
-            title: "Profile",
-            image: UIImage(systemName: "person"),
-            tag: 2
-        )
+//        navigationController.tabBarItem = UITabBarItem(
+//            title: "Profile",
+//            image: UIImage(systemName: "person"),
+//            tag: 2
+//        )
+        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }
