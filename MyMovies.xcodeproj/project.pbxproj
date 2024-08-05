@@ -63,8 +63,8 @@
 		6C9053702C5913760068E2BC /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C9053682C5904B10068E2BC /* Montserrat-Medium.otf */; };
 		6C9053722C5920080068E2BC /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9053712C5920080068E2BC /* XCAssets+Generated.swift */; };
 		6CBCD4AD2C578E7E00609EDF /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCD4AC2C578E7E00609EDF /* Movie.swift */; };
-		6CBCD4AF2C578ECD00609EDF /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCD4AE2C578ECD00609EDF /* Category.swift */; };
 		6CBCD4B22C578F8E00609EDF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCD4B12C578F8E00609EDF /* Extensions.swift */; };
+		6CBEE8D72C60E2F30053BFD9 /* MovieCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBEE8D62C60E2F30053BFD9 /* MovieCollection.swift */; };
 		6CC604A92C55759300241EF2 /* MovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604A82C55759300241EF2 /* MovieListInteractor.swift */; };
 		6CC604AB2C5575A800241EF2 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604AA2C5575A800241EF2 /* MovieListViewController.swift */; };
 		6CC604AD2C5575B400241EF2 /* MovieListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604AC2C5575B400241EF2 /* MovieListView.swift */; };
@@ -157,8 +157,8 @@
 		6C90536C2C5906260068E2BC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6C9053712C5920080068E2BC /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		6CBCD4AC2C578E7E00609EDF /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
-		6CBCD4AE2C578ECD00609EDF /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		6CBCD4B12C578F8E00609EDF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		6CBEE8D62C60E2F30053BFD9 /* MovieCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollection.swift; sourceTree = "<group>"; };
 		6CC604A82C55759300241EF2 /* MovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListInteractor.swift; sourceTree = "<group>"; };
 		6CC604AA2C5575A800241EF2 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		6CC604AC2C5575B400241EF2 /* MovieListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListView.swift; sourceTree = "<group>"; };
@@ -653,7 +653,7 @@
 			isa = PBXGroup;
 			children = (
 				6CBCD4AC2C578E7E00609EDF /* Movie.swift */,
-				6CBCD4AE2C578ECD00609EDF /* Category.swift */,
+				6CBEE8D62C60E2F30053BFD9 /* MovieCollection.swift */,
 				6CCC4F7C2C5E7FD100BA7B8D /* MovieList.swift */,
 			);
 			path = Entity;
@@ -926,6 +926,7 @@
 				6C8338722C5D0737000D0399 /* MovieDetailsInteractorProtocol.swift in Sources */,
 				6C8338702C5D0724000D0399 /* MovieDetailsViewProtocol.swift in Sources */,
 				6CC604D92C55805400241EF2 /* ProfileInteractor.swift in Sources */,
+				6CBEE8D72C60E2F30053BFD9 /* MovieCollection.swift in Sources */,
 				6CCC4F772C5E4F0A00BA7B8D /* CategoryCollectionViewCell.swift in Sources */,
 				6C59AF522C551FBE006A7BDB /* SearchRouter.swift in Sources */,
 				6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */,
@@ -983,7 +984,6 @@
 				6CC604CF2C557EB100241EF2 /* WishlistView.swift in Sources */,
 				6CC604BB2C557B3100241EF2 /* PopularMoviesBuilder.swift in Sources */,
 				6CC604B32C557A1E00241EF2 /* PopularMoviesPresenter.swift in Sources */,
-				6CBCD4AF2C578ECD00609EDF /* Category.swift in Sources */,
 				6C59AF462C551737006A7BDB /* MainViewController.swift in Sources */,
 				6C8338502C5CE430000D0399 /* MainViewProtocol.swift in Sources */,
 				6C8338542C5CE520000D0399 /* MainPresenterProtocol.swift in Sources */,

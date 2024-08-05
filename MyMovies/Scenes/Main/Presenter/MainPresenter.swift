@@ -27,7 +27,7 @@ class MainPresenter: MainPresenterProtocol {
         //
     }
 
-    func didFetchCategories(_ categories: [Category]) {
+    func didFetchCategories(_ categories: [Genre]) {
         //
     }
 

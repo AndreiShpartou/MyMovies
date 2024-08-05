@@ -19,7 +19,7 @@ class MainInteractor: MainInteractorProtocol {
 
     func fetchCategories() {
         // Fetch categories from data source
-        let categories = [Category(name: "All"), Category(name: "Comedy")]
+        let categories = [Genre(name: "All"), Genre(name: "Comedy")]
         presenter?.didFetchCategories(categories)
     }
 }

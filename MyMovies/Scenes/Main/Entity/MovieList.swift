@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct MovieList {
-    let title: String
-    let quanity: Int
+struct MovieList: Codable {
+    let category: String
+    let moviesCont: Int
+    let cover: Cover
+    let name: String
 }

@@ -14,6 +14,6 @@ protocol MainPresenterProtocol: AnyObject {
 
     func viewDidLoad()
     func didFetchMovies(_ movies: [Movie])
-    func didFetchCategories(_ categories: [Category])
+    func didFetchCategories(_ categories: [Genre])
     func didSelectMovie(_ movie: Movie)
 }
