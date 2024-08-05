@@ -8,8 +8,12 @@
 import Foundation
 
 protocol MainInteractorProtocol: AnyObject {
-    var presenter: MainPresenterProtocol? { get set }
+    var presenter: MainInteractorOutputProtocol? { get set }
 
-    func fetchMovies()
-    func fetchCategories()
+    func fetchMovieLists()
+}
+
+protocol MainInteractorOutputProtocol: AnyObject {
+    func didFetchMovieLists(_ movieLists: MovieLists)
+    func didFailToFetchMovieLists(with error: Error)
 }

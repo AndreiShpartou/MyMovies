@@ -19,7 +19,6 @@ struct Movie: Codable {
     let poster: Cover
     let backdrop: Cover
     let genres: [Genre]
-    
 }
 
 struct Rating: Codable {

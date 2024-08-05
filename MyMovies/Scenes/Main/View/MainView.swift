@@ -15,7 +15,7 @@ protocol MainViewDelegate: AnyObject {
 
 final class MainView: UIView {
     weak var delegate: MainViewDelegate?
-    var presenter: MainPresenterProtocol?
+//    var presenter: MainPresenterProtocol?
 
     // Avatar
     private let avatarImageView: UIImageView = .createImageView(
@@ -33,7 +33,7 @@ final class MainView: UIView {
     // Search
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
     // MovieList
-    private lazy var movieListCollectionView: UICollectionView = createMovieListCollectionView()
+    private lazy var movieListsCollectionView: UICollectionView = createMovieListCollectionView()
     private lazy var seeAllCategoriesButton: UIButton = createSeeAllButton()
     // Categories section
     private let categoriesLabel: UILabel = .createLabel(
@@ -73,7 +73,7 @@ extension MainView {
             helloLabel,
             favouriteButton,
             searchBar,
-            movieListCollectionView,
+            movieListsCollectionView,
             categoriesLabel,
             seeAllCategoriesButton,
             categoriesCollectionView,
@@ -134,7 +134,7 @@ extension MainView {
     private func createMovieListCollectionView() -> UICollectionView {
         return createCollectionView(
             itemSize: CGSize(width: 250, height: 170),
-            cellType: MovieListCollectionViewCell.self,
+            cellType: MovieListsCollectionViewCell.self,
             reuseIdentifier: "MovieListCollectionViewCell"
         )
     }
@@ -197,19 +197,19 @@ extension MainView {
 
     private func setupMovieListSectionConstraints() {
         // Moive list section
-        movieListCollectionView.snp.makeConstraints { make in
+        movieListsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(searchBar.snp.bottom).offset(16)
             make.height.equalTo(150)
         }
-        movieListCollectionView.backgroundColor = .primarySoft // temporary
+        movieListsCollectionView.backgroundColor = .primarySoft // temporary
     }
 
     private func setupCategoriesSectionConstraints() {
         // Categories section
         categoriesLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
-            make.top.equalTo(movieListCollectionView.snp.bottom).offset(24)
+            make.top.equalTo(movieListsCollectionView.snp.bottom).offset(24)
         }
 
         seeAllCategoriesButton.snp.makeConstraints { make in

@@ -8,6 +8,7 @@
 import UIKit
 
 final class MainViewController: UIViewController, MainViewProtocol {
+
     var presenter: MainPresenterProtocol?
 
     private let mainView: UIView
@@ -32,6 +33,14 @@ final class MainViewController: UIViewController, MainViewProtocol {
         super.viewDidLoad()
         setupViewController()
         presenter?.viewDidLoad()
+    }
+
+    func showMovieLists(movieLists: MovieLists) {
+        //
+    }
+
+    func showError(error: Error) {
+        //
     }
 }
 

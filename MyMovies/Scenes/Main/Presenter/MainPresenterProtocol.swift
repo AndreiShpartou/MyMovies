@@ -13,7 +13,4 @@ protocol MainPresenterProtocol: AnyObject {
     var router: MainRouterProtocol { get set }
 
     func viewDidLoad()
-    func didFetchMovies(_ movies: [Movie])
-    func didFetchCategories(_ categories: [Genre])
-    func didSelectMovie(_ movie: Movie)
 }

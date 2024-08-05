@@ -51,9 +51,9 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     // MARK: - Public
     func configure(with movie: Movie) {
         // imageView.image = UIImage(systemName: "avatar")
-        titleLabel.text = movie.title
-        genreLabel.text = movie.genre
-        ratingLabel.text = String(format: "%.1f", movie.rating)
+        titleLabel.text = movie.name
+        genreLabel.text = movie.genres.first?.name
+        ratingLabel.text = String(format: "%.1f", movie.rating.imdb)
     }
 }
 

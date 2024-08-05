@@ -1,5 +1,5 @@
 //
-//  MovieListCollectionViewCell.swift
+//  MovieListsCollectionViewCell.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 03/08/2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MovieListCollectionViewCell: UICollectionViewCell {
+final class MovieListsCollectionViewCell: UICollectionViewCell {
     static let identifier = "MovieListCollectionViewCell"
 
     private let imageView: UIImageView = .createImageView(
@@ -42,13 +42,13 @@ final class MovieListCollectionViewCell: UICollectionViewCell {
     // MARK: - Public
     func configure(with movieList: MovieList) {
         // imageView.image =
-        titleLabel.text = movieList.title
-        quantityLabel.text = movieList.title
+        titleLabel.text = movieList.name
+        quantityLabel.text = String(movieList.moviesCount ?? 0)
     }
 }
 
 // MARK: - Setup
-extension MovieListCollectionViewCell {
+extension MovieListsCollectionViewCell {
     private func setupView() {
         contentView.addSubviews(
             imageView,
@@ -59,7 +59,7 @@ extension MovieListCollectionViewCell {
 }
 
 // MARK: - Constraints
-extension MovieListCollectionViewCell {
+extension MovieListsCollectionViewCell {
     private func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()

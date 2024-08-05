@@ -1,0 +1,36 @@
+//
+//  NetworkManager.swift
+//  MyMovies
+//
+//  Created by Andrei Shpartou on 05/08/2024.
+//
+
+import Foundation
+import Alamofire
+
+class NetworkManager {
+    static let shared = NetworkManager()
+
+    private init() {}
+
+    // Fetch movie lists
+    func fetchMovieLists(completion: @escaping (Result<MovieLists, Error>) -> Void) {
+        guard let url = APIEndpoint.movieLists.url else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+
+        let headers: HTTPHeaders = [
+            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
+        ]
+
+        AF.request(url, headers: headers).responseDecodable(of: MovieLists.self) { response in
+            switch response.result {
+            case .success(let movieLists):
+                completion(.success(movieLists))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+}

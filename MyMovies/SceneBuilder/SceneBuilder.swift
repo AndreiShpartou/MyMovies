@@ -21,7 +21,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         let interactor = MainInteractor()
         let presenter = MainPresenter(view: viewController, interactor: interactor, router: router)
 
-        view.presenter = presenter
+//        view.presenter = presenter
         view.delegate = viewController
         viewController.presenter = presenter
         interactor.presenter = presenter

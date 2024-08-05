@@ -7,4 +7,9 @@
 
 import Foundation
 
-protocol MainViewProtocol: AnyObject {}
+protocol MainViewProtocol: AnyObject {
+    var presenter: MainPresenterProtocol? { get set }
+
+    func showMovieLists(movieLists: MovieLists)
+    func showError(error: Error)
+}

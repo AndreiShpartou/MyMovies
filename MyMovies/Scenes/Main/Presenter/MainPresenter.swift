@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MainPresenter: MainPresenterProtocol {
+final class MainPresenter: MainPresenterProtocol {
     weak var view: MainViewProtocol?
     var interactor: MainInteractorProtocol
     var router: MainRouterProtocol
@@ -20,18 +20,18 @@ class MainPresenter: MainPresenterProtocol {
     }
 
     func viewDidLoad() {
-        //
+        interactor.fetchMovieLists()
+    }
+}
+
+extension MainPresenter: MainInteractorOutputProtocol {
+    func didFetchMovieLists(_ movieLists: MovieLists) {
+        // Update the view with the fetched data
+        view?.showMovieLists(movieLists: movieLists)
     }
 
-    func didFetchMovies(_ movies: [Movie]) {
-        //
-    }
-
-    func didFetchCategories(_ categories: [Genre]) {
-        //
-    }
-
-    func didSelectMovie(_ movie: Movie) {
-        //
+    func didFailToFetchMovieLists(with error: Error) {
+        // Handle error
+        view?.showError(error: error)
     }
 }

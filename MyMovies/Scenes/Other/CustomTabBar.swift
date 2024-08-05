@@ -64,14 +64,14 @@ final class CustomTabBar: UITabBar {
     private func setupSelectionBackgroundView() {
         containerView.insertSubview(selectionBackgroundView, at: 0)
     }
-    
+
     private func layoutCustomItems() {
         // Remove old constraints before adding new ones
         customTabBarItems.forEach { $0.removeFromSuperview() }
-        
+
         // Add items as subviews again to ensure they are visible
         customTabBarItems.forEach { containerView.addSubviews($0) }
-        
+
         // Define constraints for each custom tab bar item
         let itemWidth = bounds.width / CGFloat(customTabBarItems.count) - 8
         let widthMultiplier = 1.0 / CGFloat(customTabBarItems.count)
