@@ -33,4 +33,25 @@ class NetworkManager {
             }
         }
     }
+
+    // Fetch movie lists
+    func fetchCategories(completion: @escaping (Result<[MovieCategory], Error>) -> Void) {
+        guard let url = APIEndpoint.movieCategories.url else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+
+        let headers: HTTPHeaders = [
+            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
+        ]
+
+        AF.request(url, headers: headers).responseDecodable(of: [MovieCategory].self) { response in
+            switch response.result {
+            case .success(let categories):
+                completion(.success(categories))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }

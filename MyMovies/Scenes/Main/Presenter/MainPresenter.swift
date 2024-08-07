@@ -21,16 +21,22 @@ final class MainPresenter: MainPresenterProtocol {
 
     func viewDidLoad() {
         interactor.fetchMovieLists()
+        interactor.fetchMovieCategories()
     }
 }
 
 extension MainPresenter: MainInteractorOutputProtocol {
+
     func didFetchMovieLists(_ movieLists: MovieLists) {
         // Update the view with the fetched data
         view?.showMovieLists(movieLists: movieLists)
     }
 
-    func didFailToFetchMovieLists(with error: Error) {
+    func didFetchMovieCategories(_ movieCategories: [MovieCategory]) {
+        //
+    }
+
+    func didFailToFetchData(with error: Error) {
         // Handle error
         view?.showError(error: error)
     }
