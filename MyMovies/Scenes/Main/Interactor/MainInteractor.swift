@@ -23,6 +23,7 @@ final class MainInteractor: MainInteractorProtocol {
     }
 
     // Fetch categories
+    // "Поле category должно быть значением из списка: Онлайн-кинотеатр, Премии, Сборы, Сериалы, Фильмы!"
     func fetchMovieCategories() {
         NetworkManager.shared.fetchCategories { [weak self] result in
             switch result {

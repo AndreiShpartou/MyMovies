@@ -20,9 +20,9 @@ final class MainPresenter: MainPresenterProtocol {
     }
 
     func viewDidLoad() {
-        interactor.fetchMovieLists()
+//        interactor.fetchMovieLists()
 //        interactor.fetchMovieCategories()
-//        interactor.fetchTopMovies()
+        interactor.fetchTopMovies()
     }
 }
 
