@@ -12,10 +12,12 @@ protocol MainInteractorProtocol: AnyObject {
 
     func fetchMovieLists()
     func fetchMovieCategories()
+    func fetchTopMovies()
 }
 
 protocol MainInteractorOutputProtocol: AnyObject {
-    func didFetchMovieLists(_ movieLists: MovieLists)
+    func didFetchMovieLists(_ movieLists: [MovieList])
     func didFetchMovieCategories(_ movieCategories: [MovieCategory])
+    func didFetchTopMovies(_ movies: [Movie])
     func didFailToFetchData(with error: Error)
 }

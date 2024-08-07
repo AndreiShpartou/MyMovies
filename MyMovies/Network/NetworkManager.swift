@@ -14,7 +14,7 @@ class NetworkManager {
     private init() {}
 
     // Fetch movie lists
-    func fetchMovieLists(completion: @escaping (Result<MovieLists, Error>) -> Void) {
+    func fetchMovieLists(completion: @escaping (Result<MovieListsPagedResponse, Error>) -> Void) {
         guard let url = APIEndpoint.movieLists.url else {
             completion(.failure(NetworkError.invalidURL))
             return
@@ -24,7 +24,7 @@ class NetworkManager {
             "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
         ]
 
-        AF.request(url, headers: headers).responseDecodable(of: MovieLists.self) { response in
+        AF.request(url, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
             switch response.result {
             case .success(let movieLists):
                 completion(.success(movieLists))
@@ -34,7 +34,7 @@ class NetworkManager {
         }
     }
 
-    // Fetch movie lists
+    // Fetch movie list categories
     func fetchCategories(completion: @escaping (Result<[MovieCategory], Error>) -> Void) {
         guard let url = APIEndpoint.movieCategories.url else {
             completion(.failure(NetworkError.invalidURL))
@@ -49,6 +49,27 @@ class NetworkManager {
             switch response.result {
             case .success(let categories):
                 completion(.success(categories))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    // Fetch top movies
+    func fetchTopMovies(completion: @escaping (Result<MoviesPagedResponse, Error>) -> Void) {
+        guard let url = APIEndpoint.popularMovies.url else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+
+        let headers: HTTPHeaders = [
+            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
+        ]
+
+        AF.request(url, headers: headers).responseDecodable(of: MoviesPagedResponse.self) { response in
+            switch response.result {
+            case .success(let movieLists):
+                completion(.success(movieLists))
             case .failure(let error):
                 completion(.failure(error))
             }

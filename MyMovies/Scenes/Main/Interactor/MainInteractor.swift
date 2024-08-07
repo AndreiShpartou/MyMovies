@@ -8,7 +8,6 @@
 import Foundation
 
 final class MainInteractor: MainInteractorProtocol {
-
     weak var presenter: MainInteractorOutputProtocol?
 
     // Fetch collection of movie lists
@@ -16,7 +15,7 @@ final class MainInteractor: MainInteractorProtocol {
         NetworkManager.shared.fetchMovieLists { [weak self] result in
             switch result {
             case .success(let movieLists):
-                self?.presenter?.didFetchMovieLists(movieLists)
+                self?.presenter?.didFetchMovieLists(movieLists.docs)
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
@@ -29,6 +28,18 @@ final class MainInteractor: MainInteractorProtocol {
             switch result {
             case .success(let categories):
                 self?.presenter?.didFetchMovieCategories(categories)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    // MARK: - Fetch top movies
+    func fetchTopMovies() {
+        NetworkManager.shared.fetchTopMovies { [weak self] result in
+            switch result {
+            case .success(let movieLists):
+                self?.presenter?.didFetchTopMovies(movieLists.docs)
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }

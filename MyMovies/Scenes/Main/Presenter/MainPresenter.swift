@@ -21,18 +21,23 @@ final class MainPresenter: MainPresenterProtocol {
 
     func viewDidLoad() {
         interactor.fetchMovieLists()
-        interactor.fetchMovieCategories()
+//        interactor.fetchMovieCategories()
+//        interactor.fetchTopMovies()
     }
 }
 
 extension MainPresenter: MainInteractorOutputProtocol {
 
-    func didFetchMovieLists(_ movieLists: MovieLists) {
+    func didFetchMovieLists(_ movieLists: [MovieList]) {
         // Update the view with the fetched data
         view?.showMovieLists(movieLists: movieLists)
     }
 
     func didFetchMovieCategories(_ movieCategories: [MovieCategory]) {
+        //
+    }
+
+    func didFetchTopMovies(_ movies: [Movie]) {
         //
     }
 

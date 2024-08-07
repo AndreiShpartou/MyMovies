@@ -10,6 +10,6 @@ import Foundation
 protocol MainViewProtocol: AnyObject {
     var presenter: MainPresenterProtocol? { get set }
 
-    func showMovieLists(movieLists: MovieLists)
+    func showMovieLists(movieLists: [MovieList])
     func showError(error: Error)
 }

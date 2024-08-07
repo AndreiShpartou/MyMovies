@@ -35,7 +35,7 @@ final class MainViewController: UIViewController, MainViewProtocol {
         presenter?.viewDidLoad()
     }
 
-    func showMovieLists(movieLists: MovieLists) {
+    func showMovieLists(movieLists: [MovieList]) {
         //
     }
 
