@@ -17,7 +17,7 @@ protocol MainInteractorProtocol: AnyObject {
 
 protocol MainInteractorOutputProtocol: AnyObject {
     func didFetchMovieLists(_ movieLists: [MovieList])
-    func didFetchMovieCategories(_ movieCategories: [MovieCategory])
+    func didFetchMovieCategories(_ categories: [Category])
     func didFetchTopMovies(_ movies: [Movie])
     func didFailToFetchData(with error: Error)
 }

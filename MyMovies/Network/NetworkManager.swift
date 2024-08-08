@@ -34,26 +34,26 @@ class NetworkManager {
         }
     }
 
-    // Fetch movie list categories
-    func fetchCategories(completion: @escaping (Result<[MovieCategory], Error>) -> Void) {
-        guard let url = APIEndpoint.movieCategories.url else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
-
-        let headers: HTTPHeaders = [
-            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
-        ]
-
-        AF.request(url, headers: headers).responseDecodable(of: [MovieCategory].self) { response in
-            switch response.result {
-            case .success(let categories):
-                completion(.success(categories))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+//    // Fetch movie lists for category
+//    func fetchMovieLists(category: Category, completion: @escaping (Result<MovieListsPagedResponse, Error>) -> Void) {
+//        guard let url = APIEndpoint.movieLists.url else {
+//            completion(.failure(NetworkError.invalidURL))
+//            return
+//        }
+//
+//        let headers: HTTPHeaders = [
+//            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
+//        ]
+//
+//        AF.request(url, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
+//            switch response.result {
+//            case .success(let movieLists):
+//                completion(.success(movieLists))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
 
     // Fetch top movies
     func fetchTopMovies(completion: @escaping (Result<MoviesPagedResponse, Error>) -> Void) {

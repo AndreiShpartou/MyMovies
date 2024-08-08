@@ -7,14 +7,13 @@
 
 import UIKit
 
-final class MainViewController: UIViewController, MainViewProtocol {
-
+final class MainViewController: UIViewController {
     var presenter: MainPresenterProtocol?
 
-    private let mainView: UIView
+    private let mainView: MainViewProtocol
 
     // MARK: - Init
-    init(mainView: UIView) {
+    init(mainView: MainViewProtocol) {
         self.mainView = mainView
 
         super.init(nibName: nil, bundle: nil)
@@ -34,30 +33,39 @@ final class MainViewController: UIViewController, MainViewProtocol {
         setupViewController()
         presenter?.viewDidLoad()
     }
-
-    func showMovieLists(movieLists: [MovieList]) {
-        //
-    }
-
-    func showError(error: Error) {
-        //
-    }
 }
 
 // MARK: - Setup
 extension MainViewController {
     private func setupViewController() {
-        //
+        mainView.delegate = self
     }
 }
 
 // MARK: - MainViewDelegate
 extension MainViewController: MainViewDelegate {
+    func didSelectMovieList(_ movieList: MovieList) {
+        // Handle movie list selection
+        presenter?.didSelectMovieList(movieList)
+    }
+    
+    func didSelectCategory(_ category: Category) {
+        // Handle category selection
+        presenter?.didSelectCategory(category)
+    }
+    
+    func didSelectMovie(_ movie: Movie) {
+        // Handle popular movie selection
+        presenter?.didSelectMovie(movie)
+    }
+
     func didTapSeeAllCategoriesButton() {
         // Handle "See All" action for movie list
+        presenter?.didTapAllCategoriesButton()
     }
 
     func didTapSeeAllPopularMoviesButton() {
         // Handle "See All" action for popular movies
+        presenter?.didTapSeeAllPopularMoviesButton()
     }
 }

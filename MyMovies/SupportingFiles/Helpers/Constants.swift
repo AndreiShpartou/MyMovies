@@ -7,6 +7,10 @@
 
 import UIKit
 
+// enum Constants {
+//    static let defaultItemsInSection = 0
+// }
+
 // MARK: - Font
 enum Typography {
     enum Regular {

@@ -8,15 +8,17 @@
 import UIKit
 import SnapKit
 
-protocol MainViewDelegate: AnyObject {
-    func didTapSeeAllCategoriesButton()
-    func didTapSeeAllPopularMoviesButton()
-}
+final class MainView: UIView, MainViewProtocol {
+    weak var delegate: MainViewDelegate? {
+        didSet {
+            movieListCollectionViewHandler.delegate = delegate
+            categoriesCollectionViewHandler.delegate = delegate
+            popularMoviesCollectionViewHandler.delegate = delegate
+        }
+    }
+    var presenter: MainPresenterProtocol?
 
-final class MainView: UIView {
-    weak var delegate: MainViewDelegate?
-//    var presenter: MainPresenterProtocol?
-
+    // MARK: - Properties
     // Avatar
     private let avatarImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
@@ -34,6 +36,7 @@ final class MainView: UIView {
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
     // MovieList
     private lazy var movieListsCollectionView: UICollectionView = createMovieListCollectionView()
+    private lazy var movieListCollectionViewHandler = MovieListsCollectionViewHandler()
     private lazy var seeAllCategoriesButton: UIButton = createSeeAllButton()
     // Categories section
     private let categoriesLabel: UILabel = .createLabel(
@@ -42,6 +45,7 @@ final class MainView: UIView {
         text: "Categories"
     )
     private lazy var categoriesCollectionView: UICollectionView = createCategoriesCollectionView()
+    private lazy var categoriesCollectionViewHandler = CategoriesCollectionViewHandler()
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
@@ -50,6 +54,7 @@ final class MainView: UIView {
     )
     private lazy var seeAllPopularMoviesButton: UIButton = createSeeAllButton()
     private lazy var popularMoviesCollectionView: UICollectionView = createPopularMoviesCollectionView()
+    private lazy var popularMoviesCollectionViewHandler = PopularMoviesCollectionViewHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -61,6 +66,26 @@ final class MainView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Public
+    func showMovieLists(movieLists: [MovieList]) {
+        movieListCollectionViewHandler.configure(with: movieLists)
+        movieListsCollectionView.reloadData()
+    }
+
+    func showMovieCategories(categories: [Category]) {
+        categoriesCollectionViewHandler.configure(with: categories)
+        categoriesCollectionView.reloadData()
+    }
+
+    func showPopularMovies(movies: [Movie]) {
+        popularMoviesCollectionViewHandler.configure(with: movies)
+        popularMoviesCollectionView.reloadData()
+    }
+
+    func showError(error: Error) {
+        //
     }
 }
 
@@ -81,7 +106,21 @@ extension MainView {
             seeAllPopularMoviesButton,
             popularMoviesCollectionView
         )
+
+        setupHandlers()
         setupTargets()
+    }
+
+    private func setupHandlers() {
+        // Movie lists
+        movieListsCollectionView.delegate = movieListCollectionViewHandler
+        movieListsCollectionView.dataSource = movieListCollectionViewHandler
+        // Categories
+        categoriesCollectionView.delegate = categoriesCollectionViewHandler
+        categoriesCollectionView.dataSource = categoriesCollectionViewHandler
+        // Popular movies
+        popularMoviesCollectionView.delegate = popularMoviesCollectionViewHandler
+        popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
     }
 
     private func setupTargets() {
@@ -222,7 +261,6 @@ extension MainView {
             make.top.equalTo(categoriesLabel.snp.bottom).offset(16)
             make.height.equalTo(40)
         }
-        categoriesCollectionView.backgroundColor = .primarySoft
     }
 
     private func setupPopularMoviesSectionConstraints() {

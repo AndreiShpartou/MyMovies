@@ -8,6 +8,7 @@
 import Foundation
 
 final class MainPresenter: MainPresenterProtocol {
+
     weak var view: MainViewProtocol?
     var interactor: MainInteractorProtocol
     var router: MainRouterProtocol
@@ -19,13 +20,35 @@ final class MainPresenter: MainPresenterProtocol {
         self.router = router
     }
 
+    // MARK: - Public
     func viewDidLoad() {
-//        interactor.fetchMovieLists()
-//        interactor.fetchMovieCategories()
+        interactor.fetchMovieLists()
+        interactor.fetchMovieCategories()
         interactor.fetchTopMovies()
+    }
+    
+    func didSelectMovie(_ movie: Movie) {
+        //
+    }
+
+    func didSelectCategory(_ category: Category) {
+        //
+    }
+    
+    func didSelectMovieList(_ movieList: MovieList) {
+        //
+    }
+
+    func didTapAllCategoriesButton() {
+        //
+    }
+
+    func didTapSeeAllPopularMoviesButton() {
+        //
     }
 }
 
+// MARK: - MainInteractorOutputProtocol
 extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchMovieLists(_ movieLists: [MovieList]) {
@@ -33,12 +56,12 @@ extension MainPresenter: MainInteractorOutputProtocol {
         view?.showMovieLists(movieLists: movieLists)
     }
 
-    func didFetchMovieCategories(_ movieCategories: [MovieCategory]) {
-        //
+    func didFetchMovieCategories(_ categories: [Category]) {
+        view?.showMovieCategories(categories: categories)
     }
 
     func didFetchTopMovies(_ movies: [Movie]) {
-        //
+        view?.showPopularMovies(movies: movies)
     }
 
     func didFailToFetchData(with error: Error) {
