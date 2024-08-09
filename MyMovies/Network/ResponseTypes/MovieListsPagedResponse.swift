@@ -8,9 +8,8 @@
 import Foundation
 
 struct MovieListsPagedResponse: Codable, PagedResponseProtocol {
-    var docs: [MovieList]
-    var total: Int
-    var limit: Int
     var page: Int
-    var pages: Int
+    var results: [MovieList]
+    var total_pages: Int
+    var total_results: Int
 }

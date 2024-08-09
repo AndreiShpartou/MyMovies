@@ -24,7 +24,11 @@ class NetworkManager {
             "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
         ]
 
-        AF.request(url, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
+        let parameters: Parameters = [
+            "language": "en"
+        ]
+
+        AF.request(url, parameters: parameters, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
             switch response.result {
             case .success(let movieLists):
                 completion(.success(movieLists))
@@ -34,9 +38,9 @@ class NetworkManager {
         }
     }
 
-    // Fetch movie lists
-    func fetchGenres(completion: @escaping (Result<MovieListsPagedResponse, Error>) -> Void) {
-        guard let url = APIEndpoint.movieLists.url else {
+    // Fetch genres
+    func fetchGenres(completion: @escaping (Result<GenresResponse, Error>) -> Void) {
+        guard let url = APIEndpoint.genres.url else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
@@ -45,10 +49,14 @@ class NetworkManager {
             "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
         ]
 
-        AF.request(url, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
+        let parameters: Parameters = [
+            "language": "en"
+        ]
+
+        AF.request(url, parameters: parameters, headers: headers).responseDecodable(of: GenresResponse.self) { response in
             switch response.result {
-            case .success(let movieLists):
-                completion(.success(movieLists))
+            case .success(let genres):
+                completion(.success(genres))
             case .failure(let error):
                 completion(.failure(error))
             }

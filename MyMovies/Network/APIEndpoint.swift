@@ -17,10 +17,10 @@ enum APIEndpoint {
 
     var urlString: String {
         switch self {
-        case .genres:
-            return "\(APIEndpoint.baseURL)/v1.4/list"
         case .movieLists:
             return "\(APIEndpoint.baseURL)/v1.4/list"
+        case .genres:
+            return "\(APIEndpoint.baseURL)/3/genre/movie/list"
         case .popularMovies:
             return "\(APIEndpoint.baseURL)/v1.4/movie?lists=popular-films"
         }

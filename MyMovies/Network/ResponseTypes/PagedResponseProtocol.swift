@@ -9,9 +9,8 @@ import Foundation
 
 protocol PagedResponseProtocol: Codable {
     associatedtype ResultType: Codable
-    var docs: [ResultType] { get }
-    var total: Int { get }
-    var limit: Int { get }
     var page: Int { get }
-    var pages: Int { get }
+    var results: [ResultType] { get }
+    var total_pages: Int { get }
+    var total_results: Int { get }
 }

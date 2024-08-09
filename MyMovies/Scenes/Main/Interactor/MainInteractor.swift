@@ -15,7 +15,7 @@ final class MainInteractor: MainInteractorProtocol {
         NetworkManager.shared.fetchMovieLists { [weak self] result in
             switch result {
             case .success(let movieLists):
-                self?.presenter?.didFetchMovieLists(movieLists.docs)
+                self?.presenter?.didFetchMovieLists(movieLists.results)
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
@@ -33,7 +33,7 @@ final class MainInteractor: MainInteractorProtocol {
         NetworkManager.shared.fetchTopMovies { [weak self] result in
             switch result {
             case .success(let movieLists):
-                self?.presenter?.didFetchTopMovies(movieLists.docs)
+                self?.presenter?.didFetchTopMovies(movieLists.results)
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }

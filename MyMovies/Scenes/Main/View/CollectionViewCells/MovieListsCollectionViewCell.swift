@@ -51,10 +51,7 @@ final class MovieListsCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movieList: MovieList) {
-        if let coverURLString = movieList.cover?.url,
-           let coverURL = URL(string: coverURLString) {
-            imageView.kf.setImage(with: coverURL)
-        }
+//        imageView.kf.setImage(with: movieList.coverURL)
 //        titleLabel.text = movieList.name
 //        quantityLabel.text = "\(movieList.moviesCount ?? 0) movies"
     }
