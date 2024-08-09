@@ -22,10 +22,10 @@ final class MainInteractor: MainInteractorProtocol {
         }
     }
 
-    // Fetch categories
-    func fetchMovieCategories() {
-        let categories = Category.allCases
-        presenter?.didFetchMovieCategories(categories)
+    // Fetch genres
+    func fetchMovieGenres() {
+//        let genres = Genre.allCases
+//        presenter?.didFetchMovieGenres(genres)
     }
 
     // MARK: - Fetch top movies

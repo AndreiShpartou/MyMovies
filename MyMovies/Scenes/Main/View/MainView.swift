@@ -12,7 +12,7 @@ final class MainView: UIView, MainViewProtocol {
     weak var delegate: MainViewDelegate? {
         didSet {
             movieListCollectionViewHandler.delegate = delegate
-            categoriesCollectionViewHandler.delegate = delegate
+            genresCollectionViewHandler.delegate = delegate
             popularMoviesCollectionViewHandler.delegate = delegate
         }
     }
@@ -35,17 +35,23 @@ final class MainView: UIView, MainViewProtocol {
     // Search
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
     // MovieList
-    private lazy var movieListsCollectionView: UICollectionView = createMovieListCollectionView()
-    private lazy var movieListCollectionViewHandler = MovieListsCollectionViewHandler()
-    private lazy var seeAllCategoriesButton: UIButton = createSeeAllButton()
-    // Categories section
-    private let categoriesLabel: UILabel = .createLabel(
+    private let movieListsLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
-        text: "Categories"
+        text: "Collections"
     )
-    private lazy var categoriesCollectionView: UICollectionView = createCategoriesCollectionView()
-    private lazy var categoriesCollectionViewHandler = CategoriesCollectionViewHandler()
+    private lazy var seeAllMovieListsButton: UIButton = createSeeAllButton()
+    private lazy var movieListsCollectionView: UICollectionView = createMovieListCollectionView()
+    private lazy var movieListCollectionViewHandler = MovieListsCollectionViewHandler()
+
+    // Genres section
+    private let genresLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
+        text: "Genres"
+    )
+    private lazy var genresCollectionView: UICollectionView = createGenresCollectionView()
+    private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
@@ -74,9 +80,9 @@ final class MainView: UIView, MainViewProtocol {
         movieListsCollectionView.reloadData()
     }
 
-    func showMovieCategories(categories: [Category]) {
-        categoriesCollectionViewHandler.configure(with: categories)
-        categoriesCollectionView.reloadData()
+    func showMovieGenres(genres: [Genre]) {
+        genresCollectionViewHandler.configure(with: genres)
+        genresCollectionView.reloadData()
     }
 
     func showPopularMovies(movies: [Movie]) {
@@ -99,9 +105,10 @@ extension MainView {
             favouriteButton,
             searchBar,
             movieListsCollectionView,
-            categoriesLabel,
-            seeAllCategoriesButton,
-            categoriesCollectionView,
+            movieListsLabel,
+            seeAllMovieListsButton,
+            genresCollectionView,
+            genresLabel,
             popularMoviesLabel,
             seeAllPopularMoviesButton,
             popularMoviesCollectionView
@@ -115,16 +122,16 @@ extension MainView {
         // Movie lists
         movieListsCollectionView.delegate = movieListCollectionViewHandler
         movieListsCollectionView.dataSource = movieListCollectionViewHandler
-        // Categories
-        categoriesCollectionView.delegate = categoriesCollectionViewHandler
-        categoriesCollectionView.dataSource = categoriesCollectionViewHandler
+        // Genres
+        genresCollectionView.delegate = genresCollectionViewHandler
+        genresCollectionView.dataSource = genresCollectionViewHandler
         // Popular movies
         popularMoviesCollectionView.delegate = popularMoviesCollectionViewHandler
         popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
     }
 
     private func setupTargets() {
-        seeAllCategoriesButton.addTarget(self, action: #selector(didTapSeeAllCategoriesButton), for: .touchUpInside)
+        seeAllMovieListsButton.addTarget(self, action: #selector(didTapSeeAllMovieListsButton), for: .touchUpInside)
         seeAllPopularMoviesButton.addTarget(self, action: #selector(didTapSeeAllPopularMoviesButton), for: .touchUpInside)
     }
 }
@@ -132,8 +139,8 @@ extension MainView {
 // MARK: - ActionMethods
 extension MainView {
     @objc
-    private func didTapSeeAllCategoriesButton(_ sender: UIButton) {
-        delegate?.didTapSeeAllCategoriesButton()
+    private func didTapSeeAllMovieListsButton(_ sender: UIButton) {
+        delegate?.didTapSeeAllMovieListsButton()
     }
 
     @objc
@@ -178,11 +185,11 @@ extension MainView {
         )
     }
 
-    private func createCategoriesCollectionView() -> UICollectionView {
+    private func createGenresCollectionView() -> UICollectionView {
         return createCollectionView(
             itemSize: CGSize(width: 100, height: 40),
-            cellType: CategoryCollectionViewCell.self,
-            reuseIdentifier: "CategoryCollectionViewCell"
+            cellType: GenreCollectionViewCell.self,
+            reuseIdentifier: "GenreCollectionViewCell"
         )
     }
 
@@ -201,7 +208,7 @@ extension MainView {
         setupAvatarSectionConstraints()
         setupSearchBarConstraints()
         setupMovieListSectionConstraints()
-        setupCategoriesSectionConstraints()
+        setupGenresSectionConstraints()
         setupPopularMoviesSectionConstraints()
     }
 
@@ -235,30 +242,34 @@ extension MainView {
     }
 
     private func setupMovieListSectionConstraints() {
-        // Moive list section
+        // Movie list section
+        movieListsLabel.snp.makeConstraints { make in
+            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
+            make.top.equalTo(searchBar.snp.bottom).offset(24)
+        }
+
+        seeAllMovieListsButton.snp.makeConstraints { make in
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.centerY.equalTo(movieListsLabel)
+        }
+
         movieListsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(searchBar.snp.bottom).offset(16)
+            make.top.equalTo(movieListsLabel.snp.bottom).offset(16)
             make.height.equalTo(150)
         }
-        movieListsCollectionView.backgroundColor = .primarySoft // temporary
     }
 
-    private func setupCategoriesSectionConstraints() {
-        // Categories section
-        categoriesLabel.snp.makeConstraints { make in
+    private func setupGenresSectionConstraints() {
+        // Genres section
+        genresLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
             make.top.equalTo(movieListsCollectionView.snp.bottom).offset(24)
         }
 
-        seeAllCategoriesButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
-            make.centerY.equalTo(categoriesLabel)
-        }
-
-        categoriesCollectionView.snp.makeConstraints { make in
+        genresCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(categoriesLabel.snp.bottom).offset(16)
+            make.top.equalTo(genresLabel.snp.bottom).offset(16)
             make.height.equalTo(40)
         }
     }
@@ -267,7 +278,7 @@ extension MainView {
         // Popular movies section
         popularMoviesLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
-            make.top.equalTo(categoriesCollectionView.snp.bottom).offset(24)
+            make.top.equalTo(genresCollectionView.snp.bottom).offset(24)
         }
 
         seeAllPopularMoviesButton.snp.makeConstraints { make in
@@ -280,6 +291,5 @@ extension MainView {
             make.top.equalTo(popularMoviesLabel.snp.bottom).offset(16)
             make.height.equalTo(230)
         }
-        popularMoviesCollectionView.backgroundColor = .primarySoft // temporary
     }
 }

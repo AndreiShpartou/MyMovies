@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class MovieListsCollectionViewCell: UICollectionViewCell {
     static let identifier = "MovieListCollectionViewCell"
 
     private let imageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFill,
+        contentMode: .scaleAspectFit,
         clipsToBounds: true,
         cornerRadius: 8
     )
@@ -39,11 +40,23 @@ final class MovieListsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        imageView.image = nil
+        titleLabel.text = nil
+        quantityLabel.text = nil
+    }
+
     // MARK: - Public
     func configure(with movieList: MovieList) {
-        // imageView.image =
-        titleLabel.text = movieList.name
-        quantityLabel.text = String(movieList.moviesCount ?? 0)
+        if let coverURLString = movieList.cover?.url,
+           let coverURL = URL(string: coverURLString) {
+            imageView.kf.setImage(with: coverURL)
+        }
+//        titleLabel.text = movieList.name
+//        quantityLabel.text = "\(movieList.moviesCount ?? 0) movies"
     }
 }
 

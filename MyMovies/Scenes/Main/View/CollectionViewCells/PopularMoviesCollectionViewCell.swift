@@ -48,9 +48,21 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        imageView.image = nil
+        titleLabel.text = nil
+        genreLabel.text = nil
+        ratingLabel.text = nil
+    }
+
     // MARK: - Public
     func configure(with movie: Movie) {
-        // imageView.image = UIImage(systemName: "avatar")
+        if let coverURL = URL(string: movie.poster.url) {
+            imageView.kf.setImage(with: coverURL)
+        }
         titleLabel.text = movie.name
         genreLabel.text = movie.genres.first?.name
         ratingLabel.text = String(format: "%.1f", movie.rating.imdb)

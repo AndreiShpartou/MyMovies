@@ -11,13 +11,13 @@ protocol MainInteractorProtocol: AnyObject {
     var presenter: MainInteractorOutputProtocol? { get set }
 
     func fetchMovieLists()
-    func fetchMovieCategories()
+    func fetchMovieGenres()
     func fetchTopMovies()
 }
 
 protocol MainInteractorOutputProtocol: AnyObject {
     func didFetchMovieLists(_ movieLists: [MovieList])
-    func didFetchMovieCategories(_ categories: [Category])
+    func didFetchMovieGenres(_ genres: [Genre])
     func didFetchTopMovies(_ movies: [Movie])
     func didFailToFetchData(with error: Error)
 }

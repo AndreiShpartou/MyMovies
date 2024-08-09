@@ -9,7 +9,7 @@ import Foundation
 
 struct MovieList: Codable {
     let id: String
-    let category: String
+    let genre: String
     let name: String
     let moviesCount: Int?
     let cover: Cover?

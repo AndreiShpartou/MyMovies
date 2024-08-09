@@ -1,5 +1,5 @@
 //
-//  CategoryCollectionViewCell.swift
+//  GenreCollectionViewCell.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 03/08/2024.
@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-final class CategoryCollectionViewCell: UICollectionViewCell {
-    static let identifier = "CategoryCollectionViewCell"
+final class GenreCollectionViewCell: UICollectionViewCell {
+    static let identifier = "GenreCollectionViewCell"
 
-    private let categoryLabel: UILabel = .createLabel(
+    private let genreLabel: UILabel = .createLabel(
         font: Typography.Medium.body,
         textAlignment: .center,
         textColor: .textColorWhiteGrey
@@ -29,25 +29,32 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        genreLabel.text = nil
+    }
+
     // MARK: - Public
-    func configure(with text: String) {
-        categoryLabel.text = text
+    func configure(with genre: Genre) {
+        genreLabel.text = genre.name
     }
 }
 
 // MARK: - Setup
-extension CategoryCollectionViewCell {
+extension GenreCollectionViewCell {
     private func setupView() {
-        contentView.addSubviews(categoryLabel)
+        contentView.addSubviews(genreLabel)
         contentView.backgroundColor = .primaryBackground
         contentView.layer.cornerRadius = 8
     }
 }
 
 // MARK: - Constraints
-extension CategoryCollectionViewCell {
+extension GenreCollectionViewCell {
     private func setupConstraints() {
-        categoryLabel.snp.makeConstraints { make in
+        genreLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(8)
         }
     }

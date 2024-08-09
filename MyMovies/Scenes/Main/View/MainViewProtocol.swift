@@ -12,15 +12,15 @@ protocol MainViewProtocol: UIView, AnyObject {
     var delegate: MainViewDelegate? { get set }
 
     func showMovieLists(movieLists: [MovieList])
-    func showMovieCategories(categories: [Category])
+    func showMovieGenres(genres: [Genre])
     func showPopularMovies(movies: [Movie])
     func showError(error: Error)
 }
 
 protocol MainViewDelegate: AnyObject {
     func didSelectMovieList(_ movieList: MovieList)
-    func didSelectCategory(_ category: Category)
+    func didSelectGenre(_ genre: Genre)
     func didSelectMovie(_ movie: Movie)
-    func didTapSeeAllCategoriesButton()
+    func didTapSeeAllMovieListsButton()
     func didTapSeeAllPopularMoviesButton()
 }

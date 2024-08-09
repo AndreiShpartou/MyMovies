@@ -23,23 +23,23 @@ final class MainPresenter: MainPresenterProtocol {
     // MARK: - Public
     func viewDidLoad() {
         interactor.fetchMovieLists()
-        interactor.fetchMovieCategories()
+        interactor.fetchMovieGenres()
         interactor.fetchTopMovies()
     }
-    
+
     func didSelectMovie(_ movie: Movie) {
         //
     }
 
-    func didSelectCategory(_ category: Category) {
+    func didSelectGenre(_ genre: Genre) {
         //
     }
-    
+
     func didSelectMovieList(_ movieList: MovieList) {
         //
     }
 
-    func didTapAllCategoriesButton() {
+    func didTapAllMovieListsButton() {
         //
     }
 
@@ -56,8 +56,8 @@ extension MainPresenter: MainInteractorOutputProtocol {
         view?.showMovieLists(movieLists: movieLists)
     }
 
-    func didFetchMovieCategories(_ categories: [Category]) {
-        view?.showMovieCategories(categories: categories)
+    func didFetchMovieGenres(_ genres: [Genre]) {
+        view?.showMovieGenres(genres: genres)
     }
 
     func didFetchTopMovies(_ movies: [Movie]) {
