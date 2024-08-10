@@ -25,7 +25,8 @@ class NetworkManager {
         ]
 
         let parameters: Parameters = [
-            "language": "en"
+            "language": "en-US",
+            "query": "collection"
         ]
 
         AF.request(url, parameters: parameters, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
@@ -49,11 +50,7 @@ class NetworkManager {
             "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
         ]
 
-        let parameters: Parameters = [
-            "language": "en"
-        ]
-
-        AF.request(url, parameters: parameters, headers: headers).responseDecodable(of: GenresResponse.self) { response in
+        AF.request(url, headers: headers).responseDecodable(of: GenresResponse.self) { response in
             switch response.result {
             case .success(let genres):
                 completion(.success(genres))

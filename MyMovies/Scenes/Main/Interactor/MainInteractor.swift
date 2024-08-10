@@ -14,8 +14,8 @@ final class MainInteractor: MainInteractorProtocol {
     func fetchMovieLists() {
         NetworkManager.shared.fetchMovieLists { [weak self] result in
             switch result {
-            case .success(let movieLists):
-                self?.presenter?.didFetchMovieLists(movieLists.results)
+            case .success(let movieListsPagedResponse):
+                self?.presenter?.didFetchMovieLists(movieListsPagedResponse.results)
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
@@ -24,8 +24,14 @@ final class MainInteractor: MainInteractorProtocol {
 
     // Fetch genres
     func fetchMovieGenres() {
-//        let genres = Genre.allCases
-//        presenter?.didFetchMovieGenres(genres)
+        NetworkManager.shared.fetchGenres { [weak self] result in
+            switch result {
+            case .success(let genresResponse):
+                self?.presenter?.didFetchMovieGenres(genresResponse.data)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
     }
 
     // MARK: - Fetch top movies

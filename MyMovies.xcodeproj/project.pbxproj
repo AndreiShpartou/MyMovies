@@ -824,9 +824,9 @@
 		6CCC4F752C5E4EDC00BA7B8D /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				6CCC4F7A2C5E7DDE00BA7B8D /* MovieListsCollectionViewCell.swift */,
 				6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */,
 				6CCC4F782C5E528200BA7B8D /* PopularMoviesCollectionViewCell.swift */,
-				6CCC4F7A2C5E7DDE00BA7B8D /* MovieListsCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";

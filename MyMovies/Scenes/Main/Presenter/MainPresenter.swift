@@ -22,9 +22,9 @@ final class MainPresenter: MainPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-        interactor.fetchMovieLists()
+//        interactor.fetchMovieLists()
         interactor.fetchMovieGenres()
-        interactor.fetchTopMovies()
+//        interactor.fetchTopMovies()
     }
 
     func didSelectMovie(_ movie: Movie) {

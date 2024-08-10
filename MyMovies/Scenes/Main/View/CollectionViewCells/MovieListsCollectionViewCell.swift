@@ -12,7 +12,7 @@ final class MovieListsCollectionViewCell: UICollectionViewCell {
     static let identifier = "MovieListCollectionViewCell"
 
     private let imageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFit,
+        contentMode: .scaleAspectFill,
         clipsToBounds: true,
         cornerRadius: 8
     )
@@ -51,7 +51,9 @@ final class MovieListsCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movieList: MovieList) {
-//        imageView.kf.setImage(with: movieList.coverURL)
+        if let imageURL = movieList.backdropURL() {
+            imageView.kf.setImage(with: imageURL)
+        }
 //        titleLabel.text = movieList.name
 //        quantityLabel.text = "\(movieList.moviesCount ?? 0) movies"
     }
