@@ -28,7 +28,7 @@ enum APIEndpoint {
         case .genres:
             return "\(APIEndpoint.baseURL)/genres"
         case .popularMovies:
-            return "\(APIEndpoint.baseURL)/v1.4/movie?lists=popular-films"
+            return "\(APIEndpoint.baseURL)/trending"
         }
     }
 
