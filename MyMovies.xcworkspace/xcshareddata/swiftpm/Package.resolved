@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
+        "version" : "5.9.1"
+      }
+    },
+    {
+      "identity" : "swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ipinfo/swift",
+      "state" : {
+        "revision" : "966213a29b959a37017e76ad3fc5eec758a923ab",
+        "version" : "0.1.0"
+      }
+    }
+  ],
+  "version" : 2
+}

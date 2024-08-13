@@ -27,6 +27,7 @@
 		6C59AF5A2C552066006A7BDB /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59AF592C552066006A7BDB /* SearchViewController.swift */; };
 		6C59AF5F2C553ACF006A7BDB /* MovieListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59AF5E2C553ACF006A7BDB /* MovieListRouter.swift */; };
 		6C59AF612C553B2F006A7BDB /* MovieListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59AF602C553B2F006A7BDB /* MovieListPresenter.swift */; };
+		6C7651922C6B5FC000BC0C1E /* ipinfoKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C7651912C6B5FC000BC0C1E /* ipinfoKit */; };
 		6C7737352C5639E600E5F2CC /* RootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7737342C5639E600E5F2CC /* RootRouter.swift */; };
 		6C7737372C563B6600E5F2CC /* SceneBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7737362C563B6600E5F2CC /* SceneBuilder.swift */; };
 		6C7CD0E32C5F4E5700C71AA1 /* CustomTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7CD0E22C5F4E5700C71AA1 /* CustomTabBarItem.swift */; };
@@ -219,6 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C7651922C6B5FC000BC0C1E /* ipinfoKit in Frameworks */,
 				0A4C95F12BAABB760234C0DC /* libPods-MyMovies.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -850,6 +852,9 @@
 			dependencies = (
 			);
 			name = MyMovies;
+			packageProductDependencies = (
+				6C7651912C6B5FC000BC0C1E /* ipinfoKit */,
+			);
 			productName = MyMovies;
 			productReference = 6C59AEFE2C54F10D006A7BDB /* MyMovies.app */;
 			productType = "com.apple.product-type.application";
@@ -878,6 +883,9 @@
 				Base,
 			);
 			mainGroup = 6C59AEF52C54F10D006A7BDB;
+			packageReferences = (
+				6C7651902C6B5FC000BC0C1E /* XCRemoteSwiftPackageReference "swift" */,
+			);
 			productRefGroup = 6C59AEFF2C54F10D006A7BDB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1286,6 +1294,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6C7651902C6B5FC000BC0C1E /* XCRemoteSwiftPackageReference "swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ipinfo/swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6C7651912C6B5FC000BC0C1E /* ipinfoKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C7651902C6B5FC000BC0C1E /* XCRemoteSwiftPackageReference "swift" */;
+			productName = ipinfoKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6C59AEF62C54F10D006A7BDB /* Project object */;
 }
