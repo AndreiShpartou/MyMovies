@@ -1,20 +1,24 @@
 PODS:
+  - Ipify (2.1.0)
   - Kingfisher (7.12.0)
   - SnapKit (5.7.1)
 
 DEPENDENCIES:
+  - Ipify
   - Kingfisher
   - SnapKit
 
 SPEC REPOS:
   trunk:
+    - Ipify
     - Kingfisher
     - SnapKit
 
 SPEC CHECKSUMS:
+  Ipify: 814952650290001bee4542db6fba63df128f77c2
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
 
-PODFILE CHECKSUM: 46080217f3412b6a4f2383d2626f4ae7c9456217
+PODFILE CHECKSUM: 4f539491b39c6fba54f7b0dc740993f2f0062dcb
 
 COCOAPODS: 1.15.2
