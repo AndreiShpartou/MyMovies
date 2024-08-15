@@ -2,9 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GetIP_API</key>
-	<string>https://api.ipify.org?format=json</string>
-	<key>IPInfoKitAccessToken</key>
+	<key>EN_MovieAPI</key>
+	<string>https://api.themoviedb.org</string>
+	<key>RU_MovieAPI</key>
+	<string>https://kinopoiskapiunofficial.tech</string>
+	<key>ipifyAccessToken</key>
 	<string>b04a3b11e3a99a</string>
 	<key>UIAppFonts</key>
 	<array>

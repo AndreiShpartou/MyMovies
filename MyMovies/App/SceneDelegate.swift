@@ -18,16 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = RootRouter.createRootViewController()
         window.makeKeyAndVisible()
-
-        NetworkHelper.shared.getPublicIPAddress { result in
-            switch result {
-            case .success(let ip):
-                debugPrint("Public IP Address: \(ip)")
-            case .failure(let error):
-                debugPrint("Failure to fetch an IP: \(error.localizedDescription)")
-            }
-        }
-
+        AppConfig.shared.setupConfiguration()
         self.window = window
     }
 }

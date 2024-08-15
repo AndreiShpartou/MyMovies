@@ -6,20 +6,17 @@
 //
 import Foundation
 import Alamofire
-import ipinfoKit
 
+// Additional network methods
 final class NetworkHelper {
     static let shared = NetworkHelper()
 
     private init() {}
 
     func getPublicIPAddress(completion: @escaping (Result<String, Error>) -> Void) {
-        guard let url = Bundle.main.object(forInfoDictionaryKey: "GetIP_API") as? String else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
+        let urlString = "https://api.ipify.org?format=json"
 
-        AF.request(url).response { response in
+        AF.request(urlString).response { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -27,6 +24,8 @@ final class NetworkHelper {
                        let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                        let ip = json["ip"] as? String {
                         completion(.success(ip))
+                    } else {
+                        completion(.failure(NetworkError.failedToGetData))
                     }
                 } catch {
                     completion(.failure(NetworkError.invalidJSON))
@@ -36,9 +35,26 @@ final class NetworkHelper {
             }
         }
     }
+
+    func getCountry(for ip: String, completion: @escaping (Result<String, Error>) -> Void) {
+        guard let accessToken = Bundle.main.object(forInfoDictionaryKey: "ipifyAccessToken") as? String else {
+            return
+        }
+
+        let urlString = "https://ipinfo.io/\(ip)/country?token=\(accessToken)"
+
+        AF.request(urlString).responseString { response in
+            switch response.result {
+            case .success(let country):
+                completion(.success(country.trimmingCharacters(in: .whitespacesAndNewlines)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }
 
-// MARK: - Default RMService Errors
+// MARK: - Default Network Errors
 enum NetworkError: Error, LocalizedError {
     case failedToCreateRequest
     case failedToGetData
