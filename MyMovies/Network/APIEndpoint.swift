@@ -17,6 +17,8 @@ enum APIEndpoint {
     // static let baseURL = "https://api.themoviedb.org"
     // static let readAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2M2MWUzNDBkMjY5MDNhZWU0ZjY0ZGE3ZTVjNGI5NSIsIm5iZiI6MTcyMzE5MjU3Ny41NjEzODUsInN1YiI6IjY2YjRjZGFhODE1NGZiNDUyODQyMjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.k53MZ15xdf7y_pELfdqvAE4HYXbsiODWKiTWF-fW-JM"
 
+    // kinopoiskapiunofficial.tech X-API-KEY 53ee1f67-c982-4b0e-a387-bff2b2a15fdb
+
     case genres
     case movieLists
     case popularMovies
