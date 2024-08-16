@@ -16,7 +16,8 @@ final class NetworkHelper {
     func getPublicIPAddress(completion: @escaping (Result<String, Error>) -> Void) {
         let urlString = "https://api.ipify.org?format=json"
 
-        AF.request(urlString).response { response in
+        let responseQueue = DispatchQueue.global(qos: .userInitiated)
+        AF.request(urlString).response(queue: responseQueue) { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -43,7 +44,8 @@ final class NetworkHelper {
 
         let urlString = "https://ipinfo.io/\(ip)/country?token=\(accessToken)"
 
-        AF.request(urlString).responseString { response in
+        let responseQueue = DispatchQueue.global(qos: .userInitiated)
+        AF.request(urlString).responseString(queue: responseQueue) { response in
             switch response.result {
             case .success(let country):
                 completion(.success(country.trimmingCharacters(in: .whitespacesAndNewlines)))

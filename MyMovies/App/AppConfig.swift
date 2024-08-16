@@ -17,41 +17,55 @@ final class AppConfig {
 
     // MARK: - Public
     func setupConfiguration() {
+        let group = DispatchGroup()
+
+        group.enter()
         NetworkHelper.shared.getPublicIPAddress { [weak self] result in
             switch result {
             case .success(let ip):
                 debugPrint("Public IP Address: \(ip)")
-                NetworkHelper.shared.getCountry(for: ip) { result in
-                    switch result {
-                    case .success(let country):
-                        self?.setupAPIForCountry(country)
-                    case .failure(let error):
-                        debugPrint("Failure to fetch country: \(error.localizedDescription)")
-                        self?.setupAPIForCountry("default")
-                    }
-                }
+                self?.handleIPAddress(ip, group: group)
             case .failure(let error):
                 debugPrint("Failure to fetch an IP: \(error.localizedDescription)")
-                self?.setupAPIForCountry("default")
+                self?.setupAPIForCountry("networkError")
             }
+            group.leave()
+        }
+
+        // Wait for the API setup to complete or timeout
+        let timeoutInterval: TimeInterval = 5.0
+        let result = group.wait(timeout: .now() + timeoutInterval)
+        if result == .timedOut {
+            // Handle timeout - set networkError API URL
+            debugPrint("Timed out while setting up the API")
+            setupAPIForCountry("networkError")
         }
     }
 
     // MARK: - Private
+    private func handleIPAddress(_ ip: String, group: DispatchGroup) {
+        group.enter()
+        NetworkHelper.shared.getCountry(for: ip) { [weak self] result in
+            switch result {
+            case .success(let country):
+                self?.setupAPIForCountry(country)
+            case .failure(let error):
+                debugPrint("Failure to fetch country: \(error.localizedDescription)")
+                self?.setupAPIForCountry("networkError")
+            }
+            group.leave()
+        }
+    }
+
     private func setupAPIForCountry(_ country: String) {
-        let apiURL: String?
+        let apiMapping: [String: String] = [
+            "RU": "RU_MovieAPI",
+            "BY": "RU_MovieAPI",
+            "networkError": "RU_MovieAPI",
+            "default": "EN_MovieAPI"
+        ]
 
-        switch country {
-        case "RU", "BY":
-            apiURL = Bundle.main.object(forInfoDictionaryKey: "RU_MovieAPI") as? String
-        default:
-            apiURL = Bundle.main.object(forInfoDictionaryKey: "EN_MovieAPI") as? String
-        }
-
-        guard let apiURL = apiURL else {
-            return
-        }
-
-        self.apiURL = apiURL
+        let key = apiMapping[country] ?? apiMapping["default"] ?? ""
+        self.apiURL = Bundle.main.object(forInfoDictionaryKey: key) as? String ?? ""
     }
 }
