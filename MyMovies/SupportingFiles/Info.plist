@@ -2,12 +2,40 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>EN_MovieAPI</key>
-	<string>https://api.themoviedb.org</string>
-	<key>RU_MovieAPI</key>
-	<string>https://kinopoiskapiunofficial.tech</string>
 	<key>ipifyAccessToken</key>
 	<string>b04a3b11e3a99a</string>
+    <key>RU_MovieAPI</key>
+    <dict>
+        <key>BaseURL</key>
+        <string>https://kinopoiskapiunofficial.tech</string>
+        <key>Endpoints</key>
+        <dict>
+            <key>PopularMovies</key>
+            <string>/popular</string>
+            <key>TrendingMovies</key>
+            <string>/trending</string>
+            <key>NewTrailers</key>
+            <string>/trailers</string>
+        </dict>
+        <key>Language</key>
+        <string>ru</string>
+    </dict>
+    <key>EN_MovieAPI</key>
+    <dict>
+        <key>BaseURL</key>
+        <string>https://api.themoviedb.org</string>
+        <key>Endpoints</key>
+        <dict>
+            <key>PopularMovies</key>
+            <string>/popular</string>
+            <key>TrendingMovies</key>
+            <string>/trending</string>
+            <key>NewTrailers</key>
+            <string>/trailers</string>
+        </dict>
+        <key>Language</key>
+        <string>en</string>
+    </dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Regular.otf</string>
