@@ -8,7 +8,7 @@ import Foundation
 import Alamofire
 
 // Additional network methods
-final class NetworkHelper {
+final class NetworkHelper: NetworkHelperProtocol {
     static let shared = NetworkHelper()
 
     private init() {}
@@ -62,6 +62,7 @@ enum NetworkError: Error, LocalizedError {
     case failedToGetData
     case invalidURL
     case invalidJSON
+    case invalidAPICOnfig
 
     var errorDescription: String? {
         switch self {
@@ -73,6 +74,8 @@ enum NetworkError: Error, LocalizedError {
             return NSLocalizedString("Failed to create url. Invalid URL format", comment: "Network")
         case .invalidJSON:
             return NSLocalizedString("Invalid JSON structure", comment: "Network")
+        case .invalidAPICOnfig:
+            return NSLocalizedString("Invalid API config", comment: "Network")
         }
     }
 }

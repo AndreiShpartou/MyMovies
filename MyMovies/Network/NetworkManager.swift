@@ -13,26 +13,30 @@ class NetworkManager {
 
     private init() {}
 
-    // Fetch movie lists
-    func fetchMovieLists(completion: @escaping (Result<MovieListsPagedResponse, Error>) -> Void) {
-        guard let url = APIEndpoint.movieLists.url else {
+    var apiConfig: APIConfigurationProtocol? {
+        return AppConfigurationManager.shared.appConfig?.apiConfig
+    }
+
+    func performRequest<T: Codable>(for endpoint: Endpoint, completion: @escaping (Result<T, Error>) -> Void) {
+        guard let apiConfig = apiConfig else {
+            completion(.failure(NetworkError.invalidAPICOnfig))
+            return
+        }
+
+        guard let url = apiConfig.url(for: endpoint) else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
 
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
-        ]
+        // Apply auth
+        var headers = HTTPHeaders(apiConfig.authorizationHeader())
+        // Apply additional headers
+        // headers.headers.append(//)
 
-        let parameters: Parameters = [
-            "language": "en-US",
-            "query": "collection"
-        ]
-
-        AF.request(url, parameters: parameters, headers: headers).responseDecodable(of: MovieListsPagedResponse.self) { response in
+        AF.request(url, headers: headers).responseDecodable(of: T.self) { response in
             switch response.result {
-            case .success(let movieLists):
-                completion(.success(movieLists))
+            case .success(let data):
+                completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -40,44 +44,86 @@ class NetworkManager {
     }
 
     // Fetch genres
-    func fetchGenres(completion: @escaping (Result<GenresResponse, Error>) -> Void) {
-        guard let url = APIEndpoint.genres.url else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
-
-        let headers: HTTPHeaders = [
-            "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
-        ]
-
-        AF.request(url, headers: headers).responseDecodable(of: GenresResponse.self) { response in
-            switch response.result {
-            case .success(let genres):
-                completion(.success(genres))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    func fetchGenres<T: Codable>(completion: @escaping (Result<T, Error>) -> Void) {
+        performRequest(for: .genres, completion: completion)
     }
 
-    // Fetch top movies
-    func fetchTopMovies(completion: @escaping (Result<MoviesPagedResponse, Error>) -> Void) {
-        guard let url = APIEndpoint.popularMovies.url else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
+//    // Fetch movie lists
+//    func fetchMovieLists(completion: @escaping (Result<TMDBMovieListsPagedResponse, Error>) -> Void) {
+//        performRequest(for: .popularMovies, completion: completion)
+//    }
+//
+//    // Fetch top movies
+//    func fetchTopMovies(completion: @escaping (Result<TMDBMoviesPagedResponse, Error>) -> Void) {
+//        performRequest(for: .trendingMovies, completion: completion)
+//    }
 
-        let headers: HTTPHeaders = [
-            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
-        ]
+//    // Fetch movie lists
+//    func fetchMovieLists(completion: @escaping (Result<TMDBMovieListsPagedResponse, Error>) -> Void) {
+//        guard let url = APIEndpoint.movieLists.url else {
+//            completion(.failure(NetworkError.invalidURL))
+//            return
+//        }
+//
+//        let headers: HTTPHeaders = [
+//            "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
+//        ]
+//
+//        let parameters: Parameters = [
+//            "language": "en-US",
+//            "query": "collection"
+//        ]
+//
+//        AF.request(url, parameters: parameters, headers: headers).responseDecodable(of: TMDBMovieListsPagedResponse.self) { response in
+//            switch response.result {
+//            case .success(let movieLists):
+//                completion(.success(movieLists))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
 
-        AF.request(url, headers: headers).responseDecodable(of: MoviesPagedResponse.self) { response in
-            switch response.result {
-            case .success(let movieLists):
-                completion(.success(movieLists))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+//    // Fetch genres
+//    func fetchGenres(completion: @escaping (Result<TMDBGenresResponse, Error>) -> Void) {
+//
+//        guard let url = APIEndpoint.genres.url else {
+//            completion(.failure(NetworkError.invalidURL))
+//            return
+//        }
+//
+//        let headers: HTTPHeaders = [
+//            "Authorization": "Bearer \(APIEndpoint.readAccessToken)"
+//        ]
+//
+//        AF.request(url, headers: headers).responseDecodable(of: TMDBGenresResponse.self) { response in
+//            switch response.result {
+//            case .success(let genres):
+//                completion(.success(genres))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
+
+//    // Fetch top movies
+//    func fetchTopMovies(completion: @escaping (Result<TMDBMoviesPagedResponse, Error>) -> Void) {
+//        guard let url = APIEndpoint.popularMovies.url else {
+//            completion(.failure(NetworkError.invalidURL))
+//            return
+//        }
+//
+//        let headers: HTTPHeaders = [
+//            "X-API-KEY": "CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A"
+//        ]
+//
+//        AF.request(url, headers: headers).responseDecodable(of: TMDBMoviesPagedResponse.self) { response in
+//            switch response.result {
+//            case .success(let movieLists):
+//                completion(.success(movieLists))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
 }

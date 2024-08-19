@@ -12,37 +12,45 @@ final class MainInteractor: MainInteractorProtocol {
 
     // Fetch collection of movie lists
     func fetchMovieLists() {
-        NetworkManager.shared.fetchMovieLists { [weak self] result in
-            switch result {
-            case .success(let movieListsPagedResponse):
-                self?.presenter?.didFetchMovieLists(movieListsPagedResponse.results)
-            case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
-            }
-        }
+//        NetworkManager.shared.fetchMovieLists { [weak self] result in
+//            switch result {
+//            case .success(let movieListsPagedResponse):
+//                self?.presenter?.didFetchMovieLists(movieListsPagedResponse.results)
+//            case .failure(let error):
+//                self?.presenter?.didFailToFetchData(with: error)
+//            }
+//        }
     }
 
     // Fetch genres
     func fetchMovieGenres() {
-        NetworkManager.shared.fetchGenres { [weak self] result in
-            switch result {
-            case .success(let genresResponse):
-                self?.presenter?.didFetchMovieGenres(genresResponse.data)
-            case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
-            }
-        }
+//        NetworkManager.shared.fetchGenres { [weak self] result in
+//            switch result {
+//            case .success(let genresResponse):
+//                self?.presenter?.didFetchMovieGenres(genresResponse.genres)
+//            case .failure(let error):
+//                self?.presenter?.didFailToFetchData(with: error)
+//            }
+//        }
+//        NetworkManager.shared.fetchGenres { [weak self] result in
+//            switch result {
+//            case .success(let genresResponse):
+//                self?.presenter?.didFetchMovieGenres(genresResponse.genres)
+//            case .failure(let error):
+//                self?.presenter?.didFailToFetchData(with: error)
+//            }
+//        }
     }
 
     // MARK: - Fetch top movies
     func fetchTopMovies() {
-        NetworkManager.shared.fetchTopMovies { [weak self] result in
-            switch result {
-            case .success(let movieLists):
-                self?.presenter?.didFetchTopMovies(movieLists.results)
-            case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
-            }
-        }
+//        NetworkManager.shared.fetchTopMovies { [weak self] result in
+//            switch result {
+//            case .success(let movieLists):
+//                self?.presenter?.didFetchTopMovies(movieLists.results)
+//            case .failure(let error):
+//                self?.presenter?.didFailToFetchData(with: error)
+//            }
+//        }
     }
 }

@@ -4,38 +4,48 @@
 <dict>
 	<key>ipifyAccessToken</key>
 	<string>b04a3b11e3a99a</string>
-    <key>RU_MovieAPI</key>
-    <dict>
-        <key>BaseURL</key>
-        <string>https://kinopoiskapiunofficial.tech</string>
-        <key>Endpoints</key>
-        <dict>
-            <key>PopularMovies</key>
-            <string>/popular</string>
-            <key>TrendingMovies</key>
-            <string>/trending</string>
-            <key>NewTrailers</key>
-            <string>/trailers</string>
-        </dict>
-        <key>Language</key>
-        <string>ru</string>
-    </dict>
-    <key>EN_MovieAPI</key>
-    <dict>
-        <key>BaseURL</key>
-        <string>https://api.themoviedb.org</string>
-        <key>Endpoints</key>
-        <dict>
-            <key>PopularMovies</key>
-            <string>/popular</string>
-            <key>TrendingMovies</key>
-            <string>/trending</string>
-            <key>NewTrailers</key>
-            <string>/trailers</string>
-        </dict>
-        <key>Language</key>
-        <string>en</string>
-    </dict>
+	<key>RU_MovieAPI</key>
+	<dict>
+		<key>BaseURL</key>
+		<string>https://api.kinopoisk.dev</string>
+		<key>Authorization</key>
+		<dict>
+			<key>X-API-KEY</key>
+			<string>CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A</string>
+		</dict>
+		<key>Provider</key>
+		<string>kinopoisk</string>
+		<key>Endpoints</key>
+		<dict>
+			<key>popularMovies</key>
+			<string>/popular</string>
+			<key>trendingMovies</key>
+			<string>/trending</string>
+			<key>genres</key>
+			<string>v1/movie/possible-values-by-field?field=genres.name</string>
+		</dict>
+	</dict>
+	<key>EN_MovieAPI</key>
+	<dict>
+		<key>BaseURL</key>
+		<string>https://api.themoviedb.org</string>
+		<key>Authorization</key>
+		<dict>
+			<key>Authorization</key>
+			<string>Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2M2MWUzNDBkMjY5MDNhZWU0ZjY0ZGE3ZTVjNGI5NSIsIm5iZiI6MTcyNDA1ODA3Mi4zNDc1MTksInN1YiI6IjY2YjRjZGFhODE1NGZiNDUyODQyMjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wxlmh7O1rcBNf12LzB_s-N_1itju1p4RNpUEuSp0FIo</string>
+		</dict>
+		<key>Provider</key>
+		<string>tmdb</string>
+		<key>Endpoints</key>
+		<dict>
+			<key>popularMovies</key>
+			<string>/popular</string>
+			<key>trendingMovies</key>
+			<string>/trending</string>
+			<key>genres</key>
+			<string>3/genre/movie/list</string>
+		</dict>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Regular.otf</string>

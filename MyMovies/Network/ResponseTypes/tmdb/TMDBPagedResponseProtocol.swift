@@ -1,5 +1,5 @@
 //
-//  PagedResponseProtocol.swift
+//  TMDBPagedResponseProtocol.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 07/08/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PagedResponseProtocol: Codable {
+protocol TMDBPagedResponseProtocol: Codable {
     associatedtype ResultType: Codable
     var page: Int { get }
     var results: [ResultType] { get }
