@@ -72,7 +72,7 @@ struct APIConfiguration: APIConfigurationProtocol {
             return nil
         }
 
-        return baseURL.appendingPathComponent(path)
+        return URL(string: "\(baseURL.absoluteString)\(path)")
     }
 
     func responseType(for endpoint: Endpoint) -> Codable.Type? {

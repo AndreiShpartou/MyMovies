@@ -22,7 +22,7 @@
 			<key>trendingMovies</key>
 			<string>/trending</string>
 			<key>genres</key>
-			<string>v1/movie/possible-values-by-field?field=genres.name</string>
+			<string>/v1/movie/possible-values-by-field?field=genres.name</string>
 		</dict>
 	</dict>
 	<key>EN_MovieAPI</key>
@@ -43,7 +43,7 @@
 			<key>trendingMovies</key>
 			<string>/trending</string>
 			<key>genres</key>
-			<string>3/genre/movie/list</string>
+			<string>/3/genre/movie/list</string>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>

@@ -63,6 +63,8 @@ enum NetworkError: Error, LocalizedError {
     case invalidURL
     case invalidJSON
     case invalidAPICOnfig
+    case invalidResponseType
+    case unsupportedMappingTypes
 
     var errorDescription: String? {
         switch self {
@@ -76,6 +78,10 @@ enum NetworkError: Error, LocalizedError {
             return NSLocalizedString("Invalid JSON structure", comment: "Network")
         case .invalidAPICOnfig:
             return NSLocalizedString("Invalid API config", comment: "Network")
+        case .invalidResponseType:
+            return NSLocalizedString("Invalid response type", comment: "Network")
+        case .unsupportedMappingTypes:
+            return NSLocalizedString("Unsupported mapping types", comment: "Network")
         }
     }
 }

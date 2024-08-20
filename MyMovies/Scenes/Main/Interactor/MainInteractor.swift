@@ -24,14 +24,14 @@ final class MainInteractor: MainInteractorProtocol {
 
     // Fetch genres
     func fetchMovieGenres() {
-//        NetworkManager.shared.fetchGenres { [weak self] result in
-//            switch result {
-//            case .success(let genresResponse):
-//                self?.presenter?.didFetchMovieGenres(genresResponse.genres)
-//            case .failure(let error):
-//                self?.presenter?.didFailToFetchData(with: error)
-//            }
-//        }
+        NetworkManager.shared.fetchGenres { [weak self] result in
+            switch result {
+            case .success(let genres):
+                self?.presenter?.didFetchMovieGenres(genres)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
 //        NetworkManager.shared.fetchGenres { [weak self] result in
 //            switch result {
 //            case .success(let genresResponse):

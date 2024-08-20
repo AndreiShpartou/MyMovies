@@ -11,11 +11,13 @@ import Alamofire
 class NetworkManager {
     static let shared = NetworkManager()
 
-    private init() {}
-
     var apiConfig: APIConfigurationProtocol? {
         return AppConfigurationManager.shared.appConfig?.apiConfig
     }
+
+    private let mapper: ResponseMapperProtocol = ResponseMapper()
+
+    private init() {}
 
     func performRequest<T: Codable>(for endpoint: Endpoint, completion: @escaping (Result<T, Error>) -> Void) {
         guard let apiConfig = apiConfig else {
@@ -28,25 +30,48 @@ class NetworkManager {
             return
         }
 
+        guard let responseType = apiConfig.responseType(for: endpoint) else {
+            completion(.failure(NetworkError.invalidResponseType))
+            return
+        }
+
         // Apply auth
-        var headers = HTTPHeaders(apiConfig.authorizationHeader())
+        let headers = HTTPHeaders(apiConfig.authorizationHeader())
         // Apply additional headers
         // headers.headers.append(//)
 
-        AF.request(url, headers: headers).responseDecodable(of: T.self) { response in
-            switch response.result {
-            case .success(let data):
-                completion(.success(data))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        AF.request(url, headers: headers).responseData { [weak self] response in
+            self?.handleResponse(response, ofType: responseType, completion: completion)
         }
     }
 
     // Fetch genres
-    func fetchGenres<T: Codable>(completion: @escaping (Result<T, Error>) -> Void) {
+    func fetchGenres(completion: @escaping (Result<[Genre], Error>) -> Void) {
         performRequest(for: .genres, completion: completion)
     }
+
+    // MARK: - HandleResponse
+    private func handleResponse<T: Codable>(
+        _ response: AFDataResponse<Data>,
+        ofType responseType: Codable.Type,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decodedResponse = try JSONDecoder().decode(responseType, from: data)
+                    let mappedData = try mapper.map(data: decodedResponse, from: responseType, to: T.self)
+                    completion(.success(mappedData))
+                } catch _ as DecodingError {
+                    completion(.failure(NetworkError.invalidJSON))
+                } catch {
+                    completion(.failure(error))
+                }
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
 
 //    // Fetch movie lists
 //    func fetchMovieLists(completion: @escaping (Result<TMDBMovieListsPagedResponse, Error>) -> Void) {
