@@ -60,12 +60,14 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: Movie) {
-        if let coverURL = URL(string: movie.poster.url) {
+
+        if  let cover = movie.poster?.url,
+            let coverURL = URL(string: cover) {
             imageView.kf.setImage(with: coverURL)
         }
-        titleLabel.text = movie.name
+        titleLabel.text = movie.title
         genreLabel.text = movie.genres.first?.name
-        ratingLabel.text = String(format: "%.1f", movie.rating.imdb)
+        ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
     }
 }
 

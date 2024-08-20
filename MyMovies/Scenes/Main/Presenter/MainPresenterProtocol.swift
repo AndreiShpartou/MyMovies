@@ -14,7 +14,7 @@ protocol MainPresenterProtocol: AnyObject {
 
     func viewDidLoad()
     func didSelectMovieList(_ movieList: MovieList)
-    func didSelectGenre(_ genre: Genre)
+    func didSelectGenre(_ genre: GenreProtocol)
     func didSelectMovie(_ movie: Movie)
     func didTapAllMovieListsButton()
     func didTapSeeAllPopularMoviesButton()

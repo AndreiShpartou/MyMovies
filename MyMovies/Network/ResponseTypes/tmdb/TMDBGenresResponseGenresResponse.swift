@@ -8,5 +8,5 @@
 import Foundation
 
 struct TMDBGenresResponse: Codable {
-    let genres: [Genre]
+    let genres: [Movie.Genre]
 }

@@ -9,10 +9,10 @@ import UIKit
 final class GenresCollectionViewHandler: NSObject {
     weak var delegate: MainViewDelegate?
 
-    private var genres: [Genre] = []
+    private var genres: [GenreProtocol] = []
 
     // MARK: - Public
-    func configure(with genres: [Genre]) {
+    func configure(with genres: [GenreProtocol]) {
         self.genres = genres
     }
 }

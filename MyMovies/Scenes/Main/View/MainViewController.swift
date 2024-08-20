@@ -49,7 +49,7 @@ extension MainViewController: MainViewDelegate {
         presenter?.didSelectMovieList(movieList)
     }
 
-    func didSelectGenre(_ genre: Genre) {
+    func didSelectGenre(_ genre: GenreProtocol) {
         // Handle genre selection
         presenter?.didSelectGenre(genre)
     }

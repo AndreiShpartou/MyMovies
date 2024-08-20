@@ -80,7 +80,7 @@ final class MainView: UIView, MainViewProtocol {
         movieListsCollectionView.reloadData()
     }
 
-    func showMovieGenres(genres: [Genre]) {
+    func showMovieGenres(genres: [GenreProtocol]) {
         genresCollectionViewHandler.configure(with: genres)
         genresCollectionView.reloadData()
     }

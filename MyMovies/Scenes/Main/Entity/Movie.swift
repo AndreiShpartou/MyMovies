@@ -7,32 +7,36 @@
 
 import Foundation
 
-struct Movie: Codable {
-    let id: Int
-    let name: String
-    let enName: String?
-    let type: String
-    let year: Int
-    let description: String?
-    let shortDescription: String?
-    let rating: Rating
-    let poster: Cover
-    let backdrop: Cover?
-    let genres: [Genre]
-}
+struct Movie: MovieProtocol, Codable {
+    let id: Int // id
+    let title: String // TMDB: title, Kinopoisk: name
+    let alternativeTitle: String? // TMDB: original_title, Kinopoisk: alternativeName
+    let description: String // TMDB: overview, Kinopoisk: description
+    let releaseYear: String? // TMDB: release_date -> map, Kinopoisk: year -> map)
+    let runtime: String?  // TMDB: runtime, Kinopoisk: movieLength
+    let voteAverage: Float? //  TMDB: vote_average, Kinopoisk: rating.kp
+    var genres: [GenreProtocol] {
+        return movieGenres
+    }
+    var poster: CoverProtocol? {
+        return moviePoster
+    }
+    var backdrop: CoverProtocol? {
+        return movieBackdrop
+    }
 
-struct Rating: Codable {
-    let kp: Float
-    let imdb: Float
-}
+    private let movieGenres: [Genre]
+    private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
+    private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
 
-struct Cover: Codable {
-    let url: String
-    let previewUrl: String
-}
+    struct Genre: GenreProtocol, Codable {
+        let id: Int? // TMDB
+        let name: String
+        let slug: String? // Kinopoisk
+    }
 
-struct Genre: Codable {
-    let id: Int?
-    let name: String
-    let slug: String?
+    struct Cover: CoverProtocol, Codable {
+        let url: String?
+        let previewUrl: String?
+    }
 }

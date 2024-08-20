@@ -31,7 +31,7 @@ final class MainPresenter: MainPresenterProtocol {
         //
     }
 
-    func didSelectGenre(_ genre: Genre) {
+    func didSelectGenre(_ genre: GenreProtocol) {
         //
     }
 
@@ -56,7 +56,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         view?.showMovieLists(movieLists: movieLists)
     }
 
-    func didFetchMovieGenres(_ genres: [Genre]) {
+    func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         view?.showMovieGenres(genres: genres)
     }
 

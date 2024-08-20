@@ -46,7 +46,7 @@ class NetworkManager {
     }
 
     // Fetch genres
-    func fetchGenres(completion: @escaping (Result<[Genre], Error>) -> Void) {
+    func fetchGenres(completion: @escaping (Result<[Movie.Genre], Error>) -> Void) {
         performRequest(for: .genres, completion: completion)
     }
 

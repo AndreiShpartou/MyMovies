@@ -89,7 +89,7 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.tmdb, .genres):
             return TMDBGenresResponse.self
         case (.kinopoisk, .genres):
-            return [Genre].self
+            return [Movie.Genre].self
         default:
             return nil
         }
