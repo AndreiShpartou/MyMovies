@@ -87,9 +87,9 @@ struct APIConfiguration: APIConfigurationProtocol {
     private func getResponseType(for endpoint: Endpoint, and provider: Provider) -> Codable.Type? {
         switch (provider, endpoint) {
         case (.tmdb, .genres):
-            return TMDBGenresResponse.self
+            return TMDBGenrePagedResponse.self
         case (.kinopoisk, .genres):
-            return [Movie.Genre].self
+            return [KinopoiskMovieResponse.Genre].self
         default:
             return nil
         }

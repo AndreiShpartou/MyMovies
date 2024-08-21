@@ -8,6 +8,18 @@
 import Foundation
 import Alamofire
 
+
+// kinopoisk movie collections slug
+// popular-films - Популярные фильмы (category - Фильмы)
+// the_closest_releases - Ближайшие премьеры (category - Онлайн-кинотеатр)
+// hd-must-see - Фильмы, которые стоит посмотреть (category - Онлайн-кинотеатр)
+// nowisthetime - Сейчас самое время (category - Онлайн-кинотеатр)
+// top20of2023 - Топ-20 фильмов и сериалов 2023 года (category - Онлайн-кинотеатр)
+// top10-hd - Топ 10 в онлайн-кинотеатре (category - Онлайн-кинотеатр)
+// planned-to-watch-films - Рейтинг ожидаемых фильмов (category - Фильмы)
+// top500 - 500 лучших фильмов (category - Фильмы)
+// top250 - 250 лучших фильмов (category - Фильмы)
+
 class NetworkManager {
     static let shared = NetworkManager()
 
@@ -46,8 +58,15 @@ class NetworkManager {
     }
 
     // Fetch genres
-    func fetchGenres(completion: @escaping (Result<[Movie.Genre], Error>) -> Void) {
-        performRequest(for: .genres, completion: completion)
+    func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
+        performRequest(for: .genres) { (result: Result<[Movie.Genre], Error>) in
+            switch result {
+            case .success(let genres):
+                completion(.success(genres))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     // MARK: - HandleResponse
@@ -73,6 +92,7 @@ class NetworkManager {
             }
         }
 
+    
 //    // Fetch movie lists
 //    func fetchMovieLists(completion: @escaping (Result<TMDBMovieListsPagedResponse, Error>) -> Void) {
 //        performRequest(for: .popularMovies, completion: completion)

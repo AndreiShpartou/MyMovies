@@ -1,0 +1,26 @@
+//
+//  TMDBMovieResponseProtocol.swift
+//  MyMovies
+//
+//  Created by Andrei Shpartou on 21/08/2024.
+//
+
+import Foundation
+
+protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
+    var id: Int { get }
+    var title: String { get }
+    var originalTitle: String? { get }
+    var overview: String? { get }
+    var releaseDate: String? { get }
+    var runtime: Int? { get }
+    var voteAverage: Float? { get }
+    var genres: [TMDBGenreResponseProtocol] { get }
+    var posterPath: String? { get }
+    var backdropPath: String? { get }
+}
+
+protocol TMDBGenreResponseProtocol: Codable {
+    var id: Int { get }
+    var name: String { get }
+}

@@ -29,13 +29,17 @@ struct Movie: MovieProtocol, Codable {
     private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
     private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
 
-    struct Genre: GenreProtocol, Codable {
+    struct Genre: GenreProtocol {
         let id: Int? // TMDB
         let name: String
-        let slug: String? // Kinopoisk
+
+        init(id: Int? = nil, name: String) {
+            self.id = id
+            self.name = name
+        }
     }
 
-    struct Cover: CoverProtocol, Codable {
+    struct Cover: CoverProtocol {
         let url: String?
         let previewUrl: String?
     }

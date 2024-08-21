@@ -13,16 +13,26 @@ final class ResponseMapper: ResponseMapperProtocol {
         case (let fromType, let toType) where fromType == toType:
             return data as! T
         // genres
-        case (is TMDBGenresResponse.Type, is [GenreProtocol].Type):
-            return map(data as! TMDBGenresResponse) as! T
+        case (is TMDBGenrePagedResponse.Type, is [Movie.Genre].Type):
+            return map(data as! TMDBGenrePagedResponse) as! T
+        case (is [KinopoiskMovieResponse.Genre].Type, is [Movie.Genre].Type):
+            return map(data as! [KinopoiskMovieResponse.Genre]) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
     }
 
     // Genres
-    private func map(_ data: TMDBGenresResponse) -> [GenreProtocol] {
-        return data.genres
+    private func map(_ data: TMDBGenrePagedResponse) -> [Movie.Genre] {
+        return data.genres.map {
+            return Movie.Genre(id: $0.id, name: $0.name)
+        }
+    }
+
+    private func map(_ data: [KinopoiskMovieResponse.Genre]) -> [Movie.Genre] {
+        return data.map {
+            return Movie.Genre(name: $0.name)
+        }
     }
 
 //    // Example mapping from TMDB

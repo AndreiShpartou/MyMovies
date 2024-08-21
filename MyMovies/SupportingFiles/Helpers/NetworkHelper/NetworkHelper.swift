@@ -47,10 +47,12 @@ final class NetworkHelper: NetworkHelperProtocol {
         let responseQueue = DispatchQueue.global(qos: .userInitiated)
         AF.request(urlString).responseString(queue: responseQueue) { response in
             switch response.result {
-            case .success(let country):
+            case .success(let country) where !country.contains("error"):
                 completion(.success(country.trimmingCharacters(in: .whitespacesAndNewlines)))
             case .failure(let error):
                 completion(.failure(error))
+            default:
+                completion(.failure(NetworkError.failedToGetData))
             }
         }
     }

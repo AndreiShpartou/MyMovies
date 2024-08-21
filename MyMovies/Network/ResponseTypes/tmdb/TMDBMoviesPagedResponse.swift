@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct TMDBMoviesPagedResponse: Codable, TMDBPagedResponseProtocol {
+struct TMDBMoviesPagedResponse: TMDBPagedResponseProtocol {
     var page: Int
-    var results: [Movie]
+    var results: [TMDBMovieResponse]
     var total_pages: Int
     var total_results: Int
 }

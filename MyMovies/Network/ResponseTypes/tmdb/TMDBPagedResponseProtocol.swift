@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TMDBPagedResponseProtocol: Codable {
-    associatedtype ResultType: Codable
+    associatedtype ResultType: PagedResponseResultProtocol
     var page: Int { get }
     var results: [ResultType] { get }
     var total_pages: Int { get }

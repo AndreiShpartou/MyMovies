@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MovieProtocol {
+protocol MovieProtocol: Codable {
     var id: Int { get }
     var title: String { get }
     var alternativeTitle: String? { get }
@@ -20,13 +20,12 @@ protocol MovieProtocol {
     var backdrop: CoverProtocol? { get }
 }
 
-protocol GenreProtocol {
+protocol GenreProtocol: Codable {
     var id: Int? { get }
     var name: String { get }
-    var slug: String? { get }
 }
 
-protocol CoverProtocol {
+protocol CoverProtocol: Codable {
     var url: String? { get }
     var previewUrl: String? { get }
 }
