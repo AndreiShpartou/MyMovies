@@ -43,7 +43,7 @@
 			<key>genres</key>
 			<string>/3/genre/movie/list</string>
 			<key>popularMovies</key>
-			<string>/popular</string>
+			<string>/3/movie/popular</string>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>

@@ -32,25 +32,17 @@ final class MainInteractor: MainInteractorProtocol {
                 self?.presenter?.didFailToFetchData(with: error)
             }
         }
-//        NetworkManager.shared.fetchGenres { [weak self] result in
-//            switch result {
-//            case .success(let genresResponse):
-//                self?.presenter?.didFetchMovieGenres(genresResponse.genres)
-//            case .failure(let error):
-//                self?.presenter?.didFailToFetchData(with: error)
-//            }
-//        }
     }
 
     // MARK: - Fetch top movies
     func fetchPopularMovies() {
-//        NetworkManager.shared.fetchTopMovies { [weak self] result in
-//            switch result {
-//            case .success(let movieLists):
-//                self?.presenter?.didFetchTopMovies(movieLists.results)
-//            case .failure(let error):
-//                self?.presenter?.didFailToFetchData(with: error)
-//            }
-//        }
+        NetworkManager.shared.fetchPopularMovies { [weak self] result in
+            switch result {
+            case .success(let movies):
+                self?.presenter?.didFetchPopularMovies(movies)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
     }
 }

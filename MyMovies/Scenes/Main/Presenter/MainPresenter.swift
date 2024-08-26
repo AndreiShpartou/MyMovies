@@ -24,7 +24,7 @@ final class MainPresenter: MainPresenterProtocol {
     func viewDidLoad() {
         interactor.fetchUpcomingMovies()
         interactor.fetchMovieGenres()
-//        interactor.fetchTopMovies()
+        interactor.fetchPopularMovies()
     }
 
     func didSelectMovie(_ movie: MovieProtocol) {
