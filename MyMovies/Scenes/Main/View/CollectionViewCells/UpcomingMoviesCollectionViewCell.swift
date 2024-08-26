@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-final class MovieListsCollectionViewCell: UICollectionViewCell {
+final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
     static let identifier = "MovieListCollectionViewCell"
 
     private let imageView: UIImageView = .createImageView(
@@ -50,8 +50,9 @@ final class MovieListsCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movieList: MovieList) {
-        if let imageURL = movieList.backdropURL() {
+    func configure(with movie: MovieProtocol) {
+        if let imageURLString = movie.backdrop?.url,
+           let imageURL = URL(string: imageURLString) {
             imageView.kf.setImage(with: imageURL)
         }
 //        titleLabel.text = movieList.name
@@ -60,7 +61,7 @@ final class MovieListsCollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - Setup
-extension MovieListsCollectionViewCell {
+extension UpcomingMoviesCollectionViewCell {
     private func setupView() {
         contentView.addSubviews(
             imageView,
@@ -71,7 +72,7 @@ extension MovieListsCollectionViewCell {
 }
 
 // MARK: - Constraints
-extension MovieListsCollectionViewCell {
+extension UpcomingMoviesCollectionViewCell {
     private func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()

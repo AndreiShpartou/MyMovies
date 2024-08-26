@@ -44,24 +44,19 @@ extension MainViewController {
 
 // MARK: - MainViewDelegate
 extension MainViewController: MainViewDelegate {
-    func didSelectMovieList(_ movieList: MovieList) {
-        // Handle movie list selection
-        presenter?.didSelectMovieList(movieList)
-    }
-
     func didSelectGenre(_ genre: GenreProtocol) {
         // Handle genre selection
         presenter?.didSelectGenre(genre)
     }
 
-    func didSelectMovie(_ movie: Movie) {
+    func didSelectMovie(_ movie: MovieProtocol) {
         // Handle popular movie selection
         presenter?.didSelectMovie(movie)
     }
 
-    func didTapSeeAllMovieListsButton() {
+    func didTapSeeAllUpcomingMoviesButton() {
         // Handle "See All" action for movie list
-        presenter?.didTapAllMovieListsButton()
+        presenter?.didTapAllPopularMoviesButton()
     }
 
     func didTapSeeAllPopularMoviesButton() {

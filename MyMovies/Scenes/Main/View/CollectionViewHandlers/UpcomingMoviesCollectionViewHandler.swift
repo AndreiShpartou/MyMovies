@@ -6,36 +6,36 @@
 //
 import UIKit
 
-final class MovieListsCollectionViewHandler: NSObject {
+final class UpcomingMoviesCollectionViewHandler: NSObject {
     weak var delegate: MainViewDelegate?
 
-    private var movieLists: [MovieList] = []
+    private var movies: [MovieProtocol] = []
 
     // MARK: - Public
-    func configure(with movieLists: [MovieList]) {
-        self.movieLists = movieLists
+    func configure(with movies: [MovieProtocol]) {
+        self.movies = movies
     }
 }
 // MARK: - UICollectionViewDataSource
-extension MovieListsCollectionViewHandler: UICollectionViewDataSource {
+extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movieLists.count
+        return movies.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListsCollectionViewCell.identifier, for: indexPath) as? MovieListsCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UpcomingMoviesCollectionViewCell.identifier, for: indexPath) as? UpcomingMoviesCollectionViewCell else {
             fatalError("Failed to dequeue MovieListsCollectionViewCell")
         }
-        cell.configure(with: movieLists[indexPath.row])
+        cell.configure(with: movies[indexPath.row])
 
         return cell
     }
 }
 
 // MARK: - UICollectionViewDelegate
-extension MovieListsCollectionViewHandler: UICollectionViewDelegate {
+extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movieList = movieLists[indexPath.row]
-        delegate?.didSelectMovieList(movieList)
+        let movie = movies[indexPath.row]
+        delegate?.didSelectMovie(movie)
     }
 }

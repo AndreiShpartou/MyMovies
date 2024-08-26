@@ -15,7 +15,7 @@ class MainRouter: MainRouterProtocol {
         self.viewController = viewController
     }
 
-    func navigateToMovieDetails(with movie: Movie) {
+    func navigateToMovieDetails(with movie: MovieProtocol) {
         // let movieDetailsVC = SceneBuilder.buildMovieDetailsScene()
         // viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }

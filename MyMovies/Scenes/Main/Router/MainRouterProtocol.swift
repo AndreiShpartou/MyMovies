@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MainRouterProtocol: AnyObject {
-    func navigateToMovieDetails(with movie: Movie)
+    func navigateToMovieDetails(with movie: MovieProtocol)
 }

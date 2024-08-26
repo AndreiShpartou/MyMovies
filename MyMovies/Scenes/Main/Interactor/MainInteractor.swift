@@ -11,7 +11,7 @@ final class MainInteractor: MainInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol?
 
     // Fetch collection of movie lists
-    func fetchMovieLists() {
+    func fetchUpcomingMovies() {
 //        NetworkManager.shared.fetchMovieLists { [weak self] result in
 //            switch result {
 //            case .success(let movieListsPagedResponse):
@@ -43,7 +43,7 @@ final class MainInteractor: MainInteractorProtocol {
     }
 
     // MARK: - Fetch top movies
-    func fetchTopMovies() {
+    func fetchPopularMovies() {
 //        NetworkManager.shared.fetchTopMovies { [weak self] result in
 //            switch result {
 //            case .success(let movieLists):

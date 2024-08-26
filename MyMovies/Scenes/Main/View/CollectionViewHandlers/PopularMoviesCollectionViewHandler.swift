@@ -9,10 +9,10 @@ import UIKit
 final class PopularMoviesCollectionViewHandler: NSObject {
     weak var delegate: MainViewDelegate?
 
-    private var movies: [Movie] = []
+    private var movies: [MovieProtocol] = []
 
     // MARK: - Public
-    func configure(with movies: [Movie]) {
+    func configure(with movies: [MovieProtocol]) {
         self.movies = movies
     }
 }

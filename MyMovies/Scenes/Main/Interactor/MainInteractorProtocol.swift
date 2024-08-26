@@ -10,14 +10,14 @@ import Foundation
 protocol MainInteractorProtocol: AnyObject {
     var presenter: MainInteractorOutputProtocol? { get set }
 
-    func fetchMovieLists()
+    func fetchUpcomingMovies()
     func fetchMovieGenres()
-    func fetchTopMovies()
+    func fetchPopularMovies()
 }
 
 protocol MainInteractorOutputProtocol: AnyObject {
-    func didFetchMovieLists(_ movieLists: [MovieList])
+    func didFetchUpcomingMovies(_ movies: [MovieProtocol])
     func didFetchMovieGenres(_ genres: [GenreProtocol])
-    func didFetchTopMovies(_ movies: [Movie])
+    func didFetchPopularMovies(_ movies: [MovieProtocol])
     func didFailToFetchData(with error: Error)
 }

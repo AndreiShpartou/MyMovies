@@ -59,7 +59,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movie: Movie) {
+    func configure(with movie: MovieProtocol) {
 
         if  let cover = movie.poster?.url,
             let coverURL = URL(string: cover) {

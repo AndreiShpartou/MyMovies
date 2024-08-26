@@ -27,7 +27,7 @@ final class MainPresenter: MainPresenterProtocol {
 //        interactor.fetchTopMovies()
     }
 
-    func didSelectMovie(_ movie: Movie) {
+    func didSelectMovie(_ movie: MovieProtocol) {
         //
     }
 
@@ -35,11 +35,11 @@ final class MainPresenter: MainPresenterProtocol {
         //
     }
 
-    func didSelectMovieList(_ movieList: MovieList) {
+    func didSelectUpcomingMovies(_ movies: MovieProtocol) {
         //
     }
 
-    func didTapAllMovieListsButton() {
+    func didTapAllPopularMoviesButton() {
         //
     }
 
@@ -51,17 +51,17 @@ final class MainPresenter: MainPresenterProtocol {
 // MARK: - MainInteractorOutputProtocol
 extension MainPresenter: MainInteractorOutputProtocol {
 
-    func didFetchMovieLists(_ movieLists: [MovieList]) {
+    func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
         // Update the view with the fetched data
-        view?.showMovieLists(movieLists: movieLists)
+        view?.showUpcomingMovies(movies)
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
-        view?.showMovieGenres(genres: genres)
+        view?.showMovieGenres(genres)
     }
 
-    func didFetchTopMovies(_ movies: [Movie]) {
-        view?.showPopularMovies(movies: movies)
+    func didFetchPopularMovies(_ movies: [MovieProtocol]) {
+        view?.showPopularMovies(movies)
     }
 
     func didFailToFetchData(with error: Error) {

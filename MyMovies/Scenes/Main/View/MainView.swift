@@ -11,7 +11,7 @@ import SnapKit
 final class MainView: UIView, MainViewProtocol {
     weak var delegate: MainViewDelegate? {
         didSet {
-            movieListCollectionViewHandler.delegate = delegate
+            upcomingMoviesCollectionViewHandler.delegate = delegate
             genresCollectionViewHandler.delegate = delegate
             popularMoviesCollectionViewHandler.delegate = delegate
         }
@@ -34,15 +34,15 @@ final class MainView: UIView, MainViewProtocol {
     private let favouriteButton: UIButton = .createFavouriteButton()
     // Search
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
-    // MovieList
-    private let movieListsLabel: UILabel = .createLabel(
+    // Upcoming movie list
+    private let upcomingMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
-        text: "Collections"
+        text: "Upcoming"
     )
-    private lazy var seeAllMovieListsButton: UIButton = createSeeAllButton()
-    private lazy var movieListsCollectionView: UICollectionView = createMovieListCollectionView()
-    private lazy var movieListCollectionViewHandler = MovieListsCollectionViewHandler()
+    private lazy var seeAllUpcomingMoviesButton: UIButton = createSeeAllButton()
+    private lazy var upcomingMoviesCollectionView: UICollectionView = createUpcomingMoviesCollectionView()
+    private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
 
     // Genres section
     private let genresLabel: UILabel = .createLabel(
@@ -75,17 +75,17 @@ final class MainView: UIView, MainViewProtocol {
     }
 
     // MARK: - Public
-    func showMovieLists(movieLists: [MovieList]) {
-        movieListCollectionViewHandler.configure(with: movieLists)
-        movieListsCollectionView.reloadData()
+    func showUpcomingMovies(_ movies: [MovieProtocol]) {
+        upcomingMoviesCollectionViewHandler.configure(with: movies)
+        upcomingMoviesCollectionView.reloadData()
     }
 
-    func showMovieGenres(genres: [GenreProtocol]) {
+    func showMovieGenres(_ genres: [GenreProtocol]) {
         genresCollectionViewHandler.configure(with: genres)
         genresCollectionView.reloadData()
     }
 
-    func showPopularMovies(movies: [Movie]) {
+    func showPopularMovies(_ movies: [MovieProtocol]) {
         popularMoviesCollectionViewHandler.configure(with: movies)
         popularMoviesCollectionView.reloadData()
     }
@@ -104,9 +104,9 @@ extension MainView {
             helloLabel,
             favouriteButton,
             searchBar,
-            movieListsCollectionView,
-            movieListsLabel,
-            seeAllMovieListsButton,
+            upcomingMoviesCollectionView,
+            upcomingMoviesLabel,
+            seeAllUpcomingMoviesButton,
             genresCollectionView,
             genresLabel,
             popularMoviesLabel,
@@ -120,8 +120,8 @@ extension MainView {
 
     private func setupHandlers() {
         // Movie lists
-        movieListsCollectionView.delegate = movieListCollectionViewHandler
-        movieListsCollectionView.dataSource = movieListCollectionViewHandler
+        upcomingMoviesCollectionView.delegate = upcomingMoviesCollectionViewHandler
+        upcomingMoviesCollectionView.dataSource = upcomingMoviesCollectionViewHandler
         // Genres
         genresCollectionView.delegate = genresCollectionViewHandler
         genresCollectionView.dataSource = genresCollectionViewHandler
@@ -131,7 +131,7 @@ extension MainView {
     }
 
     private func setupTargets() {
-        seeAllMovieListsButton.addTarget(self, action: #selector(didTapSeeAllMovieListsButton), for: .touchUpInside)
+        seeAllUpcomingMoviesButton.addTarget(self, action: #selector(didTapSeeAllUpcomingMoviesButton), for: .touchUpInside)
         seeAllPopularMoviesButton.addTarget(self, action: #selector(didTapSeeAllPopularMoviesButton), for: .touchUpInside)
     }
 }
@@ -139,8 +139,8 @@ extension MainView {
 // MARK: - ActionMethods
 extension MainView {
     @objc
-    private func didTapSeeAllMovieListsButton(_ sender: UIButton) {
-        delegate?.didTapSeeAllMovieListsButton()
+    private func didTapSeeAllUpcomingMoviesButton(_ sender: UIButton) {
+        delegate?.didTapSeeAllUpcomingMoviesButton()
     }
 
     @objc
@@ -177,11 +177,11 @@ extension MainView {
         return collectionView
     }
 
-    private func createMovieListCollectionView() -> UICollectionView {
+    private func createUpcomingMoviesCollectionView() -> UICollectionView {
         return createCollectionView(
             itemSize: CGSize(width: 250, height: 170),
-            cellType: MovieListsCollectionViewCell.self,
-            reuseIdentifier: "MovieListCollectionViewCell"
+            cellType: UpcomingMoviesCollectionViewCell.self,
+            reuseIdentifier: "UpcomingMoviesCollectionViewCell"
         )
     }
 
@@ -207,7 +207,7 @@ extension MainView {
     private func setupConstraints() {
         setupAvatarSectionConstraints()
         setupSearchBarConstraints()
-        setupMovieListSectionConstraints()
+        setupUpcomingMoviesSectionConstraints()
         setupGenresSectionConstraints()
         setupPopularMoviesSectionConstraints()
     }
@@ -241,21 +241,21 @@ extension MainView {
         }
     }
 
-    private func setupMovieListSectionConstraints() {
+    private func setupUpcomingMoviesSectionConstraints() {
         // Movie list section
-        movieListsLabel.snp.makeConstraints { make in
+        upcomingMoviesLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
             make.top.equalTo(searchBar.snp.bottom).offset(24)
         }
 
-        seeAllMovieListsButton.snp.makeConstraints { make in
+        seeAllUpcomingMoviesButton.snp.makeConstraints { make in
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
-            make.centerY.equalTo(movieListsLabel)
+            make.centerY.equalTo(upcomingMoviesLabel)
         }
 
-        movieListsCollectionView.snp.makeConstraints { make in
+        upcomingMoviesCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(movieListsLabel.snp.bottom).offset(16)
+            make.top.equalTo(upcomingMoviesLabel.snp.bottom).offset(16)
             make.height.equalTo(150)
         }
     }
@@ -264,7 +264,7 @@ extension MainView {
         // Genres section
         genresLabel.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide).offset(16)
-            make.top.equalTo(movieListsCollectionView.snp.bottom).offset(24)
+            make.top.equalTo(upcomingMoviesCollectionView.snp.bottom).offset(24)
         }
 
         genresCollectionView.snp.makeConstraints { make in
