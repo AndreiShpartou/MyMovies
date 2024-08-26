@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
-    static let identifier = "MovieListCollectionViewCell"
+    static let identifier = "UpcomingMoviesCollectionViewCell"
 
     private let imageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
@@ -51,11 +51,11 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: MovieProtocol) {
-        if let imageURLString = movie.backdrop?.url,
-           let imageURL = URL(string: imageURLString) {
-            imageView.kf.setImage(with: imageURL)
+        if let posterURLString = movie.poster?.url,
+           let posterURL = URL(string: posterURLString) {
+            imageView.kf.setImage(with: posterURL)
         }
-//        titleLabel.text = movieList.name
+        titleLabel.text = movie.title
 //        quantityLabel.text = "\(movieList.moviesCount ?? 0) movies"
     }
 }

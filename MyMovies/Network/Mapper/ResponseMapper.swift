@@ -12,6 +12,9 @@ final class ResponseMapper: ResponseMapperProtocol {
         switch (responseType, entityType) {
         case (let fromType, let toType) where fromType == toType:
             return data as! T
+        // movies
+        case ( is TMDBMoviesPagedResponse.Type, is [Movie].Type):
+            return map(data as! TMDBMoviesPagedResponse) as! T
         // genres
         case (is TMDBGenrePagedResponse.Type, is [Movie.Genre].Type):
             return map(data as! TMDBGenrePagedResponse) as! T
@@ -19,6 +22,33 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! [KinopoiskMovieResponse.Genre]) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
+        }
+    }
+
+    // Movies
+    private func map(_ data: TMDBMoviesPagedResponse) -> [Movie] {
+        return data.results.map {
+            let poster = Movie.Cover(
+                url: $0.posterURL(size: .original),
+                previewUrl: $0.posterURL(size: .w780)
+            )
+            let backdrop = Movie.Cover(
+                url: $0.backdropURL(size: .original),
+                previewUrl: $0.backdropURL(size: .w780)
+            )
+
+            return Movie(
+                id: $0.id,
+                title: $0.title,
+                alternativeTitle: $0.originalTitle,
+                description: $0.overview,
+                releaseYear: $0.releaseDate,
+                runtime: String($0.runtime ?? 0),
+                voteAverage: $0.voteAverage,
+                genres: map($0.genreIds),
+                poster: poster,
+                backdrop: backdrop
+            )
         }
     }
 
@@ -35,43 +65,9 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
-//    // Example mapping from TMDB
-//    func mapFromTMDBResponse(_ response: TMDBMovieResponse) -> UnifiedMovie {
-//        return UnifiedMovie(
-//            id: response.id,
-//            title: response.title,
-//            alternativeTitle: response.originalTitle,
-//            genres: response.genres.map { UnifiedGenreProtocol(id: $0.id, name: $0.name) },
-//            overview: response.overview,
-//            posterUrl: response.posterPath,
-//            backdropUrl: response.backdropPath,
-//            releaseDate: response.releaseDate,
-//            runtime: response.runtime,
-//            rating: UnifiedMovie.Rating(kp: nil, imdb: response.voteAverage, tmdb: response.voteAverage, filmCritics: nil, russianFilmCritics: nil, await: nil),
-//            language: response.originalLanguage,
-//            status: response.status,
-//            voteAverage: response.voteAverage,
-//            voteCount: response.voteCount
-//        )
-//    }
-//
-//    // Example mapping from Kinopoisk
-//    func mapFromKinopoiskResponse(_ response: KinopoiskMovieResponse) -> UnifiedMovie {
-//        return UnifiedMovie(
-//            id: response.id,
-//            title: response.name,
-//            alternativeTitle: response.alternativeName,
-//            genres: response.genres.map { UnifiedGenreProtocol(id: nil, name: $0.name) },
-//            overview: response.description ?? "",
-//            posterUrl: response.poster?.url,
-//            backdropUrl: response.backdrop?.url,
-//            releaseDate: response.premiere?.world,
-//            runtime: response.movieLength,
-//            rating: UnifiedMovie.Rating(kp: response.rating?.kp, imdb: response.rating?.imdb, tmdb: response.rating?.tmdb, filmCritics: response.rating?.filmCritics, russianFilmCritics: response.rating?.russianFilmCritics, await: response.rating?.await),
-//            language: response.enName,
-//            status: response.status,
-//            voteAverage: response.rating?.kp,
-//            voteCount: response.votes?.kp
-//        )
-//    }
+    private func map(_ data: [Int]) -> [Movie.Genre] {
+        return data.map {
+            return Movie.Genre(id: $0, name: nil)
+        }
+    }
 }

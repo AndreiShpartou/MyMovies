@@ -44,10 +44,11 @@ enum Provider: String {
 
 // MARK: - Endpoints
 enum Endpoint: String {
-    case popularMovies
-    case trendingMovies
+    // Get a list of movies that are being released soon.
+    case upcomingMovies
     // Get the list of official genres for movies
     case genres
+    case popularMovies
 }
 
 // MARK: - APIConfiguration
@@ -90,6 +91,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBGenrePagedResponse.self
         case (.kinopoisk, .genres):
             return [KinopoiskMovieResponse.Genre].self
+        case (.tmdb, .upcomingMovies):
+            return TMDBMoviesPagedResponse.self
         default:
             return nil
         }

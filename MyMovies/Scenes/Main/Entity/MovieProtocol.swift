@@ -11,10 +11,10 @@ protocol MovieProtocol: Codable {
     var id: Int { get }
     var title: String { get }
     var alternativeTitle: String? { get }
-    var description: String { get }
+    var description: String? { get }
     var releaseYear: String? { get }
     var runtime: String? { get }
-    var voteAverage: Float? { get }
+    var voteAverage: Double? { get }
     var genres: [GenreProtocol] { get }
     var poster: CoverProtocol? { get }
     var backdrop: CoverProtocol? { get }
@@ -22,7 +22,7 @@ protocol MovieProtocol: Codable {
 
 protocol GenreProtocol: Codable {
     var id: Int? { get }
-    var name: String { get }
+    var name: String? { get }
 }
 
 protocol CoverProtocol: Codable {

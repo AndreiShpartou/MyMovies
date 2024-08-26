@@ -61,8 +61,8 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     // MARK: - Public
     func configure(with movie: MovieProtocol) {
 
-        if  let cover = movie.poster?.url,
-            let coverURL = URL(string: cover) {
+        if  let coverString = movie.poster?.url,
+            let coverURL = URL(string: coverString) {
             imageView.kf.setImage(with: coverURL)
         }
         titleLabel.text = movie.title

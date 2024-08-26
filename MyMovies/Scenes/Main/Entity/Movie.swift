@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct Movie: MovieProtocol, Codable {
+struct Movie: MovieProtocol {
     let id: Int // id
     let title: String // TMDB: title, Kinopoisk: name
     let alternativeTitle: String? // TMDB: original_title, Kinopoisk: alternativeName
-    let description: String // TMDB: overview, Kinopoisk: description
+    let description: String? // TMDB: overview, Kinopoisk: description
     let releaseYear: String? // TMDB: release_date -> map, Kinopoisk: year -> map)
     let runtime: String?  // TMDB: runtime, Kinopoisk: movieLength
-    let voteAverage: Float? //  TMDB: vote_average, Kinopoisk: rating.kp
+    let voteAverage: Double? //  TMDB: vote_average, Kinopoisk: rating.kp
     var genres: [GenreProtocol] {
         return movieGenres
     }
@@ -29,11 +29,35 @@ struct Movie: MovieProtocol, Codable {
     private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
     private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
 
+    init(
+        id: Int,
+        title: String,
+        alternativeTitle: String?,
+        description: String?,
+        releaseYear: String?,
+        runtime: String?,
+        voteAverage: Double?,
+        genres: [Genre],
+        poster: Cover?,
+        backdrop: Cover?
+    ) {
+        self.id = id
+        self.title = title
+        self.alternativeTitle = alternativeTitle
+        self.description = description
+        self.releaseYear = releaseYear
+        self.runtime = runtime
+        self.voteAverage = voteAverage
+        self.movieGenres = genres
+        self.moviePoster = poster
+        self.movieBackdrop = backdrop
+    }
+
     struct Genre: GenreProtocol {
         let id: Int? // TMDB
-        let name: String
+        let name: String?
 
-        init(id: Int? = nil, name: String) {
+        init(id: Int? = nil, name: String?) {
             self.id = id
             self.name = name
         }

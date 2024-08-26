@@ -14,13 +14,17 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
     var overview: String? { get }
     var releaseDate: String? { get }
     var runtime: Int? { get }
-    var voteAverage: Float? { get }
-    var genres: [TMDBGenreResponseProtocol] { get }
+    var voteAverage: Double? { get }
+    var genreIds: [Int] { get }
+    var genres: [TMDBGenreResponseProtocol]? { get }
     var posterPath: String? { get }
     var backdropPath: String? { get }
+
+    func posterURL(size: PosterSize) -> String?
+    func backdropURL(size: BackdropSize) -> String?
 }
 
 protocol TMDBGenreResponseProtocol: Codable {
     var id: Int { get }
-    var name: String { get }
+    var name: String? { get }
 }

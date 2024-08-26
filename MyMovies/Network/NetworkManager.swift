@@ -29,6 +29,7 @@ class NetworkManager {
 
     private init() {}
 
+    //  Versatile request performer
     func performRequest<T: Codable>(for endpoint: Endpoint, completion: @escaping (Result<T, Error>) -> Void) {
         guard let apiConfig = apiConfig else {
             completion(.failure(NetworkError.invalidAPICOnfig))
@@ -52,6 +53,18 @@ class NetworkManager {
 
         AF.request(url, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)
+        }
+    }
+
+    // Fetch popular movies
+    func fetchUpcomingMovies(completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: .upcomingMovies) { (result: Result<[Movie], Error>) in
+            switch result {
+            case .success(let movies):
+                completion(.success(movies))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 
@@ -90,7 +103,6 @@ class NetworkManager {
             }
         }
 
-    
 //    // Fetch movie lists
 //    func fetchMovieLists(completion: @escaping (Result<TMDBMovieListsPagedResponse, Error>) -> Void) {
 //        performRequest(for: .popularMovies, completion: completion)

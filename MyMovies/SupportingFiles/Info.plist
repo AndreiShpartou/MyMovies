@@ -17,12 +17,12 @@
 		<string>kinopoisk</string>
 		<key>Endpoints</key>
 		<dict>
-			<key>popularMovies</key>
-			<string>/popular</string>
-			<key>trendingMovies</key>
+			<key>upcomingMovies</key>
 			<string>/trending</string>
 			<key>genres</key>
 			<string>/v1/movie/possible-values-by-field?field=genres.name</string>
+			<key>popularMovies</key>
+			<string>/popular</string>
 		</dict>
 	</dict>
 	<key>EN_MovieAPI</key>
@@ -38,12 +38,12 @@
 		<string>tmdb</string>
 		<key>Endpoints</key>
 		<dict>
-			<key>popularMovies</key>
-			<string>/popular</string>
-			<key>trendingMovies</key>
-			<string>/trending</string>
+			<key>upcomingMovies</key>
+			<string>/3/movie/upcoming</string>
 			<key>genres</key>
 			<string>/3/genre/movie/list</string>
+			<key>popularMovies</key>
+			<string>/popular</string>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>

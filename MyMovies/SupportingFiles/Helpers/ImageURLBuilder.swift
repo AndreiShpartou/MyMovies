@@ -32,7 +32,11 @@ enum PosterSize: String, ImageSizeType {
 enum ImageURLBuilder {
     private static let baseImageURL = "https://image.tmdb.org/t/p/"
 
-    static func buildURL(for path: String, size: ImageSizeType) -> URL? {
-        return URL(string: "\(baseImageURL)\(size.rawValue)\(path)")
+//    static func buildURL(for path: String, size: ImageSizeType) -> URL? {
+//        return URL(string: "\(baseImageURL)\(size.rawValue)\(path)")
+//    }
+
+    static func buildURL(for path: String, size: ImageSizeType) -> String {
+        return "\(baseImageURL)\(size.rawValue)\(path)"
     }
 }

@@ -14,23 +14,44 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var overview: String?
     var releaseDate: String?
     var runtime: Int?
-    var voteAverage: Float?
+    var voteAverage: Double?
     var posterPath: String?
     var backdropPath: String?
-    var genres: [TMDBGenreResponseProtocol] {
+    var genreIds: [Int]
+    var genres: [TMDBGenreResponseProtocol]? {
         return movieGenres
     }
+    private let movieGenres: [TMDBMovieResponse.Genre]?
 
     struct Genre: TMDBGenreResponseProtocol {
         var id: Int
-        var name: String
+        var name: String?
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, title, originalTitle, overview, releaseDate, runtime, voteAverage, posterPath, backdropPath
-        case movieGenres = "genres"
+        case id, title, overview, runtime, movieGenres
+        case voteAverage = "vote_average"
+        case posterPath = "poster_path"
+        case backdropPath = "backdrop_path"
+        case originalTitle = "original_title"
+        case releaseDate = "release_date"
+        case genreIds = "genre_ids"
     }
 
-    // MARK: - Private
-    private let movieGenres: [TMDBMovieResponse.Genre]
+    // MARK: - Public
+    func posterURL(size: PosterSize = .w780) -> String? {
+        guard let posterPath = posterPath else {
+            return nil
+        }
+
+        return ImageURLBuilder.buildURL(for: posterPath, size: size)
+    }
+
+    func backdropURL(size: BackdropSize = .w780) -> String? {
+        guard let backdropPath = backdropPath else {
+            return nil
+        }
+
+        return ImageURLBuilder.buildURL(for: backdropPath, size: size)
+    }
 }
