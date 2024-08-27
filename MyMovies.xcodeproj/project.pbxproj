@@ -284,8 +284,8 @@
 		6C2B03312C64BC190057E518 /* CollectionViewHandlers */ = {
 			isa = PBXGroup;
 			children = (
-				6C2B03322C64BC4F0057E518 /* GenresCollectionViewHandler.swift */,
 				6C2B03342C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift */,
+				6C2B03322C64BC4F0057E518 /* GenresCollectionViewHandler.swift */,
 				6C2B03362C64DE3C0057E518 /* PopularMoviesCollectionViewHandler.swift */,
 			);
 			path = CollectionViewHandlers;

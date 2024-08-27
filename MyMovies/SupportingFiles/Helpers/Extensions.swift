@@ -149,6 +149,9 @@ extension UIColor {
     static var primaryBlueAccent: UIColor {
         return .init(hex: "12CDD9")
     }
+    static var primaryBlack: UIColor {
+        return .init(hex: "121212")
+    }
     // Secondary
     static var secondaryGreen: UIColor {
         return .init(hex: "22B07D")

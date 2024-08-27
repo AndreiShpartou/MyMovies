@@ -11,20 +11,18 @@ import Kingfisher
 final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
     static let identifier = "UpcomingMoviesCollectionViewCell"
 
-    private let imageView: UIImageView = .createImageView(
+    private let backdropImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
-        clipsToBounds: true,
-        cornerRadius: 8
+        clipsToBounds: true
     )
+
+    private lazy var posterImageView: UIImageView = createPosterImageView()
+
+    private lazy var captionView: UIView = createCaptionView()
 
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
         numberOfLines: 2,
-        textColor: .textColorWhite
-    )
-
-    private let quantityLabel: UILabel = .createLabel(
-        font: Typography.Medium.subhead,
         textColor: .textColorWhite
     )
 
@@ -44,19 +42,30 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        imageView.image = nil
+        backdropImageView.image = nil
+        posterImageView.image = nil
         titleLabel.text = nil
-        quantityLabel.text = nil
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        captionView.layer.sublayers?.first?.frame = captionView.bounds
     }
 
     // MARK: - Public
     func configure(with movie: MovieProtocol) {
+        if let backdropURLString = movie.backdrop?.url,
+           let backdropURL = URL(string: backdropURLString) {
+            backdropImageView.kf.setImage(with: backdropURL)
+        }
+
         if let posterURLString = movie.poster?.url,
            let posterURL = URL(string: posterURLString) {
-            imageView.kf.setImage(with: posterURL)
+            posterImageView.kf.setImage(with: posterURL)
         }
+
         titleLabel.text = movie.title
-//        quantityLabel.text = "\(movieList.moviesCount ?? 0) movies"
     }
 }
 
@@ -64,29 +73,67 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
 extension UpcomingMoviesCollectionViewCell {
     private func setupView() {
         contentView.addSubviews(
-            imageView,
-            titleLabel,
-            quantityLabel
+            backdropImageView,
+            captionView,
+            posterImageView,
+            titleLabel
         )
+    }
+}
+
+// MARK: - Helpers
+extension UpcomingMoviesCollectionViewCell {
+    private func createPosterImageView() -> UIImageView {
+        let imageView: UIImageView = .createImageView(
+            contentMode: .scaleAspectFill,
+            clipsToBounds: true
+        )
+        imageView.layer.borderColor = UIColor.primarySoft.cgColor
+        imageView.layer.borderWidth = 3.0
+
+        return imageView
+    }
+
+    private func createCaptionView() -> UIView {
+        let view: UIView = .createCommonView(backgroundColor: .clear)
+        let gradientLayer = CAGradientLayer()
+
+        gradientLayer.colors = [
+            UIColor.clear.cgColor, // Transparent color
+            UIColor.primaryBlack.cgColor
+        ]
+        gradientLayer.locations = [0.0, 0.7]
+        view.layer.insertSublayer(gradientLayer, at: 0)
+
+        return view
     }
 }
 
 // MARK: - Constraints
 extension UpcomingMoviesCollectionViewCell {
     private func setupConstraints() {
-        imageView.snp.makeConstraints { make in
+        backdropImageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(contentView.snp.width).multipliedBy(1.5)
+            make.height.equalTo(contentView.snp.height).multipliedBy(0.75)
+        }
+
+        captionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(backdropImageView.snp.centerY)
+            make.bottom.equalTo(contentView.snp.bottom)
+        }
+
+        posterImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(backdropImageView.snp.centerY).offset(-16)
+            make.bottom.equalTo(captionView.snp.bottom).offset(-16)
+            make.width.equalTo(posterImageView.snp.height).multipliedBy(0.675) // 2:3 aspect ratio of movie posters
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(8)
-            make.centerY.equalToSuperview()
-        }
-
-        quantityLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(8)
-            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-8)
+            make.centerY.equalTo(captionView.snp.centerY).multipliedBy(1.2)
         }
     }
 }

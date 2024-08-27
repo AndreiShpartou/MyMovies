@@ -39,3 +39,10 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegate {
         delegate?.didSelectMovie(movie)
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
+    }
+}

@@ -24,6 +24,7 @@ final class CustomTabBar: UITabBar {
         setupContainerView()
         setupSelectionBackgroundView()
         setupConstraints()
+        setupAppearance()
     }
 
     required init?(coder: NSCoder) {
@@ -107,6 +108,11 @@ final class CustomTabBar: UITabBar {
         let yPosition = customTabBarItems[selectedIndex].bounds.midY - height / 2
 
         selectionBackgroundView.frame = CGRect(x: xPosition + 8, y: yPosition, width: width, height: height)
+    }
+
+    private func setupAppearance() {
+        backgroundColor = .primaryBackground
+        isTranslucent = false
     }
 }
 

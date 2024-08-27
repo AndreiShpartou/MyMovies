@@ -166,7 +166,7 @@ extension MainView {
     ) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
+        layout.minimumLineSpacing = 12
         layout.itemSize = itemSize
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -179,7 +179,7 @@ extension MainView {
 
     private func createUpcomingMoviesCollectionView() -> UICollectionView {
         return createCollectionView(
-            itemSize: CGSize(width: 250, height: 170),
+            itemSize: CGSize(width: 50, height: 50),
             cellType: UpcomingMoviesCollectionViewCell.self,
             reuseIdentifier: "UpcomingMoviesCollectionViewCell"
         )
@@ -256,7 +256,7 @@ extension MainView {
         upcomingMoviesCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(upcomingMoviesLabel.snp.bottom).offset(16)
-            make.height.equalTo(150)
+            make.height.equalTo(upcomingMoviesCollectionView.snp.width).multipliedBy(0.75)
         }
     }
 
