@@ -15,6 +15,8 @@ final class ResponseMapper: ResponseMapperProtocol {
         // movies
         case ( is TMDBMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! TMDBMoviesPagedResponse) as! T
+        case ( is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
+            return map(data as! KinopoiskMoviesPagedResponse) as! T
         // genres
         case (is TMDBGenrePagedResponse.Type, is [Movie.Genre].Type):
             return map(data as! TMDBGenrePagedResponse) as! T
@@ -52,14 +54,37 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
+    private func map(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {
+        return data.docs.map {
+            Movie(
+                id: $0.id,
+                title: $0.name,
+                alternativeTitle: $0.alternativeName,
+                description: $0.description,
+                releaseYear: String($0.year),
+                runtime: String($0.movieLength ?? 0),
+                voteAverage: $0.rating?.kp,
+                genres: map($0.genres),
+                poster: Movie.Cover(
+                    url: $0.poster?.url,
+                    previewUrl: $0.poster?.previewUrl
+                ),
+                backdrop: Movie.Cover(
+                    url: $0.backdrop?.url,
+                    previewUrl: $0.backdrop?.previewUrl
+                )
+            )
+        }
+    }
+
     // Genres
-    private func map(_ data: TMDBGenrePagedResponse) -> [Movie.Genre] {
+    private func map(_ data: TMDBGenrePagedResponseProtocol) -> [Movie.Genre] {
         return data.genres.map {
             return Movie.Genre(id: $0.id, name: $0.name)
         }
     }
 
-    private func map(_ data: [KinopoiskMovieResponse.Genre]) -> [Movie.Genre] {
+    private func map(_ data: [KinopoiskGenreResponseProtocol]) -> [Movie.Genre] {
         return data.map {
             return Movie.Genre(name: $0.name)
         }

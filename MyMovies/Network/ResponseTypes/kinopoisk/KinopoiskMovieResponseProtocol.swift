@@ -28,7 +28,7 @@ protocol KinopoiskGenreResponseProtocol: Codable {
 }
 
 protocol KinopoiskRatingResponseProtocol: Codable {
-    var kp: Float? { get }
+    var kp: Double? { get }
 }
 
 protocol KinopoiskCoverResponseProtocol: Codable {

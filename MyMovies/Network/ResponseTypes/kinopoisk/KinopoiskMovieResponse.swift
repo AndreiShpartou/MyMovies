@@ -30,6 +30,11 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
         return movieRating
     }
 
+    private let moviePoster: KinopoiskMovieResponse.Cover?
+    private let movieBackdrop: KinopoiskMovieResponse.Cover?
+    private let movieGenres: [KinopoiskMovieResponse.Genre]
+    private let movieRating: KinopoiskMovieResponse.Rating?
+
     struct Cover: KinopoiskCoverResponseProtocol {
         var url: String?
         var previewUrl: String?
@@ -40,7 +45,7 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     }
 
     struct Rating: KinopoiskRatingResponseProtocol {
-        var kp: Float?
+        var kp: Double?
     }
 
     enum CodingKeys: String, CodingKey {
@@ -50,10 +55,4 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
         case movieGenres = "genres"
         case movieRating = "rating"
     }
-
-    // MARK: - Private
-    private let moviePoster: KinopoiskMovieResponse.Cover?
-    private let movieBackdrop: KinopoiskMovieResponse.Cover?
-    private let movieGenres: [KinopoiskMovieResponse.Genre]
-    private let movieRating: KinopoiskMovieResponse.Rating?
 }

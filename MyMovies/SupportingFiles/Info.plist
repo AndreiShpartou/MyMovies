@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ipifyAccessToken</key>
-	<string>b04a3b11e3a99a</string>
+	<string>b04a3b11e3a99a_</string>
 	<key>RU_MovieAPI</key>
 	<dict>
 		<key>BaseURL</key>
@@ -18,11 +18,11 @@
 		<key>Endpoints</key>
 		<dict>
 			<key>upcomingMovies</key>
-			<string>/trending</string>
+			<string>/v1.4/movie?page=1&amp;limit=10&amp;lists=the_closest_releases</string>
 			<key>genres</key>
 			<string>/v1/movie/possible-values-by-field?field=genres.name</string>
 			<key>popularMovies</key>
-			<string>/popular</string>
+			<string>/v1.4/movie?page=1&amp;limit=10&amp;lists=popular-films</string>
 		</dict>
 	</dict>
 	<key>EN_MovieAPI</key>
