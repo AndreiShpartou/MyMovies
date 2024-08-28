@@ -29,6 +29,10 @@ internal enum Asset {
     internal static let avatarDefault = ImageAsset(name: "avatar-default")
     internal static let avatarMock = ImageAsset(name: "avatar-mock")
   }
+  internal enum DefaultCovers {
+    internal static let defaultBackdrop = ImageAsset(name: "DefaultBackdrop")
+    internal static let defaultPoster = ImageAsset(name: "DefaultPoster")
+  }
   internal enum TabBarIcons {
     internal static let home = ImageAsset(name: "Home")
     internal static let homeSelected = ImageAsset(name: "HomeSelected")

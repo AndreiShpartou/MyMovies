@@ -58,11 +58,15 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
         if let backdropURLString = movie.backdrop?.url,
            let backdropURL = URL(string: backdropURLString) {
             backdropImageView.kf.setImage(with: backdropURL)
+        } else {
+            backdropImageView.image = Asset.DefaultCovers.defaultBackdrop.image
         }
 
         if let posterURLString = movie.poster?.url,
            let posterURL = URL(string: posterURLString) {
             posterImageView.kf.setImage(with: posterURL)
+        } else {
+            posterImageView.image = Asset.DefaultCovers.defaultPoster.image
         }
 
         titleLabel.text = movie.title
