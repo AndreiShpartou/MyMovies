@@ -17,6 +17,8 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBMoviesPagedResponse) as! T
         case ( is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! KinopoiskMoviesPagedResponse) as! T
+        case (is TMDBMovieResponse.Type, is Movie.Type):
+            return map(data as! TMDBMovieResponse) as! T
         // genres
         case (is TMDBGenrePagedResponse.Type, is [Movie.Genre].Type):
             return map(data as! TMDBGenrePagedResponse) as! T
@@ -48,11 +50,36 @@ final class ResponseMapper: ResponseMapperProtocol {
                 releaseYear: $0.releaseDate,
                 runtime: String($0.runtime ?? 0),
                 voteAverage: $0.voteAverage,
-                genres: map($0.genreIds),
+                genres: map($0.genreIds ?? []),
                 poster: poster,
                 backdrop: backdrop
             )
         }
+    }
+
+    private func map(_ data: TMDBMovieResponse) -> Movie {
+        let poster = Movie.Cover(
+            url: data.posterURL(size: .original),
+            previewUrl: data.posterURL(size: .w780)
+        )
+        let backdrop = Movie.Cover(
+            url: data.backdropURL(size: .original),
+            previewUrl: data.backdropURL(size: .w780)
+        )
+
+        return Movie(
+            id: data.id,
+            title: data.title,
+            alternativeTitle: data.originalTitle,
+            description: data.overview,
+            shortDescription: data.tagline,
+            releaseYear: data.releaseDate,
+            runtime: String(data.runtime ?? 0),
+            voteAverage: data.voteAverage,
+            genres: map(data.genreIds ?? []),
+            poster: poster,
+            backdrop: backdrop
+        )
     }
 
     private func map(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {

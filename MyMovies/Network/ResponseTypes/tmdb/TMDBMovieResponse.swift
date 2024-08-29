@@ -18,7 +18,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var voteAverage: Double?
     var posterPath: String?
     var backdropPath: String?
-    var genreIds: [Int]
+    var genreIds: [Int]?
     var genres: [TMDBGenreResponseProtocol]? {
         return movieGenres
     }
@@ -30,7 +30,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, title, overview, runtime, movieGenres
+        case id, title, overview, runtime, movieGenres, tagline
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
         case backdropPath = "backdrop_path"

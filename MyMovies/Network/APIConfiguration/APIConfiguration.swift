@@ -98,9 +98,7 @@ struct APIConfiguration: APIConfigurationProtocol {
     }
 
     func url(for endpoint: Endpoint) -> URL? {
-        guard let path = getPath(for: endpoint) else {
-            return nil
-        }
+        let path = getPath(for: endpoint)
 
         return URL(string: "\(baseURL.absoluteString)\(path)")
     }
@@ -140,7 +138,8 @@ struct APIConfiguration: APIConfigurationProtocol {
         }
     }
 
-    private func getPath(for endpoint: Endpoint) -> String? {
-        return endpoints[endpoint.rawValue]
+    private func getPath(for endpoint: Endpoint) -> String {
+        let endpointPath = endpoints[endpoint.rawValue] ?? ""
+        return "\(endpointPath)\(endpoint.pathParameters)"
     }
 }

@@ -16,7 +16,7 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
     var releaseDate: String? { get }
     var runtime: Int? { get }
     var voteAverage: Double? { get }
-    var genreIds: [Int] { get }
+    var genreIds: [Int]? { get }
     var genres: [TMDBGenreResponseProtocol]? { get }
     var posterPath: String? { get }
     var backdropPath: String? { get }

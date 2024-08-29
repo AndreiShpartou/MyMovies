@@ -133,7 +133,8 @@ class NetworkManager {
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
                 let mappedData = try mapper.map(data: decodedResponse, from: responseType, to: T.self)
                 completion(.success(mappedData))
-            } catch _ as DecodingError {
+            } catch let decodingError as DecodingError {
+                print(decodingError)
                 completion(.failure(NetworkError.invalidJSON))
             } catch {
                 completion(.failure(error))

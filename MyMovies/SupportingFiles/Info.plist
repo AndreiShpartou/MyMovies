@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ipifyAccessToken</key>
-	<string>b04a3b11e3a99a-</string>
+	<string>b04a3b11e3a99a</string>
 	<key>RU_MovieAPI</key>
 	<dict>
 		<key>BaseURL</key>
@@ -44,6 +44,8 @@
 			<string>/3/genre/movie/list</string>
 			<key>popularMovies</key>
 			<string>/3/movie/popular</string>
+			<key>movieDetails</key>
+			<string>/3/movie/</string>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>
