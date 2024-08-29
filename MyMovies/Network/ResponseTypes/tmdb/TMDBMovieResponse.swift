@@ -12,6 +12,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var title: String
     var originalTitle: String?
     var overview: String?
+    var tagline: String?
     var releaseDate: String?
     var runtime: Int?
     var voteAverage: Double?

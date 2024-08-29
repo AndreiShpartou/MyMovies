@@ -12,6 +12,7 @@ protocol MovieProtocol: Codable {
     var title: String { get }
     var alternativeTitle: String? { get }
     var description: String? { get }
+    var shortDescription: String? { get }
     var releaseYear: String? { get }
     var runtime: String? { get }
     var voteAverage: Double? { get }

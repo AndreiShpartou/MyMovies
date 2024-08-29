@@ -43,13 +43,37 @@ enum Provider: String {
 }
 
 // MARK: - Endpoints
-enum Endpoint: String {
+enum Endpoint {
     // Get a list of movies that are being released soon.
     case upcomingMovies
     // Get the list of official genres for movies
     case genres
     // Get a list of movies ordered by popularity
     case popularMovies
+    // Get the movie details by ID
+    case movieDetails(id: Int)
+
+    var rawValue: String {
+        switch self {
+        case .upcomingMovies:
+            return "upcomingMovies"
+        case .genres:
+            return "genres"
+        case .popularMovies:
+            return "popularMovies"
+        case .movieDetails:
+            return "movieDetails"
+        }
+    }
+
+    var pathParameters: String {
+        switch self {
+        case .movieDetails(let id):
+            return "\(id)"
+        default:
+            return ""
+        }
+    }
 }
 
 // MARK: - APIConfiguration
@@ -69,6 +93,10 @@ struct APIConfiguration: APIConfigurationProtocol {
     }
 
     // MARK: - Public
+    func isActive(endpoint: Endpoint) -> Bool {
+        return isActive(endpoint: endpoint, for: provider)
+    }
+
     func url(for endpoint: Endpoint) -> URL? {
         guard let path = getPath(for: endpoint) else {
             return nil
@@ -86,6 +114,15 @@ struct APIConfiguration: APIConfigurationProtocol {
     }
 
     // MARK: - Private
+    private func isActive(endpoint: Endpoint, for provider: Provider) -> Bool {
+        switch (provider, endpoint) {
+        case (.kinopoisk, .movieDetails):
+            return false
+        default:
+            return true
+        }
+    }
+
     private func getResponseType(for endpoint: Endpoint, and provider: Provider) -> Codable.Type? {
         switch (provider, endpoint) {
         case (.tmdb, .genres):
@@ -96,6 +133,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBMoviesPagedResponse.self
         case (.kinopoisk, .upcomingMovies), (.kinopoisk, .popularMovies):
             return KinopoiskMoviesPagedResponse.self
+        case (.tmdb, .movieDetails):
+            return TMDBMovieResponse.self
         default:
             return nil
         }

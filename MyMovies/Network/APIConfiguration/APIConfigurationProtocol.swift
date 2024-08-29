@@ -8,6 +8,7 @@
 import Foundation
 
 protocol APIConfigurationProtocol {
+    func isActive(endpoint: Endpoint) -> Bool
     func url(for endpoint: Endpoint) -> URL?
     func responseType(for endpoint: Endpoint) -> Codable.Type?
     func authorizationHeader() -> [String: String]

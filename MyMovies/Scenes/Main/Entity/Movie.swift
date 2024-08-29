@@ -12,6 +12,7 @@ struct Movie: MovieProtocol {
     let title: String // TMDB: title, Kinopoisk: name
     let alternativeTitle: String? // TMDB: original_title, Kinopoisk: alternativeName
     let description: String? // TMDB: overview, Kinopoisk: description
+    let shortDescription: String? // TMDB: tagline, Kinopoisk: shortDescription
     let releaseYear: String? // TMDB: release_date -> map, Kinopoisk: year -> map)
     let runtime: String?  // TMDB: runtime, Kinopoisk: movieLength
     let voteAverage: Double? //  TMDB: vote_average, Kinopoisk: rating.kp
@@ -34,6 +35,7 @@ struct Movie: MovieProtocol {
         title: String,
         alternativeTitle: String?,
         description: String?,
+        shortDescription: String?,
         releaseYear: String?,
         runtime: String?,
         voteAverage: Double?,
@@ -45,6 +47,7 @@ struct Movie: MovieProtocol {
         self.title = title
         self.alternativeTitle = alternativeTitle
         self.description = description
+        self.shortDescription = shortDescription
         self.releaseYear = releaseYear
         self.runtime = runtime
         self.voteAverage = voteAverage

@@ -30,9 +30,26 @@ class NetworkManager {
     private init() {}
 
     //  Versatile request performer
-    func performRequest<T: Codable>(for endpoint: Endpoint, completion: @escaping (Result<T, Error>) -> Void) {
+    func performRequest<T: Codable>(
+        for endpoint: Endpoint,
+        queryParameters: [String: Any]? = nil,
+        // For the case when an endpoint is non-active for current API provider
+        defaultValue: T? = nil,
+        completion: @escaping (Result<T, Error>) -> Void
+    ) {
         guard let apiConfig = apiConfig else {
-            completion(.failure(NetworkError.invalidAPICOnfig))
+            completion(.failure(NetworkError.invalidAPIConfig))
+            return
+        }
+
+        guard apiConfig.isActive(endpoint: endpoint) else {
+            guard let defaultValue = defaultValue else {
+                completion(.failure(NetworkError.invalidAPIConfig))
+                return
+            }
+
+            // Return initial value without endpoint request performing
+            completion(.success(defaultValue))
             return
         }
 
@@ -51,7 +68,7 @@ class NetworkManager {
         // Apply additional headers
         // headers.headers.append(//)
 
-        AF.request(url, headers: headers).responseData { [weak self] response in
+        AF.request(url, parameters: queryParameters, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)
         }
     }
@@ -80,6 +97,18 @@ class NetworkManager {
         }
     }
 
+    // Get movie details for a specific movie ID
+    func fetchMovieDetails(for movie: MovieProtocol, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
+        performRequest(for: .movieDetails(id: movie.id), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
+            switch result {
+            case .success(let movie):
+                completion(.success(movie))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     // Get the list of official genres for movies
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
         performRequest(for: .genres) { (result: Result<[Movie.Genre], Error>) in
@@ -98,20 +127,20 @@ class NetworkManager {
         ofType responseType: Codable.Type,
         completion: @escaping (Result<T, Error>) -> Void
     ) {
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decodedResponse = try JSONDecoder().decode(responseType, from: data)
-                    let mappedData = try mapper.map(data: decodedResponse, from: responseType, to: T.self)
-                    completion(.success(mappedData))
-                } catch _ as DecodingError {
-                    completion(.failure(NetworkError.invalidJSON))
-                } catch {
-                    completion(.failure(error))
-                }
-
-            case .failure(let error):
+        switch response.result {
+        case .success(let data):
+            do {
+                let decodedResponse = try JSONDecoder().decode(responseType, from: data)
+                let mappedData = try mapper.map(data: decodedResponse, from: responseType, to: T.self)
+                completion(.success(mappedData))
+            } catch _ as DecodingError {
+                completion(.failure(NetworkError.invalidJSON))
+            } catch {
                 completion(.failure(error))
             }
+
+        case .failure(let error):
+            completion(.failure(error))
         }
+    }
 }

@@ -15,7 +15,9 @@ final class MainInteractor: MainInteractorProtocol {
         NetworkManager.shared.fetchUpcomingMovies { [weak self] result in
             switch result {
             case .success(let movies):
-                self?.presenter?.didFetchUpcomingMovies(movies)
+                self?.fetchMoviesDetails(for: movies) { detailedMovies in
+                    self?.presenter?.didFetchUpcomingMovies(detailedMovies)
+                }
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
@@ -43,6 +45,29 @@ final class MainInteractor: MainInteractorProtocol {
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
+        }
+    }
+
+    // MARK: - Private
+    private func fetchMoviesDetails(for movies: [MovieProtocol], completion: @escaping ([MovieProtocol]) -> Void) {
+        var detailedMovies = [MovieProtocol]()
+        let dispatchGroup = DispatchGroup()
+
+        movies.forEach { movie in
+            dispatchGroup.enter()
+            NetworkManager.shared.fetchMovieDetails(for: movie) { [weak self] result in
+                switch result {
+                case .success(let detailedMovie):
+                    detailedMovies.append(detailedMovie)
+                case .failure(let error):
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            completion(detailedMovies)
         }
     }
 }

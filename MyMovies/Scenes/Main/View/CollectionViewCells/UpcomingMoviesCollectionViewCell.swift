@@ -26,6 +26,12 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
         textColor: .textColorWhite
     )
 
+    private let shortDescriptionLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        numberOfLines: 0,
+        textColor: .textColorGrey
+    )
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,6 +51,7 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
         backdropImageView.image = nil
         posterImageView.image = nil
         titleLabel.text = nil
+        shortDescriptionLabel.text = nil
     }
 
     override func layoutSubviews() {
@@ -70,6 +77,7 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
         }
 
         titleLabel.text = movie.title
+        shortDescriptionLabel.text = movie.shortDescription
     }
 }
 
@@ -80,7 +88,8 @@ extension UpcomingMoviesCollectionViewCell {
             backdropImageView,
             captionView,
             posterImageView,
-            titleLabel
+            titleLabel,
+            shortDescriptionLabel
         )
     }
 }
@@ -137,7 +146,13 @@ extension UpcomingMoviesCollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(8)
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-8)
-            make.centerY.equalTo(captionView.snp.centerY).multipliedBy(1.2)
+            make.centerY.equalTo(captionView.snp.centerY).multipliedBy(1.1)
+        }
+
+        shortDescriptionLabel.snp.makeConstraints { make in
+            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
+            make.trailing.equalTo(safeAreaLayoutGuide).offset(-8)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
         }
     }
 }

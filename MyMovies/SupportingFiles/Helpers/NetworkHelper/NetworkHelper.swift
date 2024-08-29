@@ -64,7 +64,7 @@ enum NetworkError: Error, LocalizedError {
     case failedToGetData
     case invalidURL
     case invalidJSON
-    case invalidAPICOnfig
+    case invalidAPIConfig
     case invalidResponseType
     case unsupportedMappingTypes
 
@@ -78,7 +78,7 @@ enum NetworkError: Error, LocalizedError {
             return NSLocalizedString("Failed to create url. Invalid URL format", comment: "Network")
         case .invalidJSON:
             return NSLocalizedString("Invalid JSON structure", comment: "Network")
-        case .invalidAPICOnfig:
+        case .invalidAPIConfig:
             return NSLocalizedString("Invalid API config", comment: "Network")
         case .invalidResponseType:
             return NSLocalizedString("Invalid response type", comment: "Network")
