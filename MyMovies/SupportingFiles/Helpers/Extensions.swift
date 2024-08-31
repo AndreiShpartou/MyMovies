@@ -96,7 +96,10 @@ extension UIButton {
 
 // MARK: - UISearchBar
 extension UISearchBar {
-    static func createSearchBar(style: UISearchBar.Style = .minimal, placeholder: String) -> UISearchBar {
+    static func createSearchBar(
+        style: UISearchBar.Style = .minimal,
+        placeholder: String
+    ) -> UISearchBar {
         let searchBar = UISearchBar()
         searchBar.placeholder = placeholder
         searchBar.searchBarStyle = style

@@ -33,6 +33,7 @@ final class CustomTabBarItem: UIView {
     // MARK: - Setup
     private func setupView(icon: UIImage?, title: String) {
         iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
+        iconImageView.backgroundColor = .primaryBackground
         titleLabel.text = title
         addSubviews(iconImageView, titleLabel)
     }

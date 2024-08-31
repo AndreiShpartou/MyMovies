@@ -59,6 +59,7 @@ final class CustomTabBar: UITabBar {
 
     // MARK: - Setup
     private func setupContainerView() {
+        containerView.backgroundColor = .primaryBackground
         addSubviews(containerView)
     }
 

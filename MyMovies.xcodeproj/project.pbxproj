@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C0294532C830A36000BE8B3 /* UserGreetingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0294522C830A36000BE8B3 /* UserGreetingView.swift */; };
+		6C0294552C830D23000BE8B3 /* UserGreetingViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0294542C830D23000BE8B3 /* UserGreetingViewProtocol.swift */; };
 		6C2B03332C64BC4F0057E518 /* GenresCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2B03322C64BC4F0057E518 /* GenresCollectionViewHandler.swift */; };
 		6C2B03352C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2B03342C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift */; };
 		6C2B03372C64DE3C0057E518 /* PopularMoviesCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2B03362C64DE3C0057E518 /* PopularMoviesCollectionViewHandler.swift */; };
@@ -129,6 +131,8 @@
 
 /* Begin PBXFileReference section */
 		09D18B6979170A2D91E36F57 /* Pods-MyMovies.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyMovies.debug.xcconfig"; path = "Target Support Files/Pods-MyMovies/Pods-MyMovies.debug.xcconfig"; sourceTree = "<group>"; };
+		6C0294522C830A36000BE8B3 /* UserGreetingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGreetingView.swift; sourceTree = "<group>"; };
+		6C0294542C830D23000BE8B3 /* UserGreetingViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGreetingViewProtocol.swift; sourceTree = "<group>"; };
 		6C2B03322C64BC4F0057E518 /* GenresCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C2B03342C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C2B03362C64DE3C0057E518 /* PopularMoviesCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesCollectionViewHandler.swift; sourceTree = "<group>"; };
@@ -279,6 +283,15 @@
 				BCAF3C27BA8771421C410786 /* Pods-MyMovies.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		6C0294512C830A15000BE8B3 /* UserGreeting */ = {
+			isa = PBXGroup;
+			children = (
+				6C0294542C830D23000BE8B3 /* UserGreetingViewProtocol.swift */,
+				6C0294522C830A36000BE8B3 /* UserGreetingView.swift */,
+			);
+			path = UserGreeting;
 			sourceTree = "<group>";
 		};
 		6C2B03312C64BC190057E518 /* CollectionViewHandlers */ = {
@@ -760,6 +773,7 @@
 				6C83384F2C5CE430000D0399 /* MainViewProtocol.swift */,
 				6C59AF472C55176D006A7BDB /* MainView.swift */,
 				6C59AF452C551737006A7BDB /* MainViewController.swift */,
+				6C0294512C830A15000BE8B3 /* UserGreeting */,
 				6CCC4F752C5E4EDC00BA7B8D /* CollectionViewCells */,
 				6C2B03312C64BC190057E518 /* CollectionViewHandlers */,
 			);
@@ -1136,6 +1150,7 @@
 				6C59AF522C551FBE006A7BDB /* SearchRouter.swift in Sources */,
 				6C74C92D2C7396D00035BD14 /* APIConfiguration.swift in Sources */,
 				6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */,
+				6C0294532C830A36000BE8B3 /* UserGreetingView.swift in Sources */,
 				6CC604D12C557EDD00241EF2 /* WishlistViewController.swift in Sources */,
 				6CC604B92C557A9800241EF2 /* PopularMoviesViewController.swift in Sources */,
 				6CBEE8DB2C60E8090053BFD9 /* NetworkManager.swift in Sources */,
@@ -1198,6 +1213,7 @@
 				6C8338622C5D0676000D0399 /* MovieListInteractorProtocol.swift in Sources */,
 				6CC604AD2C5575B400241EF2 /* MovieListView.swift in Sources */,
 				6C74C92B2C7396C80035BD14 /* APIConfigurationProtocol.swift in Sources */,
+				6C0294552C830D23000BE8B3 /* UserGreetingViewProtocol.swift in Sources */,
 				6CC604AB2C5575A800241EF2 /* MovieListViewController.swift in Sources */,
 				6C83387C2C5D079F000D0399 /* WishlistPresenterProtocol.swift in Sources */,
 				6C83385A2C5CE58E000D0399 /* SearchInteractorProtocol.swift in Sources */,

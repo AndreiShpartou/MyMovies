@@ -19,20 +19,12 @@ final class MainView: UIView, MainViewProtocol {
     var presenter: MainPresenterProtocol?
 
     // MARK: - Properties
-    // Avatar
-    private let avatarImageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFill,
-        clipsToBounds: true,
-        cornerRadius: 20,
-        image: Asset.Avatars.avatarMock.image
-    )
-    private let helloLabel: UILabel = .createLabel(
-        font: Typography.SemiBold.title,
-        textColor: .textColorWhite,
-        text: "Hello, Smith"
-    )
-    private let favouriteButton: UIButton = .createFavouriteButton()
-    // Search
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    // User greeting
+    private let userGreetingView = UserGreetingView()
+    // Search section
+    private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
     // Upcoming movie list
     private let upcomingMoviesLabel: UILabel = .createLabel(
@@ -74,6 +66,16 @@ final class MainView: UIView, MainViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Set search bar position by default to implement sticky behavior
+        if scrollView.contentOffset.y == 0 {
+            searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
+        }
+    }
+
     // MARK: - Public
     func showUpcomingMovies(_ movies: [MovieProtocol]) {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
@@ -99,11 +101,12 @@ final class MainView: UIView, MainViewProtocol {
 extension MainView {
     private func setupView() {
         backgroundColor = .primaryBackground
-        addSubviews(
-            avatarImageView,
-            helloLabel,
-            favouriteButton,
-            searchBar,
+
+        addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
+
+        contentView.addSubviews(
+            userGreetingView,
             upcomingMoviesCollectionView,
             upcomingMoviesLabel,
             seeAllUpcomingMoviesButton,
@@ -111,8 +114,10 @@ extension MainView {
             genresLabel,
             popularMoviesLabel,
             seeAllPopularMoviesButton,
-            popularMoviesCollectionView
+            popularMoviesCollectionView,
+            searchBarContainerView
         )
+        searchBarContainerView.addSubviews(searchBar)
 
         setupHandlers()
         setupTargets()
@@ -128,6 +133,8 @@ extension MainView {
         // Popular movies
         popularMoviesCollectionView.delegate = popularMoviesCollectionViewHandler
         popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
+        // Scroll
+        scrollView.delegate = self
     }
 
     private func setupTargets() {
@@ -202,54 +209,80 @@ extension MainView {
     }
 }
 
+// MARK: - UIScrollViewDelegate
+extension MainView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yOffset = scrollView.contentOffset.y
+        let threshold: CGFloat = 60
+
+        // Adjust opacity of the UserGreetingView
+        if yOffset > 0 {
+            let alphaValue = max(0, 1 - (yOffset / threshold))
+            userGreetingView.alpha = alphaValue
+        } else {
+            userGreetingView.alpha = 1
+        }
+
+        // Keep searchBar fixed at the top
+        if yOffset > (userGreetingView.frame.maxY + 8) {
+            searchBarContainerView.frame.origin.y = yOffset
+        } else {
+            searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
+        }
+    }
+}
+
 // MARK: - Constraints
 extension MainView {
     private func setupConstraints() {
-        setupAvatarSectionConstraints()
+        setupScrollConstraints()
+        setupUserGreetingSectionConstraints()
         setupSearchBarConstraints()
         setupUpcomingMoviesSectionConstraints()
         setupGenresSectionConstraints()
         setupPopularMoviesSectionConstraints()
     }
 
-    private func setupAvatarSectionConstraints() {
-        // Profile avatar section
-        avatarImageView.snp.makeConstraints { make in
-            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
-            make.top.equalTo(safeAreaLayoutGuide).offset(16)
-            make.width.height.equalTo(40)
+    private func setupScrollConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
 
-        helloLabel.snp.makeConstraints { make in
-            make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
-            make.trailing.equalTo(favouriteButton.snp.leading).offset(-16)
-            make.centerY.equalTo(avatarImageView)
+        contentView.snp.makeConstraints { make in
+            make.edges.width.equalToSuperview()
         }
+    }
 
-        favouriteButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
-            make.width.height.equalTo(32)
-            make.centerY.equalTo(avatarImageView)
+    private func setupUserGreetingSectionConstraints() {
+        userGreetingView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalToSuperview().inset(8)
+            make.height.equalTo(50)
         }
     }
 
     private func setupSearchBarConstraints() {
+        searchBarContainerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(60)
+        }
+
         searchBar.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
-            make.top.equalTo(avatarImageView.snp.bottom).offset(16)
-            make.height.equalTo(41)
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 
     private func setupUpcomingMoviesSectionConstraints() {
         // Movie list section
         upcomingMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
-            make.top.equalTo(searchBar.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(132)
         }
 
         seeAllUpcomingMoviesButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalTo(upcomingMoviesLabel)
         }
 
@@ -263,7 +296,7 @@ extension MainView {
     private func setupGenresSectionConstraints() {
         // Genres section
         genresLabel.snp.makeConstraints { make in
-            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
+            make.leading.equalToSuperview().offset(16)
             make.top.equalTo(upcomingMoviesCollectionView.snp.bottom).offset(24)
         }
 
@@ -277,12 +310,12 @@ extension MainView {
     private func setupPopularMoviesSectionConstraints() {
         // Popular movies section
         popularMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
+            make.leading.equalToSuperview().offset(16)
             make.top.equalTo(genresCollectionView.snp.bottom).offset(24)
         }
 
         seeAllPopularMoviesButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalTo(popularMoviesLabel)
         }
 
@@ -290,6 +323,7 @@ extension MainView {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(popularMoviesLabel.snp.bottom).offset(16)
             make.height.equalTo(230)
+            make.bottom.equalToSuperview()
         }
     }
 }
