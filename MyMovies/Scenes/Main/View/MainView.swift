@@ -73,6 +73,7 @@ final class MainView: UIView, MainViewProtocol {
         // Set search bar position by default to implement sticky behavior
         if scrollView.contentOffset.y == 0 {
             searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
+            searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
         }
     }
 
@@ -226,8 +227,11 @@ extension MainView: UIScrollViewDelegate {
         // Keep searchBar fixed at the top
         if yOffset > (userGreetingView.frame.maxY + 8) {
             searchBarContainerView.frame.origin.y = yOffset
+            searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(0.93)
+            searchBar.alpha = 1
         } else {
             searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
+            searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
         }
     }
 }
@@ -301,7 +305,7 @@ extension MainView {
         }
 
         genresCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(genresLabel.snp.bottom).offset(16)
             make.height.equalTo(40)
         }

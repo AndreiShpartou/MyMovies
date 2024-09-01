@@ -12,7 +12,7 @@ final class GenreCollectionViewCell: UICollectionViewCell {
     static let identifier = "GenreCollectionViewCell"
 
     private let genreLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.SemiBold.subhead,
         textAlignment: .center,
         textColor: .textColorWhiteGrey
     )
