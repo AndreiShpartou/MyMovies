@@ -16,23 +16,32 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
         cornerRadius: 8
     )
 
+    private let captionView: UIView = .createCommonView(cornderRadius: 5, backgroundColor: .primarySoft)
+
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.subhead,
+        numberOfLines: 2,
         textColor: .textColorWhite
     )
 
     private let genreLabel: UILabel = .createLabel(
-        font: Typography.Medium.caption,
+        font: Typography.Medium.body,
         textColor: .textColorGrey
     )
 
-    private let ratingView: UIView = .createCommonView(
-        cornderRadius: 4,
-        backgroundColor: .primarySoft
+//    private let ratingView: UIView = .createCommonView(
+//        cornderRadius: 4,
+//        backgroundColor: .primarySoft
+//    )
+    private lazy var ratingView: UIStackView = createUIStackView()
+
+    private let ratingIconImageView: UIImageView = .createImageView(
+        contentMode: .scaleAspectFit,
+        image: UIImage(systemName: "star.fill")?.withTintColor(.secondaryOrange, renderingMode: .alwaysOriginal)
     )
 
     private let ratingLabel: UILabel = .createLabel(
-        font: Typography.SemiBold.body,
+        font: Typography.SemiBold.subhead,
         textColor: .secondaryOrange
     )
 
@@ -60,11 +69,9 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: MovieProtocol) {
+        let posterURL = URL(string: movie.poster?.url ?? "")
+        imageView.kf.setImage(with: posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
 
-        if  let coverString = movie.poster?.url,
-            let coverURL = URL(string: coverString) {
-            imageView.kf.setImage(with: coverURL)
-        }
         titleLabel.text = movie.title
         genreLabel.text = movie.genres.first?.name
         ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
@@ -76,11 +83,28 @@ extension PopularMoviesCollectionViewCell {
     private func setupView() {
         contentView.addSubviews(
             imageView,
-            titleLabel,
-            genreLabel,
+            captionView,
             ratingView
         )
-        ratingView.addSubviews(ratingLabel)
+        ratingView.addArrangedSubview(ratingIconImageView)
+        ratingView.addArrangedSubview(ratingLabel)
+        captionView.addSubviews(titleLabel, genreLabel)
+    }
+}
+
+// MARK: - Helpers
+extension PopularMoviesCollectionViewCell {
+    private func createUIStackView() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 4
+
+        stackView.backgroundColor = .primarySoft.withAlphaComponent(0.8)
+        stackView.layer.cornerRadius = 8
+
+        return stackView
     }
 }
 
@@ -92,25 +116,34 @@ extension PopularMoviesCollectionViewCell {
             make.height.equalTo(contentView.snp.width).multipliedBy(1.5)
         }
 
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.top.equalTo(imageView.snp.bottom).offset(8)
+        captionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(imageView.snp.bottom)
+            make.bottom.equalToSuperview()
         }
 
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalToSuperview().offset(8)
+        }
+
+        // Calculate the height for two lines of text
+        let titleHeight = titleLabel.font.lineHeight * 2 + 4
         genreLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalTo(titleLabel.snp.top).offset(titleHeight)
         }
 
         ratingView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-8)
             make.top.equalToSuperview().offset(8)
-            make.width.equalTo(24)
-            make.height.equalTo(40)
+            make.width.equalTo(50)
+            make.height.equalTo(20)
         }
 
-        ratingLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        ratingIconImageView.snp.makeConstraints { make in
+            make.height.equalTo(ratingLabel.snp.height)
+            make.width.equalTo(ratingIconImageView.snp.height)
         }
     }
 }

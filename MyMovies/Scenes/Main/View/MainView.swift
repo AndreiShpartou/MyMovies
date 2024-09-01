@@ -212,7 +212,7 @@ extension MainView {
 
     private func createPopularMoviesCollectionView() -> UICollectionView {
         return createCollectionView(
-            itemSize: CGSize(width: 150, height: 230),
+            itemSize: CGSize(width: 150, height: 300),
             cellType: PopularMoviesCollectionViewCell.self,
             reuseIdentifier: "PopularMoviesCollectionViewCell"
         )
@@ -300,7 +300,7 @@ extension MainView {
         }
 
         upcomingMoviesCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(upcomingMoviesLabel.snp.bottom).offset(16)
             make.height.equalTo(upcomingMoviesCollectionView.snp.width).multipliedBy(0.75)
         }
@@ -333,9 +333,9 @@ extension MainView {
         }
 
         popularMoviesCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(popularMoviesLabel.snp.bottom).offset(16)
-            make.height.equalTo(230)
+            make.height.equalTo(300)
             make.bottom.equalToSuperview()
         }
     }
