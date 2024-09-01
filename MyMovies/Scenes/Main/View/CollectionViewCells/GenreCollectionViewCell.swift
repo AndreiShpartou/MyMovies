@@ -40,6 +40,16 @@ final class GenreCollectionViewCell: UICollectionViewCell {
     func configure(with genre: GenreProtocol) {
         genreLabel.text = genre.name
     }
+
+    func setSelected(_ isSelected: Bool) {
+        if isSelected {
+            contentView.backgroundColor = .primarySoft
+            genreLabel.textColor = .primaryBlueAccent
+        } else {
+            contentView.backgroundColor = .clear
+            genreLabel.textColor = .textColorWhiteGrey
+        }
+    }
 }
 
 // MARK: - Setup

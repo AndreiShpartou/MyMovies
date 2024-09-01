@@ -86,6 +86,8 @@ final class MainView: UIView, MainViewProtocol {
     func showMovieGenres(_ genres: [GenreProtocol]) {
         genresCollectionViewHandler.configure(with: genres)
         genresCollectionView.reloadData()
+
+        setupAdditionalDefaultPreferences()
     }
 
     func showPopularMovies(_ movies: [MovieProtocol]) {
@@ -141,6 +143,13 @@ extension MainView {
     private func setupTargets() {
         seeAllUpcomingMoviesButton.addTarget(self, action: #selector(didTapSeeAllUpcomingMoviesButton), for: .touchUpInside)
         seeAllPopularMoviesButton.addTarget(self, action: #selector(didTapSeeAllPopularMoviesButton), for: .touchUpInside)
+    }
+
+    private func setupAdditionalDefaultPreferences() {
+        // Default selection of the first item
+        let defaultIndexPath = IndexPath(item: 0, section: 0)
+        genresCollectionView.selectItem(at: defaultIndexPath, animated: false, scrollPosition: .left)
+        genresCollectionViewHandler.collectionView(genresCollectionView, didSelectItemAt: defaultIndexPath)
     }
 }
 

@@ -200,3 +200,9 @@ extension UIFont {
         return .init(name: FontName.semiBold, size: size) ?? .systemFont(ofSize: size)
     }
 }
+
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).uppercased() + dropFirst()
+    }
+}

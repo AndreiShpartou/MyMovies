@@ -58,11 +58,15 @@ struct Movie: MovieProtocol {
 
     struct Genre: GenreProtocol {
         let id: Int? // TMDB
-        let name: String?
+        var name: String? {
+            return rawName?.capitalizingFirstLetter()
+        }
+
+        private let rawName: String?
 
         init(id: Int? = nil, name: String?) {
             self.id = id
-            self.name = name
+            self.rawName = name
         }
     }
 
