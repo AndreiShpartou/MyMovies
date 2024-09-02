@@ -41,7 +41,9 @@ final class MainInteractor: MainInteractorProtocol {
         NetworkManager.shared.fetchPopularMovies { [weak self] result in
             switch result {
             case .success(let movies):
-                self?.presenter?.didFetchPopularMovies(movies)
+                self?.fetchMoviesDetails(for: movies) { detailedMovies in
+                    self?.presenter?.didFetchPopularMovies(detailedMovies)
+                }
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }

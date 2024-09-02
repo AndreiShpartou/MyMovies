@@ -107,6 +107,7 @@ extension MainView {
 
         addSubviews(scrollView)
         scrollView.addSubviews(contentView)
+        scrollView.showsVerticalScrollIndicator = false
 
         contentView.addSubviews(
             userGreetingView,

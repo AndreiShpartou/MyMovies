@@ -30,13 +30,14 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, title, overview, runtime, movieGenres, tagline
+        case id, title, overview, runtime, tagline
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
         case backdropPath = "backdrop_path"
         case originalTitle = "original_title"
         case releaseDate = "release_date"
         case genreIds = "genre_ids"
+        case movieGenres = "genres"
     }
 
     // MARK: - Public

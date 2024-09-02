@@ -73,6 +73,7 @@ class NetworkManager {
         }
     }
 
+    // MARK: - UpcomingMovies
     // Get a list of movies that are being released soon.
     func fetchUpcomingMovies(completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         performRequest(for: .upcomingMovies) { (result: Result<[Movie], Error>) in
@@ -85,6 +86,7 @@ class NetworkManager {
         }
     }
 
+    // MARK: - PopularMovies
     // Get a list of movies ordered by popularity
     func fetchPopularMovies(completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         performRequest(for: .popularMovies) { (result: Result<[Movie], Error>) in
@@ -97,6 +99,7 @@ class NetworkManager {
         }
     }
 
+    // MARK: - MovieDetails
     // Get movie details for a specific movie ID
     func fetchMovieDetails(for movie: MovieProtocol, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
         performRequest(for: .movieDetails(id: movie.id), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
@@ -109,6 +112,7 @@ class NetworkManager {
         }
     }
 
+    // MARK: - Genres
     // Get the list of official genres for movies
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
         performRequest(for: .genres) { (result: Result<[Movie.Genre], Error>) in

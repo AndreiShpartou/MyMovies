@@ -29,7 +29,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
-    // Movies
+    // MARK: - Movies
     private func map(_ data: TMDBMoviesPagedResponse) -> [Movie] {
         return data.results.map {
             let poster = Movie.Cover(
@@ -76,7 +76,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             releaseYear: data.releaseDate,
             runtime: String(data.runtime ?? 0),
             voteAverage: data.voteAverage,
-            genres: map(data.genreIds ?? []),
+            genres: map(data.genres ?? []),
             poster: poster,
             backdrop: backdrop
         )
@@ -106,7 +106,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
-    // Genres
+    // MARK: - Genres
     private func map(_ data: TMDBGenrePagedResponseProtocol) -> [Movie.Genre] {
         return data.genres.map {
             return Movie.Genre(id: $0.id, name: $0.name)
@@ -122,6 +122,12 @@ final class ResponseMapper: ResponseMapperProtocol {
     private func map(_ data: [Int]) -> [Movie.Genre] {
         return data.map {
             return Movie.Genre(id: $0, name: nil)
+        }
+    }
+
+    private func map(_ data: [TMDBGenreResponseProtocol]) -> [Movie.Genre] {
+        return data.map {
+            Movie.Genre(id: $0.id, name: $0.name)
         }
     }
 }
