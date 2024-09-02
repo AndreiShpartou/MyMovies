@@ -49,7 +49,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                 shortDescription: $0.tagline,
                 releaseYear: $0.releaseDate,
                 runtime: String($0.runtime ?? 0),
-                voteAverage: $0.voteAverage,
+                voteAverage: ($0.voteAverage == 0) ? Double.random(in: 5.0...7.0) : $0.voteAverage,
                 genres: map($0.genreIds ?? []),
                 poster: poster,
                 backdrop: backdrop
@@ -75,7 +75,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             shortDescription: data.tagline,
             releaseYear: data.releaseDate,
             runtime: String(data.runtime ?? 0),
-            voteAverage: data.voteAverage,
+            voteAverage: (data.voteAverage == 0) ? Double.random(in: 5.0...7.0) : data.voteAverage,
             genres: map(data.genres ?? []),
             poster: poster,
             backdrop: backdrop
@@ -92,7 +92,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                 shortDescription: $0.shortDescription,
                 releaseYear: String($0.year),
                 runtime: String($0.movieLength ?? 0),
-                voteAverage: $0.rating?.kp,
+                voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
                 genres: map($0.genres),
                 poster: Movie.Cover(
                     url: $0.poster?.url,
