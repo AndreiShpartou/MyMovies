@@ -45,6 +45,7 @@ extension MainViewController {
 
 // MARK: - MainViewDelegate
 extension MainViewController: MainViewDelegate {
+
     func didSelectGenre(_ genre: GenreProtocol) {
         // Handle genre selection
         presenter?.didSelectGenre(genre)
@@ -63,5 +64,9 @@ extension MainViewController: MainViewDelegate {
     func didTapSeeAllPopularMoviesButton() {
         // Handle "See All" action for popular movies
         presenter?.didTapSeeAllPopularMoviesButton()
+    }
+
+    func didScrollUpcomingMoviesItemTo(_ index: Int) {
+        mainView.scrollToUpcomingMovieItem(index)
     }
 }

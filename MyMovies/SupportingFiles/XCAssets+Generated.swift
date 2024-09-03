@@ -33,6 +33,10 @@ internal enum Asset {
     internal static let defaultBackdrop = ImageAsset(name: "DefaultBackdrop")
     internal static let defaultPoster = ImageAsset(name: "DefaultPoster")
   }
+  internal enum PageControlIndicators {
+    internal static let selected = ImageAsset(name: "Selected")
+    internal static let unselected = ImageAsset(name: "Unselected")
+  }
   internal enum TabBarIcons {
     internal static let home = ImageAsset(name: "Home")
     internal static let homeSelected = ImageAsset(name: "HomeSelected")

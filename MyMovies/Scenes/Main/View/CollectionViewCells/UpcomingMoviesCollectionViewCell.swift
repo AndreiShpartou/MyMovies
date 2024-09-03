@@ -13,7 +13,8 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
 
     private let backdropImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
-        clipsToBounds: true
+        clipsToBounds: true,
+        cornerRadius: 15
     )
 
     private lazy var posterImageView: UIImageView = createPosterImageView()
@@ -28,8 +29,8 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
 
     private let shortDescriptionLabel: UILabel = .createLabel(
         font: Typography.Medium.body,
-        numberOfLines: 0,
-        textColor: .textColorGrey
+        numberOfLines: 5,
+        textColor: .textColorWhiteGrey
     )
 
     // MARK: - Init
@@ -111,12 +112,15 @@ extension UpcomingMoviesCollectionViewCell {
         let view: UIView = .createCommonView(backgroundColor: .clear)
         let gradientLayer = CAGradientLayer()
 
+        // Transparent color
         gradientLayer.colors = [
-            UIColor.clear.cgColor, // Transparent color
+            UIColor.clear.cgColor,
             UIColor.primaryBlack.cgColor
         ]
         gradientLayer.locations = [0.0, 0.7]
         view.layer.insertSublayer(gradientLayer, at: 0)
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
 
         return view
     }
@@ -138,7 +142,7 @@ extension UpcomingMoviesCollectionViewCell {
 
         posterImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(backdropImageView.snp.centerY).offset(-16)
+            make.top.equalTo(backdropImageView.snp.centerY).offset(-32)
             make.bottom.equalTo(captionView.snp.bottom).offset(-16)
             make.width.equalTo(posterImageView.snp.height).multipliedBy(0.675) // 2:3 aspect ratio of movie posters
         }
@@ -146,13 +150,14 @@ extension UpcomingMoviesCollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(8)
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-8)
-            make.centerY.equalTo(captionView.snp.centerY).multipliedBy(1.1)
+            make.centerY.equalTo(captionView.snp.centerY).offset(-32)
         }
 
         shortDescriptionLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(8)
             make.trailing.equalTo(safeAreaLayoutGuide).offset(-8)
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.bottom.lessThanOrEqualToSuperview().offset(-8)
         }
     }
 }

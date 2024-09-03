@@ -34,6 +34,7 @@ final class MainView: UIView, MainViewProtocol {
     )
     private lazy var seeAllUpcomingMoviesButton: UIButton = createSeeAllButton()
     private lazy var upcomingMoviesCollectionView: UICollectionView = createUpcomingMoviesCollectionView()
+    private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
 
     // Genres section
@@ -81,6 +82,9 @@ final class MainView: UIView, MainViewProtocol {
     func showUpcomingMovies(_ movies: [MovieProtocol]) {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
         upcomingMoviesCollectionView.reloadData()
+
+        // Set initial page for the upcoming collection
+        setupUpcomingMoviesInitialPage()
     }
 
     func showMovieGenres(_ genres: [GenreProtocol]) {
@@ -93,6 +97,19 @@ final class MainView: UIView, MainViewProtocol {
     func showPopularMovies(_ movies: [MovieProtocol]) {
         popularMoviesCollectionViewHandler.configure(with: movies)
         popularMoviesCollectionView.reloadData()
+    }
+
+    func scrollToUpcomingMovieItem(_ index: Int) {
+        upComingMoviesPageControl.currentPage = index
+
+        // Update the images for the page indicators
+        let unselected = Asset.PageControlIndicators.unselected.image
+        let selected = Asset.PageControlIndicators.selected.image
+
+        for pageIndex in 0..<upComingMoviesPageControl.numberOfPages {
+            upComingMoviesPageControl.setIndicatorImage(unselected, forPage: pageIndex)
+        }
+        upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
     }
 
     func showError(error: Error) {
@@ -114,6 +131,7 @@ extension MainView {
             upcomingMoviesCollectionView,
             upcomingMoviesLabel,
             seeAllUpcomingMoviesButton,
+            upComingMoviesPageControl,
             genresCollectionView,
             genresLabel,
             popularMoviesLabel,
@@ -152,6 +170,27 @@ extension MainView {
         genresCollectionView.selectItem(at: defaultIndexPath, animated: false, scrollPosition: .left)
         genresCollectionViewHandler.collectionView(genresCollectionView, didSelectItemAt: defaultIndexPath)
     }
+
+    private func setupUpcomingMoviesInitialPage() {
+        let totalItems = upcomingMoviesCollectionView.numberOfItems(inSection: 0)
+        guard totalItems > 0,
+            let layout = upcomingMoviesCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+
+        var currentPage = 0
+        var offset: CGFloat = 0
+        let itemWidth = upcomingMoviesCollectionView.bounds.width * 0.8 + layout.minimumLineSpacing
+        if totalItems > 2 {
+            currentPage = (totalItems / 2) - 1
+            offset = CGFloat(currentPage) * itemWidth - (upcomingMoviesCollectionView.bounds.width / 2) + (itemWidth / 2)
+        }
+        upComingMoviesPageControl.numberOfPages = totalItems
+        upComingMoviesPageControl.currentPage = currentPage
+        upcomingMoviesCollectionView.setContentOffset(CGPoint(x: offset, y: 0), animated: false)
+
+        layoutIfNeeded()
+    }
 }
 
 // MARK: - ActionMethods
@@ -180,11 +219,12 @@ extension MainView {
     private func createCollectionView(
         itemSize: CGSize,
         cellType: UICollectionViewCell.Type,
-        reuseIdentifier: String
+        reuseIdentifier: String,
+        minimumLineSpacing: CGFloat = 8
     ) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 12
+        layout.minimumLineSpacing = minimumLineSpacing
         layout.itemSize = itemSize
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -197,7 +237,8 @@ extension MainView {
 
     private func createUpcomingMoviesCollectionView() -> UICollectionView {
         return createCollectionView(
-            itemSize: CGSize(width: 50, height: 50),
+            // overridden in the UpcomingMoviesCollectionViewHandler
+            itemSize: CGSize(width: 0, height: 0),
             cellType: UpcomingMoviesCollectionViewCell.self,
             reuseIdentifier: "UpcomingMoviesCollectionViewCell"
         )
@@ -217,6 +258,15 @@ extension MainView {
             cellType: PopularMoviesCollectionViewCell.self,
             reuseIdentifier: "PopularMoviesCollectionViewCell"
         )
+    }
+
+    private func createUpcomingMoviesPageControl() -> UIPageControl {
+        let pageControl = UIPageControl()
+        pageControl.currentPageIndicatorTintColor = .primaryBlueAccent
+        pageControl.pageIndicatorTintColor = .primaryBlueAccent
+        pageControl.hidesForSinglePage = true
+
+        return pageControl
     }
 }
 
@@ -238,7 +288,6 @@ extension MainView: UIScrollViewDelegate {
         if yOffset > (userGreetingView.frame.maxY + 8) {
             searchBarContainerView.frame.origin.y = yOffset
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(0.93)
-            searchBar.alpha = 1
         } else {
             searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
@@ -289,7 +338,7 @@ extension MainView {
     }
 
     private func setupUpcomingMoviesSectionConstraints() {
-        // Movie list section
+        // Upcoming movies section
         upcomingMoviesLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalToSuperview().offset(132)
@@ -301,9 +350,14 @@ extension MainView {
         }
 
         upcomingMoviesCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(4)
+            make.leading.trailing.equalToSuperview()
             make.top.equalTo(upcomingMoviesLabel.snp.bottom).offset(16)
-            make.height.equalTo(upcomingMoviesCollectionView.snp.width).multipliedBy(0.75)
+            make.height.equalTo(upcomingMoviesCollectionView.snp.width).multipliedBy(0.5)
+        }
+
+        upComingMoviesPageControl.snp.makeConstraints { make in
+            make.centerX.equalTo(upcomingMoviesCollectionView)
+            make.top.equalTo(upcomingMoviesCollectionView.snp.bottom).offset(8)
         }
     }
 
@@ -311,7 +365,7 @@ extension MainView {
         // Genres section
         genresLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(upcomingMoviesCollectionView.snp.bottom).offset(24)
+            make.top.equalTo(upComingMoviesPageControl.snp.bottom).offset(24)
         }
 
         genresCollectionView.snp.makeConstraints { make in

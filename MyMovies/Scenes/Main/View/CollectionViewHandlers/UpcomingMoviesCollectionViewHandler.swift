@@ -43,6 +43,14 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: collectionView.bounds.height)
+        return CGSize(width: collectionView.bounds.width * 0.8, height: collectionView.bounds.height)
+    }
+}
+
+// MARK: - Section Heading
+extension UpcomingMoviesCollectionViewHandler: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
+        delegate?.didScrollUpcomingMoviesItemTo(Int(pageIndex))
     }
 }
