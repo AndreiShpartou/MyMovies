@@ -67,17 +67,6 @@ final class MainView: UIView, MainViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Lifecycle
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        // Set search bar position by default to implement sticky behavior
-        if scrollView.contentOffset.y == 0 {
-            searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
-            searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
-        }
-    }
-
     // MARK: - Public
     func showUpcomingMovies(_ movies: [MovieProtocol]) {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
@@ -105,11 +94,11 @@ final class MainView: UIView, MainViewProtocol {
         // Update the images for the page indicators
         let unselected = Asset.PageControlIndicators.unselected.image
         let selected = Asset.PageControlIndicators.selected.image
-
         for pageIndex in 0..<upComingMoviesPageControl.numberOfPages {
             upComingMoviesPageControl.setIndicatorImage(unselected, forPage: pageIndex)
         }
         upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
+        layoutIfNeeded()
     }
 
     func showError(error: Error) {
@@ -188,8 +177,7 @@ extension MainView {
         upComingMoviesPageControl.numberOfPages = totalItems
         upComingMoviesPageControl.currentPage = currentPage
         upcomingMoviesCollectionView.setContentOffset(CGPoint(x: offset, y: 0), animated: false)
-
-        layoutIfNeeded()
+        scrollToUpcomingMovieItem(currentPage)
     }
 }
 
@@ -230,6 +218,7 @@ extension MainView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.decelerationRate = .fast
         collectionView.register(cellType, forCellWithReuseIdentifier: reuseIdentifier)
 
         return collectionView
@@ -238,7 +227,7 @@ extension MainView {
     private func createUpcomingMoviesCollectionView() -> UICollectionView {
         return createCollectionView(
             // overridden in the UpcomingMoviesCollectionViewHandler
-            itemSize: CGSize(width: 0, height: 0),
+            itemSize: CGSize(width: 50, height: 50),
             cellType: UpcomingMoviesCollectionViewCell.self,
             reuseIdentifier: "UpcomingMoviesCollectionViewCell"
         )
@@ -265,6 +254,7 @@ extension MainView {
         pageControl.currentPageIndicatorTintColor = .primaryBlueAccent
         pageControl.pageIndicatorTintColor = .primaryBlueAccent
         pageControl.hidesForSinglePage = true
+        pageControl.isUserInteractionEnabled = false
 
         return pageControl
     }
@@ -327,6 +317,7 @@ extension MainView {
     private func setupSearchBarConstraints() {
         searchBarContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
+            make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(8)
             make.height.equalTo(60)
         }
 
