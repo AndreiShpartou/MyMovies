@@ -13,9 +13,10 @@ extension UIView {
     static func createCommonView(
         clipsToBounds: Bool = false,
         cornderRadius: CGFloat = 0,
-        backgroundColor: UIColor? = nil
+        backgroundColor: UIColor? = nil,
+        frame: CGRect = .zero
     ) -> UIView {
-        let view = UIView()
+        let view = UIView(frame: frame)
         view.clipsToBounds = clipsToBounds
         view.backgroundColor = backgroundColor
         view.layer.cornerRadius = cornderRadius

@@ -98,7 +98,6 @@ final class MainView: UIView, MainViewProtocol {
             upComingMoviesPageControl.setIndicatorImage(unselected, forPage: pageIndex)
         }
         upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
-        layoutIfNeeded()
     }
 
     func showError(error: Error) {
@@ -276,10 +275,14 @@ extension MainView: UIScrollViewDelegate {
 
         // Keep searchBar fixed at the top
         if yOffset > (userGreetingView.frame.maxY + 8) {
-            searchBarContainerView.frame.origin.y = yOffset
+            searchBarContainerView.snp.updateConstraints { make in
+                make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(yOffset - userGreetingView.frame.maxY)
+            }
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(0.93)
         } else {
-            searchBarContainerView.frame.origin.y = userGreetingView.frame.maxY + 8
+            searchBarContainerView.snp.updateConstraints { make in
+                make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(8)
+            }
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
         }
     }
