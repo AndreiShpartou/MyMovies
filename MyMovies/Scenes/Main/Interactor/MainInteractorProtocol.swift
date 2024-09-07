@@ -11,8 +11,10 @@ protocol MainInteractorProtocol: AnyObject {
     var presenter: MainInteractorOutputProtocol? { get set }
 
     func fetchUpcomingMovies()
+    func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol)
     func fetchMovieGenres()
     func fetchPopularMovies()
+    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol)
 }
 
 protocol MainInteractorOutputProtocol: AnyObject {

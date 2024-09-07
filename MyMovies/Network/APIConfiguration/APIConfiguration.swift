@@ -109,8 +109,12 @@ struct APIConfiguration: APIConfigurationProtocol {
         return getResponseType(for: endpoint, and: provider)
     }
 
-    func queryParameters(for endpoint: Endpoint) -> [String: Any] {
+    func defaultQueryParameters(for endpoint: Endpoint) -> [String: Any] {
         return getQueryParameters(for: endpoint, and: provider)
+    }
+
+    func genreFilteringQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
+        return getGenreQueryParameters(for: genre, endpoint: endpoint, and: provider)
     }
 
     func authorizationHeader() -> [String: String] {
@@ -159,6 +163,29 @@ struct APIConfiguration: APIConfigurationProtocol {
                 "release_date.gte": formatDate(minDate),
                 "release_date.lte": formatDate(maxDate)
             ]
+
+            return queryParameters
+        default:
+            return [:]
+        }
+    }
+
+    private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
+        switch (provider, endpoint) {
+        case (.tmdb, .upcomingMovies), (.tmdb, .popularMovies):
+            guard let genreID = genre.id else {
+                return [:]
+            }
+            let queryParameters: [String: Any] = ["with_genres": genreID]
+
+            return queryParameters
+        case (.kinopoisk, .upcomingMovies), (.kinopoisk, .popularMovies):
+            guard let genreName = genre.rawName,
+                  let defaultAllGenresName = DefaultValue.genre.rawName,
+                    genreName != defaultAllGenresName else {
+                return [:]
+            }
+            let queryParameters: [String: Any] = ["genres.name": genreName]
 
             return queryParameters
         default:

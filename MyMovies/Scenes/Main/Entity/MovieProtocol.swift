@@ -24,6 +24,7 @@ protocol MovieProtocol: Codable {
 protocol GenreProtocol: Codable {
     var id: Int? { get }
     var name: String? { get }
+    var rawName: String? { get }
 }
 
 protocol CoverProtocol: Codable {

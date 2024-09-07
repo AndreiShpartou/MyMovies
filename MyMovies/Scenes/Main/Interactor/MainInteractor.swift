@@ -10,9 +10,24 @@ import Foundation
 final class MainInteractor: MainInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol?
 
-    // Fetch collection of movie lists
+    // MARK: - UpcomingMovies
+    // Fetch collection of movie premiers
     func fetchUpcomingMovies() {
         NetworkManager.shared.fetchUpcomingMovies { [weak self] result in
+            switch result {
+            case .success(let movies):
+                self?.fetchMoviesDetails(for: movies) { detailedMovies in
+                    self?.presenter?.didFetchUpcomingMovies(detailedMovies)
+                }
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    // Fetch collection of movie premiers filtered by genre
+    func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
+        NetworkManager.shared.fetchUpcomingMoviesFilteredByGenre(genre) { [weak self] result in
             switch result {
             case .success(let movies):
                 self?.fetchMoviesDetails(for: movies) { detailedMovies in
@@ -36,9 +51,23 @@ final class MainInteractor: MainInteractorProtocol {
         }
     }
 
-    // MARK: - Fetch top movies
+    // MARK: - PopularMovies
     func fetchPopularMovies() {
         NetworkManager.shared.fetchPopularMovies { [weak self] result in
+            switch result {
+            case .success(let movies):
+                self?.fetchMoviesDetails(for: movies) { detailedMovies in
+                    self?.presenter?.didFetchPopularMovies(detailedMovies)
+                }
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    // Get popular movies filtered by genre
+    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
+        NetworkManager.shared.fetchPopularMoviesFilteredByGenre(genre) { [weak self] result in
             switch result {
             case .success(let movies):
                 self?.fetchMoviesDetails(for: movies) { detailedMovies in

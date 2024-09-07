@@ -29,6 +29,7 @@ class NetworkManager {
 
     private init() {}
 
+    // MARK: - Public
     //  Versatile request performer
     func performRequest<T: Codable>(
         for endpoint: Endpoint,
@@ -63,7 +64,7 @@ class NetworkManager {
             return
         }
         // Get default endpoint query parameters
-        var parameters = apiConfig.queryParameters(for: endpoint)
+        var parameters = apiConfig.defaultQueryParameters(for: endpoint)
         // Add passed parameters
         parameters.merge(queryParameters) { _, new in new }
 
@@ -79,8 +80,8 @@ class NetworkManager {
 
     // MARK: - UpcomingMovies
     // Get a list of movies that are being released soon.
-    func fetchUpcomingMovies(completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        performRequest(for: .upcomingMovies) { (result: Result<[Movie], Error>) in
+    func fetchUpcomingMovies(queryParameters: [String: Any] = [:], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: .upcomingMovies, queryParameters: queryParameters) { (result: Result<[Movie], Error>) in
             switch result {
             case .success(let movies):
                 completion(.success(movies))
@@ -92,8 +93,8 @@ class NetworkManager {
 
     // MARK: - PopularMovies
     // Get a list of movies ordered by popularity
-    func fetchPopularMovies(completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        performRequest(for: .popularMovies) { (result: Result<[Movie], Error>) in
+    func fetchPopularMovies(queryParameters: [String: Any] = [:], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: .popularMovies, queryParameters: queryParameters) { (result: Result<[Movie], Error>) in
             switch result {
             case .success(let movies):
                 completion(.success(movies))
@@ -101,6 +102,17 @@ class NetworkManager {
                 completion(.failure(error))
             }
         }
+    }
+
+    // MARK: - MoviesGenresFiltering
+    func fetchUpcomingMoviesFilteredByGenre(_ genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        let queryParameters = getGenreQueryParameters(for: genre, endpoint: .upcomingMovies)
+        fetchUpcomingMovies(queryParameters: queryParameters, completion: completion)
+    }
+
+    func fetchPopularMoviesFilteredByGenre(_ genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        let queryParameters = getGenreQueryParameters(for: genre, endpoint: .popularMovies)
+        fetchPopularMovies(queryParameters: queryParameters, completion: completion)
     }
 
     // MARK: - MovieDetails
@@ -129,6 +141,7 @@ class NetworkManager {
         }
     }
 
+    // MARK: - Private
     // MARK: - HandleResponse
     private func handleResponse<T: Codable>(
         _ response: AFDataResponse<Data>,
@@ -151,5 +164,10 @@ class NetworkManager {
         case .failure(let error):
             completion(.failure(error))
         }
+    }
+
+    // MARK: - GenreFiltering
+    private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
+        return apiConfig?.genreFilteringQueryParameters(for: genre, endpoint: endpoint) ?? [:]
     }
 }

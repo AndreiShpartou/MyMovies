@@ -32,7 +32,8 @@ final class MainPresenter: MainPresenterProtocol {
     }
 
     func didSelectGenre(_ genre: GenreProtocol) {
-        //
+        interactor.fetchUpcomingMoviesWithGenresFiltering(genre: genre)
+        interactor.fetchPopularMoviesWithGenresFiltering(genre: genre)
     }
 
     func didSelectUpcomingMovies(_ movies: MovieProtocol) {

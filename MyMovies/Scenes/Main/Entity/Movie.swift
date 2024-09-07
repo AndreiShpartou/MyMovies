@@ -62,7 +62,7 @@ struct Movie: MovieProtocol {
             return rawName?.capitalizingFirstLetter()
         }
 
-        private let rawName: String?
+        private(set) var rawName: String?
 
         init(id: Int? = nil, name: String?) {
             self.id = id
