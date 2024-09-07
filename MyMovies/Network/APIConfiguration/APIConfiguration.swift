@@ -98,13 +98,19 @@ struct APIConfiguration: APIConfigurationProtocol {
     }
 
     func url(for endpoint: Endpoint) -> URL? {
-        let path = getPath(for: endpoint)
+        guard let path = getPath(for: endpoint).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return nil
+        }
 
         return URL(string: "\(baseURL.absoluteString)\(path)")
     }
 
     func responseType(for endpoint: Endpoint) -> Codable.Type? {
         return getResponseType(for: endpoint, and: provider)
+    }
+
+    func queryParameters(for endpoint: Endpoint) -> [String: Any] {
+        return getQueryParameters(for: endpoint, and: provider)
     }
 
     func authorizationHeader() -> [String: String] {
@@ -135,6 +141,28 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBMovieResponse.self
         default:
             return nil
+        }
+    }
+
+    private func getQueryParameters(for endpoint: Endpoint, and provider: Provider) -> [String: Any] {
+        switch (provider, endpoint) {
+        case (.tmdb, .upcomingMovies):
+            // Get the date range for premier
+            let currentDate = Date()
+            guard let monthAheadDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate),
+                  let minDate = getNearestWednesday(from: currentDate),
+                  let maxDate = getNearestWednesday(from: monthAheadDate) else {
+                return [:]
+            }
+
+            let queryParameters: [String: Any] = [
+                "release_date.gte": formatDate(minDate),
+                "release_date.lte": formatDate(maxDate)
+            ]
+
+            return queryParameters
+        default:
+            return [:]
         }
     }
 

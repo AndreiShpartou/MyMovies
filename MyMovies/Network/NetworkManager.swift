@@ -32,7 +32,7 @@ class NetworkManager {
     //  Versatile request performer
     func performRequest<T: Codable>(
         for endpoint: Endpoint,
-        queryParameters: [String: Any]? = nil,
+        queryParameters: [String: Any] = [:],
         // For the case when an endpoint is non-active for current API provider
         defaultValue: T? = nil,
         completion: @escaping (Result<T, Error>) -> Void
@@ -62,13 +62,17 @@ class NetworkManager {
             completion(.failure(NetworkError.invalidResponseType))
             return
         }
+        // Get default endpoint query parameters
+        var parameters = apiConfig.queryParameters(for: endpoint)
+        // Add passed parameters
+        parameters.merge(queryParameters) { _, new in new }
 
         // Apply auth
         let headers = HTTPHeaders(apiConfig.authorizationHeader())
         // Apply additional headers
         // headers.headers.append(//)
 
-        AF.request(url, parameters: queryParameters, headers: headers).responseData { [weak self] response in
+        AF.request(url, parameters: parameters, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)
         }
     }
