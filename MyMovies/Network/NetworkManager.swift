@@ -104,12 +104,7 @@ class NetworkManager {
         }
     }
 
-    // MARK: - MoviesGenresFiltering
-    func fetchUpcomingMoviesFilteredByGenre(_ genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        let queryParameters = getGenreQueryParameters(for: genre, endpoint: .upcomingMovies)
-        fetchUpcomingMovies(queryParameters: queryParameters, completion: completion)
-    }
-
+    // MARK: - MoviesFilteredByGenre
     func fetchPopularMoviesFilteredByGenre(_ genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         let queryParameters = getGenreQueryParameters(for: genre, endpoint: .popularMovies)
         fetchPopularMovies(queryParameters: queryParameters, completion: completion)

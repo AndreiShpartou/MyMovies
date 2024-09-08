@@ -25,20 +25,6 @@ final class MainInteractor: MainInteractorProtocol {
         }
     }
 
-    // Fetch collection of movie premiers filtered by genre
-    func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
-        NetworkManager.shared.fetchUpcomingMoviesFilteredByGenre(genre) { [weak self] result in
-            switch result {
-            case .success(let movies):
-                self?.fetchMoviesDetails(for: movies) { detailedMovies in
-                    self?.presenter?.didFetchUpcomingMovies(detailedMovies)
-                }
-            case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
-            }
-        }
-    }
-
     // Fetch genres
     func fetchMovieGenres() {
         NetworkManager.shared.fetchGenres { [weak self] result in
