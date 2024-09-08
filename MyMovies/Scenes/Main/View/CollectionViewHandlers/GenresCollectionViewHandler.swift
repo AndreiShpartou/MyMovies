@@ -43,20 +43,26 @@ extension GenresCollectionViewHandler: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension GenresCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Deselect the previous item
-        if let previousIndex = selectedIndex {
-            collectionView.deselectItem(at: previousIndex, animated: false)
-            let previousCell = collectionView.cellForItem(at: previousIndex) as? GenreCollectionViewCell
-            previousCell?.setSelected(false)
+        // Skip the delegate notifying and network request during initial selection
+        guard let previousIndex = selectedIndex else {
+            selectedIndex = indexPath
+            updateSelectionRendering(collectionView, indexPath: indexPath, isSelected: true)
+            return
         }
 
+        // Deselect the previous item
+        collectionView.deselectItem(at: previousIndex, animated: false)
+        updateSelectionRendering(collectionView, indexPath: previousIndex, isSelected: false)
         // Select the new item
         selectedIndex = indexPath
-        let selectedCell = collectionView.cellForItem(at: indexPath) as? GenreCollectionViewCell
-        selectedCell?.setSelected(true)
-
+        updateSelectionRendering(collectionView, indexPath: indexPath, isSelected: true)
         // Notify the delegate
         let genre = genres[indexPath.row]
         delegate?.didSelectGenre(genre)
+    }
+
+    private func updateSelectionRendering(_ collectionView: UICollectionView, indexPath: IndexPath, isSelected: Bool) {
+        let cell = collectionView.cellForItem(at: indexPath) as? GenreCollectionViewCell
+        cell?.setSelected(isSelected)
     }
 }
