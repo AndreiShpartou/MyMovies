@@ -32,6 +32,7 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
 
         setupViewController()
+        // The initial data loading
         presenter?.viewDidLoad()
     }
 }
@@ -57,12 +58,12 @@ extension MainViewController: MainViewDelegate {
     }
 
     func didTapSeeAllUpcomingMoviesButton() {
-        // Handle "See All" action for movie list
+        // Handle "See All" action for an upcoming movie
         presenter?.didTapAllPopularMoviesButton()
     }
 
     func didTapSeeAllPopularMoviesButton() {
-        // Handle "See All" action for popular movies
+        // Handle "See All" action for a popular movie
         presenter?.didTapSeeAllPopularMoviesButton()
     }
 

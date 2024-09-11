@@ -9,30 +9,26 @@ import Foundation
 
 // MARK: - AppConfigurationManager
 final class AppConfigurationManager: AppConfigurationManagerProtocol {
-    static let shared = AppConfigurationManager(
-        networkHelper: NetworkHelper.shared,
-        plistLoader: PlistConfigurationLoader()
-    )
+    static let shared = AppConfigurationManager()
     // Main app configuration
     var appConfig: AppConfigurationProtocol?
     // Initial configuration helpers
-    private let networkHelper: NetworkHelperProtocol
-    private let plistLoader: PlistConfigurationLoaderProtocol
+    private var networkHelper: NetworkHelperProtocol?
+    private var plistLoader: PlistConfigurationLoaderProtocol?
 
-    private init(
-        networkHelper: NetworkHelperProtocol,
-        plistLoader: PlistConfigurationLoaderProtocol
-    ) {
+    private init() {}
+
+    // MARK: - Public
+    func configure(networkHelper: NetworkHelperProtocol, plistLoader: PlistConfigurationLoaderProtocol) {
         self.networkHelper = networkHelper
         self.plistLoader = plistLoader
     }
 
-    // MARK: - Public
     func setupConfiguration() {
         let group = DispatchGroup()
 
         group.enter()
-        networkHelper.getPublicIPAddress { [weak self] result in
+        networkHelper?.getPublicIPAddress { [weak self] result in
             switch result {
             case .success(let ip):
                 debugPrint("Public IP Address: \(ip)")
@@ -58,7 +54,7 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
     // Get country by IP
     private func fetchCountryAndSetupConfig(for ip: String, group: DispatchGroup) {
         group.enter()
-        networkHelper.getCountry(for: ip) { [weak self] result in
+        networkHelper?.getCountry(for: ip) { [weak self] result in
             switch result {
             case .success(let country):
                 let country = Country(rawValue: country) ?? .defaultCountry
@@ -77,7 +73,7 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
 
     // Choose configuration by country
     private func setupConfiguration(for country: Country) {
-        guard let apiConfig = plistLoader.loadConfiguration(for: country) else {
+        guard let apiConfig = plistLoader?.loadConfiguration(for: country) else {
             debugPrint("Failed to load configuration for country: \(country.rawValue)")
             return
         }

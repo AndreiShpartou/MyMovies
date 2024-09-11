@@ -18,6 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         // Configure common App settings & API settings depending on user location
+        AppConfigurationManager.shared.configure(networkHelper: NetworkHelper.shared, plistLoader: PlistConfigurationLoader())
         AppConfigurationManager.shared.setupConfiguration()
 
         window.rootViewController = RootRouter.createRootViewController()

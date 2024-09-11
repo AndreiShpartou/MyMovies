@@ -10,36 +10,28 @@ import UIKit
 final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     static let identifier = "PopularMoviesCollectionViewCell"
 
+    // Main view area
     private let imageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
         cornerRadius: 8
     )
-
     private let captionView: UIView = .createCommonView(cornderRadius: 5, backgroundColor: .primarySoft)
-
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.subhead,
         numberOfLines: 2,
         textColor: .textColorWhite
     )
-
+    // Genres
     private let genreLabel: UILabel = .createLabel(
         font: Typography.Medium.body,
         textColor: .textColorGrey
     )
-
-//    private let ratingView: UIView = .createCommonView(
-//        cornderRadius: 4,
-//        backgroundColor: .primarySoft
-//    )
     private lazy var ratingView: UIStackView = createUIStackView()
-
     private let ratingIconImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
         image: UIImage(systemName: "star.fill")?.withTintColor(.secondaryOrange, renderingMode: .alwaysOriginal)
     )
-
     private let ratingLabel: UILabel = .createLabel(
         font: Typography.SemiBold.subhead,
         textColor: .secondaryOrange
@@ -61,6 +53,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        imageView.kf.cancelDownloadTask()
         imageView.image = nil
         titleLabel.text = nil
         genreLabel.text = nil

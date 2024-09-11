@@ -16,17 +16,13 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
         clipsToBounds: true,
         cornerRadius: 15
     )
-
     private lazy var posterImageView: UIImageView = createPosterImageView()
-
     private lazy var captionView: UIView = createCaptionView()
-
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
         numberOfLines: 2,
         textColor: .textColorWhite
     )
-
     private let shortDescriptionLabel: UILabel = .createLabel(
         font: Typography.Medium.body,
         numberOfLines: 5,
@@ -49,7 +45,9 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        backdropImageView.kf.cancelDownloadTask()
         backdropImageView.image = nil
+        posterImageView.kf.cancelDownloadTask()
         posterImageView.image = nil
         titleLabel.text = nil
         shortDescriptionLabel.text = nil
@@ -63,20 +61,14 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: MovieProtocol) {
-        if let backdropURLString = movie.backdrop?.url,
-           let backdropURL = URL(string: backdropURLString) {
-            backdropImageView.kf.setImage(with: backdropURL)
-        } else {
-            backdropImageView.image = Asset.DefaultCovers.defaultBackdrop.image
-        }
-
-        if let posterURLString = movie.poster?.url,
-           let posterURL = URL(string: posterURLString) {
-            posterImageView.kf.setImage(with: posterURL)
-        } else {
-            posterImageView.image = Asset.DefaultCovers.defaultPoster.image
-        }
-
+        backdropImageView.kf.setImage(
+            with: URL(string: movie.backdrop?.url ?? ""),
+            placeholder: Asset.DefaultCovers.defaultBackdrop.image
+        )
+        posterImageView.kf.setImage(
+            with: URL(string: movie.poster?.url ?? ""),
+            placeholder: Asset.DefaultCovers.defaultPoster.image
+        )
         titleLabel.text = movie.title
         shortDescriptionLabel.text = movie.shortDescription
     }

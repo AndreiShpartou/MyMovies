@@ -11,14 +11,12 @@ import SnapKit
 final class MainView: UIView, MainViewProtocol {
     weak var delegate: MainViewDelegate? {
         didSet {
-            upcomingMoviesCollectionViewHandler.delegate = delegate
-            genresCollectionViewHandler.delegate = delegate
-            popularMoviesCollectionViewHandler.delegate = delegate
+            updateDelegates()
         }
     }
     var presenter: MainPresenterProtocol?
 
-    // MARK: - Properties
+    // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     // User greeting
@@ -32,8 +30,13 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Upcoming"
     )
-    private lazy var seeAllUpcomingMoviesButton: UIButton = createSeeAllButton()
-    private lazy var upcomingMoviesCollectionView: UICollectionView = createUpcomingMoviesCollectionView()
+    private lazy var seeAllUpcomingMoviesButton: UIButton = createSeeAllButton(action: #selector(didTapSeeAllUpcomingMoviesButton))
+    private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
+        // overridden in the UpcomingMoviesCollectionViewHandler
+        itemSize: CGSize(width: 50, height: 50),
+        cellType: UpcomingMoviesCollectionViewCell.self,
+        reuseIdentifier: "UpcomingMoviesCollectionViewCell"
+    )
     private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
 
@@ -43,7 +46,11 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Genres"
     )
-    private lazy var genresCollectionView: UICollectionView = createGenresCollectionView()
+    private let genresCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 100, height: 40),
+        cellType: GenreCollectionViewCell.self,
+        reuseIdentifier: "GenreCollectionViewCell"
+    )
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
@@ -51,8 +58,12 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Most popular"
     )
-    private lazy var seeAllPopularMoviesButton: UIButton = createSeeAllButton()
-    private lazy var popularMoviesCollectionView: UICollectionView = createPopularMoviesCollectionView()
+    private lazy var seeAllPopularMoviesButton: UIButton = createSeeAllButton(action: #selector(didTapSeeAllPopularMoviesButton))
+    private let popularMoviesCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 150, height: 300),
+        cellType: PopularMoviesCollectionViewCell.self,
+        reuseIdentifier: "PopularMoviesCollectionViewCell"
+    )
     private lazy var popularMoviesCollectionViewHandler = PopularMoviesCollectionViewHandler()
 
     // MARK: - Init
@@ -90,14 +101,7 @@ final class MainView: UIView, MainViewProtocol {
 
     func scrollToUpcomingMovieItem(_ index: Int) {
         upComingMoviesPageControl.currentPage = index
-
-        // Update the images for the page indicators
-        let unselected = Asset.PageControlIndicators.unselected.image
-        let selected = Asset.PageControlIndicators.selected.image
-        for pageIndex in 0..<upComingMoviesPageControl.numberOfPages {
-            upComingMoviesPageControl.setIndicatorImage(unselected, forPage: pageIndex)
-        }
-        upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
+        updatePageControlImages(index: index)
     }
 
     func showError(error: Error) {
@@ -130,7 +134,6 @@ extension MainView {
         searchBarContainerView.addSubviews(searchBar)
 
         setupHandlers()
-        setupTargets()
     }
 
     private func setupHandlers() {
@@ -145,11 +148,6 @@ extension MainView {
         popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
         // Scroll
         scrollView.delegate = self
-    }
-
-    private func setupTargets() {
-        seeAllUpcomingMoviesButton.addTarget(self, action: #selector(didTapSeeAllUpcomingMoviesButton), for: .touchUpInside)
-        seeAllPopularMoviesButton.addTarget(self, action: #selector(didTapSeeAllPopularMoviesButton), for: .touchUpInside)
     }
 
     private func setupAdditionalDefaultPreferences() {
@@ -178,6 +176,12 @@ extension MainView {
         upcomingMoviesCollectionView.setContentOffset(CGPoint(x: offset, y: 0), animated: false)
         scrollToUpcomingMovieItem(currentPage)
     }
+
+    private func updateDelegates() {
+        upcomingMoviesCollectionViewHandler.delegate = delegate
+        genresCollectionViewHandler.delegate = delegate
+        popularMoviesCollectionViewHandler.delegate = delegate
+    }
 }
 
 // MARK: - ActionMethods
@@ -195,57 +199,13 @@ extension MainView {
 
 // MARK: - Helpers
 extension MainView {
-    private func createSeeAllButton() -> UIButton {
+    private func createSeeAllButton(action: Selector) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("See All", for: .normal)
         button.setTitleColor(.primaryBlueAccent, for: .normal)
+        button.addTarget(self, action: action, for: .touchUpInside)
 
         return button
-    }
-
-    private func createCollectionView(
-        itemSize: CGSize,
-        cellType: UICollectionViewCell.Type,
-        reuseIdentifier: String,
-        minimumLineSpacing: CGFloat = 8
-    ) -> UICollectionView {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = minimumLineSpacing
-        layout.itemSize = itemSize
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.decelerationRate = .fast
-        collectionView.register(cellType, forCellWithReuseIdentifier: reuseIdentifier)
-
-        return collectionView
-    }
-
-    private func createUpcomingMoviesCollectionView() -> UICollectionView {
-        return createCollectionView(
-            // overridden in the UpcomingMoviesCollectionViewHandler
-            itemSize: CGSize(width: 50, height: 50),
-            cellType: UpcomingMoviesCollectionViewCell.self,
-            reuseIdentifier: "UpcomingMoviesCollectionViewCell"
-        )
-    }
-
-    private func createGenresCollectionView() -> UICollectionView {
-        return createCollectionView(
-            itemSize: CGSize(width: 100, height: 40),
-            cellType: GenreCollectionViewCell.self,
-            reuseIdentifier: "GenreCollectionViewCell"
-        )
-    }
-
-    private func createPopularMoviesCollectionView() -> UICollectionView {
-        return createCollectionView(
-            itemSize: CGSize(width: 150, height: 300),
-            cellType: PopularMoviesCollectionViewCell.self,
-            reuseIdentifier: "PopularMoviesCollectionViewCell"
-        )
     }
 
     private func createUpcomingMoviesPageControl() -> UIPageControl {
@@ -256,6 +216,16 @@ extension MainView {
         pageControl.isUserInteractionEnabled = false
 
         return pageControl
+    }
+
+    private func updatePageControlImages(index: Int) {
+        // Update images for page indicators
+        let unselected = Asset.PageControlIndicators.unselected.image
+        let selected = Asset.PageControlIndicators.selected.image
+        for pageIndex in 0..<upComingMoviesPageControl.numberOfPages {
+            upComingMoviesPageControl.setIndicatorImage(unselected, forPage: pageIndex)
+        }
+        upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
     }
 }
 

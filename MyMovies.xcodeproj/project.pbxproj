@@ -98,19 +98,16 @@
 		6CC604A92C55759300241EF2 /* MovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604A82C55759300241EF2 /* MovieListInteractor.swift */; };
 		6CC604AB2C5575A800241EF2 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604AA2C5575A800241EF2 /* MovieListViewController.swift */; };
 		6CC604AD2C5575B400241EF2 /* MovieListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604AC2C5575B400241EF2 /* MovieListView.swift */; };
-		6CC604AF2C5578F900241EF2 /* MovieListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604AE2C5578F900241EF2 /* MovieListBuilder.swift */; };
 		6CC604B12C5579D800241EF2 /* PopularMoviesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604B02C5579D800241EF2 /* PopularMoviesRouter.swift */; };
 		6CC604B32C557A1E00241EF2 /* PopularMoviesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604B22C557A1E00241EF2 /* PopularMoviesPresenter.swift */; };
 		6CC604B52C557A4300241EF2 /* PopularMoviesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604B42C557A4300241EF2 /* PopularMoviesInteractor.swift */; };
 		6CC604B72C557A7600241EF2 /* PopularMoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604B62C557A7600241EF2 /* PopularMoviesView.swift */; };
 		6CC604B92C557A9800241EF2 /* PopularMoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604B82C557A9800241EF2 /* PopularMoviesViewController.swift */; };
-		6CC604BB2C557B3100241EF2 /* PopularMoviesBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604BA2C557B3100241EF2 /* PopularMoviesBuilder.swift */; };
 		6CC604BD2C557B7300241EF2 /* MovieDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604BC2C557B7300241EF2 /* MovieDetailsRouter.swift */; };
 		6CC604BF2C557BA800241EF2 /* MovieDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604BE2C557BA800241EF2 /* MovieDetailsPresenter.swift */; };
 		6CC604C12C557BFA00241EF2 /* MovieDetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604C02C557BFA00241EF2 /* MovieDetailsInteractor.swift */; };
 		6CC604C32C557C2500241EF2 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604C22C557C2500241EF2 /* MovieDetailsViewController.swift */; };
 		6CC604C52C557C3800241EF2 /* MovieDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604C42C557C3800241EF2 /* MovieDetailsView.swift */; };
-		6CC604C72C557D0000241EF2 /* MovieDetailsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604C62C557D0000241EF2 /* MovieDetailsBuilder.swift */; };
 		6CC604C92C557DCC00241EF2 /* WishlistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604C82C557DCC00241EF2 /* WishlistRouter.swift */; };
 		6CC604CB2C557E0B00241EF2 /* WishlistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604CA2C557E0B00241EF2 /* WishlistPresenter.swift */; };
 		6CC604CD2C557E8800241EF2 /* WishlistInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604CC2C557E8800241EF2 /* WishlistInteractor.swift */; };
@@ -224,19 +221,16 @@
 		6CC604A82C55759300241EF2 /* MovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListInteractor.swift; sourceTree = "<group>"; };
 		6CC604AA2C5575A800241EF2 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		6CC604AC2C5575B400241EF2 /* MovieListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListView.swift; sourceTree = "<group>"; };
-		6CC604AE2C5578F900241EF2 /* MovieListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListBuilder.swift; sourceTree = "<group>"; };
 		6CC604B02C5579D800241EF2 /* PopularMoviesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesRouter.swift; sourceTree = "<group>"; };
 		6CC604B22C557A1E00241EF2 /* PopularMoviesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesPresenter.swift; sourceTree = "<group>"; };
 		6CC604B42C557A4300241EF2 /* PopularMoviesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesInteractor.swift; sourceTree = "<group>"; };
 		6CC604B62C557A7600241EF2 /* PopularMoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesView.swift; sourceTree = "<group>"; };
 		6CC604B82C557A9800241EF2 /* PopularMoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesViewController.swift; sourceTree = "<group>"; };
-		6CC604BA2C557B3100241EF2 /* PopularMoviesBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesBuilder.swift; sourceTree = "<group>"; };
 		6CC604BC2C557B7300241EF2 /* MovieDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsRouter.swift; sourceTree = "<group>"; };
 		6CC604BE2C557BA800241EF2 /* MovieDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsPresenter.swift; sourceTree = "<group>"; };
 		6CC604C02C557BFA00241EF2 /* MovieDetailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsInteractor.swift; sourceTree = "<group>"; };
 		6CC604C22C557C2500241EF2 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		6CC604C42C557C3800241EF2 /* MovieDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsView.swift; sourceTree = "<group>"; };
-		6CC604C62C557D0000241EF2 /* MovieDetailsBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsBuilder.swift; sourceTree = "<group>"; };
 		6CC604C82C557DCC00241EF2 /* WishlistRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistRouter.swift; sourceTree = "<group>"; };
 		6CC604CA2C557E0B00241EF2 /* WishlistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistPresenter.swift; sourceTree = "<group>"; };
 		6CC604CC2C557E8800241EF2 /* WishlistInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistInteractor.swift; sourceTree = "<group>"; };
@@ -899,9 +893,6 @@
 			isa = PBXGroup;
 			children = (
 				6C7737362C563B6600E5F2CC /* SceneBuilder.swift */,
-				6CC604AE2C5578F900241EF2 /* MovieListBuilder.swift */,
-				6CC604BA2C557B3100241EF2 /* PopularMoviesBuilder.swift */,
-				6CC604C62C557D0000241EF2 /* MovieDetailsBuilder.swift */,
 			);
 			path = SceneBuilder;
 			sourceTree = "<group>";
@@ -1118,7 +1109,6 @@
 				6C98345C2C7606D300C6D368 /* TMDBMovieResponse.swift in Sources */,
 				6C59AF022C54F10D006A7BDB /* AppDelegate.swift in Sources */,
 				6C8338522C5CE504000D0399 /* MainInteractorProtocol.swift in Sources */,
-				6CC604C72C557D0000241EF2 /* MovieDetailsBuilder.swift in Sources */,
 				6CC604BD2C557B7300241EF2 /* MovieDetailsRouter.swift in Sources */,
 				6C8338782C5D0778000D0399 /* WishlistViewProtocol.swift in Sources */,
 				6CA8F69A2C6668900090BC8C /* ImageURLBuilder.swift in Sources */,
@@ -1130,7 +1120,6 @@
 				6CC604BF2C557BA800241EF2 /* MovieDetailsPresenter.swift in Sources */,
 				6C83387E2C5D07B3000D0399 /* WishlistRouterProtocol.swift in Sources */,
 				6CC604A92C55759300241EF2 /* MovieListInteractor.swift in Sources */,
-				6CC604AF2C5578F900241EF2 /* MovieListBuilder.swift in Sources */,
 				6C59AF4C2C551AA0006A7BDB /* MainPresenter.swift in Sources */,
 				6C8338662C5D06A2000D0399 /* MovieListRouterProtocol.swift in Sources */,
 				6C59AF582C55204A006A7BDB /* SearchView.swift in Sources */,
@@ -1222,7 +1211,6 @@
 				6C4148382C74715E004D55BA /* ResponseMapperProtocol.swift in Sources */,
 				6C59AF5F2C553ACF006A7BDB /* MovieListRouter.swift in Sources */,
 				6CC604CF2C557EB100241EF2 /* WishlistView.swift in Sources */,
-				6CC604BB2C557B3100241EF2 /* PopularMoviesBuilder.swift in Sources */,
 				6CC604B32C557A1E00241EF2 /* PopularMoviesPresenter.swift in Sources */,
 				6C59AF462C551737006A7BDB /* MainViewController.swift in Sources */,
 				6C8338502C5CE430000D0399 /* MainViewProtocol.swift in Sources */,

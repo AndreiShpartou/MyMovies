@@ -43,22 +43,39 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width * 0.8, height: collectionView.bounds.height)
+        return calculateItemSize(for: collectionView)
     }
 }
 
 // MARK: - Section Heading
 extension UpcomingMoviesCollectionViewHandler: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let index = calculateTargetIndex(for: scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+        // Update the page control
+        delegate?.didScrollUpcomingMoviesItemTo(index)
+    }
+}
+
+// MARK: - Helpers
+extension UpcomingMoviesCollectionViewHandler {
+    private func calculateItemSize(for collectionView: UICollectionView) -> CGSize {
+        let itemWidth = collectionView.bounds.width * 0.8
+        let itemHeight = collectionView.bounds.height
+
+        return CGSize(width: itemWidth, height: itemHeight)
+    }
+
+    private func calculateTargetIndex(for scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) -> Int {
+        var index: CGFloat = 0
         guard let collectionView = scrollView as? UICollectionView,
               let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
-            return
+            return Int(index)
         }
 
         let targetOffset = targetContentOffset.pointee.x
         let collectionViewWidth = collectionView.bounds.width
         let itemWidth = collectionViewWidth * 0.8 + layout.minimumLineSpacing
-        var index: CGFloat = targetOffset / itemWidth // unrounded index
+        index = targetOffset / itemWidth // unrounded index
         let velocityX = velocity.x
         if velocity.x == 0 {
             // Set the same page
@@ -79,7 +96,7 @@ extension UpcomingMoviesCollectionViewHandler: UIScrollViewDelegate {
         newOffset = max(0, min(newOffset, collectionView.contentSize.width - collectionViewWidth))
         // Update the targetContentOffset to snap the nearest item
         targetContentOffset.pointee = CGPoint(x: newOffset, y: collectionView.contentOffset.y)
-        // Update the page control
-        delegate?.didScrollUpcomingMoviesItemTo(Int(index))
+
+        return Int(index)
     }
 }

@@ -8,4 +8,5 @@
 import UIKit
 
 protocol UserGreetingViewProtocol: UIView {
+    func configure(with username: String, avatarImage: UIImage?)
 }

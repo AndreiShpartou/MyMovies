@@ -34,11 +34,17 @@ class UserGreetingView: UIView, UserGreetingViewProtocol {
     }
 
     // MARK: - Public
+    func configure(with username: String, avatarImage: UIImage?) {
+        helloLabel.text = "Hello, \(username)"
+        avatarImageView.image = avatarImage ?? Asset.Avatars.avatarMock.image
+    }
 }
 
 // MARK: - Setup
 extension UserGreetingView {
     private func setupView() {
+        backgroundColor = .clear
+
         addSubviews(avatarImageView, helloLabel, favouriteButton)
     }
 }

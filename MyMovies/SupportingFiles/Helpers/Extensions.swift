@@ -32,6 +32,31 @@ extension UIView {
     }
 }
 
+// MARK: - UICollectionView
+extension UICollectionView {
+    static func createCommonCollectionView(
+        itemSize: CGSize,
+        cellType: UICollectionViewCell.Type,
+        reuseIdentifier: String,
+        scrollDirection: UICollectionView.ScrollDirection = .horizontal,
+        minimumLineSpacing: CGFloat = 8
+    ) -> UICollectionView {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = scrollDirection
+        layout.minimumLineSpacing = minimumLineSpacing
+        layout.itemSize = itemSize
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.decelerationRate = .fast
+        collectionView.register(cellType, forCellWithReuseIdentifier: reuseIdentifier)
+
+        return collectionView
+    }
+}
+
 // MARK: - UILabel
 extension UILabel {
     static func createLabel(
