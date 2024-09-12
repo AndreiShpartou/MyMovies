@@ -13,7 +13,7 @@ protocol MainPresenterProtocol: AnyObject {
     var router: MainRouterProtocol { get set }
 
     func viewDidLoad()
-    func didSelectUpcomingMovies(_ movies: MovieProtocol)
+    func didSelectUpcomingMovie(_ movie: MovieProtocol)
     func didSelectGenre(_ genre: GenreProtocol)
     func didSelectMovie(_ movie: MovieProtocol)
     func didTapAllPopularMoviesButton()

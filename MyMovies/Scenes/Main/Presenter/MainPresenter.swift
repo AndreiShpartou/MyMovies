@@ -8,7 +8,6 @@
 import Foundation
 
 final class MainPresenter: MainPresenterProtocol {
-
     weak var view: MainViewProtocol?
     var interactor: MainInteractorProtocol
     var router: MainRouterProtocol
@@ -22,8 +21,8 @@ final class MainPresenter: MainPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-        interactor.fetchUpcomingMovies()
         interactor.fetchMovieGenres()
+        interactor.fetchUpcomingMovies()
         interactor.fetchPopularMovies()
     }
 
@@ -35,7 +34,7 @@ final class MainPresenter: MainPresenterProtocol {
         interactor.fetchPopularMoviesWithGenresFiltering(genre: genre)
     }
 
-    func didSelectUpcomingMovies(_ movies: MovieProtocol) {
+    func didSelectUpcomingMovie(_ movie: MovieProtocol) {
         //
     }
 

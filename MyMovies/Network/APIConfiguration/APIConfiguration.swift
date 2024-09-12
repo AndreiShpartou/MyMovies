@@ -44,23 +44,19 @@ enum Provider: String {
 
 // MARK: - Endpoints
 enum Endpoint {
-    // Get a list of movies that are being released soon.
-    case upcomingMovies
+    // Get a list of movies by type
+    case movieList(type: MovieListType)
     // Get the list of official genres for movies
     case genres
-    // Get a list of movies ordered by popularity
-    case popularMovies
     // Get the movie details by ID
     case movieDetails(id: Int)
 
     var rawValue: String {
         switch self {
-        case .upcomingMovies:
-            return "upcomingMovies"
+        case .movieList(let type):
+            return type.rawValue
         case .genres:
             return "genres"
-        case .popularMovies:
-            return "popularMovies"
         case .movieDetails:
             return "movieDetails"
         }
@@ -137,9 +133,9 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBGenrePagedResponse.self
         case (.kinopoisk, .genres):
             return [KinopoiskMovieResponse.Genre].self
-        case (.tmdb, .upcomingMovies), (.tmdb, .popularMovies):
+        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
             return TMDBMoviesPagedResponse.self
-        case (.kinopoisk, .upcomingMovies), (.kinopoisk, .popularMovies):
+        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
@@ -150,7 +146,7 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     private func getQueryParameters(for endpoint: Endpoint, and provider: Provider) -> [String: Any] {
         switch (provider, endpoint) {
-        case (.tmdb, .upcomingMovies):
+        case (.tmdb, .movieList(type: .upcomingMovies)):
             // Get the date range for premier
             let currentDate = Date()
             guard let monthAheadDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate),
@@ -172,14 +168,14 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
         switch (provider, endpoint) {
-        case (.tmdb, .upcomingMovies), (.tmdb, .popularMovies):
+        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
             guard let genreID = genre.id else {
                 return [:]
             }
             let queryParameters: [String: Any] = ["with_genres": genreID]
 
             return queryParameters
-        case (.kinopoisk, .upcomingMovies), (.kinopoisk, .popularMovies):
+        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
             guard let genreName = genre.rawName,
                   let defaultAllGenresName = DefaultValue.genre.rawName,
                     genreName != defaultAllGenresName else {

@@ -8,17 +8,7 @@
 import Foundation
 import Alamofire
 
-// kinopoisk movie collections slug
-// popular-films - Популярные фильмы (category - Фильмы)
-// the_closest_releases - Ближайшие премьеры (category - Онлайн-кинотеатр)
-// hd-must-see - Фильмы, которые стоит посмотреть (category - Онлайн-кинотеатр)
-// top20of2023 - Топ-20 фильмов и сериалов 2023 года (category - Онлайн-кинотеатр)
-// top10-hd - Топ 10 в онлайн-кинотеатре (category - Онлайн-кинотеатр)
-// planned-to-watch-films - Рейтинг ожидаемых фильмов (category - Фильмы)
-// top500 - 500 лучших фильмов (category - Фильмы)
-// top250 - 250 лучших фильмов (category - Фильмы)
-
-class NetworkManager {
+class NetworkManager: NetworkManagerProtocol {
     static let shared = NetworkManager()
 
     var apiConfig: APIConfigurationProtocol? {
@@ -29,9 +19,71 @@ class NetworkManager {
 
     private init() {}
 
-    // MARK: - Public
+    // MARK: - FetchMovies
+    // Fetch list of movies by type
+    func fetchMovies(type: MovieListType, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        fetchMoviesWithParameters(type: type, completion: completion)
+    }
+
+    // MARK: - MovieDetails
+    // Get movie details for a specific movie
+    func fetchMovieDetails(for movie: MovieProtocol, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
+        performRequest(for: .movieDetails(id: movie.id), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
+            switch result {
+            case .success(let movie):
+                completion(.success(movie))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    // Get movie details for an array of movies
+    func fetchMoviesDetails(for movies: [MovieProtocol], completion: @escaping ([MovieProtocol]) -> Void) {
+        var detailedMovies = [MovieProtocol]()
+        let dispatchGroup = DispatchGroup()
+
+        movies.forEach { movie in
+            dispatchGroup.enter()
+            fetchMovieDetails(for: movie) { result in
+                switch result {
+                case .success(let detailedMovie):
+                    detailedMovies.append(detailedMovie)
+                case .failure:
+                    // TODO: Error handling
+                    detailedMovies.append(movie)
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            completion(detailedMovies)
+        }
+    }
+
+    // MARK: - MoviesFilteredByGenre
+    func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        let queryParameters = getGenreQueryParameters(for: genre, endpoint: type.endpoint)
+        fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
+    }
+
+    // MARK: - Genres
+    // Get the list of official genres for movies
+    func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
+        performRequest(for: .genres) { (result: Result<[Movie.Genre], Error>) in
+            switch result {
+            case .success(let genres):
+                completion(.success(genres))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    // MARK: - PerformRequest
     //  Versatile request performer
-    func performRequest<T: Codable>(
+    private func performRequest<T: Codable>(
         for endpoint: Endpoint,
         queryParameters: [String: Any] = [:],
         // For the case when an endpoint is non-active for current API provider
@@ -77,66 +129,6 @@ class NetworkManager {
             self?.handleResponse(response, ofType: responseType, completion: completion)
         }
     }
-
-    // MARK: - UpcomingMovies
-    // Get a list of movies that are being released soon.
-    func fetchUpcomingMovies(queryParameters: [String: Any] = [:], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        performRequest(for: .upcomingMovies, queryParameters: queryParameters) { (result: Result<[Movie], Error>) in
-            switch result {
-            case .success(let movies):
-                completion(.success(movies))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    // MARK: - PopularMovies
-    // Get a list of movies ordered by popularity
-    func fetchPopularMovies(queryParameters: [String: Any] = [:], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        performRequest(for: .popularMovies, queryParameters: queryParameters) { (result: Result<[Movie], Error>) in
-            switch result {
-            case .success(let movies):
-                completion(.success(movies))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    // MARK: - MoviesFilteredByGenre
-    func fetchPopularMoviesFilteredByGenre(_ genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        let queryParameters = getGenreQueryParameters(for: genre, endpoint: .popularMovies)
-        fetchPopularMovies(queryParameters: queryParameters, completion: completion)
-    }
-
-    // MARK: - MovieDetails
-    // Get movie details for a specific movie ID
-    func fetchMovieDetails(for movie: MovieProtocol, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
-        performRequest(for: .movieDetails(id: movie.id), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
-            switch result {
-            case .success(let movie):
-                completion(.success(movie))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    // MARK: - Genres
-    // Get the list of official genres for movies
-    func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
-        performRequest(for: .genres) { (result: Result<[Movie.Genre], Error>) in
-            switch result {
-            case .success(let genres):
-                completion(.success(genres))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    // MARK: - Private
     // MARK: - HandleResponse
     private func handleResponse<T: Codable>(
         _ response: AFDataResponse<Data>,
@@ -158,6 +150,18 @@ class NetworkManager {
 
         case .failure(let error):
             completion(.failure(error))
+        }
+    }
+
+    // MARK: - MoviesWithParameters
+    private func fetchMoviesWithParameters(type: MovieListType, parameters: [String: Any] = [:], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: type.endpoint, queryParameters: parameters) { (result: Result<[Movie], Error>) in
+            switch result {
+            case .success(let movies):
+                completion(.success(movies))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
 
