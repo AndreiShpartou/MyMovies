@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol PopularMoviesRouterProtocol: AnyObject {
-}
-
 class PopularMoviesRouter: PopularMoviesRouterProtocol {
     weak var viewController: UIViewController?
 }

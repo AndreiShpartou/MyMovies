@@ -7,9 +7,6 @@
 
 import Foundation
 
-protocol PopularMoviesPresenterProtocol: AnyObject {
-}
-
 class PopularMoviesPresenter: PopularMoviesPresenterProtocol {
     weak var view: PopularMoviesViewProtocol?
     var interactor: PopularMoviesInteractorProtocol?

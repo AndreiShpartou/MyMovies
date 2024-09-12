@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol SearchViewProtocol: AnyObject {
-}
-
 class SearchView: UIView {
     var presenter: SearchPresenterProtocol?
 
@@ -28,6 +25,7 @@ class SearchView: UIView {
 // MARK: - Setup
 extension SearchView {
     private func setupView() {
+        backgroundColor = .primaryBackground
     }
 }
 

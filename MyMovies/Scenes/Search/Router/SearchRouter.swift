@@ -7,9 +7,6 @@
 
 import UIKit
 
-protocol SearchRouterProtocol: AnyObject {
-}
-
 class SearchRouter: SearchRouterProtocol {
     weak var viewController: UIViewController?
 

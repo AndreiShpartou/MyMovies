@@ -16,9 +16,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+
+        // Configure common App settings & API settings depending on user location
+        AppConfigurationManager.shared.configure(networkHelper: NetworkHelper.shared, plistLoader: PlistConfigurationLoader())
+        AppConfigurationManager.shared.setupConfiguration()
+
         window.rootViewController = RootRouter.createRootViewController()
         window.makeKeyAndVisible()
-
         self.window = window
     }
 }

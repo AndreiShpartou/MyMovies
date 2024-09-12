@@ -7,13 +7,13 @@
 
 import UIKit
 
-final class MainViewController: UIViewController, MainViewProtocol {
+final class MainViewController: UIViewController {
     var presenter: MainPresenterProtocol?
 
-    private let mainView: UIView
+    private let mainView: MainViewProtocol
 
     // MARK: - Init
-    init(mainView: UIView) {
+    init(mainView: MainViewProtocol) {
         self.mainView = mainView
 
         super.init(nibName: nil, bundle: nil)
@@ -30,13 +30,44 @@ final class MainViewController: UIViewController, MainViewProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupViewController()
+        // The initial data loading
+        presenter?.viewDidLoad()
     }
 }
 
 // MARK: - Setup
 extension MainViewController {
     private func setupViewController() {
-        title = "Home"
+        mainView.delegate = self
+    }
+}
+
+// MARK: - MainViewDelegate
+extension MainViewController: MainViewDelegate {
+
+    func didSelectGenre(_ genre: GenreProtocol) {
+        // Handle genre selection
+        presenter?.didSelectGenre(genre)
+    }
+
+    func didSelectMovie(_ movie: MovieProtocol) {
+        // Handle popular movie selection
+        presenter?.didSelectMovie(movie)
+    }
+
+    func didTapSeeAllUpcomingMoviesButton() {
+        // Handle "See All" action for an upcoming movie
+        presenter?.didTapAllPopularMoviesButton()
+    }
+
+    func didTapSeeAllPopularMoviesButton() {
+        // Handle "See All" action for a popular movie
+        presenter?.didTapSeeAllPopularMoviesButton()
+    }
+
+    func didScrollUpcomingMoviesItemTo(_ index: Int) {
+        mainView.scrollToUpcomingMovieItem(index)
     }
 }

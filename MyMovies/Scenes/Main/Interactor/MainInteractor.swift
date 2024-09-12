@@ -7,9 +7,72 @@
 
 import Foundation
 
-protocol MainInteractorProtocol: AnyObject {
-}
+final class MainInteractor: MainInteractorProtocol {
+    weak var presenter: MainInteractorOutputProtocol?
 
-class MainInteractor: MainInteractorProtocol {
-    weak var presenter: MainPresenterProtocol?
+    private let networkManager: NetworkManagerProtocol
+
+    // MARK: - Init
+    init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+        self.networkManager = networkManager
+    }
+
+    // MARK: - UpcomingMovies
+    // Fetch collection of movie premiers
+    func fetchUpcomingMovies() {
+        fetchMovies(type: .upcomingMovies)
+    }
+
+    // MARK: - PopularMovies
+    func fetchPopularMovies() {
+        fetchMovies(type: .popularMovies)
+    }
+
+    // Get popular movies filtered by genre
+    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
+        networkManager.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
+            self?.handleMovieFetchResult(result, fetchType: .popularMovies)
+        }
+    }
+
+    // MARK: - Genres
+    // Fetch genres
+    func fetchMovieGenres() {
+        networkManager.fetchGenres { [weak self] result in
+            switch result {
+            case .success(let genres):
+                self?.presenter?.didFetchMovieGenres(genres)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    // MARK: - Private
+    private func fetchMovies(type: MovieListType) {
+        networkManager.fetchMovies(type: type) { [weak self] result in
+            self?.handleMovieFetchResult(result, fetchType: type)
+        }
+    }
+
+    // Centralized handling of movie fetch results
+    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
+        switch result {
+        case .success(let movies):
+            networkManager.fetchMoviesDetails(for: movies) { [weak self] detailedMovies in
+                self?.presentMovies(detailedMovies, for: fetchType)
+            }
+        case .failure(let error):
+            presenter?.didFailToFetchData(with: error)
+        }
+    }
+
+    private func presentMovies(_ movies: [MovieProtocol], for type: MovieListType) {
+        switch type {
+        case .upcomingMovies:
+            presenter?.didFetchUpcomingMovies(movies)
+        case .popularMovies:
+            presenter?.didFetchPopularMovies(movies)
+        }
+    }
 }

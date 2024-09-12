@@ -7,8 +7,6 @@
 
 import UIKit
 
-protocol ProfileViewProtocol: AnyObject {}
-
 class ProfileView: UIView {
     var presenter: ProfilePresenterProtocol?
 
@@ -28,6 +26,7 @@ class ProfileView: UIView {
 // MARK: - Setup
 extension ProfileView {
     private func setupView() {
+        backgroundColor = .primaryBackground
     }
 }
 

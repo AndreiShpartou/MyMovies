@@ -1,0 +1,196 @@
+//
+//  APIConfiguration.swift
+//  MyMovies
+//
+//  Created by Andrei Shpartou on 19/08/2024.
+//
+
+import Foundation
+
+// MARK: - APIConfigModels
+// User network country
+enum Country: String {
+    case russia = "RU"
+    case belarus = "BY"
+    case unitedKingdom = "GB"
+    case networkError = "networkError"
+    case defaultCountry = "default"
+
+    // Get Info.plist config property name for country
+    var configPlistName: String {
+        switch self {
+        case .russia, .belarus, .networkError:
+            return "RU_MovieAPI"
+        default:
+            return "EN_MovieAPI"
+        }
+    }
+
+    var language: String {
+        switch self {
+        case .russia, .belarus, .networkError:
+            return "RU"
+        default:
+            return "EN"
+        }
+    }
+}
+
+// API provider
+enum Provider: String {
+    case tmdb
+    case kinopoisk
+}
+
+// MARK: - Endpoints
+enum Endpoint {
+    // Get a list of movies by type
+    case movieList(type: MovieListType)
+    // Get the list of official genres for movies
+    case genres
+    // Get the movie details by ID
+    case movieDetails(id: Int)
+
+    var rawValue: String {
+        switch self {
+        case .movieList(let type):
+            return type.rawValue
+        case .genres:
+            return "genres"
+        case .movieDetails:
+            return "movieDetails"
+        }
+    }
+
+    var pathParameters: String {
+        switch self {
+        case .movieDetails(let id):
+            return "\(id)"
+        default:
+            return ""
+        }
+    }
+}
+
+// MARK: - APIConfiguration
+struct APIConfiguration: APIConfigurationProtocol {
+    private let baseURL: URL
+    private let authHeader: [String: String]
+    private let endpoints: [String: String]
+    private let provider: Provider
+    private let language: String
+
+    init(baseURL: URL, authHeader: [String: String], endpoints: [String: String], provider: Provider, language: String) {
+        self.baseURL = baseURL
+        self.authHeader = authHeader
+        self.endpoints = endpoints
+        self.provider = provider
+        self.language = language
+    }
+
+    // MARK: - Public
+    func isActive(endpoint: Endpoint) -> Bool {
+        return isActive(endpoint: endpoint, for: provider)
+    }
+
+    func url(for endpoint: Endpoint) -> URL? {
+        guard let path = getPath(for: endpoint).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return nil
+        }
+
+        return URL(string: "\(baseURL.absoluteString)\(path)")
+    }
+
+    func responseType(for endpoint: Endpoint) -> Codable.Type? {
+        return getResponseType(for: endpoint, and: provider)
+    }
+
+    func defaultQueryParameters(for endpoint: Endpoint) -> [String: Any] {
+        return getQueryParameters(for: endpoint, and: provider)
+    }
+
+    func genreFilteringQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
+        return getGenreQueryParameters(for: genre, endpoint: endpoint, and: provider)
+    }
+
+    func authorizationHeader() -> [String: String] {
+        return authHeader
+    }
+
+    // MARK: - Private
+    private func isActive(endpoint: Endpoint, for provider: Provider) -> Bool {
+        switch (provider, endpoint) {
+        case (.kinopoisk, .movieDetails):
+            return false
+        default:
+            return true
+        }
+    }
+
+    private func getResponseType(for endpoint: Endpoint, and provider: Provider) -> Codable.Type? {
+        switch (provider, endpoint) {
+        case (.tmdb, .genres):
+            return TMDBGenrePagedResponse.self
+        case (.kinopoisk, .genres):
+            return [KinopoiskMovieResponse.Genre].self
+        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
+            return TMDBMoviesPagedResponse.self
+        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
+            return KinopoiskMoviesPagedResponse.self
+        case (.tmdb, .movieDetails):
+            return TMDBMovieResponse.self
+        default:
+            return nil
+        }
+    }
+
+    private func getQueryParameters(for endpoint: Endpoint, and provider: Provider) -> [String: Any] {
+        switch (provider, endpoint) {
+        case (.tmdb, .movieList(type: .upcomingMovies)):
+            // Get the date range for premier
+            let currentDate = Date()
+            guard let monthAheadDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate),
+                  let minDate = getNearestWednesday(from: currentDate),
+                  let maxDate = getNearestWednesday(from: monthAheadDate) else {
+                return [:]
+            }
+
+            let queryParameters: [String: Any] = [
+                "release_date.gte": formatDate(minDate),
+                "release_date.lte": formatDate(maxDate)
+            ]
+
+            return queryParameters
+        default:
+            return [:]
+        }
+    }
+
+    private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
+        switch (provider, endpoint) {
+        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
+            guard let genreID = genre.id else {
+                return [:]
+            }
+            let queryParameters: [String: Any] = ["with_genres": genreID]
+
+            return queryParameters
+        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
+            guard let genreName = genre.rawName,
+                  let defaultAllGenresName = DefaultValue.genre.rawName,
+                    genreName != defaultAllGenresName else {
+                return [:]
+            }
+            let queryParameters: [String: Any] = ["genres.name": genreName]
+
+            return queryParameters
+        default:
+            return [:]
+        }
+    }
+
+    private func getPath(for endpoint: Endpoint) -> String {
+        let endpointPath = endpoints[endpoint.rawValue] ?? ""
+        return "\(endpointPath)\(endpoint.pathParameters)"
+    }
+}

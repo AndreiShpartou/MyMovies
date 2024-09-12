@@ -7,7 +7,11 @@
 
 import UIKit
 
-enum WishlistBuilder {
+protocol WishBuilderProtocol: AnyObject {
+    static func build() -> UIViewController
+}
+
+final class WishlistBuilder: WishBuilderProtocol {
     static func build() -> UIViewController {
         return WishlistViewController()
     }
