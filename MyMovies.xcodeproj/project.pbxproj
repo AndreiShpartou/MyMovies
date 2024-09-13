@@ -20,6 +20,7 @@
 		6C4148402C74ED45004D55BA /* KinopoiskMoviesPagedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C41483F2C74ED45004D55BA /* KinopoiskMoviesPagedResponse.swift */; };
 		6C424F0F2C9417D00003F487 /* MovieListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C424F0E2C9417D00003F487 /* MovieListCollectionViewCell.swift */; };
 		6C424F112C94181E0003F487 /* MovieListCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C424F102C94181E0003F487 /* MovieListCollectionViewHandler.swift */; };
+		6C424F142C942A440003F487 /* RatingGeneralStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C424F132C942A440003F487 /* RatingGeneralStackView.swift */; };
 		6C59AF022C54F10D006A7BDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59AF012C54F10D006A7BDB /* AppDelegate.swift */; };
 		6C59AF042C54F10D006A7BDB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C59AF032C54F10D006A7BDB /* SceneDelegate.swift */; };
 		6C59AF0B2C54F10E006A7BDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C59AF0A2C54F10E006A7BDB /* Assets.xcassets */; };
@@ -144,6 +145,7 @@
 		6C41483F2C74ED45004D55BA /* KinopoiskMoviesPagedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KinopoiskMoviesPagedResponse.swift; sourceTree = "<group>"; };
 		6C424F0E2C9417D00003F487 /* MovieListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListCollectionViewCell.swift; sourceTree = "<group>"; };
 		6C424F102C94181E0003F487 /* MovieListCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListCollectionViewHandler.swift; sourceTree = "<group>"; };
+		6C424F132C942A440003F487 /* RatingGeneralStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingGeneralStackView.swift; sourceTree = "<group>"; };
 		6C59AEFE2C54F10D006A7BDB /* MyMovies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyMovies.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C59AF012C54F10D006A7BDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C59AF032C54F10D006A7BDB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -325,6 +327,16 @@
 			children = (
 			);
 			path = CollecctionViewHandlers;
+			sourceTree = "<group>";
+		};
+		6C424F122C9428070003F487 /* CustomTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				6C7CD0E42C5F593700C71AA1 /* CustomTabBar.swift */,
+				6C7CD0E22C5F4E5700C71AA1 /* CustomTabBarItem.swift */,
+				6C7CD0E62C5F742600C71AA1 /* CustomTabBarController.swift */,
+			);
+			path = CustomTabBar;
 			sourceTree = "<group>";
 		};
 		6C59AEF52C54F10D006A7BDB = {
@@ -952,9 +964,8 @@
 		6C916C412C63D21000A9F091 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6C7CD0E42C5F593700C71AA1 /* CustomTabBar.swift */,
-				6C7CD0E22C5F4E5700C71AA1 /* CustomTabBarItem.swift */,
-				6C7CD0E62C5F742600C71AA1 /* CustomTabBarController.swift */,
+				6C424F132C942A440003F487 /* RatingGeneralStackView.swift */,
+				6C424F122C9428070003F487 /* CustomTabBar */,
 				6C424F0B2C9417490003F487 /* CollectionViewCells */,
 				6C424F0C2C9417530003F487 /* CollecctionViewHandlers */,
 			);
@@ -1149,6 +1160,7 @@
 				6C8338662C5D06A2000D0399 /* MovieListRouterProtocol.swift in Sources */,
 				6C59AF582C55204A006A7BDB /* SearchView.swift in Sources */,
 				6CCC4F7B2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift in Sources */,
+				6C424F142C942A440003F487 /* RatingGeneralStackView.swift in Sources */,
 				6C74C91B2C738D200035BD14 /* NetworkHelperProtocol.swift in Sources */,
 				6C41483C2C74C3FA004D55BA /* MovieProtocol.swift in Sources */,
 				6C8338642C5D068D000D0399 /* MovieListPresenterProtocol.swift in Sources */,

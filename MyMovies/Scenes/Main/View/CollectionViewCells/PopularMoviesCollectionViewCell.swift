@@ -28,15 +28,8 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
         font: Typography.Medium.body,
         textColor: .textColorGrey
     )
-    private lazy var ratingView: UIStackView = createUIStackView()
-    private let ratingIconImageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFit,
-        image: UIImage(systemName: "star.fill")?.withTintColor(.secondaryOrange, renderingMode: .alwaysOriginal)
-    )
-    private let ratingLabel: UILabel = .createLabel(
-        font: Typography.SemiBold.subhead,
-        textColor: .secondaryOrange
-    )
+    // Rating
+    private let ratingView = RatingGeneralStackView()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -58,7 +51,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
         titleLabel.text = nil
         genreLabel.text = nil
-        ratingLabel.text = nil
+        ratingView.ratingLabel.text = nil
     }
 
     // MARK: - Public
@@ -68,7 +61,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
 
         titleLabel.text = movie.title
         genreLabel.text = movie.genres.first?.name
-        ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
+        ratingView.ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
     }
 }
 
@@ -80,25 +73,7 @@ extension PopularMoviesCollectionViewCell {
             captionView,
             ratingView
         )
-        ratingView.addArrangedSubview(ratingIconImageView)
-        ratingView.addArrangedSubview(ratingLabel)
         captionView.addSubviews(titleLabel, genreLabel)
-    }
-}
-
-// MARK: - Helpers
-extension PopularMoviesCollectionViewCell {
-    private func createUIStackView() -> UIStackView {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 4
-
-        stackView.backgroundColor = .primarySoft.withAlphaComponent(0.8)
-        stackView.layer.cornerRadius = 8
-
-        return stackView
     }
 }
 
@@ -133,11 +108,6 @@ extension PopularMoviesCollectionViewCell {
             make.top.equalToSuperview().offset(8)
             make.width.equalTo(50)
             make.height.equalTo(20)
-        }
-
-        ratingIconImageView.snp.makeConstraints { make in
-            make.height.equalTo(ratingLabel.snp.height)
-            make.width.equalTo(ratingIconImageView.snp.height)
         }
     }
 }
