@@ -11,4 +11,8 @@ class MovieListPresenter: MovieListPresenterProtocol {
     weak var view: MovieListViewProtocol?
     var interactor: MovieListInteractorProtocol?
     var router: MovieListRouterProtocol?
+
+    func viewDidLoad() {
+        //
+    }
 }

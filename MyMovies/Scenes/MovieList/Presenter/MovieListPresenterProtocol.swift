@@ -7,4 +7,6 @@
 
 import Foundation
 
-protocol MovieListPresenterProtocol: AnyObject {}
+protocol MovieListPresenterProtocol: AnyObject {
+    func viewDidLoad()
+}

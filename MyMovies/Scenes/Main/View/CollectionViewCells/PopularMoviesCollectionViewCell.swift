@@ -10,6 +10,7 @@ import UIKit
 final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     static let identifier = "PopularMoviesCollectionViewCell"
 
+    // MARK: - UIComponents
     // Main view area
     private let imageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,

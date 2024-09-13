@@ -35,7 +35,7 @@ final class MainView: UIView, MainViewProtocol {
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
         cellType: UpcomingMoviesCollectionViewCell.self,
-        reuseIdentifier: "UpcomingMoviesCollectionViewCell"
+        reuseIdentifier: UpcomingMoviesCollectionViewCell.identifier
     )
     private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
@@ -49,7 +49,7 @@ final class MainView: UIView, MainViewProtocol {
     private let genresCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
         cellType: GenreCollectionViewCell.self,
-        reuseIdentifier: "GenreCollectionViewCell"
+        reuseIdentifier: GenreCollectionViewCell.identifier
     )
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     // Popular movies section
@@ -62,7 +62,7 @@ final class MainView: UIView, MainViewProtocol {
     private let popularMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellType: PopularMoviesCollectionViewCell.self,
-        reuseIdentifier: "PopularMoviesCollectionViewCell"
+        reuseIdentifier: PopularMoviesCollectionViewCell.identifier
     )
     private lazy var popularMoviesCollectionViewHandler = PopularMoviesCollectionViewHandler()
 

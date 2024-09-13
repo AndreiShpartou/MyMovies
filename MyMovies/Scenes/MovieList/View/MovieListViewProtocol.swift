@@ -5,6 +5,12 @@
 //  Created by Andrei Shpartou on 02/08/2024.
 //
 
-import Foundation
+import UIKit
 
-protocol MovieListViewProtocol: AnyObject {}
+protocol MovieListViewProtocol: UIView {
+    var delegate: MovieListViewDelegate? { get set }
+    var presenter: MovieListPresenterProtocol? { get set }
+}
+
+protocol MovieListViewDelegate: AnyObject {
+}

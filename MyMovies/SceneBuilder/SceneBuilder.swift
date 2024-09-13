@@ -11,6 +11,7 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildHomeScene() -> UIViewController
     static func buildSearchScene() -> UIViewController
     static func buildProfileScene() -> UIViewController
+    static func buildMovieListScene() -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -63,5 +64,23 @@ final class SceneBuilder: SceneBuilderProtocol {
         navigationController.isNavigationBarHidden = true
 
         return navigationController
+    }
+
+    static func buildMovieListScene() -> UIViewController {
+//        let view = MainView()
+//        let viewController = MainViewController(mainView: view)
+//        let router = MainRouter(viewController: viewController)
+//        let interactor = MainInteractor()
+//        let presenter = MainPresenter(view: view, interactor: interactor, router: router)
+//
+//        view.presenter = presenter
+//        viewController.presenter = presenter
+//        interactor.presenter = presenter
+//
+//        let navigationController = UINavigationController(rootViewController: viewController)
+//        navigationController.isNavigationBarHidden = true
+//
+//        return navigationController
+        return UIViewController()
     }
 }

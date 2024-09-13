@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol MainViewProtocol: UIView, AnyObject {
+protocol MainViewProtocol: UIView {
     var presenter: MainPresenterProtocol? { get set }
     var delegate: MainViewDelegate? { get set }
 
