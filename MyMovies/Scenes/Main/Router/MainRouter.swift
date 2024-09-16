@@ -25,4 +25,10 @@ class MainRouter: MainRouterProtocol {
 //        }
 //        viewController?.navigationController?.pushViewController(detailsVC, animated: true)
     }
+
+    func navigateToMovieList(type: MovieListType) {
+        let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieListVC, animated: true)
+    }
 }

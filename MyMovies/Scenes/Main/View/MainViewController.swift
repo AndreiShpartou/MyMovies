@@ -28,6 +28,12 @@ final class MainViewController: UIViewController {
         view = mainView
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.isNavigationBarHidden = true
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,14 +63,8 @@ extension MainViewController: MainViewDelegate {
         presenter?.didSelectMovie(movie)
     }
 
-    func didTapSeeAllUpcomingMoviesButton() {
-        // Handle "See All" action for an upcoming movie
-        presenter?.didTapAllPopularMoviesButton()
-    }
-
-    func didTapSeeAllPopularMoviesButton() {
-        // Handle "See All" action for a popular movie
-        presenter?.didTapSeeAllPopularMoviesButton()
+    func didTapSeeAllButton(listType: MovieListType) {
+        presenter?.didTapSeeAllButton(listType: listType)
     }
 
     func didScrollUpcomingMoviesItemTo(_ index: Int) {

@@ -11,9 +11,11 @@ class MovieListViewController: UIViewController {
     var presenter: MovieListPresenterProtocol?
 
     private let movieListView: MovieListViewProtocol
+    private let movieListType: MovieListType
 
-    init(movieListView: MovieListViewProtocol) {
+    init(movieListView: MovieListViewProtocol, listType: MovieListType) {
         self.movieListView = movieListView
+        self.movieListType = listType
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,7 +34,7 @@ class MovieListViewController: UIViewController {
 
         setupViewController()
         // The initial data loading
-        presenter?.viewDidLoad()
+        presenter?.viewDidLoad(listType: movieListType)
     }
 }
 

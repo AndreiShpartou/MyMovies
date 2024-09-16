@@ -28,6 +28,10 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         axis: .horizontal,
         spacing: 8
     )
+    private lazy var countriesRowStackView: UIStackView = .createCommonStackView(
+        axis: .horizontal,
+        spacing: 8
+    )
     // Title
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
@@ -42,17 +46,9 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         font: Typography.Medium.body,
         textColor: .textColorGrey
     )
-    private let ageRestrictionLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
-        textColor: .primaryBlueAccent
-    )
     private let genreLabel: UILabel = .createLabel(
         font: Typography.Medium.body,
         textColor: .textColorGrey
-    )
-    private let typeLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
-        textColor: .textColorWhite
     )
 
     // MARK: - Init
@@ -67,8 +63,39 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        posterImageView.kf.cancelDownloadTask()
+        posterImageView.image = nil
+        titleLabel.text = nil
+        yearLabel.text = nil
+        runtimeLabel.text = nil
+        genreLabel.text = nil
+        ratingStackView.ratingLabel.text = nil
+        // remove countries subviews
+        countriesRowStackView.arrangedSubviews.forEach {
+            countriesRowStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+    }
+
     // MARK: - Public
     func configure(with movie: MovieProtocol) {
+        posterImageView.kf.setImage(
+            with: URL(string: movie.poster?.url ?? ""),
+            placeholder: Asset.DefaultCovers.defaultPoster.image
+        )
+        ratingStackView.ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
+        titleLabel.text = movie.title
+        yearLabel.text = movie.releaseYear
+        runtimeLabel.text = movie.runtime
+        genreLabel.text = movie.genres.first?.name
+        // countries layout
+        movie.countries.forEach { country in
+            countriesRowStackView.addArrangedSubview(createCountryView(labelText: country.name))
+        }
     }
 }
 
@@ -77,11 +104,36 @@ extension MovieListCollectionViewCell {
     private func setupView() {
         contentView.addSubviews(posterImageView, ratingStackView, descriptionStackView)
         posterImageView.addSubviews(ratingStackView)
+        descriptionStackView.addArrangedSubview(titleLabel)
+        descriptionStackView.addArrangedSubview(yearLabel)
+        descriptionStackView.addArrangedSubview(descriptionRowStackView)
+        descriptionStackView.addArrangedSubview(countriesRowStackView)
+        descriptionRowStackView.addArrangedSubview(runtimeLabel)
+        descriptionRowStackView.addArrangedSubview(genreLabel)
     }
 }
 
 // MARK: - Helpers
 extension MovieListCollectionViewCell {
+    private func createCountryView(labelText: String?) -> UIView {
+        let view: UIView = .createCommonView(cornderRadius: 8, backgroundColor: .clear)
+        view.layer.borderWidth = 3
+        view.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+
+        let label: UILabel = .createLabel(
+            font: Typography.Medium.body,
+            textColor: .primaryBlueAccent,
+            text: labelText
+        )
+
+        // Arrangment
+        view.addSubviews(label)
+        label.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+        }
+
+        return view
+    }
 }
 
 // MARK: - Constraints
@@ -98,6 +150,12 @@ extension MovieListCollectionViewCell {
             make.top.equalToSuperview().offset(8)
             make.width.equalTo(50)
             make.height.equalTo(20)
+        }
+
+        descriptionStackView.snp.makeConstraints { make in
+            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview()
+            make.top.bottom.equalTo(posterImageView).inset(16)
         }
     }
 }

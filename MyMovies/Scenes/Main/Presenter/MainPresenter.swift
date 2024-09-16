@@ -38,12 +38,8 @@ final class MainPresenter: MainPresenterProtocol {
         //
     }
 
-    func didTapAllPopularMoviesButton() {
-        //
-    }
-
-    func didTapSeeAllPopularMoviesButton() {
-        //
+    func didTapSeeAllButton(listType: MovieListType) {
+        router.navigateToMovieList(type: listType)
     }
 }
 

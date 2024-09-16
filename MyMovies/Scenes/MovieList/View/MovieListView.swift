@@ -32,6 +32,7 @@ class MovieListView: UIView, MovieListViewProtocol {
         scrollDirection: .vertical,
         minimumLineSpacing: 12
     )
+    private lazy var moviesCollectionViewHandler = MovieListCollectionViewHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -44,16 +45,48 @@ class MovieListView: UIView, MovieListViewProtocol {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Public
+    func showMovieGenres(_ genres: [GenreProtocol]) {
+        genresCollectionHandler.configure(with: genres)
+        genresCollection.reloadData()
+
+        setupAdditionalDefaultPreferences()
+    }
+
+    func showMovieList(_ movies: [MovieProtocol]) {
+        moviesCollectionViewHandler.configure(with: movies)
+        movieListCollection.reloadData()
+    }
 }
 
 // MARK: - Setup
 extension MovieListView {
     private func setupView() {
+        backgroundColor = .primaryBackground
         addSubviews(genresCollection, movieListCollection)
+
+        setupHandlers()
+    }
+
+    private func setupHandlers() {
+        // movies
+        movieListCollection.delegate = moviesCollectionViewHandler
+        movieListCollection.dataSource = moviesCollectionViewHandler
+        // genres
+        genresCollection.delegate = genresCollectionHandler
+        genresCollection.dataSource = genresCollectionHandler
     }
 
     private func updateDelegates() {
         genresCollectionHandler.delegate = delegate
+    }
+
+    private func setupAdditionalDefaultPreferences() {
+        // Default selection of the first item
+        let defaultIndexPath = IndexPath(item: 0, section: 0)
+        genresCollection.selectItem(at: defaultIndexPath, animated: false, scrollPosition: .left)
+        genresCollectionHandler.collectionView(genresCollection, didSelectItemAt: defaultIndexPath)
     }
 }
 
@@ -62,6 +95,7 @@ extension MovieListView {
     private func setupConstraints() {
         genresCollection.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(safeAreaLayoutGuide).inset(16)
             make.height.equalTo(40)
         }
 

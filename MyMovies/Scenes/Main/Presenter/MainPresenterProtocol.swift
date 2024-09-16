@@ -16,6 +16,5 @@ protocol MainPresenterProtocol: AnyObject {
     func didSelectUpcomingMovie(_ movie: MovieProtocol)
     func didSelectGenre(_ genre: GenreProtocol)
     func didSelectMovie(_ movie: MovieProtocol)
-    func didTapAllPopularMoviesButton()
-    func didTapSeeAllPopularMoviesButton()
+    func didTapSeeAllButton(listType: MovieListType)
 }

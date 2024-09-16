@@ -10,6 +10,9 @@ import UIKit
 protocol MovieListViewProtocol: UIView {
     var delegate: MovieListViewDelegate? { get set }
     var presenter: MovieListPresenterProtocol? { get set }
+
+    func showMovieGenres(_ genres: [GenreProtocol])
+    func showMovieList(_ movies: [MovieProtocol])
 }
 
 protocol MovieListViewDelegate: AnyObject, GenresCollectionViewDelegate {

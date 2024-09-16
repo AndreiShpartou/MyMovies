@@ -26,4 +26,13 @@ enum MovieListType: String {
     var endpoint: Endpoint {
         return .movieList(type: self)
     }
+
+    var title: String {
+        switch self {
+        case .upcomingMovies:
+            return "Upcoming Movies"
+        case .popularMovies:
+            return "Popular Movies"
+        }
+    }
 }

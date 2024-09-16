@@ -188,12 +188,12 @@ extension MainView {
 extension MainView {
     @objc
     private func didTapSeeAllUpcomingMoviesButton(_ sender: UIButton) {
-        delegate?.didTapSeeAllUpcomingMoviesButton()
+        delegate?.didTapSeeAllButton(listType: .upcomingMovies)
     }
 
     @objc
     private func didTapSeeAllPopularMoviesButton(_ sender: UIButton) {
-        delegate?.didTapSeeAllPopularMoviesButton()
+        delegate?.didTapSeeAllButton(listType: .popularMovies)
     }
 }
 

@@ -8,5 +8,9 @@
 import Foundation
 
 protocol MovieListPresenterProtocol: AnyObject {
-    func viewDidLoad()
+    var view: MovieListViewProtocol? { get set }
+    var interactor: MovieListInteractorProtocol { get set }
+    var router: MovieListRouterProtocol { get set }
+
+    func viewDidLoad(listType: MovieListType)
 }
