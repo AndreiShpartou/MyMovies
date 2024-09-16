@@ -29,7 +29,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
         textColor: .textColorGrey
     )
     // Rating
-    private let ratingView = RatingGeneralStackView()
+    private let ratingStackView = RatingGeneralStackView()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -51,7 +51,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
         imageView.image = nil
         titleLabel.text = nil
         genreLabel.text = nil
-        ratingView.ratingLabel.text = nil
+        ratingStackView.ratingLabel.text = nil
     }
 
     // MARK: - Public
@@ -61,7 +61,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
 
         titleLabel.text = movie.title
         genreLabel.text = movie.genres.first?.name
-        ratingView.ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
+        ratingStackView.ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
     }
 }
 
@@ -71,7 +71,7 @@ extension PopularMoviesCollectionViewCell {
         contentView.addSubviews(
             imageView,
             captionView,
-            ratingView
+            ratingStackView
         )
         captionView.addSubviews(titleLabel, genreLabel)
     }
@@ -103,7 +103,7 @@ extension PopularMoviesCollectionViewCell {
             make.top.equalTo(titleLabel.snp.top).offset(titleHeight)
         }
 
-        ratingView.snp.makeConstraints { make in
+        ratingStackView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-8)
             make.top.equalToSuperview().offset(8)
             make.width.equalTo(50)

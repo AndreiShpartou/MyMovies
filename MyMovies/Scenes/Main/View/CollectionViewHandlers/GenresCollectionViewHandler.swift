@@ -6,8 +6,12 @@
 //
 import UIKit
 
+protocol GenresCollectionViewDelegate: AnyObject {
+    func didSelectGenre(_ genre: GenreProtocol)
+}
+
 final class GenresCollectionViewHandler: NSObject {
-    weak var delegate: MainViewDelegate?
+    weak var delegate: GenresCollectionViewDelegate?
 
     private var genres: [GenreProtocol] = []
     private var selectedIndex: IndexPath?

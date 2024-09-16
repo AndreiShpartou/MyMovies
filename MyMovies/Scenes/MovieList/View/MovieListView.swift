@@ -8,10 +8,22 @@
 import UIKit
 
 class MovieListView: UIView, MovieListViewProtocol {
-    weak var delegate: MovieListViewDelegate?
+    weak var delegate: MovieListViewDelegate? {
+        didSet {
+            updateDelegates()
+        }
+    }
     var presenter: MovieListPresenterProtocol?
 
     // MARK: - UIComponents
+    // Genres collection
+    private let genresCollection: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 100, height: 40),
+        cellType: GenreCollectionViewCell.self,
+        reuseIdentifier: GenreCollectionViewCell.identifier
+    )
+    private lazy var genresCollectionHandler = GenresCollectionViewHandler()
+    // Movie list collection
     private let movieListCollection: UICollectionView = .createCommonCollectionView(
         // overridden in the MovieListCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
@@ -37,16 +49,26 @@ class MovieListView: UIView, MovieListViewProtocol {
 // MARK: - Setup
 extension MovieListView {
     private func setupView() {
-        addSubviews(movieListCollection)
+        addSubviews(genresCollection, movieListCollection)
+    }
+
+    private func updateDelegates() {
+        genresCollectionHandler.delegate = delegate
     }
 }
 
 // MARK: - Constraints
 extension MovieListView {
     private func setupConstraints() {
+        genresCollection.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(40)
+        }
+
         movieListCollection.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.bottom.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(genresCollection.snp.bottom).offset(16)
+            make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }

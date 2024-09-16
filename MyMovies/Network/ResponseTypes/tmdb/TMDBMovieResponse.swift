@@ -12,6 +12,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var title: String
     var originalTitle: String?
     var overview: String?
+    var status: String?
     var tagline: String?
     var releaseDate: String?
     var runtime: Int?
@@ -22,15 +23,25 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var genres: [TMDBGenreResponseProtocol]? {
         return movieGenres
     }
+    var countries: [TMDBCountryResponseProtocol]? {
+        return movieCountries
+    }
+
     private let movieGenres: [TMDBMovieResponse.Genre]?
+    private let movieCountries: [TMDBMovieResponse.Country]?
 
     struct Genre: TMDBGenreResponseProtocol {
         var id: Int
         var name: String?
     }
 
+    struct Country: TMDBCountryResponseProtocol {
+        var iso_3166_1: String
+        var name: String
+    }
+
     enum CodingKeys: String, CodingKey {
-        case id, title, overview, runtime, tagline
+        case id, title, overview, runtime, tagline, status
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
         case backdropPath = "backdrop_path"
@@ -38,6 +49,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
         case releaseDate = "release_date"
         case genreIds = "genre_ids"
         case movieGenres = "genres"
+        case movieCountries = "production_countries"
     }
 
     // MARK: - Public

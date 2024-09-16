@@ -17,24 +17,43 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         clipsToBounds: true,
         cornerRadius: 8
     )
+    // Rating
+    private let ratingStackView = RatingGeneralStackView()
+    // Description section
+    private let descriptionStackView: UIStackView = .createCommonStackView(
+        axis: .vertical,
+        spacing: 16
+    )
+    private lazy var descriptionRowStackView: UIStackView = .createCommonStackView(
+        axis: .horizontal,
+        spacing: 8
+    )
     // Title
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
         numberOfLines: 2,
         textColor: .textColorWhite
     )
-    // Rating
-//    private lazy var ratingView: UIStackView = createUIStackView()
-//    private let ratingIconImageView: UIImageView = .createImageView(
-//        contentMode: .scaleAspectFit,
-//        image: UIImage(systemName: "star.fill")?.withTintColor(.secondaryOrange, renderingMode: .alwaysOriginal)
-//    )
-//    private let ratingLabel: UILabel = .createLabel(
-//        font: Typography.SemiBold.subhead,
-//        textColor: .secondaryOrange
-//    )
-    // Movie description section
-//    private let descriptionStackView: UIStackView
+    private let yearLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .textColorGrey
+    )
+    private let runtimeLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .textColorGrey
+    )
+    private let ageRestrictionLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .primaryBlueAccent
+    )
+    private let genreLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .textColorGrey
+    )
+    private let typeLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .textColorWhite
+    )
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -56,6 +75,8 @@ class MovieListCollectionViewCell: UICollectionViewCell {
 // MARK: - Setup
 extension MovieListCollectionViewCell {
     private func setupView() {
+        contentView.addSubviews(posterImageView, ratingStackView, descriptionStackView)
+        posterImageView.addSubviews(ratingStackView)
     }
 }
 
@@ -66,5 +87,17 @@ extension MovieListCollectionViewCell {
 // MARK: - Constraints
 extension MovieListCollectionViewCell {
     private func setupConstraints() {
+        posterImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.3)
+        }
+
+        ratingStackView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-8)
+            make.top.equalToSuperview().offset(8)
+            make.width.equalTo(50)
+            make.height.equalTo(20)
+        }
     }
 }

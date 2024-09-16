@@ -12,12 +12,14 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
     var title: String { get }
     var originalTitle: String? { get }
     var overview: String? { get }
+    var status: String? { get }
     var tagline: String? { get }
     var releaseDate: String? { get }
     var runtime: Int? { get }
     var voteAverage: Double? { get }
     var genreIds: [Int]? { get }
     var genres: [TMDBGenreResponseProtocol]? { get }
+    var countries: [TMDBCountryResponseProtocol]? { get }
     var posterPath: String? { get }
     var backdropPath: String? { get }
 
@@ -28,4 +30,9 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
 protocol TMDBGenreResponseProtocol: Codable {
     var id: Int { get }
     var name: String? { get }
+}
+
+protocol TMDBCountryResponseProtocol: Codable {
+    var iso_3166_1: String { get }
+    var name: String { get }
 }

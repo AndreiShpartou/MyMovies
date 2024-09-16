@@ -12,5 +12,6 @@ protocol MovieListViewProtocol: UIView {
     var presenter: MovieListPresenterProtocol? { get set }
 }
 
-protocol MovieListViewDelegate: AnyObject {
+protocol MovieListViewDelegate: AnyObject, GenresCollectionViewDelegate {
+    func didSelectGenre(_ genre: GenreProtocol)
 }

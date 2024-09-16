@@ -47,10 +47,12 @@ final class ResponseMapper: ResponseMapperProtocol {
                 alternativeTitle: $0.originalTitle,
                 description: $0.overview,
                 shortDescription: $0.tagline,
+                status: $0.status,
                 releaseYear: $0.releaseDate,
                 runtime: String($0.runtime ?? 0),
                 voteAverage: ($0.voteAverage == 0) ? Double.random(in: 5.0...7.0) : $0.voteAverage,
                 genres: map($0.genreIds ?? []),
+                countries: map($0.countries ?? []),
                 poster: poster,
                 backdrop: backdrop
             )
@@ -73,10 +75,12 @@ final class ResponseMapper: ResponseMapperProtocol {
             alternativeTitle: data.originalTitle,
             description: data.overview,
             shortDescription: data.tagline,
+            status: data.status,
             releaseYear: data.releaseDate,
             runtime: String(data.runtime ?? 0),
             voteAverage: (data.voteAverage == 0) ? Double.random(in: 5.0...7.0) : data.voteAverage,
             genres: map(data.genres ?? []),
+            countries: map(data.countries ?? []),
             poster: poster,
             backdrop: backdrop
         )
@@ -86,14 +90,16 @@ final class ResponseMapper: ResponseMapperProtocol {
         return data.docs.map {
             Movie(
                 id: $0.id,
-                title: $0.name,
+                title: $0.name ?? $0.alternativeName ?? "",
                 alternativeTitle: $0.alternativeName,
                 description: $0.description,
                 shortDescription: $0.shortDescription,
-                releaseYear: String($0.year),
+                status: $0.status,
+                releaseYear: String($0.year ?? Calendar.current.component(.year, from: Date())),
                 runtime: String($0.movieLength ?? 0),
                 voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
-                genres: map($0.genres),
+                genres: map($0.genres ?? []),
+                countries: map($0.countries),
                 poster: Movie.Cover(
                     url: $0.poster?.url,
                     previewUrl: $0.poster?.previewUrl
@@ -128,6 +134,19 @@ final class ResponseMapper: ResponseMapperProtocol {
     private func map(_ data: [TMDBGenreResponseProtocol]) -> [Movie.Genre] {
         return data.map {
             Movie.Genre(id: $0.id, name: $0.name)
+        }
+    }
+
+    // MARK: - Countries
+    private func map(_ data: [TMDBCountryResponseProtocol]) -> [Movie.ProductionCountry] {
+        return data.map {
+            return Movie.ProductionCountry(name: $0.iso_3166_1)
+        }
+    }
+
+    private func map(_ data: [KinopoiskCountryResponseProtocol]) -> [Movie.ProductionCountry] {
+        return data.map {
+            return Movie.ProductionCountry(name: $0.name)
         }
     }
 }

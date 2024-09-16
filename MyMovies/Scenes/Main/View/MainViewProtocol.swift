@@ -18,7 +18,7 @@ protocol MainViewProtocol: UIView {
     func showError(error: Error)
 }
 
-protocol MainViewDelegate: AnyObject {
+protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate {
     func didSelectMovie(_ movie: MovieProtocol)
     func didSelectGenre(_ genre: GenreProtocol)
     func didTapSeeAllUpcomingMoviesButton()

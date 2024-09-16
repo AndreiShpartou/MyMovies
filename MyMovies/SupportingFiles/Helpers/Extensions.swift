@@ -57,6 +57,25 @@ extension UICollectionView {
     }
 }
 
+// MARK: - UIStackView
+extension UIStackView {
+    static func createCommonStackView(
+        axis: NSLayoutConstraint.Axis,
+        spacing: CGFloat,
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .fill
+    ) -> UIStackView {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.backgroundColor = .clear
+
+        return stackView
+    }
+}
+
 // MARK: - UILabel
 extension UILabel {
     static func createLabel(
