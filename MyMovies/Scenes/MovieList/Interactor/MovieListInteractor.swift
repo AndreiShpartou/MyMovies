@@ -10,6 +10,7 @@ import Foundation
 class MovieListInteractor: MovieListInteractorProtocol {
     var presenter: MovieListInteractorOutputProtocol?
 
+    private var listType: MovieListType?
     private let networkManager: NetworkManagerProtocol
 
     // MARK: - Init
@@ -34,17 +35,30 @@ class MovieListInteractor: MovieListInteractorProtocol {
     // Fetch list of movies by type
     func fetchMovieList(type: MovieListType) {
         fetchMovies(type: type)
+        // Save type for the case of further filtering by genre
+        listType = type
+    }
+
+    // Fetch movie list by genre
+    func fetchMovieListWithGenresFiltering(genre: GenreProtocol) {
+        guard let type = listType else {
+            return
+        }
+
+        networkManager.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
+            self?.handleMovieFetchResult(result)
+        }
     }
 
     // MARK: - Private
     private func fetchMovies(type: MovieListType) {
         networkManager.fetchMovies(type: type) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: type)
+            self?.handleMovieFetchResult(result)
         }
     }
 
     // Centralized handling of movie fetch results
-    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
+    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>) {
         switch result {
         case .success(let movies):
             networkManager.fetchMoviesDetails(for: movies) { [weak self] detailedMovies in

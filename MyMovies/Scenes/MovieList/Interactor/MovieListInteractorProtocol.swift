@@ -12,6 +12,7 @@ protocol MovieListInteractorProtocol {
 
     func fetchMovieGenres()
     func fetchMovieList(type: MovieListType)
+    func fetchMovieListWithGenresFiltering(genre: GenreProtocol)
 }
 
 protocol MovieListInteractorOutputProtocol: AnyObject {

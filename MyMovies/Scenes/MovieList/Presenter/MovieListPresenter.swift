@@ -23,6 +23,10 @@ class MovieListPresenter: MovieListPresenterProtocol {
         interactor.fetchMovieGenres()
         interactor.fetchMovieList(type: listType)
     }
+
+    func didSelectGenre(_ genre: GenreProtocol) {
+        interactor.fetchMovieListWithGenresFiltering(genre: genre)
+    }
 }
 
 // MARK: - MovieListInteractorOutputProtocol
