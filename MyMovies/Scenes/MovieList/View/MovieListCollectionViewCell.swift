@@ -209,8 +209,20 @@ extension MovieListCollectionViewCell {
         descriptionStackView.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(16)
             make.trailing.equalToSuperview()
-            make.top.equalTo(posterImageView).offset(16)
-            make.bottom.lessThanOrEqualTo(posterImageView).inset(16)
+            make.top.equalTo(posterImageView).offset(8)
+            make.bottom.lessThanOrEqualTo(posterImageView).inset(8)
+        }
+
+        yearStackView.snp.makeConstraints { make in
+            make.height.equalTo(20)
+        }
+
+        runtimeStackView.snp.makeConstraints { make in
+            make.height.equalTo(20)
+        }
+
+        genreStackView.snp.makeConstraints { make in
+            make.height.equalTo(20)
         }
     }
 }
