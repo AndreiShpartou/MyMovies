@@ -66,10 +66,10 @@ extension UIStackView {
         alignment: UIStackView.Alignment = .fill
     ) -> UIStackView {
         let stackView = UIStackView()
-        stackView.axis = .vertical
+        stackView.axis = axis
         stackView.spacing = 8
-        stackView.distribution = .fill
-        stackView.alignment = .fill
+        stackView.distribution = distribution
+        stackView.alignment = alignment
         stackView.backgroundColor = .clear
 
         return stackView
@@ -83,7 +83,9 @@ extension UILabel {
         numberOfLines: Int = 1,
         textAlignment: NSTextAlignment = .left,
         textColor: UIColor? = nil,
-        text: String? = nil
+        text: String? = nil,
+        borderWidth: CGFloat? = nil,
+        borderColor: CGColor? = nil
     ) -> UILabel {
         let label = UILabel()
         label.font = font
@@ -92,6 +94,12 @@ extension UILabel {
         label.text = text
         if let textColor = textColor {
             label.textColor = textColor
+        }
+        if let borderWidth = borderWidth {
+            label.layer.borderWidth = borderWidth
+        }
+        if let borderColor = borderColor {
+            label.layer.borderColor = borderColor
         }
 
         return label

@@ -24,13 +24,10 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         axis: .vertical,
         spacing: 16
     )
-    private lazy var descriptionRowStackView: UIStackView = .createCommonStackView(
-        axis: .horizontal,
-        spacing: 8
-    )
     private lazy var countriesRowStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
-        spacing: 8
+        spacing: 8,
+        distribution: .fill
     )
     // Title
     private let titleLabel: UILabel = .createLabel(
@@ -39,15 +36,15 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         textColor: .textColorWhite
     )
     private let yearLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.subhead,
         textColor: .textColorGrey
     )
     private let runtimeLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.subhead,
         textColor: .textColorGrey
     )
     private let genreLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.subhead,
         textColor: .textColorGrey
     )
 
@@ -93,9 +90,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         runtimeLabel.text = movie.runtime
         genreLabel.text = movie.genres.first?.name
         // countries layout
-        movie.countries.forEach { country in
-            countriesRowStackView.addArrangedSubview(createCountryView(labelText: country.name))
-        }
+        configureCountries(countries: movie.countries)
     }
 }
 
@@ -106,19 +101,22 @@ extension MovieListCollectionViewCell {
         posterImageView.addSubviews(ratingStackView)
         descriptionStackView.addArrangedSubview(titleLabel)
         descriptionStackView.addArrangedSubview(yearLabel)
-        descriptionStackView.addArrangedSubview(descriptionRowStackView)
+        // Add runtime description for up-to-date devices
+        if UIScreen.main.bounds.size.width > 320 {
+            descriptionStackView.addArrangedSubview(runtimeLabel)
+        }
+        descriptionStackView.addArrangedSubview(genreLabel)
         descriptionStackView.addArrangedSubview(countriesRowStackView)
-        descriptionRowStackView.addArrangedSubview(runtimeLabel)
-        descriptionRowStackView.addArrangedSubview(genreLabel)
     }
 }
 
 // MARK: - Helpers
 extension MovieListCollectionViewCell {
     private func createCountryView(labelText: String?) -> UIView {
-        let view: UIView = .createCommonView(cornderRadius: 8, backgroundColor: .clear)
-        view.layer.borderWidth = 3
+        let view: UIView = .createCommonView(cornderRadius: 8)
+        view.layer.borderWidth = 2
         view.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         let label: UILabel = .createLabel(
             font: Typography.Medium.body,
@@ -128,11 +126,29 @@ extension MovieListCollectionViewCell {
 
         // Arrangment
         view.addSubviews(label)
+        view.snp.makeConstraints { make in
+            make.height.equalTo(25)
+        }
         label.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.centerY.equalToSuperview()
         }
 
         return view
+    }
+
+    private func configureCountries(countries: [CountryProtocol]) {
+        countries.forEach {
+            guard countriesRowStackView.arrangedSubviews.count < 2 else {
+                return
+            }
+
+            countriesRowStackView.addArrangedSubview(createCountryView(labelText: $0.name))
+        }
+        // add an empty stretchable view to the right
+        let stretchableView: UIView = .createCommonView()
+        stretchableView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        countriesRowStackView.addArrangedSubview(stretchableView)
     }
 }
 
@@ -142,7 +158,7 @@ extension MovieListCollectionViewCell {
         posterImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.bottom.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.3)
+            make.width.equalToSuperview().multipliedBy(0.4)
         }
 
         ratingStackView.snp.makeConstraints { make in
@@ -153,9 +169,10 @@ extension MovieListCollectionViewCell {
         }
 
         descriptionStackView.snp.makeConstraints { make in
-            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
+            make.leading.equalTo(posterImageView.snp.trailing).offset(16)
             make.trailing.equalToSuperview()
-            make.top.bottom.equalTo(posterImageView).inset(16)
+            make.top.equalTo(posterImageView).offset(16)
+            make.bottom.lessThanOrEqualTo(posterImageView).inset(16)
         }
     }
 }

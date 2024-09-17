@@ -48,7 +48,8 @@ extension MovieListCollectionViewHandler: UICollectionViewDelegateFlowLayout {
 extension MovieListCollectionViewHandler {
     private func calculateItemSize(for collectionView: UICollectionView) -> CGSize {
         let itemWidth = collectionView.bounds.width
-        let itemHeight = collectionView.bounds.width / 2
+        let posterWidth = collectionView.bounds.width * 0.35
+        let itemHeight = posterWidth / 0.675 // 2:3 aspect ratio of movie posters
 
         return CGSize(width: itemWidth, height: itemHeight)
     }
