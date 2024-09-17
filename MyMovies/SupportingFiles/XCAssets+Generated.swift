@@ -33,6 +33,11 @@ internal enum Asset {
     internal static let defaultBackdrop = ImageAsset(name: "DefaultBackdrop")
     internal static let defaultPoster = ImageAsset(name: "DefaultPoster")
   }
+  internal enum Icons {
+    internal static let calendar = ImageAsset(name: "calendar")
+    internal static let clock = ImageAsset(name: "clock")
+    internal static let film = ImageAsset(name: "film")
+  }
   internal enum PageControlIndicators {
     internal static let selected = ImageAsset(name: "Selected")
     internal static let unselected = ImageAsset(name: "Unselected")
@@ -205,4 +210,4 @@ private final class BundleToken {
     #endif
   }()
 }
-// swiftlint:enable all
+// swiftlint:enable convenience_type

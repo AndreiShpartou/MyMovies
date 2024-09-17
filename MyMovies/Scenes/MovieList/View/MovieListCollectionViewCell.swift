@@ -35,13 +35,31 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         numberOfLines: 2,
         textColor: .textColorWhite
     )
+    // Year
+    private let yearStackView: UIStackView = .createCommonStackView(axis: .horizontal, spacing: 0)
+    private let yearImageView: UIImageView = .createImageView(
+        contentMode: .scaleAspectFit,
+        image: Asset.Icons.calendar.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
+    )
     private let yearLabel: UILabel = .createLabel(
         font: Typography.Medium.subhead,
         textColor: .textColorGrey
     )
+    // Runtime
+    private let runtimeStackView: UIStackView = .createCommonStackView(axis: .horizontal, spacing: 0)
+    private let runtimeImageView: UIImageView = .createImageView(
+        contentMode: .scaleAspectFit,
+        image: Asset.Icons.clock.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
+    )
     private let runtimeLabel: UILabel = .createLabel(
         font: Typography.Medium.subhead,
         textColor: .textColorGrey
+    )
+    // Label
+    private let genreStackView: UIStackView = .createCommonStackView(axis: .horizontal, spacing: 0)
+    private let genreImageView: UIImageView = .createImageView(
+        contentMode: .scaleAspectFit,
+        image: Asset.Icons.film.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
     )
     private let genreLabel: UILabel = .createLabel(
         font: Typography.Medium.subhead,
@@ -97,16 +115,36 @@ class MovieListCollectionViewCell: UICollectionViewCell {
 // MARK: - Setup
 extension MovieListCollectionViewCell {
     private func setupView() {
-        contentView.addSubviews(posterImageView, ratingStackView, descriptionStackView)
+        // Poster
         posterImageView.addSubviews(ratingStackView)
+        // Year
+        yearStackView.addArrangedSubview(yearImageView)
+        yearStackView.addArrangedSubview(yearLabel)
+        // Runtime
+        runtimeStackView.addArrangedSubview(runtimeImageView)
+        runtimeStackView.addArrangedSubview(runtimeLabel)
+        // Genre
+        genreStackView.addArrangedSubview(genreImageView)
+        genreStackView.addArrangedSubview(genreLabel)
+        // Description
         descriptionStackView.addArrangedSubview(titleLabel)
-        descriptionStackView.addArrangedSubview(yearLabel)
+        descriptionStackView.addArrangedSubview(yearStackView)
         // Add runtime description for up-to-date devices
         if UIScreen.main.bounds.size.width > 320 {
-            descriptionStackView.addArrangedSubview(runtimeLabel)
+            descriptionStackView.addArrangedSubview(runtimeStackView)
         }
-        descriptionStackView.addArrangedSubview(genreLabel)
+        descriptionStackView.addArrangedSubview(genreStackView)
         descriptionStackView.addArrangedSubview(countriesRowStackView)
+
+        contentView.addSubviews(posterImageView, descriptionStackView)
+
+        setupPriorities()
+    }
+
+    private func setupPriorities() {
+        yearImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        runtimeImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        genreImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 }
 
