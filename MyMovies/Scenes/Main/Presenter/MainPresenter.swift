@@ -12,11 +12,19 @@ final class MainPresenter: MainPresenterProtocol {
     var interactor: MainInteractorProtocol
     var router: MainRouterProtocol
 
+    private let mapper: DomainModelMapperProtocol
+
     // MARK: - Init
-    init(view: MainViewProtocol?, interactor: MainInteractorProtocol, router: MainRouterProtocol) {
+    init(
+        view: MainViewProtocol?,
+        interactor: MainInteractorProtocol,
+        router: MainRouterProtocol,
+        mapper: DomainModelMapperProtocol = DomainModelMapper()
+    ) {
         self.view = view
         self.interactor = interactor
         self.router = router
+        self.mapper = mapper
     }
 
     // MARK: - Public
@@ -30,8 +38,12 @@ final class MainPresenter: MainPresenterProtocol {
         //
     }
 
-    func didSelectGenre(_ genre: GenreProtocol) {
-        interactor.fetchPopularMoviesWithGenresFiltering(genre: genre)
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+            return
+        }
+
+        interactor.fetchPopularMoviesWithGenresFiltering(genre: movieGenre)
     }
 
     func didSelectUpcomingMovie(_ movie: MovieProtocol) {
@@ -52,7 +64,11 @@ extension MainPresenter: MainInteractorOutputProtocol {
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
-        view?.showMovieGenres(genres)
+        guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
+            return
+        }
+
+        view?.showMovieGenres(genreViewModels)
     }
 
     func didFetchPopularMovies(_ movies: [MovieProtocol]) {

@@ -7,20 +7,18 @@
 import UIKit
 
 protocol GenresCollectionViewDelegate: AnyObject {
-    func didSelectGenre(_ genre: GenreProtocol)
+    func didSelectGenre(_ genre: GenreViewModelProtocol)
 }
 
 final class GenresCollectionViewHandler: NSObject {
     weak var delegate: GenresCollectionViewDelegate?
 
-    private var genres: [GenreProtocol] = []
+    private var genres: [GenreViewModelProtocol] = []
     private var selectedIndex: IndexPath?
 
     // MARK: - Public
-    func configure(with genres: [GenreProtocol]) {
-        // Add the "All" genre at the start
-        let allGenre = Movie.Genre(id: nil, name: "All")
-        self.genres = [allGenre] + genres
+    func configure(with genres: [GenreViewModelProtocol]) {
+        self.genres = genres
     }
 }
 

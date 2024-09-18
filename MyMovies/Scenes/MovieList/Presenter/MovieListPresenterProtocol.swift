@@ -13,5 +13,5 @@ protocol MovieListPresenterProtocol: AnyObject {
     var router: MovieListRouterProtocol { get set }
 
     func viewDidLoad(listType: MovieListType)
-    func didSelectGenre(_ genre: GenreProtocol)
+    func didSelectGenre(_ genre: GenreViewModelProtocol)
 }

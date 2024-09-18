@@ -14,13 +14,13 @@ protocol MainViewProtocol: UIView {
     func showUpcomingMovies(_ movies: [MovieProtocol])
     func scrollToUpcomingMovieItem(_ index: Int)
     func showPopularMovies(_ movies: [MovieProtocol])
-    func showMovieGenres(_ genres: [GenreProtocol])
+    func showMovieGenres(_ genres: [GenreViewModelProtocol])
     func showError(error: Error)
 }
 
 protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate {
     func didSelectMovie(_ movie: MovieProtocol)
-    func didSelectGenre(_ genre: GenreProtocol)
+    func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didTapSeeAllButton(listType: MovieListType)
     func didScrollUpcomingMoviesItemTo(_ index: Int)
 }

@@ -87,7 +87,7 @@ final class MainView: UIView, MainViewProtocol {
         setupUpcomingMoviesInitialPage()
     }
 
-    func showMovieGenres(_ genres: [GenreProtocol]) {
+    func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
         genresCollectionViewHandler.configure(with: genres)
         genresCollectionView.reloadData()
 

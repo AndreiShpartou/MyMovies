@@ -52,8 +52,7 @@ extension MainViewController {
 
 // MARK: - MainViewDelegate
 extension MainViewController: MainViewDelegate {
-
-    func didSelectGenre(_ genre: GenreProtocol) {
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
         // Handle genre selection
         presenter?.didSelectGenre(genre)
     }

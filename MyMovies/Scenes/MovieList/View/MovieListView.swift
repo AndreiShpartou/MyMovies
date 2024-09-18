@@ -47,7 +47,7 @@ class MovieListView: UIView, MovieListViewProtocol {
     }
 
     // MARK: - Public
-    func showMovieGenres(_ genres: [GenreProtocol]) {
+    func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
         genresCollectionHandler.configure(with: genres)
         genresCollection.reloadData()
 

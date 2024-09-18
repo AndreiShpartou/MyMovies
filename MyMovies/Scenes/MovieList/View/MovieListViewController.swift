@@ -84,7 +84,7 @@ extension MovieListViewController {
 
 // MARK: - MovieListViewDelegate
 extension MovieListViewController: MovieListViewDelegate {
-    func didSelectGenre(_ genre: GenreProtocol) {
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
         presenter?.didSelectGenre(genre)
     }
 }
