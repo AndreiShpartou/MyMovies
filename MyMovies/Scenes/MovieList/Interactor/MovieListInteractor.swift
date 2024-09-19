@@ -24,9 +24,13 @@ class MovieListInteractor: MovieListInteractorProtocol {
         networkManager.fetchGenres { [weak self] result in
             switch result {
             case .success(let genres):
-                self?.presenter?.didFetchMovieGenres(genres)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchMovieGenres(genres)
+                }
             case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }
@@ -62,10 +66,14 @@ class MovieListInteractor: MovieListInteractorProtocol {
         switch result {
         case .success(let movies):
             networkManager.fetchMoviesDetails(for: movies) { [weak self] detailedMovies in
-                self?.presenter?.didFetchMovieList(detailedMovies)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchMovieList(detailedMovies)
+                }
             }
         case .failure(let error):
-            presenter?.didFailToFetchData(with: error)
+            DispatchQueue.main.async { [weak self] in
+                self?.presenter?.didFailToFetchData(with: error)
+            }
         }
     }
 }

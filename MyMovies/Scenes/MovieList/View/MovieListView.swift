@@ -7,8 +7,8 @@
 
 import UIKit
 
-class MovieListView: UIView, MovieListViewProtocol {
-    weak var delegate: MovieListViewDelegate? {
+final class MovieListView: UIView, MovieListViewProtocol {
+    weak var delegate: MovieListViewInteractionDelegate? {
         didSet {
             updateDelegates()
         }
