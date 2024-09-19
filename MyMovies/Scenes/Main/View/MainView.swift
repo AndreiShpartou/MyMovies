@@ -94,7 +94,7 @@ final class MainView: UIView, MainViewProtocol {
         setupAdditionalDefaultPreferences()
     }
 
-    func showPopularMovies(_ movies: [MovieProtocol]) {
+    func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
         popularMoviesCollectionViewHandler.configure(with: movies)
         popularMoviesCollectionView.reloadData()
     }

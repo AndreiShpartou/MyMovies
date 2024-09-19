@@ -97,7 +97,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movie: MovieListViewModelProtocol) {
+    func configure(with movie: MovieListItemViewModelProtocol) {
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         ratingStackView.ratingLabel.text = movie.voteAverage
         titleLabel.text = movie.title

@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 final class MovieListCollectionViewHandler: NSObject {
-    private var movies: [MovieListViewModelProtocol] = []
+    private var movies: [MovieListItemViewModelProtocol] = []
 
     // MARK: - Public
-    func configure(with movies: [MovieListViewModelProtocol]) {
+    func configure(with movies: [MovieListItemViewModelProtocol]) {
         self.movies = movies
     }
 }

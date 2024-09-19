@@ -11,12 +11,15 @@ final class DomainModelMapper: DomainModelMapperProtocol {
     func map<T, Y>(data: T, to returnType: Y.Type) -> Y? {
         switch (data, returnType) {
         // moviesToViewModel
-        // MovieList
-        case (let data as [MovieProtocol], is [MovieListViewModel].Type):
-            return mapToList(data) as? Y
         // UpcomingMovies
         case (let data as [MovieProtocol], is [UpcomingMovieViewModel].Type):
             return mapToUpcoming(data) as? Y
+        // Popular movies
+        case (let data as [MovieProtocol], is [BriefMovieListItemViewModel].Type):
+            return mapToBriefList(data) as? Y
+        // MovieList
+        case (let data as [MovieProtocol], is [MovieListItemViewModel].Type):
+            return mapToList(data) as? Y
         // genresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
@@ -45,11 +48,25 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
+    // MovieProtocol -> BriefMovieListItemViewModelProtocol
+    private func mapToBriefList(_ data: [MovieProtocol]) -> [BriefMovieListItemViewModelProtocol] {
+        let movieViewModels: [BriefMovieListItemViewModel] = data.map {
+            return BriefMovieListItemViewModel(
+                title: $0.title,
+                posterURL: URL(string: $0.poster?.url ?? ""),
+                genre: $0.genres.first?.name ?? "Action",
+                voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7))
+            )
+        }
+
+        return movieViewModels
+    }
+
     // MovieProtocol -> MovieListViewModelProtocol
-    private func mapToList(_ data: [MovieProtocol]) -> [MovieListViewModelProtocol] {
-        let movieViewModels: [MovieListViewModel] = data.map {
+    private func mapToList(_ data: [MovieProtocol]) -> [MovieListItemViewModelProtocol] {
+        let movieViewModels: [MovieListItemViewModel] = data.map {
             let runtime = ($0.runtime == "0" || $0.runtime == nil) ? String(Int.random(in: 90...120)) : $0.runtime!
-            return MovieListViewModel(
+            return MovieListItemViewModel(
                 title: $0.title,
                 voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7)),
                 genre: $0.genres.first?.name ?? "Action",

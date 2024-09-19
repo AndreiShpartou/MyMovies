@@ -9,10 +9,10 @@ import UIKit
 final class PopularMoviesCollectionViewHandler: NSObject {
     weak var delegate: MainViewDelegate?
 
-    private var movies: [MovieProtocol] = []
+    private var movies: [BriefMovieListItemViewModelProtocol] = []
 
     // MARK: - Public
-    func configure(with movies: [MovieProtocol]) {
+    func configure(with movies: [BriefMovieListItemViewModelProtocol]) {
         self.movies = movies
     }
 }
@@ -36,7 +36,7 @@ extension PopularMoviesCollectionViewHandler: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension PopularMoviesCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie = movies[indexPath.row]
-        delegate?.didSelectMovie(movie)
+//        let movie = movies[indexPath.row]
+//        delegate?.didSelectMovie(movie)
     }
 }

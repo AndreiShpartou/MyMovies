@@ -75,7 +75,11 @@ extension MainPresenter: MainInteractorOutputProtocol {
     }
 
     func didFetchPopularMovies(_ movies: [MovieProtocol]) {
-        view?.showPopularMovies(movies)
+        guard let popularMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            return
+        }
+
+        view?.showPopularMovies(popularMovieViewModels)
     }
 
     func didFailToFetchData(with error: Error) {

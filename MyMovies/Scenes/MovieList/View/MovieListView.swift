@@ -54,7 +54,7 @@ class MovieListView: UIView, MovieListViewProtocol {
         setupAdditionalDefaultPreferences()
     }
 
-    func showMovieList(_ movies: [MovieListViewModelProtocol]) {
+    func showMovieList(_ movies: [MovieListItemViewModelProtocol]) {
         moviesCollectionViewHandler.configure(with: movies)
         movieListCollection.reloadData()
     }

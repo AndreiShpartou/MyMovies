@@ -55,13 +55,11 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movie: MovieProtocol) {
-        let posterURL = URL(string: movie.poster?.url ?? "")
-        imageView.kf.setImage(with: posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
-
+    func configure(with movie: BriefMovieListItemViewModelProtocol) {
+        imageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         titleLabel.text = movie.title
-        genreLabel.text = movie.genres.first?.name
-        ratingStackView.ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
+        genreLabel.text = movie.genre
+        ratingStackView.ratingLabel.text = movie.voteAverage
     }
 }
 

@@ -12,7 +12,7 @@ protocol MovieListViewProtocol: UIView {
     var presenter: MovieListPresenterProtocol? { get set }
 
     func showMovieGenres(_ genres: [GenreViewModelProtocol])
-    func showMovieList(_ movies: [MovieListViewModelProtocol])
+    func showMovieList(_ movies: [MovieListItemViewModelProtocol])
 }
 
 protocol MovieListViewDelegate: AnyObject, GenresCollectionViewDelegate {
