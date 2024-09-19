@@ -1,5 +1,5 @@
 //
-//  MovieViewModelProtocol.swift
+//  MovieListViewModelProtocol.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 18/09/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MovieViewModelProtocol {
+protocol MovieListViewModelProtocol {
     var title: String { get }
     var voteAverage: String { get }
     var genre: String { get }

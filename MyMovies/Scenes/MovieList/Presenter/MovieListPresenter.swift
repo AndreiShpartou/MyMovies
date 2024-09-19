@@ -54,7 +54,7 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
 
     func didFetchMovieList(_ movies: [MovieProtocol]) {
         // Map to ViewModel
-        guard let movieViewModels = mapper.map(data: movies, to: [MovieViewModel].self) else {
+        guard let movieViewModels = mapper.map(data: movies, to: [MovieListViewModel].self) else {
             return
         }
 

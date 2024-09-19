@@ -79,7 +79,7 @@ final class MainView: UIView, MainViewProtocol {
     }
 
     // MARK: - Public
-    func showUpcomingMovies(_ movies: [MovieProtocol]) {
+    func showUpcomingMovies(_ movies: [UpcomingMovieViewModelProtocol]) {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
         upcomingMoviesCollectionView.reloadData()
 

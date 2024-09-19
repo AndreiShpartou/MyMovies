@@ -59,8 +59,11 @@ final class MainPresenter: MainPresenterProtocol {
 extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
+        guard let upcomingMovieViewModels = mapper.map(data: movies, to: [UpcomingMovieViewModel].self) else {
+            return
+        }
         // Update the view with the fetched data
-        view?.showUpcomingMovies(movies)
+        view?.showUpcomingMovies(upcomingMovieViewModels)
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {

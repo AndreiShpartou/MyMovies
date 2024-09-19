@@ -1,5 +1,5 @@
 //
-//  MovieViewModel.swift
+//  MovieListViewModel.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 18/09/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MovieViewModel: MovieViewModelProtocol {
+struct MovieListViewModel: MovieListViewModelProtocol {
     let title: String
     let voteAverage: String
     let genre: String

@@ -11,7 +11,7 @@ protocol MainViewProtocol: UIView {
     var presenter: MainPresenterProtocol? { get set }
     var delegate: MainViewDelegate? { get set }
 
-    func showUpcomingMovies(_ movies: [MovieProtocol])
+    func showUpcomingMovies(_ movies: [UpcomingMovieViewModelProtocol])
     func scrollToUpcomingMovieItem(_ index: Int)
     func showPopularMovies(_ movies: [MovieProtocol])
     func showMovieGenres(_ genres: [GenreViewModelProtocol])

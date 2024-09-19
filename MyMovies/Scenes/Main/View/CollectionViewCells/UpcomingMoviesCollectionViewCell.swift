@@ -60,15 +60,9 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movie: MovieProtocol) {
-        backdropImageView.kf.setImage(
-            with: URL(string: movie.backdrop?.url ?? ""),
-            placeholder: Asset.DefaultCovers.defaultBackdrop.image
-        )
-        posterImageView.kf.setImage(
-            with: URL(string: movie.poster?.url ?? ""),
-            placeholder: Asset.DefaultCovers.defaultPoster.image
-        )
+    func configure(with movie: UpcomingMovieViewModelProtocol) {
+        backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         titleLabel.text = movie.title
         shortDescriptionLabel.text = movie.shortDescription
     }

@@ -10,9 +10,13 @@ import Foundation
 final class DomainModelMapper: DomainModelMapperProtocol {
     func map<T, Y>(data: T, to returnType: Y.Type) -> Y? {
         switch (data, returnType) {
-        // movies
-        case (let data as [MovieProtocol], is [MovieViewModel].Type):
-            return map(data) as? Y
+        // moviesToViewModel
+        // MovieList
+        case (let data as [MovieProtocol], is [MovieListViewModel].Type):
+            return mapToList(data) as? Y
+        // UpcomingMovies
+        case (let data as [MovieProtocol], is [UpcomingMovieViewModel].Type):
+            return mapToUpcoming(data) as? Y
         // genresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
@@ -27,10 +31,25 @@ final class DomainModelMapper: DomainModelMapperProtocol {
 
 // MARK: - ToViewModel
 extension DomainModelMapper {
-    private func map(_ data: [MovieProtocol]) -> [MovieViewModelProtocol] {
-        let movieViewModels: [MovieViewModel] = data.map {
+    // MovieProtocol -> UpcomingMovieViewModelProtocol
+    private func mapToUpcoming(_ data: [MovieProtocol]) -> [UpcomingMovieViewModelProtocol] {
+        let movieViewModels: [UpcomingMovieViewModel] = data.map {
+            return UpcomingMovieViewModel(
+                title: $0.title,
+                shortDescription: $0.shortDescription,
+                posterURL: URL(string: $0.poster?.url ?? ""),
+                backdropURL: URL(string: $0.backdrop?.url ?? "")
+            )
+        }
+
+        return movieViewModels
+    }
+
+    // MovieProtocol -> MovieListViewModelProtocol
+    private func mapToList(_ data: [MovieProtocol]) -> [MovieListViewModelProtocol] {
+        let movieViewModels: [MovieListViewModel] = data.map {
             let runtime = ($0.runtime == "0" || $0.runtime == nil) ? String(Int.random(in: 90...120)) : $0.runtime!
-            return MovieViewModel(
+            return MovieListViewModel(
                 title: $0.title,
                 voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7)),
                 genre: $0.genres.first?.name ?? "Action",
@@ -44,6 +63,7 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
+    // GenreProtocol -> GenreViewModelProtocol
     private func map(_ data: [GenreProtocol]) -> [GenreViewModelProtocol] {
         var genreViewModels: [GenreViewModelProtocol] = data.compactMap {
             guard let name = $0.name else {
@@ -61,6 +81,7 @@ extension DomainModelMapper {
 
 // MARK: - ToDomainModel
 extension DomainModelMapper {
+    // GenreViewModelProtocol -> GenreProtocol
     private func map(_ data: GenreViewModelProtocol) -> GenreProtocol {
         return Movie.Genre(id: data.id, name: data.name.lowercased())
     }
