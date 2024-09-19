@@ -9,7 +9,7 @@ import Foundation
 
 protocol MovieViewModelProtocol {
     var title: String { get }
-    var voteAverage: Double { get }
+    var voteAverage: String { get }
     var genre: String { get }
     var countries: [String] { get }
     var releaseYear: String { get }

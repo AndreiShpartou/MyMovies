@@ -97,16 +97,13 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movie: MovieProtocol) {
-        posterImageView.kf.setImage(
-            with: URL(string: movie.poster?.url ?? ""),
-            placeholder: Asset.DefaultCovers.defaultPoster.image
-        )
-        ratingStackView.ratingLabel.text = String(format: "%.1f", movie.voteAverage ?? 0)
+    func configure(with movie: MovieViewModelProtocol) {
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
+        ratingStackView.ratingLabel.text = movie.voteAverage
         titleLabel.text = movie.title
         yearLabel.text = movie.releaseYear
         runtimeLabel.text = movie.runtime
-        genreLabel.text = movie.genres.first?.name
+        genreLabel.text = movie.genre
         // countries layout
         configureCountries(countries: movie.countries)
     }
@@ -175,13 +172,13 @@ extension MovieListCollectionViewCell {
         return view
     }
 
-    private func configureCountries(countries: [CountryProtocol]) {
+    private func configureCountries(countries: [String]) {
         countries.forEach {
             guard countriesRowStackView.arrangedSubviews.count < 2 else {
                 return
             }
 
-            countriesRowStackView.addArrangedSubview(createCountryView(labelText: $0.name))
+            countriesRowStackView.addArrangedSubview(createCountryView(labelText: $0))
         }
         // add an empty stretchable view to the right
         let stretchableView: UIView = .createCommonView()

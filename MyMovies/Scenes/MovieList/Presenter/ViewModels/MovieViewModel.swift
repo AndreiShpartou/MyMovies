@@ -9,14 +9,14 @@ import Foundation
 
 struct MovieViewModel: MovieViewModelProtocol {
     let title: String
-    let voteAverage: Double
+    let voteAverage: String
     let genre: String
     let countries: [String]
     let releaseYear: String
     let runtime: String
     var posterURL: URL?
 
-    init(title: String, voteAverage: Double, genre: String, countries: [String], posterURL: URL? = nil, releaseYear: String, runtime: String) {
+    init(title: String, voteAverage: String, genre: String, countries: [String], posterURL: URL? = nil, releaseYear: String, runtime: String) {
         self.title = title
         self.voteAverage = voteAverage
         self.genre = genre

@@ -33,5 +33,18 @@ func getNearestWednesday(from date: Date) -> Date? {
 func formatDate(_ date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
+
+    return dateFormatter.string(from: date)
+}
+
+func extractYear(from dateString: String?) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy"
+
+    guard let dateString = dateString,
+          let date = dateFormatter.date(from: dateString) else {
+        return dateFormatter.string(from: Date())
+    }
+
     return dateFormatter.string(from: date)
 }
