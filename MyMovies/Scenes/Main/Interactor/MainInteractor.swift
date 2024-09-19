@@ -41,9 +41,13 @@ final class MainInteractor: MainInteractorProtocol {
         networkManager.fetchGenres { [weak self] result in
             switch result {
             case .success(let genres):
-                self?.presenter?.didFetchMovieGenres(genres)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchMovieGenres(genres)
+                }
             case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }
@@ -60,10 +64,14 @@ final class MainInteractor: MainInteractorProtocol {
         switch result {
         case .success(let movies):
             networkManager.fetchMoviesDetails(for: movies) { [weak self] detailedMovies in
-                self?.presentMovies(detailedMovies, for: fetchType)
+                DispatchQueue.main.async {
+                    self?.presentMovies(detailedMovies, for: fetchType)
+                }
             }
         case .failure(let error):
-            presenter?.didFailToFetchData(with: error)
+            DispatchQueue.main.async { [weak self] in
+                self?.presenter?.didFailToFetchData(with: error)
+            }
         }
     }
 

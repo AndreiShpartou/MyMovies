@@ -9,4 +9,9 @@ import UIKit
 
 class MovieListRouter: MovieListRouterProtocol {
     weak var viewController: UIViewController?
+
+    // MARK: - Init
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
+    }
 }

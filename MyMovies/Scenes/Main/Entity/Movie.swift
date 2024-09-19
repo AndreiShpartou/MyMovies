@@ -13,11 +13,15 @@ struct Movie: MovieProtocol {
     let alternativeTitle: String? // TMDB: original_title, Kinopoisk: alternativeName
     let description: String? // TMDB: overview, Kinopoisk: description
     let shortDescription: String? // TMDB: tagline, Kinopoisk: shortDescription
+    let status: String?
     let releaseYear: String? // TMDB: release_date -> map, Kinopoisk: year -> map)
     let runtime: String?  // TMDB: runtime, Kinopoisk: movieLength
     let voteAverage: Double? //  TMDB: vote_average, Kinopoisk: rating.kp
     var genres: [GenreProtocol] {
         return movieGenres
+    }
+    var countries: [CountryProtocol] {
+        return productionCountrues
     }
     var poster: CoverProtocol? {
         return moviePoster
@@ -27,6 +31,7 @@ struct Movie: MovieProtocol {
     }
 
     private let movieGenres: [Genre]
+    private let productionCountrues: [ProductionCountry]
     private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
     private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
 
@@ -36,10 +41,12 @@ struct Movie: MovieProtocol {
         alternativeTitle: String?,
         description: String?,
         shortDescription: String?,
+        status: String?,
         releaseYear: String?,
         runtime: String?,
         voteAverage: Double?,
         genres: [Genre],
+        countries: [ProductionCountry],
         poster: Cover?,
         backdrop: Cover?
     ) {
@@ -48,10 +55,12 @@ struct Movie: MovieProtocol {
         self.alternativeTitle = alternativeTitle
         self.description = description
         self.shortDescription = shortDescription
+        self.status = status
         self.releaseYear = releaseYear
         self.runtime = runtime
         self.voteAverage = voteAverage
         self.movieGenres = genres
+        self.productionCountrues = countries
         self.moviePoster = poster
         self.movieBackdrop = backdrop
     }
@@ -73,5 +82,9 @@ struct Movie: MovieProtocol {
     struct Cover: CoverProtocol {
         let url: String?
         let previewUrl: String?
+    }
+
+    struct ProductionCountry: CountryProtocol {
+        let name: String
     }
 }

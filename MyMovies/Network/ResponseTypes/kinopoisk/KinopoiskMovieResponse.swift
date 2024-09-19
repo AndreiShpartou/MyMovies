@@ -9,13 +9,14 @@ import Foundation
 
 struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var id: Int
-    var name: String
+    var name: String?
     var alternativeName: String?
     var enName: String?
-    var type: String
-    var year: Int
+    var type: String?
+    var year: Int?
     var description: String?
     var shortDescription: String?
+    var status: String?
     var movieLength: Int?
     var poster: KinopoiskCoverResponseProtocol? {
         moviePoster
@@ -23,8 +24,11 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var backdrop: KinopoiskCoverResponseProtocol? {
         return movieBackdrop
     }
-    var genres: [KinopoiskGenreResponseProtocol] {
+    var genres: [KinopoiskGenreResponseProtocol]? {
         return movieGenres
+    }
+    var countries: [KinopoiskCountryResponseProtocol] {
+        return movieCountries
     }
     var rating: KinopoiskRatingResponseProtocol? {
         return movieRating
@@ -32,7 +36,8 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
 
     private let moviePoster: KinopoiskMovieResponse.Cover?
     private let movieBackdrop: KinopoiskMovieResponse.Cover?
-    private let movieGenres: [KinopoiskMovieResponse.Genre]
+    private let movieGenres: [KinopoiskMovieResponse.Genre]?
+    private let movieCountries: [KinopoiskMovieResponse.Country]
     private let movieRating: KinopoiskMovieResponse.Rating?
 
     struct Cover: KinopoiskCoverResponseProtocol {
@@ -44,15 +49,20 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
         var name: String
     }
 
+    struct Country: KinopoiskCountryResponseProtocol {
+        var name: String
+    }
+
     struct Rating: KinopoiskRatingResponseProtocol {
         var kp: Double?
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, alternativeName, enName, type, year, description, shortDescription, movieLength
+        case id, name, alternativeName, enName, type, year, description, shortDescription, movieLength, status
         case moviePoster = "poster"
         case movieBackdrop = "backdrop"
         case movieGenres = "genres"
         case movieRating = "rating"
+        case movieCountries = "countries"
     }
 }

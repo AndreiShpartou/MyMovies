@@ -9,10 +9,10 @@ import UIKit
 final class UpcomingMoviesCollectionViewHandler: NSObject {
     weak var delegate: MainViewDelegate?
 
-    private var movies: [MovieProtocol] = []
+    private var movies: [UpcomingMovieViewModelProtocol] = []
 
     // MARK: - Public
-    func configure(with movies: [MovieProtocol]) {
+    func configure(with movies: [UpcomingMovieViewModelProtocol]) {
         self.movies = movies
     }
 }
@@ -35,8 +35,8 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let movie = movies[indexPath.row]
-        delegate?.didSelectMovie(movie)
+//        let movie = movies[indexPath.row]
+//        delegate?.didSelectMovie(movie)
     }
 }
 

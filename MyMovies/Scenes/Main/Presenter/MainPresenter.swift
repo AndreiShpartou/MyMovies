@@ -12,11 +12,19 @@ final class MainPresenter: MainPresenterProtocol {
     var interactor: MainInteractorProtocol
     var router: MainRouterProtocol
 
+    private let mapper: DomainModelMapperProtocol
+
     // MARK: - Init
-    init(view: MainViewProtocol?, interactor: MainInteractorProtocol, router: MainRouterProtocol) {
+    init(
+        view: MainViewProtocol?,
+        interactor: MainInteractorProtocol,
+        router: MainRouterProtocol,
+        mapper: DomainModelMapperProtocol = DomainModelMapper()
+    ) {
         self.view = view
         self.interactor = interactor
         self.router = router
+        self.mapper = mapper
     }
 
     // MARK: - Public
@@ -30,20 +38,20 @@ final class MainPresenter: MainPresenterProtocol {
         //
     }
 
-    func didSelectGenre(_ genre: GenreProtocol) {
-        interactor.fetchPopularMoviesWithGenresFiltering(genre: genre)
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+            return
+        }
+
+        interactor.fetchPopularMoviesWithGenresFiltering(genre: movieGenre)
     }
 
     func didSelectUpcomingMovie(_ movie: MovieProtocol) {
         //
     }
 
-    func didTapAllPopularMoviesButton() {
-        //
-    }
-
-    func didTapSeeAllPopularMoviesButton() {
-        //
+    func didTapSeeAllButton(listType: MovieListType) {
+        router.navigateToMovieList(type: listType)
     }
 }
 
@@ -51,16 +59,27 @@ final class MainPresenter: MainPresenterProtocol {
 extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
+        guard let upcomingMovieViewModels = mapper.map(data: movies, to: [UpcomingMovieViewModel].self) else {
+            return
+        }
         // Update the view with the fetched data
-        view?.showUpcomingMovies(movies)
+        view?.showUpcomingMovies(upcomingMovieViewModels)
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
-        view?.showMovieGenres(genres)
+        guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
+            return
+        }
+
+        view?.showMovieGenres(genreViewModels)
     }
 
     func didFetchPopularMovies(_ movies: [MovieProtocol]) {
-        view?.showPopularMovies(movies)
+        guard let popularMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            return
+        }
+
+        view?.showPopularMovies(popularMovieViewModels)
     }
 
     func didFailToFetchData(with error: Error) {

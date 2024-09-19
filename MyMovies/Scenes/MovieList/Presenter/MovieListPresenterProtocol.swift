@@ -7,4 +7,11 @@
 
 import Foundation
 
-protocol MovieListPresenterProtocol: AnyObject {}
+protocol MovieListPresenterProtocol: AnyObject {
+    var view: MovieListViewProtocol? { get set }
+    var interactor: MovieListInteractorProtocol { get set }
+    var router: MovieListRouterProtocol { get set }
+
+    func viewDidLoad(listType: MovieListType)
+    func didSelectGenre(_ genre: GenreViewModelProtocol)
+}

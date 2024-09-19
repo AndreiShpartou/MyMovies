@@ -5,6 +5,16 @@
 //  Created by Andrei Shpartou on 02/08/2024.
 //
 
-import Foundation
+import UIKit
 
-protocol MovieListViewProtocol: AnyObject {}
+protocol MovieListViewProtocol: UIView {
+    var delegate: MovieListViewInteractionDelegate? { get set }
+    var presenter: MovieListPresenterProtocol? { get set }
+
+    func showMovieGenres(_ genres: [GenreViewModelProtocol])
+    func showMovieList(_ movies: [MovieListItemViewModelProtocol])
+}
+
+protocol MovieListViewInteractionDelegate: AnyObject, GenresCollectionViewDelegate {
+    func didSelectGenre(_ genre: GenreViewModelProtocol)
+}

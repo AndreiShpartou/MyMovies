@@ -37,7 +37,7 @@ final class GenreCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with genre: GenreProtocol) {
+    func configure(with genre: GenreViewModelProtocol) {
         genreLabel.text = genre.name
     }
 
