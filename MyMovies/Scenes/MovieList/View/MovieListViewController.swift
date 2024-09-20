@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MovieListViewController: UIViewController {
+final class MovieListViewController: UIViewController {
     var presenter: MovieListPresenterProtocol?
 
     private let movieListView: MovieListViewProtocol

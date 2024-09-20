@@ -8,3 +8,5 @@
 import Foundation
 
 protocol MovieDetailsInteractorProtocol: AnyObject {}
+
+protocol MovieDetailsInteractorOutputProtocol: AnyObject {}

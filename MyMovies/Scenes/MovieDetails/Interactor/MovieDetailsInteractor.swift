@@ -8,5 +8,5 @@
 import Foundation
 
 class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
-    weak var presenter: MovieDetailsPresenterProtocol?
+    weak var presenter: MovieDetailsInteractorOutputProtocol?
 }

@@ -7,6 +7,11 @@
 
 import UIKit
 
-class MovieDetailsRouter: MovieDetailsRouterProtocol {
+final class MovieDetailsRouter: MovieDetailsRouterProtocol {
     weak var viewController: UIViewController?
+
+    // MARK: - Init
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
+    }
 }

@@ -7,6 +7,19 @@
 
 import UIKit
 
-class MovieDetailsViewController: UIViewController, MovieDetailsViewProtocol {
+final class MovieDetailsViewController: UIViewController {
     var presenter: MovieDetailsPresenterProtocol?
+
+    private let movieDetailsView: MovieDetailsViewProtocol
+
+    // MARK: - Init
+    init(movieDetailsView: MovieDetailsViewProtocol) {
+        self.movieDetailsView = movieDetailsView
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

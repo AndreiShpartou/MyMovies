@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainRouter: MainRouterProtocol {
+final class MainRouter: MainRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init

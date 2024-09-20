@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MovieListPresenter: MovieListPresenterProtocol {
+final class MovieListPresenter: MovieListPresenterProtocol {
     weak var view: MovieListViewProtocol?
     var interactor: MovieListInteractorProtocol
     var router: MovieListRouterProtocol

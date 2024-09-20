@@ -9,6 +9,13 @@ import Foundation
 
 class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     weak var view: MovieDetailsViewProtocol?
-    var interactor: MovieDetailsInteractorProtocol?
-    var router: MovieDetailsRouterProtocol?
+    var interactor: MovieDetailsInteractorProtocol
+    var router: MovieDetailsRouterProtocol
+
+    // MARK: - Init
+    init(view: MovieDetailsViewProtocol, interactor: MovieDetailsInteractorProtocol, router: MovieDetailsRouterProtocol) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+    }
 }

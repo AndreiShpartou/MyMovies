@@ -7,6 +7,15 @@
 
 import UIKit
 
-class MovieDetailsView: UIView {
+final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     var presenter: MovieDetailsPresenterProtocol?
+
+    // MARK: - Init
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

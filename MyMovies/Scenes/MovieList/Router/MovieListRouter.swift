@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MovieListRouter: MovieListRouterProtocol {
+final class MovieListRouter: MovieListRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init

@@ -15,6 +15,7 @@ protocol SceneBuilderProtocol: AnyObject {
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
+    // MARK: - TabBarMainScenes
     static func buildHomeScene() -> UIViewController {
         let view = MainView()
         let viewController = MainViewController(mainView: view)
@@ -65,6 +66,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         return navigationController
     }
 
+    // MARK: - SecondaryScenes
     static func buildMovieListScene(listType: MovieListType) -> UIViewController {
         let view = MovieListView()
         let viewController = MovieListViewController(movieListView: view, listType: listType)
@@ -76,6 +78,20 @@ final class SceneBuilder: SceneBuilderProtocol {
         viewController.presenter = presenter
         interactor.presenter = presenter
         viewController.title = listType.title
+
+        return viewController
+    }
+    
+    static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController {
+        let view = MovieDetailsView()
+        let viewController = MovieDetailsViewController(movieDetailsView: view)
+        let router = MovieDetailsRouter(viewController: viewController)
+        let interactor = MovieDetailsInteractor()
+        let presenter = MovieDetailsPresenter(view: view, interactor: interactor, router: router)
+        
+        view.presenter = presenter
+        viewController.presenter = presenter
+        interactor.presenter = presenter
 
         return viewController
     }
