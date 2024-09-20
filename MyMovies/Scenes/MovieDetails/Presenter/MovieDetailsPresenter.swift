@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
+final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     weak var view: MovieDetailsViewProtocol?
     var interactor: MovieDetailsInteractorProtocol
     var router: MovieDetailsRouterProtocol
@@ -18,4 +18,12 @@ class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         self.interactor = interactor
         self.router = router
     }
+
+    func viewDidLoad() {
+        //
+    }
+}
+
+// MARK: - MovieDetailsInteractorOutputProtocol
+extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
 }

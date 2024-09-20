@@ -13,9 +13,24 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setupView()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - Setup
+extension MovieDetailsView {
+    private func setupView() {
+    }
+}
+
+// MARK: - Constraints
+extension MovieDetailsView {
+    private func setupConstraints() {
     }
 }
