@@ -57,9 +57,9 @@ extension MainViewController: MainViewDelegate {
         presenter?.didSelectGenre(genre)
     }
 
-    func didSelectMovie(_ movie: MovieProtocol) {
+    func didSelectMovie(movieID: Int) {
         // Handle popular movie selection
-        presenter?.didSelectMovie(movie)
+        presenter?.didSelectMovie(movieID: movieID)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {

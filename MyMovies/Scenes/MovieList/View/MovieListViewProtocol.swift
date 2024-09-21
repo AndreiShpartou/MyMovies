@@ -17,4 +17,5 @@ protocol MovieListViewProtocol: UIView {
 
 protocol MovieListViewInteractionDelegate: AnyObject, GenresCollectionViewDelegate {
     func didSelectGenre(_ genre: GenreViewModelProtocol)
+    func didSelectMovie(movieID: Int)
 }

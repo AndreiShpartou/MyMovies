@@ -87,4 +87,8 @@ extension MovieListViewController: MovieListViewInteractionDelegate {
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         presenter?.didSelectGenre(genre)
     }
+
+    func didSelectMovie(movieID: Int) {
+        presenter?.didSelectMovie(movieID: movieID)
+    }
 }

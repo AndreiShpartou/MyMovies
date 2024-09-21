@@ -38,6 +38,7 @@ extension DomainModelMapper {
     private func mapToUpcoming(_ data: [MovieProtocol]) -> [UpcomingMovieViewModelProtocol] {
         let movieViewModels: [UpcomingMovieViewModel] = data.map {
             return UpcomingMovieViewModel(
+                id: $0.id,
                 title: $0.title,
                 shortDescription: $0.shortDescription,
                 posterURL: URL(string: $0.poster?.url ?? ""),
@@ -52,6 +53,7 @@ extension DomainModelMapper {
     private func mapToBriefList(_ data: [MovieProtocol]) -> [BriefMovieListItemViewModelProtocol] {
         let movieViewModels: [BriefMovieListItemViewModel] = data.map {
             return BriefMovieListItemViewModel(
+                id: $0.id,
                 title: $0.title,
                 posterURL: URL(string: $0.poster?.url ?? ""),
                 genre: $0.genres.first?.name ?? "Action",
@@ -67,6 +69,7 @@ extension DomainModelMapper {
         let movieViewModels: [MovieListItemViewModel] = data.map {
             let runtime = ($0.runtime == "0" || $0.runtime == nil) ? String(Int.random(in: 90...120)) : $0.runtime!
             return MovieListItemViewModel(
+                id: $0.id,
                 title: $0.title,
                 voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7)),
                 genre: $0.genres.first?.name ?? "Action",

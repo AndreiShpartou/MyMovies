@@ -27,7 +27,7 @@ final class MovieDetailsViewController: UIViewController {
     override func loadView() {
         view = movieDetailsView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

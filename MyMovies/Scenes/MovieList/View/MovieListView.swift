@@ -80,6 +80,7 @@ extension MovieListView {
 
     private func updateDelegates() {
         genresCollectionHandler.delegate = delegate
+        moviesCollectionViewHandler.delegate = delegate
     }
 
     private func setupAdditionalDefaultPreferences() {

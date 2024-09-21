@@ -14,4 +14,5 @@ protocol MovieListPresenterProtocol: AnyObject {
 
     func viewDidLoad(listType: MovieListType)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
+    func didSelectMovie(movieID: Int)
 }

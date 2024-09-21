@@ -8,6 +8,7 @@
 import Foundation
 
 struct UpcomingMovieViewModel: UpcomingMovieViewModelProtocol {
+    let id: Int
     let title: String
     let shortDescription: String?
     var posterURL: URL?

@@ -14,4 +14,10 @@ final class MovieListRouter: MovieListRouterProtocol {
     init(viewController: UIViewController?) {
         self.viewController = viewController
     }
+
+    func navigateToMovieDetails(with movie: MovieProtocol) {
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
+    }
 }

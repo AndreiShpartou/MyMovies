@@ -86,7 +86,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         let view = MovieDetailsView()
         let viewController = MovieDetailsViewController(movieDetailsView: view)
         let router = MovieDetailsRouter(viewController: viewController)
-        let interactor = MovieDetailsInteractor()
+        let interactor = MovieDetailsInteractor(movie: movie)
         let presenter = MovieDetailsPresenter(view: view, interactor: interactor, router: router)
 
         view.presenter = presenter

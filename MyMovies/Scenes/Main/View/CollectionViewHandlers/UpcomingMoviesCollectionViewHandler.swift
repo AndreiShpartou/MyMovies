@@ -35,8 +35,8 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let movie = movies[indexPath.row]
-//        delegate?.didSelectMovie(movie)
+        let movieID = movies[indexPath.row].id
+        delegate?.didSelectMovie(movieID: movieID)
     }
 }
 

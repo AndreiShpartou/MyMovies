@@ -10,10 +10,14 @@ import UIKit
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     var presenter: MovieDetailsPresenterProtocol?
 
+    // MARK: - UIComponents
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupView()
         setupConstraints()
     }
@@ -26,6 +30,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
 // MARK: - Setup
 extension MovieDetailsView {
     private func setupView() {
+        backgroundColor = .primaryBackground
     }
 }
 

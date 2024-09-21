@@ -13,6 +13,8 @@ final class MovieListPresenter: MovieListPresenterProtocol {
     var router: MovieListRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
+    // Temporary entity persistance
+    private var movies: [MovieProtocol] = []
 
     // MARK: - Init
     init(
@@ -39,6 +41,14 @@ final class MovieListPresenter: MovieListPresenterProtocol {
 
         interactor.fetchMovieListWithGenresFiltering(genre: movieGenre)
     }
+
+    func didSelectMovie(movieID: Int) {
+        guard let movie = movies.first(where: { $0.id == movieID }) else {
+            return
+        }
+
+        router.navigateToMovieDetails(with: movie)
+    }
 }
 
 // MARK: - MovieListInteractorOutputProtocol
@@ -59,6 +69,7 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
         }
 
         view?.showMovieList(movieViewModels)
+        self.movies = movies
     }
 
     func didFailToFetchData(with error: Error) {

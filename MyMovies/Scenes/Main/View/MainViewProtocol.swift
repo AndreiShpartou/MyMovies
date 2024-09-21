@@ -19,7 +19,7 @@ protocol MainViewProtocol: UIView {
 }
 
 protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate {
-    func didSelectMovie(_ movie: MovieProtocol)
+    func didSelectMovie(movieID: Int)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didTapSeeAllButton(listType: MovieListType)
     func didScrollUpcomingMoviesItemTo(_ index: Int)

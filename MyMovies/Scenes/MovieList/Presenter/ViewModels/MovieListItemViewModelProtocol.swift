@@ -8,6 +8,7 @@
 import Foundation
 
 protocol MovieListItemViewModelProtocol {
+    var id: Int { get }
     var title: String { get }
     var voteAverage: String { get }
     var genre: String { get }

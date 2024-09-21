@@ -8,6 +8,7 @@
 import Foundation
 
 protocol UpcomingMovieViewModelProtocol {
+    var id: Int { get }
     var title: String { get }
     var shortDescription: String? { get }
     var posterURL: URL? { get }
