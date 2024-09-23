@@ -39,5 +39,38 @@ final class MovieDetailsViewController: UIViewController {
 // MARK: - Setup
 extension MovieDetailsViewController {
     private func setupViewController() {
+        setupNavigationBar()
+    }
+
+    private func setupNavigationBar() {
+        // Setting the custom title font
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: Typography.SemiBold.title,
+            NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
+        ]
+        // Custom left button
+        let leftButton: UIButton = .createBackNavBarButton()
+        leftButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        let leftBarButton = UIBarButtonItem(customView: leftButton)
+        navigationItem.leftBarButtonItem = leftBarButton
+        // Custom right button
+        let rightButton: UIButton = .createFavouriteButton()
+        rightButton.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
+        let rightBarButton = UIBarButtonItem(customView: rightButton)
+        navigationItem.rightBarButtonItem = rightBarButton
+    }
+}
+
+// MARK: - ActionMethods
+extension MovieDetailsViewController {
+    @objc
+    private func backButtonTapped(_ sender: UIButton) {
+        // Handle back button action
+        navigationController?.popViewController(animated: true)
+    }
+
+    @objc
+    private func favouriteButtonTapped(_ sender: UIButton) {
+        // Handle favourite button action
     }
 }

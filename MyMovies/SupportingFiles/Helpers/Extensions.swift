@@ -145,6 +145,18 @@ extension UIButton {
 
         return button
     }
+
+    static func createBackNavBarButton() -> UIButton {
+        let leftButton = UIButton(type: .custom)
+        leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        leftButton.tintColor = .white
+        leftButton.backgroundColor = .primarySoft
+
+        leftButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        leftButton.layer.cornerRadius = 15
+
+        return leftButton
+    }
 }
 
 // MARK: - UISearchBar

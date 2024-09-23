@@ -52,7 +52,10 @@ extension MovieListViewController {
             NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
         ]
         // Custom left button
-        navigationItem.leftBarButtonItem = createCustomLeftBarButton()
+        let leftButton: UIButton = .createBackNavBarButton()
+        leftButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        let leftBarButton = UIBarButtonItem(customView: leftButton)
+        navigationItem.leftBarButtonItem = leftBarButton
     }
 }
 
@@ -62,23 +65,6 @@ extension MovieListViewController {
     private func backButtonTapped(_ sender: UIButton) {
         // Handle back button action
         navigationController?.popViewController(animated: true)
-    }
-}
-
-// MARK: - Helpers
-extension MovieListViewController {
-    private func createCustomLeftBarButton() -> UIBarButtonItem {
-        let leftButton = UIButton(type: .custom)
-        leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        leftButton.tintColor = .white
-        leftButton.backgroundColor = .primarySoft
-        leftButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        leftButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        leftButton.layer.cornerRadius = 15
-
-        let leftBarButton = UIBarButtonItem(customView: leftButton)
-
-        return leftBarButton
     }
 }
 
