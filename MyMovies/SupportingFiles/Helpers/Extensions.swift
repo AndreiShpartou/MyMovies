@@ -61,13 +61,13 @@ extension UICollectionView {
 extension UIStackView {
     static func createCommonStackView(
         axis: NSLayoutConstraint.Axis,
-        spacing: CGFloat,
+        spacing: CGFloat = 8,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .fill
     ) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = axis
-        stackView.spacing = 8
+        stackView.spacing = spacing
         stackView.distribution = distribution
         stackView.alignment = alignment
         stackView.backgroundColor = .clear
