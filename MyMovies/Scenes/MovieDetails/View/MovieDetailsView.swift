@@ -22,9 +22,11 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     private let descriptionStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
         spacing: 8,
-        distribution: .fillEqually,
-        alignment: .center
+        distribution: .fillProportionally,
+        alignment: .fill
     )
+    private let firstSeparatorView: UIView = .createCommonView(backgroundColor: .textColorGrey)
+    private let secondSeparatorView: UIView = .createCommonView(backgroundColor: .textColorGrey)
     // Year
     private let yearStackView = DescriptionGeneralStackView(
         image: Asset.Icons.calendar.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
@@ -37,6 +39,17 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     private let genreStackView = DescriptionGeneralStackView(
         image: Asset.Icons.film.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
     )
+    // Rating
+    private let ratingStackView = RatingGeneralStackView()
+    // Buttons section
+    private let buttonsStackView: UIStackView = .createCommonStackView(
+        axis: .horizontal,
+        spacing: 48,
+        distribution: .fillProportionally,
+        alignment: .fill
+    )
+    private lazy var trailerButton: UIButton = createTrailerButton()
+    private lazy var shareButton: UIButton = createShareButton()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -69,16 +82,24 @@ extension MovieDetailsView {
 
         contentView.addSubviews(posterImageView)
         contentView.addSubviews(descriptionStackView)
+        contentView.addSubviews(ratingStackView)
+        contentView.addSubviews(buttonsStackView)
         // Description section arrangement
         descriptionStackView.addArrangedSubview(yearStackView)
+        descriptionStackView.addArrangedSubview(firstSeparatorView)
         descriptionStackView.addArrangedSubview(runtimeStackView)
+        descriptionStackView.addArrangedSubview(secondSeparatorView)
         descriptionStackView.addArrangedSubview(genreStackView)
+        // Buttons
+        buttonsStackView.addArrangedSubview(trailerButton)
+        buttonsStackView.addArrangedSubview(shareButton)
 
         // Preset
         posterImageView.image = Asset.DefaultCovers.defaultPoster.image
         yearStackView.label.text = "2021"
-        runtimeStackView.label.text = "148 Minutes"
-        genreStackView.label.text = "Action"
+        runtimeStackView.label.text = "95 Minutes"
+        genreStackView.label.text = "Thriller"
+        ratingStackView.ratingLabel.text = "5.5"
         // Preset
     }
 }
@@ -98,6 +119,30 @@ extension MovieDetailsView {
         imageView.layer.insertSublayer(gradientLayer, at: 0)
 
         return imageView
+    }
+
+    private func createTrailerButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("Trailer", for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 20)
+        let config = UIImage.SymbolConfiguration(scale: .small)
+        button.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
+        button.backgroundColor = .secondaryOrange
+        button.tintColor = .textColorWhite
+        button.layer.cornerRadius = 25
+        button.titleLabel?.font = Typography.Medium.title
+
+        return button
+    }
+
+    private func createShareButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .primarySoft
+        button.setImage(Asset.Icons.share.image, for: .normal)
+        button.tintColor = .primaryBlueAccent
+        button.layer.cornerRadius = 25
+
+        return button
     }
 }
 
@@ -131,10 +176,41 @@ extension MovieDetailsView {
             make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(posterImageView.snp.width).dividedBy(0.675) // 2:3 aspect ratio of movie posters
         }
-        
+
         descriptionStackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(32)
             make.top.equalTo(posterImageView.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
+        }
+
+        firstSeparatorView.snp.makeConstraints { make in
+            make.width.equalTo(2)
+            make.height.equalTo(20)
+        }
+
+        secondSeparatorView.snp.makeConstraints { make in
+            make.width.equalTo(2)
+            make.height.equalTo(20)
+        }
+
+        ratingStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(descriptionStackView.snp.bottom).offset(16)
+            make.width.equalTo(50)
+            make.height.equalTo(20)
+        }
+
+        buttonsStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(ratingStackView.snp.bottom).offset(32)
+            make.height.equalTo(50)
+        }
+
+        trailerButton.snp.makeConstraints { make in
+            make.width.equalTo(130)
+        }
+
+        shareButton.snp.makeConstraints { make in
+            make.width.height.equalTo(50)
         }
     }
 }

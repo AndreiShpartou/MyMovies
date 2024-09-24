@@ -37,6 +37,10 @@ internal enum Asset {
     internal static let calendar = ImageAsset(name: "calendar")
     internal static let clock = ImageAsset(name: "clock")
     internal static let film = ImageAsset(name: "film")
+    internal static let share = ImageAsset(name: "share")
+  }
+  internal enum Launch {
+    internal static let launch = ImageAsset(name: "launch")
   }
   internal enum PageControlIndicators {
     internal static let selected = ImageAsset(name: "Selected")
@@ -210,4 +214,4 @@ private final class BundleToken {
     #endif
   }()
 }
-// swiftlint:enable all
+// swiftlint:enable convenience_type
