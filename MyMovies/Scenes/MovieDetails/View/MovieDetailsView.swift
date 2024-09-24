@@ -10,6 +10,11 @@ import UIKit
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     var presenter: MovieDetailsPresenterProtocol?
 
+    // Story line “Read More” functionality preferences
+    private var isExpanded = false
+    private var fullTextHeight: CGFloat = 0
+    private let maxLines = 5
+
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -50,6 +55,14 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     )
     private lazy var trailerButton: UIButton = createTrailerButton()
     private lazy var shareButton: UIButton = createShareButton()
+    // Story line section
+    private let storyLineLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.title,
+        textColor: .textColorWhite,
+        text: "Story Line"
+    )
+    private lazy var storyTextView: UITextView = createStoryTextView()
+    private lazy var readMoreButton: UIButton = createReadMoreButton()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -68,6 +81,18 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         super.layoutSubviews()
         // Adjust the size of the background gradient layer
         backdropImageView.layer.sublayers?.first?.frame = backdropImageView.bounds
+        
+        // Preset
+        let text = "For the first time in the cinematic history of Spider-Man, our friendly neighborhood hero's identity is revealed, bringing his Super Hero responsibilities into conflict with his normal life and putting those he cares about most at risk. A new line text the cinematic history of Spider-Man, our friendly neighborhood hero's identity is revealed end the new line"
+        self.configure(with: text)
+        // Preset
+    }
+
+    // MARK: - Public
+    func configure(with text: String) {
+        storyTextView.text = text
+        storyTextView.layoutIfNeeded()
+        updateButtonVisibility()
     }
 }
 
@@ -84,6 +109,9 @@ extension MovieDetailsView {
         contentView.addSubviews(descriptionStackView)
         contentView.addSubviews(ratingStackView)
         contentView.addSubviews(buttonsStackView)
+        contentView.addSubviews(storyLineLabel)
+        contentView.addSubviews(storyTextView)
+        contentView.addSubviews(readMoreButton)
         // Description section arrangement
         descriptionStackView.addArrangedSubview(yearStackView)
         descriptionStackView.addArrangedSubview(firstSeparatorView)
@@ -101,6 +129,31 @@ extension MovieDetailsView {
         genreStackView.label.text = "Thriller"
         ratingStackView.ratingLabel.text = "5.5"
         // Preset
+    }
+}
+
+// MARK: - Private
+extension MovieDetailsView {
+    private func updateButtonVisibility() {
+        let fullSize = storyTextView.sizeThatFits(CGSize(width: storyTextView.frame.size.width, height: CGFloat(MAXFLOAT)))
+        fullTextHeight = fullSize.height
+        readMoreButton.isHidden = fullTextHeight <= storyTextView.frame.height
+    }
+}
+
+// MARK: - ActionMethods
+extension MovieDetailsView {
+    @objc
+    private func readMoreTapped(_ sender: UIButton) {
+        debugPrint("Read more tapped")
+        isExpanded.toggle()
+        storyTextView.snp.updateConstraints { make in
+            make.height.equalTo(isExpanded ? calculateContentHeight(lines: maxLines) : fullTextHeight)
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+        }
+        readMoreButton.setTitle(isExpanded ? "Less" : "More", for: .normal)
     }
 }
 
@@ -144,6 +197,39 @@ extension MovieDetailsView {
 
         return button
     }
+
+    private func createStoryTextView() -> UITextView {
+        let textView = UITextView()
+        textView.font = Typography.Regular.title
+        textView.textColor = .textColorWhiteGrey
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.backgroundColor = .clear
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+
+        return textView
+    }
+
+    private func createReadMoreButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("More", for: .normal)
+        button.setTitleColor(.primaryBlueAccent, for: .normal)
+        button.titleLabel?.font = Typography.Regular.title
+        button.backgroundColor = .clear
+        button.isHidden = true
+        button.addTarget(self, action: #selector(readMoreTapped), for: .touchUpInside)
+
+        return button
+    }
+
+    // Calculate the initial content hight for the story text view
+    private func calculateContentHeight(lines: Int) -> CGFloat {
+        storyTextView.layoutIfNeeded()
+        let lineHeight = storyTextView.font?.lineHeight ?? 0
+
+        return lineHeight * CGFloat(lines)
+    }
 }
 
 // MARK: - Constraints
@@ -176,7 +262,7 @@ extension MovieDetailsView {
             make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(posterImageView.snp.width).dividedBy(0.675) // 2:3 aspect ratio of movie posters
         }
-
+        // Description stack
         descriptionStackView.snp.makeConstraints { make in
             make.top.equalTo(posterImageView.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
@@ -198,10 +284,10 @@ extension MovieDetailsView {
             make.width.equalTo(50)
             make.height.equalTo(20)
         }
-
+        // Buttons
         buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(ratingStackView.snp.bottom).offset(32)
+            make.top.equalTo(ratingStackView.snp.bottom).offset(16)
             make.height.equalTo(50)
         }
 
@@ -211,6 +297,23 @@ extension MovieDetailsView {
 
         shareButton.snp.makeConstraints { make in
             make.width.height.equalTo(50)
+        }
+        // Story line
+        storyLineLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(trailerButton.snp.bottom).offset(16)
+        }
+
+        storyTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(storyLineLabel.snp.bottom).offset(8)
+            make.height.equalTo(calculateContentHeight(lines: maxLines))
+        }
+
+        readMoreButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(storyTextView.snp.bottom)
+            make.height.equalTo(20)
         }
     }
 }
