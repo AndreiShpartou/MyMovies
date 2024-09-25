@@ -12,18 +12,34 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     var interactor: MovieDetailsInteractorProtocol
     var router: MovieDetailsRouterProtocol
 
+    private let mapper: DomainModelMapperProtocol
+
     // MARK: - Init
-    init(view: MovieDetailsViewProtocol, interactor: MovieDetailsInteractorProtocol, router: MovieDetailsRouterProtocol) {
+    init(
+        view: MovieDetailsViewProtocol,
+        interactor: MovieDetailsInteractorProtocol,
+        router: MovieDetailsRouterProtocol,
+        mapper: DomainModelMapperProtocol = DomainModelMapper()
+    ) {
         self.view = view
         self.interactor = interactor
         self.router = router
+        self.mapper = mapper
     }
 
     func viewDidLoad() {
-        //
+        interactor.fetchMovie()
     }
 }
 
 // MARK: - MovieDetailsInteractorOutputProtocol
 extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
+    func didFetchMovie(_ movie: MovieProtocol) {
+        // Map to ViewModel
+        guard let movieDetailsViewModel = mapper.map(data: movie, to: MovieDetailsViewModel.self) else {
+            return
+        }
+
+        view?.showDetailedMovie(movieDetailsViewModel)
+    }
 }

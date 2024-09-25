@@ -16,4 +16,8 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     init(movie: MovieProtocol) {
         self.movie = movie
     }
+
+    func fetchMovie() {
+        presenter?.didFetchMovie(movie)
+    }
 }

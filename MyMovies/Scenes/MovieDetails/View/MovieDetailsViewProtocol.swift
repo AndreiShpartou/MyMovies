@@ -8,4 +8,7 @@
 import UIKit
 
 protocol MovieDetailsViewProtocol: UIView {
+    var presenter: MovieDetailsPresenterProtocol? { get set }
+
+    func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol)
 }

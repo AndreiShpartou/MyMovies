@@ -81,14 +81,19 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         super.layoutSubviews()
         // Adjust the size of the background gradient layer
         backdropImageView.layer.sublayers?.first?.frame = backdropImageView.bounds
+        // Set story text height as needed
+        setFullStoryTextHeight()
     }
 
     // MARK: - Public
-    @objc
-    func configure(with text: String?) {
-        storyTextView.text = text
-        storyTextView.layoutIfNeeded()
-        updateButtonVisibility()
+    func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol) {
+        backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
+        yearStackView.label.text = movie.releaseYear
+        runtimeStackView.label.text = movie.runtime
+        genreStackView.label.text = movie.genre
+        ratingStackView.ratingLabel.text = movie.voteAverage
+        storyTextView.text = movie.description
     }
 }
 
@@ -117,19 +122,19 @@ extension MovieDetailsView {
         // Buttons
         buttonsStackView.addArrangedSubview(trailerButton)
         buttonsStackView.addArrangedSubview(shareButton)
-
-        // Preset
-        posterImageView.image = Asset.DefaultCovers.defaultPoster.image
-        yearStackView.label.text = "2021"
-        runtimeStackView.label.text = "95 Minutes"
-        genreStackView.label.text = "Thriller"
-        ratingStackView.ratingLabel.text = "5.5"
-        // Preset
     }
 }
 
 // MARK: - Private
 extension MovieDetailsView {
+    private func setFullStoryTextHeight() {
+        guard fullTextHeight == 0, storyTextView.frame.size.width != 0 else {
+            return
+        }
+
+        updateButtonVisibility()
+    }
+
     private func updateButtonVisibility() {
         let fullSize = storyTextView.sizeThatFits(CGSize(width: storyTextView.frame.size.width, height: CGFloat(MAXFLOAT)))
         fullTextHeight = fullSize.height
@@ -155,12 +160,12 @@ extension MovieDetailsView {
 // MARK: - Helpers
 extension MovieDetailsView {
     private func createBackdropImageView() -> UIImageView {
-        let imageView: UIImageView = .createImageView(contentMode: .scaleAspectFill, image: Asset.DefaultCovers.defaultBackdrop.image)
+        let imageView: UIImageView = .createImageView(contentMode: .scaleAspectFill)
         let gradientLayer = CAGradientLayer()
 
         // Transparent color
         gradientLayer.colors = [
-            UIColor.primaryBackground.withAlphaComponent(0.9).cgColor,
+            UIColor.primaryBackground.withAlphaComponent(0.7).cgColor,
             UIColor.primaryBackground.withAlphaComponent(0.95).cgColor
         ]
         gradientLayer.locations = [0.0, 0.7]
@@ -171,13 +176,20 @@ extension MovieDetailsView {
 
     private func createTrailerButton() -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle("Trailer", for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 20)
-        let config = UIImage.SymbolConfiguration(scale: .small)
-        button.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
-        button.backgroundColor = .secondaryOrange
-        button.tintColor = .textColorWhite
-        button.layer.cornerRadius = 25
+        // Creating a configuration for the button
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .secondaryOrange
+        config.baseForegroundColor = .textColorWhite
+        config.cornerStyle = .capsule
+        // Using UIImage.SymbolConfiguration to create the button image
+        let symbolConfig = UIImage.SymbolConfiguration(scale: .small)
+        config.image = UIImage(systemName: "play.fill", withConfiguration: symbolConfig)
+        // Setting the title and adjusting insets
+        config.title = "Trailer"
+        config.imagePlacement = .leading
+        config.imagePadding = 10
+        // Applying the configuration to the button
+        button.configuration = config
         button.titleLabel?.font = Typography.Medium.title
 
         return button
@@ -230,7 +242,8 @@ extension MovieDetailsView {
 extension MovieDetailsView {
     private func setupConstraints() {
         setupScrollConstraints()
-        setupMainElementsConstraints()
+        setupBackgroundConstraints()
+        setupContentSubviewsConstraints()
     }
 
     private func setupScrollConstraints() {
@@ -243,13 +256,15 @@ extension MovieDetailsView {
         }
     }
 
-    private func setupMainElementsConstraints() {
+    private func setupBackgroundConstraints() {
         backdropImageView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(safeAreaLayoutGuide)
             make.top.equalToSuperview()
             make.height.equalToSuperview().multipliedBy(0.7)
         }
+    }
 
+    private func setupContentSubviewsConstraints() {
         posterImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(16)

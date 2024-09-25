@@ -7,6 +7,10 @@
 
 import Foundation
 
-protocol MovieDetailsInteractorProtocol: AnyObject {}
+protocol MovieDetailsInteractorProtocol: AnyObject {
+    func fetchMovie()
+}
 
-protocol MovieDetailsInteractorOutputProtocol: AnyObject {}
+protocol MovieDetailsInteractorOutputProtocol: AnyObject {
+    func didFetchMovie(_ movie: MovieProtocol)
+}

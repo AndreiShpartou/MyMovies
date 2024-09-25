@@ -20,6 +20,9 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // MovieList
         case (let data as [MovieProtocol], is [MovieListItemViewModel].Type):
             return mapToList(data) as? Y
+        // MovieDetails
+        case (let data as MovieProtocol, is MovieDetailsViewModel.Type):
+            return mapToDetails(data) as? Y
         // genresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
@@ -81,6 +84,22 @@ extension DomainModelMapper {
         }
 
         return movieViewModels
+    }
+
+    // MovieProtocol -> MovieDetailsViewModelProtocol
+    private func mapToDetails(_ data: MovieProtocol) -> MovieDetailsViewModelProtocol {
+        let runtime = (data.runtime == "0" || data.runtime == nil) ? String(Int.random(in: 90...120)) : data.runtime!
+        return MovieDetailsViewModel(
+            id: data.id,
+            title: data.title,
+            description: data.description ?? data.title,
+            voteAverage: String(format: "%.1f", data.voteAverage ?? Double.random(in: 4.4...7.7)),
+            genre: data.genres.first?.name ?? "Action",
+            releaseYear: extractYear(from: data.releaseYear),
+            runtime: "\(runtime) Minutes",
+            backdropURL: URL(string: data.backdrop?.url ?? data.poster?.url ?? ""),
+            posterURL: URL(string: data.poster?.url ?? "")
+        )
     }
 
     // GenreProtocol -> GenreViewModelProtocol
