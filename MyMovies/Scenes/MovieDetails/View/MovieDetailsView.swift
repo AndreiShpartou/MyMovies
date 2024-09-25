@@ -81,15 +81,11 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         super.layoutSubviews()
         // Adjust the size of the background gradient layer
         backdropImageView.layer.sublayers?.first?.frame = backdropImageView.bounds
-        
-        // Preset
-        let text = "For the first time in the cinematic history of Spider-Man, our friendly neighborhood hero's identity is revealed, bringing his Super Hero responsibilities into conflict with his normal life and putting those he cares about most at risk. A new line text the cinematic history of Spider-Man, our friendly neighborhood hero's identity is revealed end the new line"
-        self.configure(with: text)
-        // Preset
     }
 
     // MARK: - Public
-    func configure(with text: String) {
+    @objc
+    func configure(with text: String?) {
         storyTextView.text = text
         storyTextView.layoutIfNeeded()
         updateButtonVisibility()
@@ -145,14 +141,13 @@ extension MovieDetailsView {
 extension MovieDetailsView {
     @objc
     private func readMoreTapped(_ sender: UIButton) {
-        debugPrint("Read more tapped")
-        isExpanded.toggle()
         storyTextView.snp.updateConstraints { make in
             make.height.equalTo(isExpanded ? calculateContentHeight(lines: maxLines) : fullTextHeight)
         }
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
         }
+        isExpanded.toggle()
         readMoreButton.setTitle(isExpanded ? "Less" : "More", for: .normal)
     }
 }
@@ -216,7 +211,6 @@ extension MovieDetailsView {
         button.setTitle("More", for: .normal)
         button.setTitleColor(.primaryBlueAccent, for: .normal)
         button.titleLabel?.font = Typography.Regular.title
-        button.backgroundColor = .clear
         button.isHidden = true
         button.addTarget(self, action: #selector(readMoreTapped), for: .touchUpInside)
 
@@ -241,7 +235,7 @@ extension MovieDetailsView {
 
     private func setupScrollConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
 
         contentView.snp.makeConstraints { make in
@@ -258,7 +252,7 @@ extension MovieDetailsView {
 
         posterImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(safeAreaLayoutGuide).offset(16)
+            make.top.equalToSuperview().offset(16)
             make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(posterImageView.snp.width).dividedBy(0.675) // 2:3 aspect ratio of movie posters
         }
@@ -270,12 +264,10 @@ extension MovieDetailsView {
 
         firstSeparatorView.snp.makeConstraints { make in
             make.width.equalTo(2)
-            make.height.equalTo(20)
         }
 
         secondSeparatorView.snp.makeConstraints { make in
             make.width.equalTo(2)
-            make.height.equalTo(20)
         }
 
         ratingStackView.snp.makeConstraints { make in
@@ -296,7 +288,7 @@ extension MovieDetailsView {
         }
 
         shareButton.snp.makeConstraints { make in
-            make.width.height.equalTo(50)
+            make.width.equalTo(50)
         }
         // Story line
         storyLineLabel.snp.makeConstraints { make in
@@ -314,6 +306,7 @@ extension MovieDetailsView {
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(storyTextView.snp.bottom)
             make.height.equalTo(20)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 }
