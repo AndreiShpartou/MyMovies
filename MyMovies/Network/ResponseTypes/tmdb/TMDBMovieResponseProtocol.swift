@@ -20,6 +20,7 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
     var genreIds: [Int]? { get }
     var genres: [TMDBGenreResponseProtocol]? { get }
     var countries: [TMDBCountryResponseProtocol]? { get }
+    var credits: TMDBCreditsResponseProtocol? { get }
     var posterPath: String? { get }
     var backdropPath: String? { get }
 
@@ -35,4 +36,17 @@ protocol TMDBGenreResponseProtocol: Codable {
 protocol TMDBCountryResponseProtocol: Codable {
     var iso_3166_1: String { get }
     var name: String { get }
+}
+
+protocol TMDBCreditsResponseProtocol: Codable {
+    var cast: [TMDBPersonResponseProtocol]? { get }
+    var crew: [TMDBPersonResponseProtocol]? { get }
+}
+
+protocol TMDBPersonResponseProtocol: Codable {
+    var id: Int { get }
+    var name: String { get }
+    var original_name: String { get }
+    var profilePath: String? { get }
+    var known_for_department: String? { get }
 }
