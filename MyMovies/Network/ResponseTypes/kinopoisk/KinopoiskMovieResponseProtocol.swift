@@ -16,12 +16,14 @@ protocol KinopoiskMovieResponseProtocol: PagedResponseResultProtocol {
     var year: Int? { get }
     var description: String? { get }
     var shortDescription: String? { get }
+    var slogan: String? { get }
     var status: String? { get set }
     var movieLength: Int? { get }
     var poster: KinopoiskCoverResponseProtocol? { get }
     var backdrop: KinopoiskCoverResponseProtocol? { get }
     var genres: [KinopoiskGenreResponseProtocol]? { get }
     var countries: [KinopoiskCountryResponseProtocol] { get }
+    var persons: [KinopoiskPersonResponseProtocol]? { get }
     var rating: KinopoiskRatingResponseProtocol? { get }
 }
 
@@ -40,4 +42,13 @@ protocol KinopoiskRatingResponseProtocol: Codable {
 protocol KinopoiskCoverResponseProtocol: Codable {
     var url: String? { get }
     var previewUrl: String? { get }
+}
+
+protocol KinopoiskPersonResponseProtocol: Codable {
+    var id: Int? { get }
+    var name: String? { get }
+    var enName: String? { get }
+    var description: String? { get }
+    var profession: String? { get }
+    var enProfession: String? { get }
 }

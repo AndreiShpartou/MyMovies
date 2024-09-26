@@ -65,7 +65,7 @@ enum Endpoint {
     var pathParameters: String {
         switch self {
         case .movieDetails(let id):
-            return "\(id)"
+            return "\(id)?append_to_response=credits"
         default:
             return ""
         }

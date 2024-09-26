@@ -18,11 +18,11 @@
 		<key>Endpoints</key>
 		<dict>
 			<key>upcomingMovies</key>
-			<string>/v1.4/movie?page=1&amp;limit=20&amp;lists=the_closest_releases</string>
+			<string>/v1.4/movie?page=1&amp;limit=20&amp;lists=the_closest_releases&amp;selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons</string>
 			<key>genres</key>
 			<string>/v1/movie/possible-values-by-field?field=genres.name</string>
 			<key>popularMovies</key>
-			<string>/v1.4/movie?page=1&amp;limit=20&amp;lists=popular-films</string>
+			<string>/v1.4/movie?page=1&amp;limit=20&amp;lists=popular-films&amp;selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons</string>
 		</dict>
 	</dict>
 	<key>EN_MovieAPI</key>

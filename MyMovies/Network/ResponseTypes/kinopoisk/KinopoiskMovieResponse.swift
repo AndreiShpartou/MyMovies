@@ -16,6 +16,7 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var year: Int?
     var description: String?
     var shortDescription: String?
+    var slogan: String?
     var status: String?
     var movieLength: Int?
     var poster: KinopoiskCoverResponseProtocol? {
@@ -30,6 +31,9 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var countries: [KinopoiskCountryResponseProtocol] {
         return movieCountries
     }
+    var persons: [KinopoiskPersonResponseProtocol]? {
+        return moviePersons
+    }
     var rating: KinopoiskRatingResponseProtocol? {
         return movieRating
     }
@@ -38,6 +42,7 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     private let movieBackdrop: KinopoiskMovieResponse.Cover?
     private let movieGenres: [KinopoiskMovieResponse.Genre]?
     private let movieCountries: [KinopoiskMovieResponse.Country]
+    private let moviePersons: [KinopoiskMovieResponse.Person]?
     private let movieRating: KinopoiskMovieResponse.Rating?
 
     struct Cover: KinopoiskCoverResponseProtocol {
@@ -46,15 +51,24 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     }
 
     struct Genre: KinopoiskGenreResponseProtocol {
-        var name: String
+        let name: String
     }
 
     struct Country: KinopoiskCountryResponseProtocol {
-        var name: String
+        let name: String
     }
 
     struct Rating: KinopoiskRatingResponseProtocol {
         var kp: Double?
+    }
+
+    struct Person: KinopoiskPersonResponseProtocol {
+        let id: Int?
+        let name: String?
+        var enName: String?
+        var description: String?
+        var profession: String?
+        var enProfession: String?
     }
 
     enum CodingKeys: String, CodingKey {
@@ -64,5 +78,6 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
         case movieGenres = "genres"
         case movieRating = "rating"
         case movieCountries = "countries"
+        case moviePersons = "persons"
     }
 }
