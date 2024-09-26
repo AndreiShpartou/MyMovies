@@ -160,13 +160,13 @@ extension MovieDetailsView {
 // MARK: - Helpers
 extension MovieDetailsView {
     private func createBackdropImageView() -> UIImageView {
-        let imageView: UIImageView = .createImageView(contentMode: .scaleAspectFill)
+        let imageView: UIImageView = .createImageView(contentMode: .scaleAspectFill, clipsToBounds: true)
         let gradientLayer = CAGradientLayer()
 
         // Transparent color
         gradientLayer.colors = [
-            UIColor.primaryBackground.withAlphaComponent(0.7).cgColor,
-            UIColor.primaryBackground.withAlphaComponent(0.95).cgColor
+            UIColor.primaryBackground.withAlphaComponent(0.8).cgColor,
+            UIColor.primaryBackground.withAlphaComponent(0.97).cgColor
         ]
         gradientLayer.locations = [0.0, 0.7]
         imageView.layer.insertSublayer(gradientLayer, at: 0)
