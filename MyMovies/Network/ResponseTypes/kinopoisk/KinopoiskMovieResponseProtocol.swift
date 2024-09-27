@@ -46,6 +46,7 @@ protocol KinopoiskCoverResponseProtocol: Codable {
 
 protocol KinopoiskPersonResponseProtocol: Codable {
     var id: Int? { get }
+    var photo: String? { get }
     var name: String? { get }
     var enName: String? { get }
     var description: String? { get }

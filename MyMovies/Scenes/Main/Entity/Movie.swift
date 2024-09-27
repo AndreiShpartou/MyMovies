@@ -21,7 +21,10 @@ struct Movie: MovieProtocol {
         return movieGenres
     }
     var countries: [CountryProtocol] {
-        return productionCountrues
+        return productionCountries
+    }
+    var persons: [PersonProtocol] {
+        return moviePersons
     }
     var poster: CoverProtocol? {
         return moviePoster
@@ -31,7 +34,8 @@ struct Movie: MovieProtocol {
     }
 
     private let movieGenres: [Genre]
-    private let productionCountrues: [ProductionCountry]
+    private let productionCountries: [ProductionCountry]
+    private let moviePersons: [Person]
     private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
     private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
 
@@ -47,6 +51,7 @@ struct Movie: MovieProtocol {
         voteAverage: Double?,
         genres: [Genre],
         countries: [ProductionCountry],
+        persons: [Person],
         poster: Cover?,
         backdrop: Cover?
     ) {
@@ -60,7 +65,8 @@ struct Movie: MovieProtocol {
         self.runtime = runtime
         self.voteAverage = voteAverage
         self.movieGenres = genres
-        self.productionCountrues = countries
+        self.productionCountries = countries
+        self.moviePersons = persons
         self.moviePoster = poster
         self.movieBackdrop = backdrop
     }
@@ -86,5 +92,13 @@ struct Movie: MovieProtocol {
 
     struct ProductionCountry: CountryProtocol {
         let name: String
+    }
+
+    struct Person: PersonProtocol {
+        var id: Int
+        var photo: String?
+        var name: String
+        var originalName: String?
+        var profession: String?
     }
 }

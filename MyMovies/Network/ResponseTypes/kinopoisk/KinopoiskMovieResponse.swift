@@ -64,6 +64,7 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
 
     struct Person: KinopoiskPersonResponseProtocol {
         let id: Int?
+        var photo: String?
         let name: String?
         var enName: String?
         var description: String?

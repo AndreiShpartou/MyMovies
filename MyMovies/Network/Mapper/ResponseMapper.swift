@@ -53,6 +53,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                 voteAverage: ($0.voteAverage == 0) ? Double.random(in: 5.0...7.0) : $0.voteAverage,
                 genres: map($0.genreIds ?? []),
                 countries: map($0.countries ?? []),
+                persons: [],
                 poster: poster,
                 backdrop: backdrop
             )
@@ -68,6 +69,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             url: data.backdropURL(size: .original),
             previewUrl: data.backdropURL(size: .w780)
         )
+        let persons: [TMDBPersonResponseProtocol] = (data.credits?.cast ?? []) + (data.credits?.crew ?? [])
 
         return Movie(
             id: data.id,
@@ -81,6 +83,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             voteAverage: (data.voteAverage == 0) ? Double.random(in: 5.0...7.0) : data.voteAverage,
             genres: map(data.genres ?? []),
             countries: map(data.countries ?? []),
+            persons: map(persons),
             poster: poster,
             backdrop: backdrop
         )
@@ -100,6 +103,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                 voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
                 genres: map($0.genres ?? []),
                 countries: map($0.countries),
+                persons: map($0.persons ?? []),
                 poster: Movie.Cover(
                     url: $0.poster?.url,
                     previewUrl: $0.poster?.previewUrl
@@ -140,13 +144,42 @@ final class ResponseMapper: ResponseMapperProtocol {
     // MARK: - Countries
     private func map(_ data: [TMDBCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
-            return Movie.ProductionCountry(name: $0.iso_3166_1)
+            Movie.ProductionCountry(name: $0.iso_3166_1)
         }
     }
 
     private func map(_ data: [KinopoiskCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
-            return Movie.ProductionCountry(name: $0.name)
+            Movie.ProductionCountry(name: $0.name)
+        }
+    }
+
+    // MARK: - Persons
+    private func map(_ data: [TMDBPersonResponseProtocol]) -> [Movie.Person] {
+        return data.map {
+            Movie.Person(
+                id: $0.id,
+                photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
+                name: $0.name,
+                originalName: $0.original_name,
+                profession: $0.known_for_department
+            )
+        }
+    }
+
+    private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
+        return data.compactMap {
+            guard let id = $0.id, let name = $0.name else {
+                return nil
+            }
+
+            return Movie.Person(
+                id: id,
+                photo: $0.photo,
+                name: name,
+                originalName: $0.enName,
+                profession: $0.profession
+            )
         }
     }
 }

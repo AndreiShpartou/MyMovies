@@ -59,8 +59,16 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
             var id: Int
             var name: String
             var original_name: String
-            var profilePath: String?
+            var profile_path: String?
             var known_for_department: String?
+
+            func personPhotoURL(path: String?, size: PersonSize = .w185) -> String? {
+                guard let path = path else {
+                    return nil
+                }
+
+                return ImageURLBuilder.buildURL(for: path, size: size)
+            }
         }
 
         enum CodingKeys: String, CodingKey {
