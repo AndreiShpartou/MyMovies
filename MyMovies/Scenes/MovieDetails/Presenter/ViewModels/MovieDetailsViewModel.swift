@@ -25,7 +25,7 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
 
     struct PersonViewModel: PersonViewModelProtocol {
         var id: Int
-        var photo: String?
+        var photo: URL?
         var name: String
         var originalName: String?
         var profession: String?

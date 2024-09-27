@@ -123,7 +123,7 @@ extension DomainModelMapper {
         data.map {
             MovieDetailsViewModel.PersonViewModel(
                 id: $0.id,
-                photo: $0.photo,
+                photo: URL(string: $0.photo ?? ""),
                 name: $0.name,
                 originalName: $0.originalName,
                 profession: $0.profession

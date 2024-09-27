@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     var presenter: MovieDetailsPresenterProtocol?
@@ -14,6 +15,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     private var isExpanded = false
     private var fullTextHeight: CGFloat = 0
     private let maxLines = 5
+    private var constraintToReadMore: Constraint?
 
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
@@ -63,6 +65,17 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     )
     private lazy var storyTextView: UITextView = createStoryTextView()
     private lazy var readMoreButton: UIButton = createReadMoreButton()
+    // Cast and Crew
+    private let personsLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.title,
+        textColor: .textColorWhite,
+        text: "Cast and Crew"
+    )
+    private let persosnsCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 180, height: 120),
+        cellType: PersonCollectionViewCell.self,
+        reuseIdentifier: PersonCollectionViewCell.identifier
+    )
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -113,6 +126,9 @@ extension MovieDetailsView {
         contentView.addSubviews(storyLineLabel)
         contentView.addSubviews(storyTextView)
         contentView.addSubviews(readMoreButton)
+        contentView.addSubviews(personsLabel)
+        contentView.addSubviews(persosnsCollectionView)
+
         // Description section arrangement
         descriptionStackView.addArrangedSubview(yearStackView)
         descriptionStackView.addArrangedSubview(firstSeparatorView)
@@ -138,7 +154,18 @@ extension MovieDetailsView {
     private func updateButtonVisibility() {
         let fullSize = storyTextView.sizeThatFits(CGSize(width: storyTextView.frame.size.width, height: CGFloat(MAXFLOAT)))
         fullTextHeight = fullSize.height
-        readMoreButton.isHidden = fullTextHeight <= storyTextView.frame.height
+        let isTextFit = fullTextHeight <= storyTextView.frame.height
+        readMoreButton.isHidden = isTextFit
+        // Update constraints
+        if isTextFit {
+            storyTextView.snp.updateConstraints { make in
+                make.height.equalTo(fullTextHeight)
+            }
+            constraintToReadMore?.deactivate()
+            personsLabel.snp.makeConstraints { make in
+                make.top.equalTo(storyTextView.snp.bottom).offset(16)
+            }
+        }
     }
 }
 
@@ -243,7 +270,8 @@ extension MovieDetailsView {
     private func setupConstraints() {
         setupScrollConstraints()
         setupBackgroundConstraints()
-        setupContentSubviewsConstraints()
+        setupMainSubviewsConstraints()
+        setupPersonsConstraints()
     }
 
     private func setupScrollConstraints() {
@@ -264,7 +292,7 @@ extension MovieDetailsView {
         }
     }
 
-    private func setupContentSubviewsConstraints() {
+    private func setupMainSubviewsConstraints() {
         posterImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(16)
@@ -322,6 +350,19 @@ extension MovieDetailsView {
             make.top.equalTo(storyTextView.snp.bottom)
             make.height.equalTo(20)
             make.bottom.equalToSuperview().offset(-16)
+        }
+    }
+
+    private func setupPersonsConstraints() {
+        personsLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            constraintToReadMore = make.top.equalTo(readMoreButton.snp.bottom).offset(16).constraint
+        }
+
+        persosnsCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(personsLabel.snp.bottom).offset(8)
+            make.height.equalTo(300)
         }
     }
 }
