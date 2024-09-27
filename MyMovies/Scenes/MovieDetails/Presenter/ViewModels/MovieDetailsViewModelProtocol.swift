@@ -17,4 +17,13 @@ protocol MovieDetailsViewModelProtocol {
     var runtime: String { get }
     var backdropURL: URL? { get }
     var posterURL: URL? { get }
+    var persons: [PersonViewModelProtocol] { get }
+}
+
+protocol PersonViewModelProtocol {
+    var id: Int { get }
+    var photo: String? { get }
+    var name: String { get }
+    var originalName: String? { get }
+    var profession: String? { get }
 }
