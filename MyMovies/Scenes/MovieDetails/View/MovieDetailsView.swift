@@ -71,11 +71,12 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         textColor: .textColorWhite,
         text: "Cast and Crew"
     )
-    private let persosnsCollectionView: UICollectionView = .createCommonCollectionView(
+    private let personsCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 180, height: 120),
         cellType: PersonCollectionViewCell.self,
         reuseIdentifier: PersonCollectionViewCell.identifier
     )
+    private let personCollectionViewHandler = PersonCollectionViewHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -107,6 +108,9 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         genreStackView.label.text = movie.genre
         ratingStackView.ratingLabel.text = movie.voteAverage
         storyTextView.text = movie.description
+        // Persons
+        personCollectionViewHandler.configure(with: movie.persons)
+        personsCollectionView.reloadData()
     }
 }
 
@@ -127,7 +131,7 @@ extension MovieDetailsView {
         contentView.addSubviews(storyTextView)
         contentView.addSubviews(readMoreButton)
         contentView.addSubviews(personsLabel)
-        contentView.addSubviews(persosnsCollectionView)
+        contentView.addSubviews(personsCollectionView)
 
         // Description section arrangement
         descriptionStackView.addArrangedSubview(yearStackView)
@@ -138,6 +142,9 @@ extension MovieDetailsView {
         // Buttons
         buttonsStackView.addArrangedSubview(trailerButton)
         buttonsStackView.addArrangedSubview(shareButton)
+        // Handlers
+        personsCollectionView.delegate = personCollectionViewHandler
+        personsCollectionView.dataSource = personCollectionViewHandler
     }
 }
 
@@ -349,7 +356,6 @@ extension MovieDetailsView {
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(storyTextView.snp.bottom)
             make.height.equalTo(20)
-            make.bottom.equalToSuperview().offset(-16)
         }
     }
 
@@ -359,10 +365,11 @@ extension MovieDetailsView {
             constraintToReadMore = make.top.equalTo(readMoreButton.snp.bottom).offset(16).constraint
         }
 
-        persosnsCollectionView.snp.makeConstraints { make in
+        personsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(personsLabel.snp.bottom).offset(8)
             make.height.equalTo(300)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 }

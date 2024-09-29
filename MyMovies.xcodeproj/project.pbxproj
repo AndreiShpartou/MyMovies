@@ -88,6 +88,7 @@
 		6C8338822C5D07DF000D0399 /* ProfileInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */; };
 		6C8338842C5D07F1000D0399 /* ProfilePresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338832C5D07F1000D0399 /* ProfilePresenterProtocol.swift */; };
 		6C8338862C5D0804000D0399 /* ProfileRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338852C5D0804000D0399 /* ProfileRouterProtocol.swift */; };
+		6C8F861D2CA9497700E43E1A /* PersonCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */; };
 		6C90536D2C5906260068E2BC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C90536C2C5906260068E2BC /* Constants.swift */; };
 		6C90536E2C5913710068E2BC /* Montserrat-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C9053692C5904B10068E2BC /* Montserrat-Regular.otf */; };
 		6C90536F2C5913740068E2BC /* Montserrat-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C9053672C5904B10068E2BC /* Montserrat-SemiBold.otf */; };
@@ -229,6 +230,7 @@
 		6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C8338832C5D07F1000D0399 /* ProfilePresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenterProtocol.swift; sourceTree = "<group>"; };
 		6C8338852C5D0804000D0399 /* ProfileRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouterProtocol.swift; sourceTree = "<group>"; };
+		6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C9053672C5904B10068E2BC /* Montserrat-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.otf"; sourceTree = "<group>"; };
 		6C9053682C5904B10068E2BC /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
 		6C9053692C5904B10068E2BC /* Montserrat-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.otf"; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				6CC604C42C557C3800241EF2 /* MovieDetailsView.swift */,
 				6CC604C22C557C2500241EF2 /* MovieDetailsViewController.swift */,
 				6CF58DB42CA6CD8C00543FA4 /* PersonCollectionViewCell.swift */,
+				6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1330,6 +1333,7 @@
 				6CC604AD2C5575B400241EF2 /* MovieListView.swift in Sources */,
 				6C74C92B2C7396C80035BD14 /* APIConfigurationProtocol.swift in Sources */,
 				6C0294552C830D23000BE8B3 /* UserGreetingViewProtocol.swift in Sources */,
+				6C8F861D2CA9497700E43E1A /* PersonCollectionViewHandler.swift in Sources */,
 				6CC604AB2C5575A800241EF2 /* MovieListViewController.swift in Sources */,
 				6C83387C2C5D079F000D0399 /* WishlistPresenterProtocol.swift in Sources */,
 				6C4CF78E2CA422FD00144866 /* MovieDetailsViewModel.swift in Sources */,
