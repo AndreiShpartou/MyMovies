@@ -69,19 +69,19 @@ extension PersonCollectionViewCell {
         imageView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview()
             make.width.equalTo(50)
-            make.height.equalTo(150)
+            make.height.equalTo(60)
         }
 
         nameLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(8)
             make.trailing.equalToSuperview().offset(-4)
-            make.top.equalTo(imageView).offset(8)
+            make.top.equalTo(imageView).offset(12)
         }
 
         professionLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(8)
             make.trailing.equalToSuperview().offset(-4)
-            make.top.equalTo(professionLabel).offset(8)
+            make.top.equalTo(nameLabel.snp.bottom).offset(8)
         }
     }
 }

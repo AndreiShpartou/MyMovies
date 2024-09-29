@@ -72,9 +72,10 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         text: "Cast and Crew"
     )
     private let personsCollectionView: UICollectionView = .createCommonCollectionView(
-        itemSize: CGSize(width: 180, height: 120),
+        itemSize: CGSize(width: 220, height: 60),
         cellType: PersonCollectionViewCell.self,
-        reuseIdentifier: PersonCollectionViewCell.identifier
+        reuseIdentifier: PersonCollectionViewCell.identifier,
+        minimumLineSpacing: 16
     )
     private let personCollectionViewHandler = PersonCollectionViewHandler()
 
@@ -109,7 +110,10 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         ratingStackView.ratingLabel.text = movie.voteAverage
         storyTextView.text = movie.description
         // Persons
-        personCollectionViewHandler.configure(with: movie.persons)
+        let persons = movie.persons.sorted {
+            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
+        }
+        personCollectionViewHandler.configure(with: persons)
         personsCollectionView.reloadData()
     }
 }
@@ -266,7 +270,7 @@ extension MovieDetailsView {
     // Calculate the initial content hight for the story text view
     private func calculateContentHeight(lines: Int) -> CGFloat {
         storyTextView.layoutIfNeeded()
-        let lineHeight = storyTextView.font?.lineHeight ?? 0
+        let lineHeight = (storyTextView.font?.lineHeight ?? 0).rounded(.up)
 
         return lineHeight * CGFloat(lines)
     }
@@ -367,8 +371,8 @@ extension MovieDetailsView {
 
         personsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalTo(personsLabel.snp.bottom).offset(8)
-            make.height.equalTo(300)
+            make.top.equalTo(personsLabel.snp.bottom).offset(16)
+            make.height.equalTo(200)
             make.bottom.equalToSuperview().offset(-16)
         }
     }
