@@ -30,6 +30,36 @@ extension UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
+
+    static func createBorderedViewWithLabel(
+        labelText: String?,
+        borderWidth: CGFloat = 2,
+        borderColor: CGColor = UIColor.primaryBlueAccent.cgColor,
+        textColor: UIColor = .primaryBlueAccent
+    ) -> UIView {
+        let view: UIView = .createCommonView(cornderRadius: 8)
+        view.layer.borderWidth = borderWidth
+        view.layer.borderColor = borderColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        let label: UILabel = .createLabel(
+            font: Typography.Medium.body,
+            textColor: textColor,
+            text: labelText
+        )
+
+        // Arrangment
+        view.addSubviews(label)
+        view.snp.makeConstraints { make in
+            make.height.lessThanOrEqualTo(25)
+        }
+        label.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.centerY.equalToSuperview()
+        }
+
+        return view
+    }
 }
 
 // MARK: - UICollectionView

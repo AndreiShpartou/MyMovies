@@ -18,11 +18,19 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
     let runtime: String
     var backdropURL: URL?
     var posterURL: URL?
+    var countries: [CountryViewModelProtocol] {
+        return productionCountries
+    }
     var persons: [PersonViewModelProtocol] {
         return personsViewModel
     }
 
+    private var productionCountries: [CountryViewModel] = []
     private var personsViewModel: [PersonViewModel] = []
+
+    struct CountryViewModel: CountryViewModelProtocol {
+        var name: String
+    }
 
     struct PersonViewModel: PersonViewModelProtocol {
         var id: Int
@@ -41,6 +49,7 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
         genre: String,
         releaseYear: String,
         runtime: String,
+        countries: [CountryViewModel],
         persons: [PersonViewModel],
         backdropURL: URL? = nil,
         posterURL: URL? = nil
@@ -56,5 +65,6 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
         self.backdropURL = backdropURL
         self.posterURL = posterURL
         self.personsViewModel = persons
+        self.productionCountries = countries
     }
 }

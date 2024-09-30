@@ -40,8 +40,6 @@ extension DescriptionGeneralStackView {
 
         addArrangedSubview(imageView)
         addArrangedSubview(label)
-
-        imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 }
 
@@ -50,6 +48,11 @@ extension DescriptionGeneralStackView {
     private func setupConstraints() {
         snp.makeConstraints { make in
             make.height.equalTo(20)
+        }
+
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.width.equalTo(imageView.image?.size.width ?? 0)
         }
     }
 }

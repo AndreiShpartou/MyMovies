@@ -112,38 +112,13 @@ extension MovieListCollectionViewCell {
 
 // MARK: - Helpers
 extension MovieListCollectionViewCell {
-    private func createCountryView(labelText: String?) -> UIView {
-        let view: UIView = .createCommonView(cornderRadius: 8)
-        view.layer.borderWidth = 2
-        view.layer.borderColor = UIColor.primaryBlueAccent.cgColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        let label: UILabel = .createLabel(
-            font: Typography.Medium.body,
-            textColor: .primaryBlueAccent,
-            text: labelText
-        )
-
-        // Arrangment
-        view.addSubviews(label)
-        view.snp.makeConstraints { make in
-            make.height.equalTo(25)
-        }
-        label.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.centerY.equalToSuperview()
-        }
-
-        return view
-    }
-
     private func configureCountries(countries: [String]) {
         countries.forEach {
             guard countriesRowStackView.arrangedSubviews.count < 2 else {
                 return
             }
 
-            countriesRowStackView.addArrangedSubview(createCountryView(labelText: $0))
+            countriesRowStackView.addArrangedSubview(UIView.createBorderedViewWithLabel(labelText: $0))
         }
         // add an empty stretchable view to the right
         let stretchableView: UIView = .createCommonView()
@@ -185,6 +160,10 @@ extension MovieListCollectionViewCell {
 
         genreStackView.snp.makeConstraints { make in
             make.height.equalTo(20)
+        }
+
+        countriesRowStackView.snp.makeConstraints { make in
+            make.height.equalTo(25)
         }
     }
 }

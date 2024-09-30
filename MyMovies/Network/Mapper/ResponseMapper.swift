@@ -144,13 +144,13 @@ final class ResponseMapper: ResponseMapperProtocol {
     // MARK: - Countries
     private func map(_ data: [TMDBCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
-            Movie.ProductionCountry(name: $0.iso_3166_1)
+            Movie.ProductionCountry(name: $0.iso_3166_1, fullName: $0.name)
         }
     }
 
     private func map(_ data: [KinopoiskCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
-            Movie.ProductionCountry(name: $0.name)
+            Movie.ProductionCountry(name: $0.name, fullName: $0.name)
         }
     }
 

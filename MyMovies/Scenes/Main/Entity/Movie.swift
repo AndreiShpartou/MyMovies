@@ -92,6 +92,7 @@ struct Movie: MovieProtocol {
 
     struct ProductionCountry: CountryProtocol {
         let name: String
+        let fullName: String
     }
 
     struct Person: PersonProtocol {

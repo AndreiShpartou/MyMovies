@@ -37,6 +37,7 @@ protocol CoverProtocol: Codable {
 
 protocol CountryProtocol: Codable {
     var name: String { get }
+    var fullName: String { get }
 }
 
 protocol PersonProtocol: Codable {

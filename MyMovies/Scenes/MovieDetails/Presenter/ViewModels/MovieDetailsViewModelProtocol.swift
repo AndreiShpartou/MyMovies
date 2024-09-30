@@ -18,6 +18,7 @@ protocol MovieDetailsViewModelProtocol {
     var runtime: String { get }
     var backdropURL: URL? { get }
     var posterURL: URL? { get }
+    var countries: [CountryViewModelProtocol] { get }
     var persons: [PersonViewModelProtocol] { get }
 }
 
@@ -27,4 +28,8 @@ protocol PersonViewModelProtocol {
     var name: String { get }
     var originalName: String? { get }
     var profession: String? { get }
+}
+
+protocol CountryViewModelProtocol {
+    var name: String { get }
 }

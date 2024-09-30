@@ -33,10 +33,15 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         textAlignment: .center,
         textColor: .textColorGrey
     )
+    private let countriesStackView: UIStackView = .createCommonStackView(
+        axis: .horizontal,
+        spacing: 8,
+        distribution: .fill
+    )
     private let descriptionStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
         spacing: 8,
-        distribution: .fillProportionally,
+        distribution: .fill,
         alignment: .fill
     )
     private let firstSeparatorView: UIView = .createCommonView(backgroundColor: .textColorGrey)
@@ -117,12 +122,10 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         genreStackView.label.text = movie.genre
         ratingStackView.ratingLabel.text = movie.voteAverage
         storyTextView.text = movie.description
+        // Countries
+        configureCountries(movie.countries)
         // Persons
-        let persons = movie.persons.sorted {
-            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
-        }
-        personCollectionViewHandler.configure(with: persons)
-        personsCollectionView.reloadData()
+        configurePersons(movie.persons)
         // delegate
         delegate?.didFetchTitle(movie.title)
     }
@@ -139,6 +142,7 @@ extension MovieDetailsView {
 
         contentView.addSubviews(posterImageView)
         contentView.addSubviews(alternativeTitle)
+        contentView.addSubviews(countriesStackView)
         contentView.addSubviews(descriptionStackView)
         contentView.addSubviews(ratingStackView)
         contentView.addSubviews(buttonsStackView)
@@ -285,6 +289,41 @@ extension MovieDetailsView {
 
         return lineHeight * CGFloat(lines)
     }
+
+    private func configureCountries(_ countries: [CountryViewModelProtocol]) {
+        guard !countries.isEmpty else {
+            return
+        }
+
+        let lastCountry = countries[countries.count - 1]
+        countries.forEach { country in
+            countriesStackView.addArrangedSubview(UIView.createBorderedViewWithLabel(
+                labelText: country.name,
+                borderWidth: 0,
+                textColor: .textColorGrey
+            ))
+            // add separator
+            if country.name != lastCountry.name {
+                let separator: UIView = .createCommonView(backgroundColor: .textColorGrey)
+                countriesStackView.addArrangedSubview(separator)
+                separator.snp.makeConstraints { make in
+                    make.width.equalTo(1.5)
+                }
+            }
+        }
+    }
+
+    private func configurePersons(_ moviePersons: [PersonViewModelProtocol]) {
+        guard !moviePersons.isEmpty else {
+            return
+        }
+
+        let persons = moviePersons.sorted {
+            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
+        }
+        personCollectionViewHandler.configure(with: persons)
+        personsCollectionView.reloadData()
+    }
 }
 
 // MARK: - Constraints
@@ -326,18 +365,26 @@ extension MovieDetailsView {
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(posterImageView.snp.bottom).offset(16)
         }
+        countriesStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview().inset(16)
+            make.top.equalTo(alternativeTitle.snp.bottom).offset(8)
+            make.height.equalTo(20)
+        }
         // Description stack
         descriptionStackView.snp.makeConstraints { make in
-            make.top.equalTo(alternativeTitle.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview().inset(16)
+            make.top.equalTo(countriesStackView.snp.bottom).offset(16)
+            make.height.equalTo(20)
         }
 
         firstSeparatorView.snp.makeConstraints { make in
-            make.width.equalTo(2)
+            make.width.equalTo(1.5)
         }
 
         secondSeparatorView.snp.makeConstraints { make in
-            make.width.equalTo(2)
+            make.width.equalTo(1.5)
         }
 
         ratingStackView.snp.makeConstraints { make in

@@ -98,6 +98,7 @@ extension DomainModelMapper {
             genre: data.genres.first?.name ?? "Action",
             releaseYear: extractYear(from: data.releaseYear),
             runtime: "\(runtime) Minutes",
+            countries: map(data.countries),
             persons: map(data.persons),
             backdropURL: URL(string: data.backdrop?.url ?? data.poster?.url ?? ""),
             posterURL: URL(string: data.poster?.url ?? "")
@@ -130,6 +131,11 @@ extension DomainModelMapper {
                 profession: $0.profession
             )
         }
+    }
+
+    //  [CountryProtocol] -> [MovieDetailsViewModel.CountryViewModel]
+    private func map(_ data: [CountryProtocol]) -> [MovieDetailsViewModel.CountryViewModel] {
+        data.map { MovieDetailsViewModel.CountryViewModel(name: $0.fullName) }
     }
 }
 
