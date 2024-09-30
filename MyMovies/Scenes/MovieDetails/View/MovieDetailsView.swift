@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
+    weak var delegate: MovieDetailsInteractionDelegate?
     var presenter: MovieDetailsPresenterProtocol?
 
     // Story line “Read More” functionality preferences
@@ -115,6 +116,8 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         }
         personCollectionViewHandler.configure(with: persons)
         personsCollectionView.reloadData()
+        // delegate
+        delegate?.didFetchTitle(movie.title)
     }
 }
 

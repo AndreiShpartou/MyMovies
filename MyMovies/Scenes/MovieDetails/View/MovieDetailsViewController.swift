@@ -39,6 +39,7 @@ final class MovieDetailsViewController: UIViewController {
 // MARK: - Setup
 extension MovieDetailsViewController {
     private func setupViewController() {
+        movieDetailsView.delegate = self
         setupNavigationBar()
     }
 
@@ -72,5 +73,12 @@ extension MovieDetailsViewController {
     @objc
     private func favouriteButtonTapped(_ sender: UIButton) {
         // Handle favourite button action
+    }
+}
+
+// MARK: - MovieDetailsInteractionDelegate
+extension MovieDetailsViewController: MovieDetailsInteractionDelegate {
+    func didFetchTitle(_ title: String?) {
+        self.title = title
     }
 }

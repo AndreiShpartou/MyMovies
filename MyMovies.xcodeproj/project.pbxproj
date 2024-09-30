@@ -560,11 +560,11 @@
 		6C59AF212C54FB9C006A7BDB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6CF58DB42CA6CD8C00543FA4 /* PersonCollectionViewCell.swift */,
+				6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */,
 				6C83386F2C5D0724000D0399 /* MovieDetailsViewProtocol.swift */,
 				6CC604C42C557C3800241EF2 /* MovieDetailsView.swift */,
 				6CC604C22C557C2500241EF2 /* MovieDetailsViewController.swift */,
-				6CF58DB42CA6CD8C00543FA4 /* PersonCollectionViewCell.swift */,
-				6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

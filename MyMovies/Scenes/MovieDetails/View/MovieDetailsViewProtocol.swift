@@ -8,7 +8,12 @@
 import UIKit
 
 protocol MovieDetailsViewProtocol: UIView {
+    var delegate: MovieDetailsInteractionDelegate? { get set }
     var presenter: MovieDetailsPresenterProtocol? { get set }
 
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol)
+}
+
+protocol MovieDetailsInteractionDelegate: AnyObject {
+    func didFetchTitle(_ title: String?)
 }
