@@ -27,6 +27,12 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         clipsToBounds: true,
         cornerRadius: 12
     )
+    private let alternativeTitle: UILabel = .createLabel(
+        font: Typography.Medium.subhead,
+        numberOfLines: 2,
+        textAlignment: .center,
+        textColor: .textColorGrey
+    )
     private let descriptionStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
         spacing: 8,
@@ -105,6 +111,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol) {
         backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
+        alternativeTitle.text = movie.alternativeTitle
         yearStackView.label.text = movie.releaseYear
         runtimeStackView.label.text = movie.runtime
         genreStackView.label.text = movie.genre
@@ -131,6 +138,7 @@ extension MovieDetailsView {
         scrollView.showsVerticalScrollIndicator = false
 
         contentView.addSubviews(posterImageView)
+        contentView.addSubviews(alternativeTitle)
         contentView.addSubviews(descriptionStackView)
         contentView.addSubviews(ratingStackView)
         contentView.addSubviews(buttonsStackView)
@@ -284,7 +292,8 @@ extension MovieDetailsView {
     private func setupConstraints() {
         setupScrollConstraints()
         setupBackgroundConstraints()
-        setupMainSubviewsConstraints()
+        setupMainDescriptionSubviewsConstraints()
+        setupStoryLineConstraints()
         setupPersonsConstraints()
     }
 
@@ -306,16 +315,20 @@ extension MovieDetailsView {
         }
     }
 
-    private func setupMainSubviewsConstraints() {
+    private func setupMainDescriptionSubviewsConstraints() {
         posterImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(16)
             make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(posterImageView.snp.width).dividedBy(0.675) // 2:3 aspect ratio of movie posters
         }
+        alternativeTitle.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(posterImageView.snp.bottom).offset(16)
+        }
         // Description stack
         descriptionStackView.snp.makeConstraints { make in
-            make.top.equalTo(posterImageView.snp.bottom).offset(16)
+            make.top.equalTo(alternativeTitle.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
 
@@ -347,6 +360,9 @@ extension MovieDetailsView {
         shareButton.snp.makeConstraints { make in
             make.width.equalTo(50)
         }
+    }
+
+    private func setupStoryLineConstraints() {
         // Story line
         storyLineLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)

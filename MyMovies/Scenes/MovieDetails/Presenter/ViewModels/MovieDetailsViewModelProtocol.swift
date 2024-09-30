@@ -10,6 +10,7 @@ import Foundation
 protocol MovieDetailsViewModelProtocol {
     var id: Int { get }
     var title: String { get }
+    var alternativeTitle: String? { get }
     var description: String { get }
     var voteAverage: String { get }
     var genre: String { get }

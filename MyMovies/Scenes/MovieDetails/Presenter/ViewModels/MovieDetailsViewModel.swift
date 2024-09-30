@@ -10,6 +10,7 @@ import Foundation
 struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
     let id: Int
     let title: String
+    var alternativeTitle: String?
     let description: String
     let voteAverage: String
     let genre: String
@@ -34,6 +35,7 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
     init(
         id: Int,
         title: String,
+        alternativeTitle: String?,
         description: String,
         voteAverage: String,
         genre: String,
@@ -45,6 +47,7 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
     ) {
         self.id = id
         self.title = title
+        self.alternativeTitle = alternativeTitle
         self.description = description
         self.voteAverage = voteAverage
         self.genre = genre

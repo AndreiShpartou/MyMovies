@@ -92,6 +92,7 @@ extension DomainModelMapper {
         return MovieDetailsViewModel(
             id: data.id,
             title: data.title,
+            alternativeTitle: data.alternativeTitle,
             description: data.description ?? data.title,
             voteAverage: String(format: "%.1f", data.voteAverage ?? Double.random(in: 4.4...7.7)),
             genre: data.genres.first?.name ?? "Action",
