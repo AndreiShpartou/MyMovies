@@ -156,7 +156,7 @@ final class ResponseMapper: ResponseMapperProtocol {
 
     // MARK: - Persons
     private func map(_ data: [TMDBPersonResponseProtocol]) -> [Movie.Person] {
-        return data.map {
+        let persons = data.map {
             Movie.Person(
                 id: $0.id,
                 photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
@@ -165,10 +165,12 @@ final class ResponseMapper: ResponseMapperProtocol {
                 profession: $0.known_for_department
             )
         }
+
+        return removeDuplicates(from: persons)
     }
 
     private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
-        return data.compactMap {
+        let persons: [Movie.Person] = data.compactMap {
             guard let id = $0.id, let name = $0.name else {
                 return nil
             }
@@ -181,5 +183,22 @@ final class ResponseMapper: ResponseMapperProtocol {
                 profession: $0.profession
             )
         }
+
+        return removeDuplicates(from: persons)
+    }
+}
+
+// MARK: - Helpers
+extension ResponseMapper {
+    private func removeDuplicates(from persons: [Movie.Person]) -> [Movie.Person] {
+        var seenIDs = Set<Int>()
+        var uniquePersons = [Movie.Person]()
+
+        for person in persons where !seenIDs.contains(person.id) {
+            seenIDs.insert(person.id)
+            uniquePersons.append(person)
+        }
+
+        return uniquePersons
     }
 }
