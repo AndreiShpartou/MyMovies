@@ -18,27 +18,9 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
     let runtime: String
     var backdropURL: URL?
     var posterURL: URL?
-    var countries: [CountryViewModelProtocol] {
-        return productionCountries
-    }
-    var persons: [PersonViewModelProtocol] {
-        return personsViewModel
-    }
-
-    private var productionCountries: [CountryViewModel] = []
-    private var personsViewModel: [PersonViewModel] = []
-
-    struct CountryViewModel: CountryViewModelProtocol {
-        var name: String
-    }
-
-    struct PersonViewModel: PersonViewModelProtocol {
-        var id: Int
-        var photo: URL?
-        var name: String
-        var originalName: String?
-        var profession: String?
-    }
+    var countries: [CountryViewModelProtocol] = []
+    var persons: [PersonViewModelProtocol] = []
+    var genres: [GenreViewModelProtocol] = []
 
     init(
         id: Int,
@@ -49,8 +31,9 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
         genre: String,
         releaseYear: String,
         runtime: String,
-        countries: [CountryViewModel],
-        persons: [PersonViewModel],
+        countries: [CountryViewModelProtocol],
+        persons: [PersonViewModelProtocol],
+        genres: [GenreViewModelProtocol],
         backdropURL: URL? = nil,
         posterURL: URL? = nil
     ) {
@@ -64,7 +47,20 @@ struct MovieDetailsViewModel: MovieDetailsViewModelProtocol {
         self.runtime = runtime
         self.backdropURL = backdropURL
         self.posterURL = posterURL
-        self.personsViewModel = persons
-        self.productionCountries = countries
+        self.countries = countries
+        self.persons = persons
+        self.genres = genres
     }
+}
+
+struct CountryViewModel: CountryViewModelProtocol {
+    var name: String
+}
+
+struct PersonViewModel: PersonViewModelProtocol {
+    var id: Int
+    var photo: URL?
+    var name: String
+    var originalName: String?
+    var profession: String?
 }

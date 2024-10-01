@@ -20,6 +20,7 @@ protocol MovieDetailsViewModelProtocol {
     var posterURL: URL? { get }
     var countries: [CountryViewModelProtocol] { get }
     var persons: [PersonViewModelProtocol] { get }
+    var genres: [GenreViewModelProtocol] { get }
 }
 
 protocol PersonViewModelProtocol {

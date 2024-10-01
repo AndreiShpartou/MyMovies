@@ -100,13 +100,14 @@ extension DomainModelMapper {
             runtime: "\(runtime) Minutes",
             countries: map(data.countries),
             persons: map(data.persons),
+            genres: map(data.genres, addDefaultValue: false),
             backdropURL: URL(string: data.backdrop?.url ?? data.poster?.url ?? ""),
             posterURL: URL(string: data.poster?.url ?? "")
         )
     }
 
     // GenreProtocol -> GenreViewModelProtocol
-    private func map(_ data: [GenreProtocol]) -> [GenreViewModelProtocol] {
+    private func map(_ data: [GenreProtocol], addDefaultValue: Bool = true) -> [GenreViewModelProtocol] {
         var genreViewModels: [GenreViewModelProtocol] = data.compactMap {
             guard let name = $0.name else {
                 return nil
@@ -114,16 +115,18 @@ extension DomainModelMapper {
 
             return GenreViewModel(id: $0.id, name: name)
         }
-        // Add the "All" genre at the start
-        genreViewModels.insert(GenreViewModel(name: "All"), at: 0)
+        if addDefaultValue {
+            // Add the "All" genre at the start
+            genreViewModels.insert(GenreViewModel(name: "All"), at: 0)
+        }
 
         return genreViewModels
     }
 
     // [PersonProtocol] -> [PersonViewModelProtocol]
-    private func map(_ data: [PersonProtocol]) -> [MovieDetailsViewModel.PersonViewModel] {
+    private func map(_ data: [PersonProtocol]) -> [PersonViewModelProtocol] {
         data.map {
-            MovieDetailsViewModel.PersonViewModel(
+            PersonViewModel(
                 id: $0.id,
                 photo: URL(string: $0.photo ?? ""),
                 name: $0.name,
@@ -133,9 +136,9 @@ extension DomainModelMapper {
         }
     }
 
-    //  [CountryProtocol] -> [MovieDetailsViewModel.CountryViewModel]
-    private func map(_ data: [CountryProtocol]) -> [MovieDetailsViewModel.CountryViewModel] {
-        data.map { MovieDetailsViewModel.CountryViewModel(name: $0.fullName) }
+    //  [CountryProtocol] -> [CountryViewModelProtocol]
+    private func map(_ data: [CountryProtocol]) -> [CountryViewModelProtocol] {
+        data.map { CountryViewModel(name: $0.fullName) }
     }
 }
 

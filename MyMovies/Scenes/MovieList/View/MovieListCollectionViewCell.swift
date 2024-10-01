@@ -24,7 +24,7 @@ final class MovieListCollectionViewCell: UICollectionViewCell {
         axis: .vertical,
         spacing: 16
     )
-    private lazy var countriesRowStackView: UIStackView = .createCommonStackView(
+    private let countriesRowStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
         spacing: 8,
         distribution: .fill

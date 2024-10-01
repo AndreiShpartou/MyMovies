@@ -38,6 +38,11 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         spacing: 8,
         distribution: .fill
     )
+    private let genresStackView: UIStackView = .createCommonStackView(
+        axis: .horizontal,
+        spacing: 8,
+        distribution: .fill
+    )
     private let descriptionStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
         spacing: 8,
@@ -124,6 +129,8 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         storyTextView.text = movie.description
         // Countries
         configureCountries(movie.countries)
+        // Genres
+        configureGenres(movie.genres)
         // Persons
         configurePersons(movie.persons)
         // delegate
@@ -143,6 +150,7 @@ extension MovieDetailsView {
         contentView.addSubviews(posterImageView)
         contentView.addSubviews(alternativeTitle)
         contentView.addSubviews(countriesStackView)
+        contentView.addSubviews(genresStackView)
         contentView.addSubviews(descriptionStackView)
         contentView.addSubviews(ratingStackView)
         contentView.addSubviews(buttonsStackView)
@@ -313,6 +321,23 @@ extension MovieDetailsView {
         }
     }
 
+    private func configureGenres(_ movieGenres: [GenreViewModelProtocol]) {
+        guard !movieGenres.isEmpty else {
+            return
+        }
+
+        for (index, genre) in movieGenres.enumerated() {
+            if index == 3 {
+                break
+            }
+
+            genresStackView.addArrangedSubview(UIView.createBorderedViewWithLabel(
+                labelText: genre.name,
+                borderWidth: 2
+            ))
+        }
+    }
+
     private func configurePersons(_ moviePersons: [PersonViewModelProtocol]) {
         guard !moviePersons.isEmpty else {
             return
@@ -331,6 +356,7 @@ extension MovieDetailsView {
     private func setupConstraints() {
         setupScrollConstraints()
         setupBackgroundConstraints()
+        setupHeaderSubViews()
         setupMainDescriptionSubviewsConstraints()
         setupStoryLineConstraints()
         setupPersonsConstraints()
@@ -354,7 +380,7 @@ extension MovieDetailsView {
         }
     }
 
-    private func setupMainDescriptionSubviewsConstraints() {
+    private func setupHeaderSubViews() {
         posterImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(16)
@@ -371,11 +397,20 @@ extension MovieDetailsView {
             make.top.equalTo(alternativeTitle.snp.bottom).offset(8)
             make.height.equalTo(20)
         }
+        genresStackView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview().inset(16)
+            make.top.equalTo(countriesStackView.snp.bottom).offset(8)
+            make.height.equalTo(25)
+        }
+    }
+
+    private func setupMainDescriptionSubviewsConstraints() {
         // Description stack
         descriptionStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.lessThanOrEqualToSuperview().inset(16)
-            make.top.equalTo(countriesStackView.snp.bottom).offset(16)
+            make.top.equalTo(genresStackView.snp.bottom).offset(16)
             make.height.equalTo(20)
         }
 
