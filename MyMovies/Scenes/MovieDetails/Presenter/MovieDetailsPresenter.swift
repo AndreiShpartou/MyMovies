@@ -29,6 +29,7 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
 
     func viewDidLoad() {
         interactor.fetchMovie()
+        interactor.fetchReviews()
     }
 }
 
@@ -41,5 +42,18 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
         }
 
         view?.showDetailedMovie(movieDetailsViewModel)
+    }
+
+    func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
+        // Map to ViewModel
+//        guard let reviews = mapper.map(data: reviews, to: MovieDetailsViewModel.self) else {
+//            return
+//        }
+
+//        view?.showmovieReviews(movieDetailsViewModel)
+    }
+
+    func didFailToFetchData(with error: Error) {
+        //
     }
 }

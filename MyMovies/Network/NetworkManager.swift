@@ -81,6 +81,18 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
+    // MARK: - Reviews
+    func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReviewProtocol], Error>) -> Void) {
+        performRequest(for: .reviews(id: movieID)) { (result: Result<[MovieReview], Error>) in
+            switch result {
+            case .success(let reviews):
+                completion(.success(reviews))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     // MARK: - PerformRequest
     //  Versatile request performer
     private func performRequest<T: Codable>(

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ipifyAccessToken</key>
-	<string>b04a3b11e3a99a-</string>
+	<string>b04a3b11e3a99a</string>
 	<key>RU_MovieAPI</key>
 	<dict>
 		<key>BaseURL</key>
@@ -45,6 +45,8 @@
 			<key>popularMovies</key>
 			<string>/3/discover/movie?include_adult=false&amp;include_video=false&amp;language=en-US&amp;page=1&amp;sort_by=popularity.desc</string>
 			<key>movieDetails</key>
+			<string>/3/movie/</string>
+			<key>reviews</key>
 			<string>/3/movie/</string>
 		</dict>
 	</dict>

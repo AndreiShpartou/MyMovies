@@ -9,8 +9,11 @@ import Foundation
 
 protocol MovieDetailsInteractorProtocol: AnyObject {
     func fetchMovie()
+    func fetchReviews()
 }
 
 protocol MovieDetailsInteractorOutputProtocol: AnyObject {
     func didFetchMovie(_ movie: MovieProtocol)
+    func didFetchReviews(_ reviews: [MovieReviewProtocol])
+    func didFailToFetchData(with error: Error)
 }

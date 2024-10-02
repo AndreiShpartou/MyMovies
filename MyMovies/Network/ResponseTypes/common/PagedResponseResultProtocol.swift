@@ -7,6 +7,4 @@
 
 import Foundation
 
-protocol PagedResponseResultProtocol: Codable {
-    var id: Int { get }
-}
+protocol PagedResponseResultProtocol: Codable {}

@@ -50,6 +50,8 @@ enum Endpoint {
     case genres
     // Get the movie details by ID
     case movieDetails(id: Int)
+    // Get the movie reviews
+    case reviews(id: Int)
 
     var rawValue: String {
         switch self {
@@ -59,15 +61,8 @@ enum Endpoint {
             return "genres"
         case .movieDetails:
             return "movieDetails"
-        }
-    }
-
-    var pathParameters: String {
-        switch self {
-        case .movieDetails(let id):
-            return "\(id)?append_to_response=credits"
-        default:
-            return ""
+        case .reviews:
+            return "reviews"
         }
     }
 }
@@ -139,6 +134,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
+        case (.tmdb, .reviews):
+            return TMDBReviewsPagedResponse.self
         default:
             return nil
         }
@@ -191,6 +188,18 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     private func getPath(for endpoint: Endpoint) -> String {
         let endpointPath = endpoints[endpoint.rawValue] ?? ""
-        return "\(endpointPath)\(endpoint.pathParameters)"
+        let pathParameters = getPathParameters(for: endpoint, and: provider)
+        return "\(endpointPath)\(pathParameters)"
+    }
+
+    private func getPathParameters(for endpoint: Endpoint, and provider: Provider) -> String {
+        switch (provider, endpoint) {
+        case (.tmdb, .movieDetails(let id)):
+            return "\(id)?append_to_response=credits"
+        case (.tmdb, .reviews(let id)):
+            return "\(id)/reviews"
+        default:
+            return ""
+        }
     }
 }
