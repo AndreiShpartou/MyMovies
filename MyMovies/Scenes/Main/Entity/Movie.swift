@@ -32,12 +32,16 @@ struct Movie: MovieProtocol {
     var backdrop: CoverProtocol? {
         return movieBackdrop
     }
+    var similarMovies: [MovieProtocol]? {
+        return arrayofSimilarMovies
+    }
 
     private let movieGenres: [Genre]
     private let productionCountries: [ProductionCountry]
     private let moviePersons: [Person]
     private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
     private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
+    private let arrayofSimilarMovies: [Movie]? // Kinopoisk: similarMovies // TMDB: distinct endpoint
 
     init(
         id: Int,
@@ -53,7 +57,8 @@ struct Movie: MovieProtocol {
         countries: [ProductionCountry],
         persons: [Person],
         poster: Cover?,
-        backdrop: Cover?
+        backdrop: Cover?,
+        similarMovies: [Movie]?
     ) {
         self.id = id
         self.title = title
@@ -69,6 +74,7 @@ struct Movie: MovieProtocol {
         self.moviePersons = persons
         self.moviePoster = poster
         self.movieBackdrop = backdrop
+        self.arrayofSimilarMovies = similarMovies
     }
 
     struct Genre: GenreProtocol {

@@ -17,11 +17,13 @@ import Foundation
 // top500 - 500 лучших фильмов (category - Фильмы)
 // top250 - 250 лучших фильмов (category - Фильмы)
 
-enum MovieListType: String {
+enum MovieListType {
     // Get a list of movies that are being released soon.
     case upcomingMovies
     // Get a list of movies ordered by popularity
     case popularMovies
+    // Get list of similar movies
+    case similarMovies(id: Int)
 
     var endpoint: Endpoint {
         return .movieList(type: self)
@@ -33,6 +35,19 @@ enum MovieListType: String {
             return "Upcoming Movies"
         case .popularMovies:
             return "Popular Movies"
+        case .similarMovies:
+            return "Similar Movies"
+        }
+    }
+
+    var rawValue: String {
+        switch self {
+        case .upcomingMovies:
+            return "upcomingMovies"
+        case .popularMovies:
+            return "popularMovies"
+        case .similarMovies:
+            return "similarMovies"
         }
     }
 }

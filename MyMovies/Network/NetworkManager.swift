@@ -27,8 +27,8 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: - MovieDetails
     // Get movie details for a specific movie
-    func fetchMovieDetails(for movie: MovieProtocol, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
-        performRequest(for: .movieDetails(id: movie.id), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
+    func fetchMovieDetails(for movie: MovieProtocol, type: MovieListType, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
+        performRequest(for: .movieDetails(id: movie.id, type: type), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
             switch result {
             case .success(let movie):
                 completion(.success(movie))
@@ -39,13 +39,13 @@ class NetworkManager: NetworkManagerProtocol {
     }
 
     // Get movie details for an array of movies
-    func fetchMoviesDetails(for movies: [MovieProtocol], completion: @escaping ([MovieProtocol]) -> Void) {
+    func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void) {
         var detailedMovies = [MovieProtocol]()
         let dispatchGroup = DispatchGroup()
 
         movies.forEach { movie in
             dispatchGroup.enter()
-            fetchMovieDetails(for: movie) { result in
+            fetchMovieDetails(for: movie, type: type) { result in
                 switch result {
                 case .success(let detailedMovie):
                     detailedMovies.append(detailedMovie)

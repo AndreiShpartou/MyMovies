@@ -63,7 +63,7 @@ final class MainInteractor: MainInteractorProtocol {
     private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies) { [weak self] detailedMovies in
+            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
                 DispatchQueue.main.async {
                     self?.presentMovies(detailedMovies, for: fetchType)
                 }
@@ -81,6 +81,8 @@ final class MainInteractor: MainInteractorProtocol {
             presenter?.didFetchUpcomingMovies(movies)
         case .popularMovies:
             presenter?.didFetchPopularMovies(movies)
+        default:
+            break
         }
     }
 }

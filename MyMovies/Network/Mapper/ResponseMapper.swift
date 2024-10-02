@@ -17,6 +17,9 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBMoviesPagedResponse) as! T
         case ( is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! KinopoiskMoviesPagedResponse) as! T
+        // Kinopoisk movie details
+        case ( is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
+            return mapToDetails(data as! KinopoiskMoviesPagedResponse) as! T
         case (is TMDBMovieResponse.Type, is Movie.Type):
             return map(data as! TMDBMovieResponse) as! T
         // genres
@@ -60,7 +63,8 @@ final class ResponseMapper: ResponseMapperProtocol {
                 countries: map($0.countries ?? []),
                 persons: [],
                 poster: poster,
-                backdrop: backdrop
+                backdrop: backdrop,
+                similarMovies: []
             )
         }
     }
@@ -90,13 +94,17 @@ final class ResponseMapper: ResponseMapperProtocol {
             countries: map(data.countries ?? []),
             persons: map(persons),
             poster: poster,
-            backdrop: backdrop
+            backdrop: backdrop,
+            similarMovies: []
         )
     }
 
     private func map(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {
         return data.docs.map {
-            Movie(
+            // Map brief similar movies data
+            let similarMovies = mapSimilarMovies($0.similarMovies)
+            // Map the underlying movie
+            return Movie(
                 id: $0.id,
                 title: $0.name ?? $0.alternativeName ?? "",
                 alternativeTitle: $0.alternativeName,
@@ -107,7 +115,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                 runtime: String($0.movieLength ?? 0),
                 voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
                 genres: map($0.genres ?? []),
-                countries: map($0.countries),
+                countries: map($0.countries ?? []),
                 persons: map($0.persons ?? []),
                 poster: Movie.Cover(
                     url: $0.poster?.url,
@@ -116,9 +124,68 @@ final class ResponseMapper: ResponseMapperProtocol {
                 backdrop: Movie.Cover(
                     url: $0.backdrop?.url,
                     previewUrl: $0.backdrop?.previewUrl
-                )
+                ),
+                similarMovies: similarMovies
             )
         }
+    }
+
+    // Map KinopoiskMovieResponse to [Movie]?
+    private func mapSimilarMovies(_ similarMovies: [KinopoiskMovieResponseProtocol]?) -> [Movie]? {
+        // Get the similar movies id to onward fetching via the details endpoint
+        return similarMovies?.map { similarMovie in
+            Movie(
+                id: similarMovie.id,
+                title: "",
+                alternativeTitle: nil,
+                description: nil,
+                shortDescription: nil,
+                status: nil,
+                releaseYear: nil,
+                runtime: nil,
+                voteAverage: nil,
+                genres: [],
+                countries: [],
+                persons: [],
+                poster: nil,
+                backdrop: nil,
+                similarMovies: []
+            )
+        }
+    }
+
+    // For details endpoint
+    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> Movie {
+        let movieArray = data.docs.map {
+            // Map brief similar movies data
+            let similarMovies = mapSimilarMovies($0.similarMovies)
+            // Map the underlying movie
+            return Movie(
+                id: $0.id,
+                title: $0.name ?? $0.alternativeName ?? "",
+                alternativeTitle: $0.alternativeName,
+                description: $0.description,
+                shortDescription: $0.shortDescription,
+                status: $0.status,
+                releaseYear: String($0.year ?? Calendar.current.component(.year, from: Date())),
+                runtime: String($0.movieLength ?? 0),
+                voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
+                genres: map($0.genres ?? []),
+                countries: map($0.countries ?? []),
+                persons: map($0.persons ?? []),
+                poster: Movie.Cover(
+                    url: $0.poster?.url,
+                    previewUrl: $0.poster?.previewUrl
+                ),
+                backdrop: Movie.Cover(
+                    url: $0.backdrop?.url,
+                    previewUrl: $0.backdrop?.previewUrl
+                ),
+                similarMovies: similarMovies
+            )
+        }
+
+        return movieArray[0]
     }
 
     // MARK: - Genres

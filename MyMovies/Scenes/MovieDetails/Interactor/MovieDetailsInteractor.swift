@@ -37,4 +37,36 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
             }
         }
     }
+
+    func fetchSimilarMovies() {
+        let type = MovieListType.similarMovies(id: movie.id)
+        // Use the previously loaded similar movies id for onward fetching details (Kinopoisk API)
+        if let similarMovies = movie.similarMovies,
+           !similarMovies.isEmpty {
+            let result: Result<[MovieProtocol], Error> = .success(similarMovies)
+            handleMovieFetchResult(result, fetchType: type)
+        } else {
+            // Use a distinct endpoint for the TMDB API
+            networkManager.fetchMovies(type: type) { [weak self] result in
+                self?.handleMovieFetchResult(result, fetchType: type)
+            }
+        }
+    }
+
+    // MARK: - Private
+    // Centralized handling of movie fetch results
+    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
+        switch result {
+        case .success(let movies):
+            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchSimilarMovies(detailedMovies)
+                }
+            }
+        case .failure(let error):
+            DispatchQueue.main.async { [weak self] in
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
 }

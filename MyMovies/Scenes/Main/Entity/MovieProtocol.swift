@@ -22,6 +22,7 @@ protocol MovieProtocol: Codable {
     var persons: [PersonProtocol] { get }
     var poster: CoverProtocol? { get }
     var backdrop: CoverProtocol? { get }
+    var similarMovies: [MovieProtocol]? { get }
 }
 
 protocol GenreProtocol: Codable {

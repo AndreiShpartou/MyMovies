@@ -22,9 +22,10 @@ protocol KinopoiskMovieResponseProtocol: PagedResponseResultProtocol {
     var poster: KinopoiskCoverResponseProtocol? { get }
     var backdrop: KinopoiskCoverResponseProtocol? { get }
     var genres: [KinopoiskGenreResponseProtocol]? { get }
-    var countries: [KinopoiskCountryResponseProtocol] { get }
+    var countries: [KinopoiskCountryResponseProtocol]? { get }
     var persons: [KinopoiskPersonResponseProtocol]? { get }
     var rating: KinopoiskRatingResponseProtocol? { get }
+    var similarMovies: [KinopoiskMovieResponseProtocol]? { get }
 }
 
 protocol KinopoiskGenreResponseProtocol: Codable {

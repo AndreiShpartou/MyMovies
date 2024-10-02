@@ -30,6 +30,7 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     func viewDidLoad() {
         interactor.fetchMovie()
         interactor.fetchReviews()
+        interactor.fetchSimilarMovies()
     }
 }
 
@@ -51,6 +52,10 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
 //        }
 
 //        view?.showmovieReviews(movieDetailsViewModel)
+    }
+
+    func didFetchSimilarMovies(_ movies: [MovieProtocol]) {
+        //
     }
 
     func didFailToFetchData(with error: Error) {

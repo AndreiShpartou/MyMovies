@@ -28,7 +28,7 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var genres: [KinopoiskGenreResponseProtocol]? {
         return movieGenres
     }
-    var countries: [KinopoiskCountryResponseProtocol] {
+    var countries: [KinopoiskCountryResponseProtocol]? {
         return movieCountries
     }
     var persons: [KinopoiskPersonResponseProtocol]? {
@@ -37,13 +37,17 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var rating: KinopoiskRatingResponseProtocol? {
         return movieRating
     }
+    var similarMovies: [KinopoiskMovieResponseProtocol]? {
+        return arrayofSimilarMovies
+    }
 
     private let moviePoster: KinopoiskMovieResponse.Cover?
     private let movieBackdrop: KinopoiskMovieResponse.Cover?
     private let movieGenres: [KinopoiskMovieResponse.Genre]?
-    private let movieCountries: [KinopoiskMovieResponse.Country]
+    private let movieCountries: [KinopoiskMovieResponse.Country]?
     private let moviePersons: [KinopoiskMovieResponse.Person]?
     private let movieRating: KinopoiskMovieResponse.Rating?
+    private let arrayofSimilarMovies: [KinopoiskMovieResponse]?
 
     struct Cover: KinopoiskCoverResponseProtocol {
         var url: String?
@@ -80,5 +84,6 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
         case movieRating = "rating"
         case movieCountries = "countries"
         case moviePersons = "persons"
+        case arrayofSimilarMovies = "similarMovies"
     }
 }
