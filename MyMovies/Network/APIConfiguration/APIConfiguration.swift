@@ -136,6 +136,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBMovieResponse.self
         case (.tmdb, .reviews):
             return TMDBReviewsPagedResponse.self
+        case (.kinopoisk, .reviews):
+            return KinopoiskReviewsPagedResponse.self
         default:
             return nil
         }
@@ -157,6 +159,9 @@ struct APIConfiguration: APIConfigurationProtocol {
                 "release_date.lte": formatDate(maxDate)
             ]
 
+            return queryParameters
+        case (.kinopoisk, .reviews(let id)):
+            let queryParameters: [String: Any] = ["movieID": String(id)]
             return queryParameters
         default:
             return [:]

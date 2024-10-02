@@ -27,6 +27,8 @@ final class ResponseMapper: ResponseMapperProtocol {
         // reviews
         case (is TMDBReviewsPagedResponse.Type, is [MovieReview].Type):
             return map(data as! TMDBReviewsPagedResponse) as! T
+        case (is KinopoiskReviewsPagedResponse.Type, is [MovieReview].Type):
+            return map(data as! KinopoiskReviewsPagedResponse) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
@@ -194,6 +196,12 @@ final class ResponseMapper: ResponseMapperProtocol {
     private func map(_ data: TMDBReviewsPagedResponse) -> [MovieReview] {
         return data.results.map {
             MovieReview(author: $0.author, review: $0.content)
+        }
+    }
+
+    private func map(_ data: KinopoiskReviewsPagedResponse) -> [MovieReview] {
+        return data.docs.map {
+            MovieReview(author: $0.author, review: $0.review)
         }
     }
 }

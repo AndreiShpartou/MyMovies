@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ipifyAccessToken</key>
-	<string>b04a3b11e3a99a</string>
+	<string>b04a3b11e3a99a-</string>
 	<key>RU_MovieAPI</key>
 	<dict>
 		<key>BaseURL</key>
@@ -23,6 +23,8 @@
 			<string>/v1/movie/possible-values-by-field?field=genres.name</string>
 			<key>popularMovies</key>
 			<string>/v1.4/movie?page=1&amp;limit=20&amp;lists=popular-films&amp;selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons</string>
+			<key>reviews</key>
+			<string>/v1.4/review?page=1&amp;limit=3</string>
 		</dict>
 	</dict>
 	<key>EN_MovieAPI</key>

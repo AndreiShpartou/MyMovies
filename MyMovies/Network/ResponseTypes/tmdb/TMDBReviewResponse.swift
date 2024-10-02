@@ -8,6 +8,6 @@
 import Foundation
 
 struct TMDBReviewResponse: TMDBReviewResponseProtocol {
-    var author: String
-    var content: String
+    let author: String
+    let content: String
 }
