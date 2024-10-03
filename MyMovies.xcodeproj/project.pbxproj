@@ -57,6 +57,8 @@
 		6C74C92D2C7396D00035BD14 /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C92C2C7396D00035BD14 /* APIConfiguration.swift */; };
 		6C7737352C5639E600E5F2CC /* RootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7737342C5639E600E5F2CC /* RootRouter.swift */; };
 		6C7737372C563B6600E5F2CC /* SceneBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7737362C563B6600E5F2CC /* SceneBuilder.swift */; };
+		6C7AE7442CAE952B003728CE /* ReviewViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7AE7432CAE952B003728CE /* ReviewViewModelProtocol.swift */; };
+		6C7AE7462CAE959A003728CE /* ReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7AE7452CAE959A003728CE /* ReviewViewModel.swift */; };
 		6C7CD0E32C5F4E5700C71AA1 /* CustomTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7CD0E22C5F4E5700C71AA1 /* CustomTabBarItem.swift */; };
 		6C7CD0E52C5F593700C71AA1 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7CD0E42C5F593700C71AA1 /* CustomTabBar.swift */; };
 		6C7CD0E72C5F742600C71AA1 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7CD0E62C5F742600C71AA1 /* CustomTabBarController.swift */; };
@@ -207,6 +209,8 @@
 		6C74C92C2C7396D00035BD14 /* APIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
 		6C7737342C5639E600E5F2CC /* RootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootRouter.swift; sourceTree = "<group>"; };
 		6C7737362C563B6600E5F2CC /* SceneBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneBuilder.swift; sourceTree = "<group>"; };
+		6C7AE7432CAE952B003728CE /* ReviewViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewModelProtocol.swift; sourceTree = "<group>"; };
+		6C7AE7452CAE959A003728CE /* ReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewModel.swift; sourceTree = "<group>"; };
 		6C7CD0E22C5F4E5700C71AA1 /* CustomTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarItem.swift; sourceTree = "<group>"; };
 		6C7CD0E42C5F593700C71AA1 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		6C7CD0E62C5F742600C71AA1 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 			children = (
 				6C4CF78F2CA4230600144866 /* MovieDetailsViewModelProtocol.swift */,
 				6C4CF78D2CA422FD00144866 /* MovieDetailsViewModel.swift */,
+				6C7AE7432CAE952B003728CE /* ReviewViewModelProtocol.swift */,
+				6C7AE7452CAE959A003728CE /* ReviewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1255,6 +1261,7 @@
 				6C59AF4E2C551ADE006A7BDB /* MainRouter.swift in Sources */,
 				6C59AF542C551FDE006A7BDB /* SearchPresenter.swift in Sources */,
 				6C74C91E2C738D720035BD14 /* AppConfigurationProtocol.swift in Sources */,
+				6C7AE7442CAE952B003728CE /* ReviewViewModelProtocol.swift in Sources */,
 				6CC604BF2C557BA800241EF2 /* MovieDetailsPresenter.swift in Sources */,
 				6C83387E2C5D07B3000D0399 /* WishlistRouterProtocol.swift in Sources */,
 				6CC604A92C55759300241EF2 /* MovieListInteractor.swift in Sources */,
@@ -1356,6 +1363,7 @@
 				6CF58DB52CA6CD8C00543FA4 /* PersonCollectionViewCell.swift in Sources */,
 				6C939A012C9C245400699F49 /* UpcomingMovieViewModelProtocol.swift in Sources */,
 				6CC604D52C557FE900241EF2 /* ProfileRouter.swift in Sources */,
+				6C7AE7462CAE959A003728CE /* ReviewViewModel.swift in Sources */,
 				6C74C9242C7392440035BD14 /* PlistConfigurationLoader.swift in Sources */,
 				6C59AF4A2C55193C006A7BDB /* MainInteractor.swift in Sources */,
 				6C83386E2C5D06FE000D0399 /* PopularMoviesRouterProtocol.swift in Sources */,

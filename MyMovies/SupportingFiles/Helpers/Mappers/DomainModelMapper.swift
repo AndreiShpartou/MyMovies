@@ -23,6 +23,9 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // MovieDetails
         case (let data as MovieProtocol, is MovieDetailsViewModel.Type):
             return mapToDetails(data) as? Y
+        // Reviews
+        case (let data as [MovieReviewProtocol], is [ReviewViewModel].Type):
+            return mapToReviews(data) as? Y
         // genresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
@@ -104,6 +107,14 @@ extension DomainModelMapper {
             backdropURL: URL(string: data.backdrop?.url ?? data.poster?.url ?? ""),
             posterURL: URL(string: data.poster?.url ?? "")
         )
+    }
+
+    private func mapToReviews(_ data: [MovieReviewProtocol]) -> [ReviewViewModelProtocol] {
+        let reviews: [ReviewViewModelProtocol] = data.map {
+            ReviewViewModel(author: $0.author, review: $0.review)
+        }
+
+        return reviews
     }
 
     // GenreProtocol -> GenreViewModelProtocol

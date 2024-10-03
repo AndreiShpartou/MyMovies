@@ -37,7 +37,6 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
 // MARK: - MovieDetailsInteractorOutputProtocol
 extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
     func didFetchMovie(_ movie: MovieProtocol) {
-        // Map to ViewModel
         guard let movieDetailsViewModel = mapper.map(data: movie, to: MovieDetailsViewModel.self) else {
             return
         }
@@ -46,16 +45,19 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
     }
 
     func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
-        // Map to ViewModel
-//        guard let reviews = mapper.map(data: reviews, to: MovieDetailsViewModel.self) else {
-//            return
-//        }
+        guard let reviews = mapper.map(data: reviews, to: [ReviewViewModel].self) else {
+            return
+        }
 
-//        view?.showmovieReviews(movieDetailsViewModel)
+//        view?.showMovieReviews(movieDetailsViewModel)
     }
 
     func didFetchSimilarMovies(_ movies: [MovieProtocol]) {
-        //
+        guard let similarMovies = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            return
+        }
+        
+//        view.showSimilarMovies(similarMovies)
     }
 
     func didFailToFetchData(with error: Error) {
