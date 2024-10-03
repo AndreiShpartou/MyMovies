@@ -16,7 +16,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         textColor: .textColorWhiteGrey
     )
 
-    private lazy var reviewTextView: UITextView = createReviewTextView()
+    private let reviewTextView: UITextView = .createCommonTextView()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -38,6 +38,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         reviewTextView.text = nil
     }
 
+    // MARK: - Public
     func configure(with review: ReviewViewModelProtocol) {
         authorLabel.text = review.author
         reviewTextView.text = review.review
@@ -47,36 +48,25 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
 // MARK: - Setup
 extension ReviewCollectionViewCell {
     private func setupView() {
+        backgroundColor = .primarySoft
+        layer.cornerRadius = 12
         contentView.addSubviews(authorLabel, reviewTextView)
-    }
-}
-
-// MARK: - Helpers
-extension ReviewCollectionViewCell {
-    private func createReviewTextView() -> UITextView {
-        let textView = UITextView()
-        textView.font = Typography.Regular.title
-        textView.textColor = .textColorWhiteGrey
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
-        textView.textContainerInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
-
-        return textView
     }
 }
 
 // MARK: - Constraints
 extension ReviewCollectionViewCell {
     private func setupConstraints() {
+        authorLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         authorLabel.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview().inset(16)
+            make.leading.trailing.top.equalToSuperview().inset(8)
+            make.height.greaterThanOrEqualTo(20) // Ensure there is a minimum height
         }
         reviewTextView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(8)
             make.top.equalTo(authorLabel.snp.bottom).offset(16)
             make.bottom.equalToSuperview().offset(-8)
+            make.height.greaterThanOrEqualTo(40).priority(.low) // Minimum height to avoid ambiguity
         }
     }
 }

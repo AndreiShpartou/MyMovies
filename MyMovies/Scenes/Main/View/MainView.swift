@@ -342,7 +342,7 @@ extension MainView {
     private func setupPopularMoviesSectionConstraints() {
         // Popular movies section
         popularMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(24)
             make.top.equalTo(genresCollectionView.snp.bottom).offset(24)
         }
 

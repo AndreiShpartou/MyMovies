@@ -64,6 +64,8 @@
 		6C7CD0E72C5F742600C71AA1 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7CD0E62C5F742600C71AA1 /* CustomTabBarController.swift */; };
 		6C8062342CAEEEEB00768DC5 /* ReviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062332CAEEEEB00768DC5 /* ReviewCollectionViewCell.swift */; };
 		6C8062362CAEEEFC00768DC5 /* ReviewCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062352CAEEEFC00768DC5 /* ReviewCollectionViewHandler.swift */; };
+		6C8062382CAF15B800768DC5 /* TextInfoGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062372CAF15B800768DC5 /* TextInfoGeneralView.swift */; };
+		6C80623A2CAF198300768DC5 /* TextInfoGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062392CAF198300768DC5 /* TextInfoGeneralViewController.swift */; };
 		6C8338502C5CE430000D0399 /* MainViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83384F2C5CE430000D0399 /* MainViewProtocol.swift */; };
 		6C8338522C5CE504000D0399 /* MainInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338512C5CE504000D0399 /* MainInteractorProtocol.swift */; };
 		6C8338542C5CE520000D0399 /* MainPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338532C5CE520000D0399 /* MainPresenterProtocol.swift */; };
@@ -218,6 +220,8 @@
 		6C7CD0E62C5F742600C71AA1 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		6C8062332CAEEEEB00768DC5 /* ReviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCollectionViewCell.swift; sourceTree = "<group>"; };
 		6C8062352CAEEEFC00768DC5 /* ReviewCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCollectionViewHandler.swift; sourceTree = "<group>"; };
+		6C8062372CAF15B800768DC5 /* TextInfoGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInfoGeneralView.swift; sourceTree = "<group>"; };
+		6C8062392CAF198300768DC5 /* TextInfoGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInfoGeneralViewController.swift; sourceTree = "<group>"; };
 		6C83384F2C5CE430000D0399 /* MainViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewProtocol.swift; sourceTree = "<group>"; };
 		6C8338512C5CE504000D0399 /* MainInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C8338532C5CE520000D0399 /* MainPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenterProtocol.swift; sourceTree = "<group>"; };
@@ -1093,9 +1097,11 @@
 			children = (
 				6C424F132C942A440003F487 /* RatingGeneralStackView.swift */,
 				6C4246E22CA199E6008E59D7 /* DescriptionGeneralStackView.swift */,
+				6C8062372CAF15B800768DC5 /* TextInfoGeneralView.swift */,
 				6C424F122C9428070003F487 /* CustomTabBar */,
 				6C424F0B2C9417490003F487 /* CollectionViewCells */,
 				6C424F0C2C9417530003F487 /* CollecctionViewHandlers */,
+				6C8062392CAF198300768DC5 /* TextInfoGeneralViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1315,8 +1321,10 @@
 				6C74C92D2C7396D00035BD14 /* APIConfiguration.swift in Sources */,
 				6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */,
 				6C0294532C830A36000BE8B3 /* UserGreetingView.swift in Sources */,
+				6C80623A2CAF198300768DC5 /* TextInfoGeneralViewController.swift in Sources */,
 				6CC604D12C557EDD00241EF2 /* WishlistViewController.swift in Sources */,
 				6CC604B92C557A9800241EF2 /* PopularMoviesViewController.swift in Sources */,
+				6C8062382CAF15B800768DC5 /* TextInfoGeneralView.swift in Sources */,
 				6CBEE8DB2C60E8090053BFD9 /* NetworkManager.swift in Sources */,
 				6C7CD0E32C5F4E5700C71AA1 /* CustomTabBarItem.swift in Sources */,
 				6C59AF612C553B2F006A7BDB /* MovieListPresenter.swift in Sources */,

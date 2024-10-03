@@ -18,4 +18,5 @@ protocol MovieDetailsViewProtocol: UIView {
 
 protocol MovieDetailsInteractionDelegate: AnyObject {
     func didFetchTitle(_ title: String?)
+    func didSelectReview(_ author: String?, review: String?)
 }

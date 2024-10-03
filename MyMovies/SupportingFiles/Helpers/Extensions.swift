@@ -69,7 +69,8 @@ extension UICollectionView {
         cellType: UICollectionViewCell.Type,
         reuseIdentifier: String,
         scrollDirection: UICollectionView.ScrollDirection = .horizontal,
-        minimumLineSpacing: CGFloat = 8
+        minimumLineSpacing: CGFloat = 8,
+        backgroundColor: UIColor = .clear
     ) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = scrollDirection
@@ -77,7 +78,7 @@ extension UICollectionView {
         layout.itemSize = itemSize
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = backgroundColor
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.decelerationRate = .fast
@@ -133,6 +134,23 @@ extension UILabel {
         }
 
         return label
+    }
+}
+
+// MARK: - UITextVIew
+extension UITextView {
+    static func createCommonTextView(isScrollEnabled: Bool = false) -> UITextView {
+        let textView = UITextView()
+        textView.font = Typography.Regular.title
+        textView.textColor = .textColorWhiteGrey
+        textView.isEditable = false
+        textView.isScrollEnabled = isScrollEnabled
+        textView.backgroundColor = .clear
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainer.lineBreakMode = .byTruncatingTail
+
+        return textView
     }
 }
 

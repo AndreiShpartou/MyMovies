@@ -81,4 +81,11 @@ extension MovieDetailsViewController: MovieDetailsInteractionDelegate {
     func didFetchTitle(_ title: String?) {
         self.title = title
     }
+
+    func didSelectReview(_ author: String?, review: String?) {
+        let reviewDetailsVC = TextInfoGeneralViewController()
+        reviewDetailsVC.configure(with: author, and: review)
+        reviewDetailsVC.modalPresentationStyle = .pageSheet
+        present(reviewDetailsVC, animated: true)
+    }
 }

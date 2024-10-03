@@ -9,7 +9,11 @@ import UIKit
 import SnapKit
 
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
-    weak var delegate: MovieDetailsInteractionDelegate?
+    weak var delegate: MovieDetailsInteractionDelegate? {
+        didSet {
+            reviewsCollectionViewHandler.delegate = delegate
+        }
+    }
     var presenter: MovieDetailsPresenterProtocol?
 
     // Story line “Read More” functionality preferences
@@ -80,7 +84,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         textColor: .textColorWhite,
         text: "Story Line"
     )
-    private lazy var storyTextView: UITextView = createStoryTextView()
+    private let storyTextView: UITextView = .createCommonTextView()
     private lazy var readMoreButton: UIButton = createReadMoreButton()
     // Cast and Crew
     private let personsLabel: UILabel = .createLabel(
@@ -102,11 +106,13 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         text: "Reviews"
     )
     private let reviewsCollectionView: UICollectionView = .createCommonCollectionView(
-        // overridden in the UpcomingMoviesCollectionViewHandler
+        // overridden in the ReviewCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellType: UpcomingMoviesCollectionViewCell.self,
-        reuseIdentifier: UpcomingMoviesCollectionViewCell.identifier
+        cellType: ReviewCollectionViewCell.self,
+        reuseIdentifier: ReviewCollectionViewCell.identifier,
+        minimumLineSpacing: 16
     )
+    private let reviewsCollectionViewHandler = ReviewCollectionViewHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -150,7 +156,8 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     }
 
     func showMovieReviews(_ reviews: [ReviewViewModelProtocol]) {
-        //
+        reviewsCollectionViewHandler.configure(with: reviews)
+        reviewsCollectionView.reloadData()
     }
 
     func showSimilarMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
@@ -179,6 +186,8 @@ extension MovieDetailsView {
         contentView.addSubviews(readMoreButton)
         contentView.addSubviews(personsLabel)
         contentView.addSubviews(personsCollectionView)
+        contentView.addSubviews(reviewsLabel)
+        contentView.addSubviews(reviewsCollectionView)
 
         // Description section arrangement
         descriptionStackView.addArrangedSubview(yearStackView)
@@ -192,6 +201,8 @@ extension MovieDetailsView {
         // Handlers
         personsCollectionView.delegate = personCollectionViewHandler
         personsCollectionView.dataSource = personCollectionViewHandler
+        reviewsCollectionView.delegate = reviewsCollectionViewHandler
+        reviewsCollectionView.dataSource = reviewsCollectionViewHandler
     }
 }
 
@@ -286,19 +297,6 @@ extension MovieDetailsView {
         return button
     }
 
-    private func createStoryTextView() -> UITextView {
-        let textView = UITextView()
-        textView.font = Typography.Regular.title
-        textView.textColor = .textColorWhiteGrey
-        textView.isEditable = false
-        textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
-        textView.textContainerInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
-
-        return textView
-    }
-
     private func createReadMoreButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("More", for: .normal)
@@ -380,6 +378,7 @@ extension MovieDetailsView {
         setupMainDescriptionSubviewsConstraints()
         setupStoryLineConstraints()
         setupPersonsConstraints()
+        setupReviewsConstraints()
     }
 
     private func setupScrollConstraints() {
@@ -494,7 +493,19 @@ extension MovieDetailsView {
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(personsLabel.snp.bottom).offset(16)
             make.height.equalTo(200)
-            make.bottom.equalToSuperview().offset(-16)
+        }
+    }
+
+    private func setupReviewsConstraints() {
+        reviewsLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().offset(16)
+            make.top.equalTo(personsCollectionView.snp.bottom).offset(16)
+        }
+        reviewsCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().offset(16)
+            make.top.equalTo(reviewsLabel.snp.bottom).offset(16)
+            make.height.equalTo(reviewsCollectionView.snp.width).multipliedBy(0.5)
+            make.bottom.equalToSuperview()
         }
     }
 }
