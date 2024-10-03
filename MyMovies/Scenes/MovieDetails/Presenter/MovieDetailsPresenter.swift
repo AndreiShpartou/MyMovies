@@ -49,15 +49,15 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
             return
         }
 
-//        view?.showMovieReviews(movieDetailsViewModel)
+        view?.showMovieReviews(reviews)
     }
 
     func didFetchSimilarMovies(_ movies: [MovieProtocol]) {
         guard let similarMovies = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
             return
         }
-        
-//        view.showSimilarMovies(similarMovies)
+
+        view?.showSimilarMovies(similarMovies)
     }
 
     func didFailToFetchData(with error: Error) {

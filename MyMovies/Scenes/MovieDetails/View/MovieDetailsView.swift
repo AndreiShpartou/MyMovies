@@ -95,6 +95,18 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         minimumLineSpacing: 16
     )
     private let personCollectionViewHandler = PersonCollectionViewHandler()
+    // Reviews
+    private let reviewsLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.title,
+        textColor: .textColorWhite,
+        text: "Reviews"
+    )
+    private let reviewsCollectionView: UICollectionView = .createCommonCollectionView(
+        // overridden in the UpcomingMoviesCollectionViewHandler
+        itemSize: CGSize(width: 50, height: 50),
+        cellType: UpcomingMoviesCollectionViewCell.self,
+        reuseIdentifier: UpcomingMoviesCollectionViewCell.identifier
+    )
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -135,6 +147,14 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         configurePersons(movie.persons)
         // delegate
         delegate?.didFetchTitle(movie.title)
+    }
+
+    func showMovieReviews(_ reviews: [ReviewViewModelProtocol]) {
+        //
+    }
+
+    func showSimilarMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
+        //
     }
 }
 

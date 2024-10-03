@@ -12,6 +12,8 @@ protocol MovieDetailsViewProtocol: UIView {
     var presenter: MovieDetailsPresenterProtocol? { get set }
 
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol)
+    func showMovieReviews(_ reviews: [ReviewViewModelProtocol])
+    func showSimilarMovies(_ movies: [BriefMovieListItemViewModelProtocol])
 }
 
 protocol MovieDetailsInteractionDelegate: AnyObject {
