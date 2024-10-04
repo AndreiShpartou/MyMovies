@@ -1,13 +1,17 @@
 //
-//  PopularMoviesCollectionViewHandler.swift
+//  BriefMovieDescriptionHandler.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 08/08/2024.
 //
 import UIKit
 
-final class PopularMoviesCollectionViewHandler: NSObject {
-    weak var delegate: MainViewDelegate?
+protocol BriefMovieDescriptionHandlerDelegate: AnyObject {
+    func didSelectMovie(movieID: Int)
+}
+
+final class BriefMovieDescriptionHandler: NSObject {
+    weak var delegate: BriefMovieDescriptionHandlerDelegate?
 
     private var movies: [BriefMovieListItemViewModelProtocol] = []
 
@@ -18,13 +22,13 @@ final class PopularMoviesCollectionViewHandler: NSObject {
 }
 
 // MARK: - UICollectionViewDataSource
-extension PopularMoviesCollectionViewHandler: UICollectionViewDataSource {
+extension BriefMovieDescriptionHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movies.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PopularMoviesCollectionViewCell.identifier, for: indexPath) as? PopularMoviesCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BriefMovieDescriptionCollectionViewCell.identifier, for: indexPath) as? BriefMovieDescriptionCollectionViewCell else {
             fatalError("Failed to dequeue PopularMoviesCollectionViewCell")
         }
         cell.configure(with: movies[indexPath.row])
@@ -34,7 +38,7 @@ extension PopularMoviesCollectionViewHandler: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegate
-extension PopularMoviesCollectionViewHandler: UICollectionViewDelegate {
+extension BriefMovieDescriptionHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movieID = movies[indexPath.row].id
         delegate?.didSelectMovie(movieID: movieID)

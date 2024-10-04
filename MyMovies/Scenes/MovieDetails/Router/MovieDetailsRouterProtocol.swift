@@ -7,4 +7,7 @@
 
 import Foundation
 
-protocol MovieDetailsRouterProtocol: AnyObject {}
+protocol MovieDetailsRouterProtocol: AnyObject {
+    func navigateToMovieDetails(with movie: MovieProtocol)
+    func navigateToMovieList(type: MovieListType)
+}

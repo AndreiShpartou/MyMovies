@@ -206,6 +206,15 @@ extension UIButton {
 
         return leftButton
     }
+
+    static func createSeeAllButton(action: Selector, target: Any?) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("See All", for: .normal)
+        button.setTitleColor(.primaryBlueAccent, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+
+        return button
+    }
 }
 
 // MARK: - UISearchBar

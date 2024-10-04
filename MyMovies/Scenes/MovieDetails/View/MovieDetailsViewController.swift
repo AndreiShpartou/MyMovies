@@ -88,4 +88,12 @@ extension MovieDetailsViewController: MovieDetailsInteractionDelegate {
         reviewDetailsVC.modalPresentationStyle = .pageSheet
         present(reviewDetailsVC, animated: true)
     }
+
+    func didTapSeeAllButton(listType: MovieListType) {
+        presenter?.didTapSeeAllButton(listType: listType)
+    }
+
+    func didSelectMovie(movieID: Int) {
+        presenter?.didSelectMovie(movieID: movieID)
+    }
 }

@@ -11,10 +11,12 @@ import SnapKit
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     weak var delegate: MovieDetailsInteractionDelegate? {
         didSet {
-            reviewsCollectionViewHandler.delegate = delegate
+            updateDelegates()
         }
     }
     var presenter: MovieDetailsPresenterProtocol?
+
+    private var movieID: Int?
 
     // Story line “Read More” functionality preferences
     private var isExpanded = false
@@ -113,6 +115,22 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         minimumLineSpacing: 16
     )
     private let reviewsCollectionViewHandler = ReviewCollectionViewHandler()
+    // Similar movies
+    private let similarMoviesLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.title,
+        textColor: .textColorWhite,
+        text: "Similar Movies"
+    )
+    private lazy var seeAllSimilarMoviesButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapSeeAllSimilarMoviesButton),
+        target: self
+    )
+    private let similarMoviesCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 150, height: 300),
+        cellType: BriefMovieDescriptionCollectionViewCell.self,
+        reuseIdentifier: BriefMovieDescriptionCollectionViewCell.identifier
+    )
+    private lazy var similarMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -145,6 +163,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         genreStackView.label.text = movie.genre
         ratingStackView.ratingLabel.text = movie.voteAverage
         storyTextView.text = movie.description
+        movieID = movie.id
         // Countries
         configureCountries(movie.countries)
         // Genres
@@ -161,7 +180,8 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     }
 
     func showSimilarMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
-        //
+        similarMoviesCollectionViewHandler.configure(with: movies)
+        similarMoviesCollectionView.reloadData()
     }
 }
 
@@ -175,20 +195,18 @@ extension MovieDetailsView {
         scrollView.showsVerticalScrollIndicator = false
 
         contentView.addSubviews(posterImageView)
-        contentView.addSubviews(alternativeTitle)
-        contentView.addSubviews(countriesStackView)
-        contentView.addSubviews(genresStackView)
-        contentView.addSubviews(descriptionStackView)
-        contentView.addSubviews(ratingStackView)
-        contentView.addSubviews(buttonsStackView)
-        contentView.addSubviews(storyLineLabel)
-        contentView.addSubviews(storyTextView)
-        contentView.addSubviews(readMoreButton)
-        contentView.addSubviews(personsLabel)
-        contentView.addSubviews(personsCollectionView)
-        contentView.addSubviews(reviewsLabel)
-        contentView.addSubviews(reviewsCollectionView)
-
+        contentView.addSubviews(
+            alternativeTitle,
+            countriesStackView,
+            genresStackView,
+            descriptionStackView,
+            ratingStackView,
+            buttonsStackView
+        )
+        contentView.addSubviews(storyLineLabel, storyTextView, readMoreButton)
+        contentView.addSubviews(personsLabel, personsCollectionView)
+        contentView.addSubviews(reviewsLabel, reviewsCollectionView)
+        contentView.addSubviews(similarMoviesLabel, seeAllSimilarMoviesButton, similarMoviesCollectionView)
         // Description section arrangement
         descriptionStackView.addArrangedSubview(yearStackView)
         descriptionStackView.addArrangedSubview(firstSeparatorView)
@@ -199,10 +217,21 @@ extension MovieDetailsView {
         buttonsStackView.addArrangedSubview(trailerButton)
         buttonsStackView.addArrangedSubview(shareButton)
         // Handlers
+        setupHandlers()
+    }
+
+    private func setupHandlers() {
         personsCollectionView.delegate = personCollectionViewHandler
         personsCollectionView.dataSource = personCollectionViewHandler
         reviewsCollectionView.delegate = reviewsCollectionViewHandler
         reviewsCollectionView.dataSource = reviewsCollectionViewHandler
+        similarMoviesCollectionView.dataSource = similarMoviesCollectionViewHandler
+        similarMoviesCollectionView.delegate = similarMoviesCollectionViewHandler
+    }
+
+    private func updateDelegates() {
+        reviewsCollectionViewHandler.delegate = delegate
+        similarMoviesCollectionViewHandler.delegate = delegate
     }
 }
 
@@ -246,6 +275,14 @@ extension MovieDetailsView {
         }
         isExpanded.toggle()
         readMoreButton.setTitle(isExpanded ? "Less" : "More", for: .normal)
+    }
+
+    @objc
+    private func didTapSeeAllSimilarMoviesButton() {
+        guard let movieID = movieID else {
+            return
+        }
+        delegate?.didTapSeeAllButton(listType: .similarMovies(id: movieID))
     }
 }
 
@@ -379,6 +416,7 @@ extension MovieDetailsView {
         setupStoryLineConstraints()
         setupPersonsConstraints()
         setupReviewsConstraints()
+        setupSimilarMoviesConstraints()
     }
 
     private func setupScrollConstraints() {
@@ -505,6 +543,25 @@ extension MovieDetailsView {
             make.leading.trailing.equalToSuperview().offset(16)
             make.top.equalTo(reviewsLabel.snp.bottom).offset(16)
             make.height.equalTo(reviewsCollectionView.snp.width).multipliedBy(0.5)
+        }
+    }
+
+    private func setupSimilarMoviesConstraints() {
+        // Popular movies section
+        similarMoviesLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().offset(16)
+            make.top.equalTo(reviewsCollectionView.snp.bottom).offset(24)
+        }
+
+        seeAllSimilarMoviesButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(similarMoviesLabel)
+        }
+
+        similarMoviesCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalTo(similarMoviesLabel.snp.bottom).offset(16)
+            make.height.equalTo(300)
             make.bottom.equalToSuperview()
         }
     }

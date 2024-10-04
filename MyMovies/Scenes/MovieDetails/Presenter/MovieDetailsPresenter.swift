@@ -13,6 +13,8 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     var router: MovieDetailsRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
+    // Temporary entities persistance switch to CoreData
+    private var similarMovies: [MovieProtocol] = []
 
     // MARK: - Init
     init(
@@ -31,6 +33,18 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         interactor.fetchMovie()
         interactor.fetchReviews()
         interactor.fetchSimilarMovies()
+    }
+
+    func didTapSeeAllButton(listType: MovieListType) {
+        router.navigateToMovieList(type: listType)
+    }
+
+    func didSelectMovie(movieID: Int) {
+        guard let movie = similarMovies.first(where: { $0.id == movieID }) else {
+            return
+        }
+
+        router.navigateToMovieDetails(with: movie)
     }
 }
 
@@ -58,6 +72,7 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
         }
 
         view?.showSimilarMovies(similarMovies)
+        self.similarMovies = movies
     }
 
     func didFailToFetchData(with error: Error) {
