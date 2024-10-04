@@ -19,16 +19,14 @@ final class MovieListView: UIView, MovieListViewProtocol {
     // Genres collection
     private let genresCollection: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
-        cellType: GenreCollectionViewCell.self,
-        reuseIdentifier: GenreCollectionViewCell.identifier
+        cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
     private lazy var genresCollectionHandler = GenresCollectionViewHandler()
     // Movie list collection
     private let movieListCollection: UICollectionView = .createCommonCollectionView(
         // overridden in the MovieListCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellType: MovieListCollectionViewCell.self,
-        reuseIdentifier: MovieListCollectionViewCell.identifier,
+        cellTypesDict: [MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self],
         scrollDirection: .vertical,
         minimumLineSpacing: 12
     )

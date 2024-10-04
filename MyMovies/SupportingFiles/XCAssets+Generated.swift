@@ -32,6 +32,7 @@ internal enum Asset {
   internal enum DefaultCovers {
     internal static let defaultBackdrop = ImageAsset(name: "DefaultBackdrop")
     internal static let defaultPerson = ImageAsset(name: "DefaultPerson")
+    internal static let defaultPlaceholder = ImageAsset(name: "DefaultPlaceholder")
     internal static let defaultPoster = ImageAsset(name: "DefaultPoster")
   }
   internal enum Icons {

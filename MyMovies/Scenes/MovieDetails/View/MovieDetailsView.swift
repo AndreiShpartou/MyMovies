@@ -96,8 +96,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     )
     private let personsCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 220, height: 60),
-        cellType: PersonCollectionViewCell.self,
-        reuseIdentifier: PersonCollectionViewCell.identifier,
+        cellTypesDict: [PersonCollectionViewCell.identifier: PersonCollectionViewCell.self],
         minimumLineSpacing: 16
     )
     private let personCollectionViewHandler = PersonCollectionViewHandler()
@@ -110,8 +109,10 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     private let reviewsCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the ReviewCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellType: ReviewCollectionViewCell.self,
-        reuseIdentifier: ReviewCollectionViewCell.identifier,
+        cellTypesDict: [
+            ReviewCollectionViewCell.identifier: ReviewCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ],
         minimumLineSpacing: 16
     )
     private let reviewsCollectionViewHandler = ReviewCollectionViewHandler()
@@ -127,8 +128,10 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     )
     private let similarMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
-        cellType: BriefMovieDescriptionCollectionViewCell.self,
-        reuseIdentifier: BriefMovieDescriptionCollectionViewCell.identifier
+        cellTypesDict: [
+            BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
     private lazy var similarMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
 
@@ -536,11 +539,11 @@ extension MovieDetailsView {
 
     private func setupReviewsConstraints() {
         reviewsLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(personsCollectionView.snp.bottom).offset(16)
         }
         reviewsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(reviewsLabel.snp.bottom).offset(16)
             make.height.equalTo(reviewsCollectionView.snp.width).multipliedBy(0.5)
         }
@@ -549,7 +552,7 @@ extension MovieDetailsView {
     private func setupSimilarMoviesConstraints() {
         // Popular movies section
         similarMoviesLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(reviewsCollectionView.snp.bottom).offset(24)
         }
 

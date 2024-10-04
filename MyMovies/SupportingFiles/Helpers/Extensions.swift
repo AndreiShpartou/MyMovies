@@ -66,8 +66,7 @@ extension UIView {
 extension UICollectionView {
     static func createCommonCollectionView(
         itemSize: CGSize,
-        cellType: UICollectionViewCell.Type,
-        reuseIdentifier: String,
+        cellTypesDict: [String: UICollectionViewCell.Type],
         scrollDirection: UICollectionView.ScrollDirection = .horizontal,
         minimumLineSpacing: CGFloat = 8,
         backgroundColor: UIColor = .clear
@@ -82,7 +81,9 @@ extension UICollectionView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.decelerationRate = .fast
-        collectionView.register(cellType, forCellWithReuseIdentifier: reuseIdentifier)
+        cellTypesDict.forEach {
+            collectionView.register($0.value, forCellWithReuseIdentifier: $0.key)
+        }
 
         return collectionView
     }

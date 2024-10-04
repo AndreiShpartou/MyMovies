@@ -37,8 +37,7 @@ final class MainView: UIView, MainViewProtocol {
     private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellType: UpcomingMoviesCollectionViewCell.self,
-        reuseIdentifier: UpcomingMoviesCollectionViewCell.identifier
+        cellTypesDict: [UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self]
     )
     private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
@@ -51,8 +50,7 @@ final class MainView: UIView, MainViewProtocol {
     )
     private let genresCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
-        cellType: GenreCollectionViewCell.self,
-        reuseIdentifier: GenreCollectionViewCell.identifier
+        cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     // Popular movies section
@@ -67,8 +65,10 @@ final class MainView: UIView, MainViewProtocol {
     )
     private let popularMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
-        cellType: BriefMovieDescriptionCollectionViewCell.self,
-        reuseIdentifier: BriefMovieDescriptionCollectionViewCell.identifier
+        cellTypesDict: [
+            BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
     private lazy var popularMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
 

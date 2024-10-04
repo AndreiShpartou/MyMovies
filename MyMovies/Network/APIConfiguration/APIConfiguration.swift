@@ -168,7 +168,7 @@ struct APIConfiguration: APIConfigurationProtocol {
 
             return queryParameters
         case (.kinopoisk, .reviews(let id)):
-            let queryParameters: [String: Any] = ["movieID": String(id)]
+            let queryParameters: [String: Any] = ["movieId": String(id)]
             return queryParameters
         case (.kinopoisk, .movieDetails(let id, .similarMovies)):
             let queryParameters: [String: Any] = ["id": String(id)]
