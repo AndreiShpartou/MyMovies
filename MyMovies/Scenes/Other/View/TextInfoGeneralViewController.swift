@@ -13,10 +13,18 @@ final class TextInfoGeneralViewController: UIViewController {
     // MARK: - LifeCycle
     override func loadView() {
         view = textInfoView
+        textInfoView.delegate = self
     }
 
     // MARK: - Public
-    func configure(with labelText: String?, and textViewText: String?) {
-        textInfoView.configure(with: labelText, and: textViewText)
+    func configure(with labelText: String?, and textViewText: String?, title: String) {
+        textInfoView.configure(with: labelText, and: textViewText, title: title)
+    }
+}
+
+// MARK: - TextInfoGeneralViewDelegate
+extension TextInfoGeneralViewController: TextInfoGeneralViewDelegate {
+    func didTapCloseButton() {
+        dismiss(animated: true)
     }
 }

@@ -16,7 +16,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         textColor: .textColorWhiteGrey
     )
 
-    private let reviewTextView: UITextView = .createCommonTextView()
+    private let reviewTextView: UITextView = .createCommonTextView(isUserInteractionEnabled: false)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -41,7 +41,8 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
     // MARK: - Public
     func configure(with review: ReviewViewModelProtocol) {
         authorLabel.text = review.author
-        reviewTextView.text = review.review
+        // TMDB sends a string with html tags
+        reviewTextView.text = review.review.convertHtmlToAttributedString()?.string ?? review.review
     }
 }
 

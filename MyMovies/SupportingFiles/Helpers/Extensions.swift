@@ -139,11 +139,12 @@ extension UILabel {
 
 // MARK: - UITextVIew
 extension UITextView {
-    static func createCommonTextView(isScrollEnabled: Bool = false) -> UITextView {
+    static func createCommonTextView(isScrollEnabled: Bool = false, isUserInteractionEnabled: Bool = true) -> UITextView {
         let textView = UITextView()
         textView.font = Typography.Regular.title
         textView.textColor = .textColorWhiteGrey
         textView.isEditable = false
+        textView.isUserInteractionEnabled = isUserInteractionEnabled
         textView.isScrollEnabled = isScrollEnabled
         textView.backgroundColor = .clear
         textView.textContainerInset = .zero
@@ -233,6 +234,26 @@ extension UISearchBar {
         textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: placeholderAttributes)
 
         return searchBar
+    }
+}
+
+// MARK: - String
+extension String {
+    func convertHtmlToAttributedString() -> NSAttributedString? {
+        guard let data = self.data(using: .utf8) else { return nil }
+        do {
+            return try NSAttributedString(
+                data: data,
+                options: [
+                    .documentType: NSAttributedString.DocumentType.html,
+                    .characterEncoding: String.Encoding.utf8.rawValue
+                ],
+                documentAttributes: nil
+            )
+        } catch {
+            debugPrint("Error converting HTML to NSAttributedString: \(error)")
+            return nil
+        }
     }
 }
 
