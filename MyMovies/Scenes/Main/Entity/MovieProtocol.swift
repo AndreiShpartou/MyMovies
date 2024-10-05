@@ -19,8 +19,10 @@ protocol MovieProtocol: Codable {
     var voteAverage: Double? { get }
     var genres: [GenreProtocol] { get }
     var countries: [CountryProtocol] { get }
+    var persons: [PersonProtocol] { get }
     var poster: CoverProtocol? { get }
     var backdrop: CoverProtocol? { get }
+    var similarMovies: [MovieProtocol]? { get }
 }
 
 protocol GenreProtocol: Codable {
@@ -36,4 +38,13 @@ protocol CoverProtocol: Codable {
 
 protocol CountryProtocol: Codable {
     var name: String { get }
+    var fullName: String { get }
+}
+
+protocol PersonProtocol: Codable {
+    var id: Int { get }
+    var photo: String? { get }
+    var name: String { get }
+    var originalName: String? { get }
+    var profession: String? { get }
 }

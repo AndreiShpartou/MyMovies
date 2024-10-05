@@ -8,6 +8,7 @@
 import Foundation
 
 struct BriefMovieListItemViewModel: BriefMovieListItemViewModelProtocol {
+    let id: Int
     let title: String
     var posterURL: URL?
     let genre: String

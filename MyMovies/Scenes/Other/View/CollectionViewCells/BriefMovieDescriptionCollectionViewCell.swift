@@ -1,5 +1,5 @@
 //
-//  PopularMoviesCollectionViewCell.swift
+//  BriefMovieDescriptionCollectionViewCell.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 03/08/2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PopularMoviesCollectionViewCell: UICollectionViewCell {
+final class BriefMovieDescriptionCollectionViewCell: UICollectionViewCell {
     static let identifier = "PopularMoviesCollectionViewCell"
 
     // MARK: - UIComponents
@@ -64,7 +64,7 @@ final class PopularMoviesCollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - Setup
-extension PopularMoviesCollectionViewCell {
+extension BriefMovieDescriptionCollectionViewCell {
     private func setupView() {
         contentView.addSubviews(
             imageView,
@@ -76,7 +76,7 @@ extension PopularMoviesCollectionViewCell {
 }
 
 // MARK: - Constraints
-extension PopularMoviesCollectionViewCell {
+extension BriefMovieDescriptionCollectionViewCell {
     private func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()

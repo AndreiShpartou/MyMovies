@@ -49,7 +49,9 @@ enum Endpoint {
     // Get the list of official genres for movies
     case genres
     // Get the movie details by ID
-    case movieDetails(id: Int)
+    case movieDetails(id: Int, type: MovieListType? = nil)
+    // Get the movie reviews
+    case reviews(id: Int)
 
     var rawValue: String {
         switch self {
@@ -59,15 +61,8 @@ enum Endpoint {
             return "genres"
         case .movieDetails:
             return "movieDetails"
-        }
-    }
-
-    var pathParameters: String {
-        switch self {
-        case .movieDetails(let id):
-            return "\(id)"
-        default:
-            return ""
+        case .reviews:
+            return "reviews"
         }
     }
 }
@@ -120,7 +115,9 @@ struct APIConfiguration: APIConfigurationProtocol {
     // MARK: - Private
     private func isActive(endpoint: Endpoint, for provider: Provider) -> Bool {
         switch (provider, endpoint) {
-        case (.kinopoisk, .movieDetails):
+        case (.kinopoisk, .movieDetails(_, type: .popularMovies)),
+            (.kinopoisk, .movieDetails(_, type: .upcomingMovies)),
+            (.kinopoisk, .movieDetails(_, type: nil)):
             return false
         default:
             return true
@@ -133,12 +130,21 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBGenrePagedResponse.self
         case (.kinopoisk, .genres):
             return [KinopoiskMovieResponse.Genre].self
-        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
+        case (.tmdb, .movieList(type: .upcomingMovies)),
+            (.tmdb, .movieList(type: .popularMovies)),
+            (.tmdb, .movieList(type: .similarMovies)):
             return TMDBMoviesPagedResponse.self
-        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
+        case (.kinopoisk, .movieList(type: .upcomingMovies)),
+            (.kinopoisk, .movieList(type: .popularMovies)):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
+        case (.kinopoisk, .movieDetails):
+            return KinopoiskMoviesPagedResponse.self
+        case (.tmdb, .reviews):
+            return TMDBReviewsPagedResponse.self
+        case (.kinopoisk, .reviews):
+            return KinopoiskReviewsPagedResponse.self
         default:
             return nil
         }
@@ -160,6 +166,12 @@ struct APIConfiguration: APIConfigurationProtocol {
                 "release_date.lte": formatDate(maxDate)
             ]
 
+            return queryParameters
+        case (.kinopoisk, .reviews(let id)):
+            let queryParameters: [String: Any] = ["movieId": String(id)]
+            return queryParameters
+        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
+            let queryParameters: [String: Any] = ["id": String(id)]
             return queryParameters
         default:
             return [:]
@@ -191,6 +203,20 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     private func getPath(for endpoint: Endpoint) -> String {
         let endpointPath = endpoints[endpoint.rawValue] ?? ""
-        return "\(endpointPath)\(endpoint.pathParameters)"
+        let pathParameters = getPathParameters(for: endpoint, and: provider)
+        return "\(endpointPath)\(pathParameters)"
+    }
+
+    private func getPathParameters(for endpoint: Endpoint, and provider: Provider) -> String {
+        switch (provider, endpoint) {
+        case (.tmdb, .movieDetails(let id, _)):
+            return "\(id)?append_to_response=credits"
+        case (.tmdb, .reviews(let id)):
+            return "\(id)/reviews"
+        case (.tmdb, .movieList(type: .similarMovies(let id))):
+            return "\(id)/similar"
+        default:
+            return ""
+        }
     }
 }

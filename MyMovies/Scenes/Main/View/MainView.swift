@@ -30,12 +30,14 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Upcoming"
     )
-    private lazy var seeAllUpcomingMoviesButton: UIButton = createSeeAllButton(action: #selector(didTapSeeAllUpcomingMoviesButton))
+    private lazy var seeAllUpcomingMoviesButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapSeeAllUpcomingMoviesButton),
+        target: self
+    )
     private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellType: UpcomingMoviesCollectionViewCell.self,
-        reuseIdentifier: UpcomingMoviesCollectionViewCell.identifier
+        cellTypesDict: [UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self]
     )
     private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
@@ -48,8 +50,7 @@ final class MainView: UIView, MainViewProtocol {
     )
     private let genresCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
-        cellType: GenreCollectionViewCell.self,
-        reuseIdentifier: GenreCollectionViewCell.identifier
+        cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     // Popular movies section
@@ -58,13 +59,18 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Most popular"
     )
-    private lazy var seeAllPopularMoviesButton: UIButton = createSeeAllButton(action: #selector(didTapSeeAllPopularMoviesButton))
+    private lazy var seeAllPopularMoviesButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapSeeAllPopularMoviesButton),
+        target: self
+    )
     private let popularMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
-        cellType: PopularMoviesCollectionViewCell.self,
-        reuseIdentifier: PopularMoviesCollectionViewCell.identifier
+        cellTypesDict: [
+            BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
-    private lazy var popularMoviesCollectionViewHandler = PopularMoviesCollectionViewHandler()
+    private lazy var popularMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -199,15 +205,6 @@ extension MainView {
 
 // MARK: - Helpers
 extension MainView {
-    private func createSeeAllButton(action: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle("See All", for: .normal)
-        button.setTitleColor(.primaryBlueAccent, for: .normal)
-        button.addTarget(self, action: action, for: .touchUpInside)
-
-        return button
-    }
-
     private func createUpcomingMoviesPageControl() -> UIPageControl {
         let pageControl = UIPageControl()
         pageControl.currentPageIndicatorTintColor = .primaryBlueAccent
@@ -342,7 +339,7 @@ extension MainView {
     private func setupPopularMoviesSectionConstraints() {
         // Popular movies section
         popularMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(24)
             make.top.equalTo(genresCollectionView.snp.bottom).offset(24)
         }
 

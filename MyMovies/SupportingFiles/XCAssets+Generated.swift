@@ -31,12 +31,18 @@ internal enum Asset {
   }
   internal enum DefaultCovers {
     internal static let defaultBackdrop = ImageAsset(name: "DefaultBackdrop")
+    internal static let defaultPerson = ImageAsset(name: "DefaultPerson")
+    internal static let defaultPlaceholder = ImageAsset(name: "DefaultPlaceholder")
     internal static let defaultPoster = ImageAsset(name: "DefaultPoster")
   }
   internal enum Icons {
     internal static let calendar = ImageAsset(name: "calendar")
     internal static let clock = ImageAsset(name: "clock")
     internal static let film = ImageAsset(name: "film")
+    internal static let share = ImageAsset(name: "share")
+  }
+  internal enum Launch {
+    internal static let launch = ImageAsset(name: "launch")
   }
   internal enum PageControlIndicators {
     internal static let selected = ImageAsset(name: "Selected")

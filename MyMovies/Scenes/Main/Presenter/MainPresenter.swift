@@ -13,6 +13,8 @@ final class MainPresenter: MainPresenterProtocol {
     var router: MainRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
+    // Temporary entities persistance switch to CoreData
+    private var movies: [MovieProtocol] = []
 
     // MARK: - Init
     init(
@@ -34,8 +36,12 @@ final class MainPresenter: MainPresenterProtocol {
         interactor.fetchPopularMovies()
     }
 
-    func didSelectMovie(_ movie: MovieProtocol) {
-        //
+    func didSelectMovie(movieID: Int) {
+        guard let movie = movies.first(where: { $0.id == movieID }) else {
+            return
+        }
+
+        router.navigateToMovieDetails(with: movie)
     }
 
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
@@ -44,10 +50,6 @@ final class MainPresenter: MainPresenterProtocol {
         }
 
         interactor.fetchPopularMoviesWithGenresFiltering(genre: movieGenre)
-    }
-
-    func didSelectUpcomingMovie(_ movie: MovieProtocol) {
-        //
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
@@ -64,6 +66,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
         // Update the view with the fetched data
         view?.showUpcomingMovies(upcomingMovieViewModels)
+        self.movies.append(contentsOf: movies)
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
@@ -80,6 +83,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showPopularMovies(popularMovieViewModels)
+        self.movies.append(contentsOf: movies)
     }
 
     func didFailToFetchData(with error: Error) {

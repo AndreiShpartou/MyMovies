@@ -7,8 +7,75 @@
 
 import Foundation
 
-class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
+final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     weak var view: MovieDetailsViewProtocol?
-    var interactor: MovieDetailsInteractorProtocol?
-    var router: MovieDetailsRouterProtocol?
+    var interactor: MovieDetailsInteractorProtocol
+    var router: MovieDetailsRouterProtocol
+
+    private let mapper: DomainModelMapperProtocol
+    // Temporary entities persistance switch to CoreData
+    private var similarMovies: [MovieProtocol] = []
+
+    // MARK: - Init
+    init(
+        view: MovieDetailsViewProtocol,
+        interactor: MovieDetailsInteractorProtocol,
+        router: MovieDetailsRouterProtocol,
+        mapper: DomainModelMapperProtocol = DomainModelMapper()
+    ) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+        self.mapper = mapper
+    }
+
+    func viewDidLoad() {
+        interactor.fetchMovie()
+        interactor.fetchReviews()
+        interactor.fetchSimilarMovies()
+    }
+
+    func didTapSeeAllButton(listType: MovieListType) {
+        router.navigateToMovieList(type: listType)
+    }
+
+    func didSelectMovie(movieID: Int) {
+        guard let movie = similarMovies.first(where: { $0.id == movieID }) else {
+            return
+        }
+
+        router.navigateToMovieDetails(with: movie)
+    }
+}
+
+// MARK: - MovieDetailsInteractorOutputProtocol
+extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
+    func didFetchMovie(_ movie: MovieProtocol) {
+        guard let movieDetailsViewModel = mapper.map(data: movie, to: MovieDetailsViewModel.self) else {
+            return
+        }
+
+        view?.showDetailedMovie(movieDetailsViewModel)
+    }
+
+    func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
+        guard let reviews = mapper.map(data: reviews, to: [ReviewViewModel].self) else {
+            return
+        }
+
+        view?.showMovieReviews(reviews)
+    }
+
+    func didFetchSimilarMovies(_ movies: [MovieProtocol]) {
+        guard let similarMovies = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            return
+        }
+
+        view?.showSimilarMovies(similarMovies)
+        self.similarMovies = movies
+    }
+
+    func didFailToFetchData(with error: Error) {
+        //
+    }
 }

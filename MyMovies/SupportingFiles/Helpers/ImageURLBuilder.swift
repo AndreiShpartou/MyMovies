@@ -28,6 +28,13 @@ enum PosterSize: String, ImageSizeType {
     case original
 }
 
+enum PersonSize: String, ImageSizeType {
+    case w45
+    case w185
+    case h632
+    case original
+}
+
 // Builder for different types of images
 enum ImageURLBuilder {
     private static let baseImageURL = "https://image.tmdb.org/t/p/"

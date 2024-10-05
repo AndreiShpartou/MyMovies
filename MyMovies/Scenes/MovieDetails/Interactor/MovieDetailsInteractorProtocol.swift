@@ -7,4 +7,15 @@
 
 import Foundation
 
-protocol MovieDetailsInteractorProtocol: AnyObject {}
+protocol MovieDetailsInteractorProtocol: AnyObject {
+    func fetchMovie()
+    func fetchReviews()
+    func fetchSimilarMovies()
+}
+
+protocol MovieDetailsInteractorOutputProtocol: AnyObject {
+    func didFetchMovie(_ movie: MovieProtocol)
+    func didFetchReviews(_ reviews: [MovieReviewProtocol])
+    func didFetchSimilarMovies(_ movies: [MovieProtocol])
+    func didFailToFetchData(with error: Error)
+}

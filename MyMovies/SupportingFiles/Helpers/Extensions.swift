@@ -30,16 +30,46 @@ extension UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
+
+    static func createBorderedViewWithLabel(
+        labelText: String?,
+        borderWidth: CGFloat = 2,
+        borderColor: CGColor = UIColor.primaryBlueAccent.cgColor,
+        textColor: UIColor = .primaryBlueAccent
+    ) -> UIView {
+        let view: UIView = .createCommonView(cornderRadius: 8)
+        view.layer.borderWidth = borderWidth
+        view.layer.borderColor = borderColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        let label: UILabel = .createLabel(
+            font: Typography.Medium.body,
+            textColor: textColor,
+            text: labelText
+        )
+
+        // Arrangment
+        view.addSubviews(label)
+        view.snp.makeConstraints { make in
+            make.height.lessThanOrEqualTo(25)
+        }
+        label.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.centerY.equalToSuperview()
+        }
+
+        return view
+    }
 }
 
 // MARK: - UICollectionView
 extension UICollectionView {
     static func createCommonCollectionView(
         itemSize: CGSize,
-        cellType: UICollectionViewCell.Type,
-        reuseIdentifier: String,
+        cellTypesDict: [String: UICollectionViewCell.Type],
         scrollDirection: UICollectionView.ScrollDirection = .horizontal,
-        minimumLineSpacing: CGFloat = 8
+        minimumLineSpacing: CGFloat = 8,
+        backgroundColor: UIColor = .clear
     ) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = scrollDirection
@@ -47,11 +77,13 @@ extension UICollectionView {
         layout.itemSize = itemSize
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = backgroundColor
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.decelerationRate = .fast
-        collectionView.register(cellType, forCellWithReuseIdentifier: reuseIdentifier)
+        cellTypesDict.forEach {
+            collectionView.register($0.value, forCellWithReuseIdentifier: $0.key)
+        }
 
         return collectionView
     }
@@ -61,13 +93,13 @@ extension UICollectionView {
 extension UIStackView {
     static func createCommonStackView(
         axis: NSLayoutConstraint.Axis,
-        spacing: CGFloat,
+        spacing: CGFloat = 8,
         distribution: UIStackView.Distribution = .fill,
         alignment: UIStackView.Alignment = .fill
     ) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = axis
-        stackView.spacing = 8
+        stackView.spacing = spacing
         stackView.distribution = distribution
         stackView.alignment = alignment
         stackView.backgroundColor = .clear
@@ -103,6 +135,24 @@ extension UILabel {
         }
 
         return label
+    }
+}
+
+// MARK: - UITextVIew
+extension UITextView {
+    static func createCommonTextView(isScrollEnabled: Bool = false, isUserInteractionEnabled: Bool = true) -> UITextView {
+        let textView = UITextView()
+        textView.font = Typography.Regular.title
+        textView.textColor = .textColorWhiteGrey
+        textView.isEditable = false
+        textView.isUserInteractionEnabled = isUserInteractionEnabled
+        textView.isScrollEnabled = isScrollEnabled
+        textView.backgroundColor = .clear
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainer.lineBreakMode = .byTruncatingTail
+
+        return textView
     }
 }
 
@@ -145,6 +195,27 @@ extension UIButton {
 
         return button
     }
+
+    static func createBackNavBarButton() -> UIButton {
+        let leftButton = UIButton(type: .custom)
+        leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        leftButton.tintColor = .white
+        leftButton.backgroundColor = .primarySoft
+
+        leftButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        leftButton.layer.cornerRadius = 15
+
+        return leftButton
+    }
+
+    static func createSeeAllButton(action: Selector, target: Any?) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle("See All", for: .normal)
+        button.setTitleColor(.primaryBlueAccent, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+
+        return button
+    }
 }
 
 // MARK: - UISearchBar
@@ -173,6 +244,36 @@ extension UISearchBar {
         textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: placeholderAttributes)
 
         return searchBar
+    }
+}
+
+// MARK: - String
+extension String {
+    func convertHtmlToAttributedString(font: UIFont, textColor: UIColor) -> NSAttributedString? {
+        guard let data = self.data(using: .utf8) else { return nil }
+        do {
+            let attributedString = NSMutableAttributedString()
+            let content = try NSAttributedString(
+                data: data,
+                options: [
+                    .documentType: NSAttributedString.DocumentType.html,
+                    .characterEncoding: String.Encoding.utf8.rawValue
+                ],
+                documentAttributes: nil
+            )
+            attributedString.append(content)
+
+            let attributes = [
+                NSAttributedString.Key.font: font,
+                NSAttributedString.Key.foregroundColor: textColor
+            ]
+            attributedString.addAttributes(attributes, range: NSRange(location: 0, length: attributedString.length))
+
+            return attributedString
+        } catch {
+            debugPrint("Error converting HTML to NSAttributedString: \(error)")
+            return nil
+        }
     }
 }
 

@@ -15,7 +15,7 @@ final class RatingGeneralStackView: UIStackView {
 
     private let ratingIconImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
-        image: UIImage(systemName: "star.fill")?.withTintColor(.secondaryOrange, renderingMode: .alwaysOriginal)
+        image: UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .small))?.withTintColor(.secondaryOrange, renderingMode: .alwaysOriginal)
     )
 
     // MARK: - Init

@@ -5,6 +5,20 @@
 //  Created by Andrei Shpartou on 02/08/2024.
 //
 
-import Foundation
+import UIKit
 
-protocol MovieDetailsViewProtocol: AnyObject {}
+protocol MovieDetailsViewProtocol: UIView {
+    var delegate: MovieDetailsViewDelegate? { get set }
+    var presenter: MovieDetailsPresenterProtocol? { get set }
+
+    func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol)
+    func showMovieReviews(_ reviews: [ReviewViewModelProtocol])
+    func showSimilarMovies(_ movies: [BriefMovieListItemViewModelProtocol])
+}
+
+protocol MovieDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelegate {
+    func didFetchTitle(_ title: String?)
+    func didSelectReview(_ author: String?, review: String?)
+    func didTapSeeAllButton(listType: MovieListType)
+    func didSelectMovie(movieID: Int)
+}

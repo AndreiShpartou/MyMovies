@@ -7,4 +7,8 @@
 
 import Foundation
 
-protocol MovieDetailsPresenterProtocol: AnyObject {}
+protocol MovieDetailsPresenterProtocol: AnyObject {
+    func viewDidLoad()
+    func didTapSeeAllButton(listType: MovieListType)
+    func didSelectMovie(movieID: Int)
+}

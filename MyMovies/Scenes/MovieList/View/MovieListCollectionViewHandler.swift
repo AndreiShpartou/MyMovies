@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 final class MovieListCollectionViewHandler: NSObject {
+    weak var delegate: MovieListViewInteractionDelegate?
+
     private var movies: [MovieListItemViewModelProtocol] = []
 
     // MARK: - Public
@@ -35,6 +37,10 @@ extension MovieListCollectionViewHandler: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension MovieListCollectionViewHandler: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movieID = movies[indexPath.row].id
+        delegate?.didSelectMovie(movieID: movieID)
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

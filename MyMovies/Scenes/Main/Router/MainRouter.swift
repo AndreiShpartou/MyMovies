@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainRouter: MainRouterProtocol {
+final class MainRouter: MainRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init
@@ -16,14 +16,9 @@ class MainRouter: MainRouterProtocol {
     }
 
     func navigateToMovieDetails(with movie: MovieProtocol) {
-        // let movieDetailsVC = SceneBuilder.buildMovieDetailsScene()
-        // viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
-
-//        guard let detailsVC = SceneBuilder.buildMovieDetailsScene(with: movie) else {
-//            print("Error: Could not instantiate MovieDetailsViewController.")
-//            return
-//        }
-//        viewController?.navigationController?.pushViewController(detailsVC, animated: true)
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }
 
     func navigateToMovieList(type: MovieListType) {

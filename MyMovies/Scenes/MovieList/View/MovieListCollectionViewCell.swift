@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MovieListCollectionViewCell: UICollectionViewCell {
+final class MovieListCollectionViewCell: UICollectionViewCell {
     static let identifier = "MovieListCollectionViewCell"
 
     // MARK: - UIComponents
@@ -24,7 +24,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         axis: .vertical,
         spacing: 16
     )
-    private lazy var countriesRowStackView: UIStackView = .createCommonStackView(
+    private let countriesRowStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
         spacing: 8,
         distribution: .fill
@@ -36,34 +36,16 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         textColor: .textColorWhite
     )
     // Year
-    private let yearStackView: UIStackView = .createCommonStackView(axis: .horizontal, spacing: 0)
-    private let yearImageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFit,
+    private let yearStackView = DescriptionGeneralStackView(
         image: Asset.Icons.calendar.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
     )
-    private let yearLabel: UILabel = .createLabel(
-        font: Typography.Medium.subhead,
-        textColor: .textColorGrey
-    )
     // Runtime
-    private let runtimeStackView: UIStackView = .createCommonStackView(axis: .horizontal, spacing: 0)
-    private let runtimeImageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFit,
+    private let runtimeStackView = DescriptionGeneralStackView(
         image: Asset.Icons.clock.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
     )
-    private let runtimeLabel: UILabel = .createLabel(
-        font: Typography.Medium.subhead,
-        textColor: .textColorGrey
-    )
-    // Label
-    private let genreStackView: UIStackView = .createCommonStackView(axis: .horizontal, spacing: 0)
-    private let genreImageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFit,
+    // Genre
+    private let genreStackView = DescriptionGeneralStackView(
         image: Asset.Icons.film.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
-    )
-    private let genreLabel: UILabel = .createLabel(
-        font: Typography.Medium.subhead,
-        textColor: .textColorGrey
     )
 
     // MARK: - Init
@@ -85,9 +67,9 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         posterImageView.kf.cancelDownloadTask()
         posterImageView.image = nil
         titleLabel.text = nil
-        yearLabel.text = nil
-        runtimeLabel.text = nil
-        genreLabel.text = nil
+        yearStackView.label.text = nil
+        runtimeStackView.label.text = nil
+        genreStackView.label.text = nil
         ratingStackView.ratingLabel.text = nil
         // remove countries subviews
         countriesRowStackView.arrangedSubviews.forEach {
@@ -101,9 +83,9 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         ratingStackView.ratingLabel.text = movie.voteAverage
         titleLabel.text = movie.title
-        yearLabel.text = movie.releaseYear
-        runtimeLabel.text = movie.runtime
-        genreLabel.text = movie.genre
+        yearStackView.label.text = movie.releaseYear
+        runtimeStackView.label.text = movie.runtime
+        genreStackView.label.text = movie.genre
         // countries layout
         configureCountries(countries: movie.countries)
     }
@@ -114,15 +96,6 @@ extension MovieListCollectionViewCell {
     private func setupView() {
         // Poster
         posterImageView.addSubviews(ratingStackView)
-        // Year
-        yearStackView.addArrangedSubview(yearImageView)
-        yearStackView.addArrangedSubview(yearLabel)
-        // Runtime
-        runtimeStackView.addArrangedSubview(runtimeImageView)
-        runtimeStackView.addArrangedSubview(runtimeLabel)
-        // Genre
-        genreStackView.addArrangedSubview(genreImageView)
-        genreStackView.addArrangedSubview(genreLabel)
         // Description
         descriptionStackView.addArrangedSubview(titleLabel)
         descriptionStackView.addArrangedSubview(yearStackView)
@@ -134,51 +107,18 @@ extension MovieListCollectionViewCell {
         descriptionStackView.addArrangedSubview(countriesRowStackView)
 
         contentView.addSubviews(posterImageView, descriptionStackView)
-
-        setupPriorities()
-    }
-
-    private func setupPriorities() {
-        yearImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        runtimeImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        genreImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 }
 
 // MARK: - Helpers
 extension MovieListCollectionViewCell {
-    private func createCountryView(labelText: String?) -> UIView {
-        let view: UIView = .createCommonView(cornderRadius: 8)
-        view.layer.borderWidth = 2
-        view.layer.borderColor = UIColor.primaryBlueAccent.cgColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        let label: UILabel = .createLabel(
-            font: Typography.Medium.body,
-            textColor: .primaryBlueAccent,
-            text: labelText
-        )
-
-        // Arrangment
-        view.addSubviews(label)
-        view.snp.makeConstraints { make in
-            make.height.equalTo(25)
-        }
-        label.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.centerY.equalToSuperview()
-        }
-
-        return view
-    }
-
     private func configureCountries(countries: [String]) {
         countries.forEach {
             guard countriesRowStackView.arrangedSubviews.count < 2 else {
                 return
             }
 
-            countriesRowStackView.addArrangedSubview(createCountryView(labelText: $0))
+            countriesRowStackView.addArrangedSubview(UIView.createBorderedViewWithLabel(labelText: $0))
         }
         // add an empty stretchable view to the right
         let stretchableView: UIView = .createCommonView()
@@ -220,6 +160,10 @@ extension MovieListCollectionViewCell {
 
         genreStackView.snp.makeConstraints { make in
             make.height.equalTo(20)
+        }
+
+        countriesRowStackView.snp.makeConstraints { make in
+            make.height.equalTo(25)
         }
     }
 }

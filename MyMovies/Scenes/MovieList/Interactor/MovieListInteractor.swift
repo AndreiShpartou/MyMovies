@@ -7,9 +7,8 @@
 
 import Foundation
 
-class MovieListInteractor: MovieListInteractorProtocol {
+final class MovieListInteractor: MovieListInteractorProtocol {
     var presenter: MovieListInteractorOutputProtocol?
-
     private var listType: MovieListType?
     private let networkManager: NetworkManagerProtocol
 
@@ -50,22 +49,22 @@ class MovieListInteractor: MovieListInteractorProtocol {
         }
 
         networkManager.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result)
+            self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
 
     // MARK: - Private
     private func fetchMovies(type: MovieListType) {
         networkManager.fetchMovies(type: type) { [weak self] result in
-            self?.handleMovieFetchResult(result)
+            self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
 
     // Centralized handling of movie fetch results
-    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>) {
+    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies) { [weak self] detailedMovies in
+            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
                 DispatchQueue.main.async {
                     self?.presenter?.didFetchMovieList(detailedMovies)
                 }

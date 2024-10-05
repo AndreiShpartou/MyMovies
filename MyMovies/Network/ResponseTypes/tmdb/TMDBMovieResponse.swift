@@ -26,9 +26,13 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var countries: [TMDBCountryResponseProtocol]? {
         return movieCountries
     }
+    var credits: TMDBCreditsResponseProtocol? {
+        return movieCredits
+    }
 
     private let movieGenres: [TMDBMovieResponse.Genre]?
     private let movieCountries: [TMDBMovieResponse.Country]?
+    private let movieCredits: TMDBMovieResponse.Credits?
 
     struct Genre: TMDBGenreResponseProtocol {
         var id: Int
@@ -38,6 +42,39 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     struct Country: TMDBCountryResponseProtocol {
         var iso_3166_1: String
         var name: String
+    }
+
+    struct Credits: TMDBCreditsResponseProtocol {
+        var cast: [TMDBPersonResponseProtocol]? {
+            return movieCast
+        }
+        var crew: [TMDBPersonResponseProtocol]? {
+            return movieCrew
+        }
+
+        private let movieCast: [Person]?
+        private let movieCrew: [Person]?
+
+        struct Person: TMDBPersonResponseProtocol {
+            var id: Int
+            var name: String
+            var original_name: String
+            var profile_path: String?
+            var known_for_department: String?
+
+            func personPhotoURL(path: String?, size: PersonSize = .w185) -> String? {
+                guard let path = path else {
+                    return nil
+                }
+
+                return ImageURLBuilder.buildURL(for: path, size: size)
+            }
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case movieCast = "cast"
+            case movieCrew = "crew"
+        }
     }
 
     enum CodingKeys: String, CodingKey {
@@ -50,6 +87,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
         case genreIds = "genre_ids"
         case movieGenres = "genres"
         case movieCountries = "production_countries"
+        case movieCredits = "credits"
     }
 
     // MARK: - Public

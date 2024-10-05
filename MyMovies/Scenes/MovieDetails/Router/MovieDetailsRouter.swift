@@ -7,6 +7,23 @@
 
 import UIKit
 
-class MovieDetailsRouter: MovieDetailsRouterProtocol {
+final class MovieDetailsRouter: MovieDetailsRouterProtocol {
     weak var viewController: UIViewController?
+
+    // MARK: - Init
+    init(viewController: UIViewController?) {
+        self.viewController = viewController
+    }
+
+    func navigateToMovieDetails(with movie: MovieProtocol) {
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
+    }
+
+    func navigateToMovieList(type: MovieListType) {
+        let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieListVC, animated: true)
+    }
 }

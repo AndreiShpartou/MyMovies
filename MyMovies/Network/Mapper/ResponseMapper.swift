@@ -17,6 +17,9 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBMoviesPagedResponse) as! T
         case ( is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! KinopoiskMoviesPagedResponse) as! T
+        // Kinopoisk movie details
+        case ( is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
+            return mapToDetails(data as! KinopoiskMoviesPagedResponse) as! T
         case (is TMDBMovieResponse.Type, is Movie.Type):
             return map(data as! TMDBMovieResponse) as! T
         // genres
@@ -24,6 +27,11 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBGenrePagedResponse) as! T
         case (is [KinopoiskMovieResponse.Genre].Type, is [Movie.Genre].Type):
             return map(data as! [KinopoiskMovieResponse.Genre]) as! T
+        // reviews
+        case (is TMDBReviewsPagedResponse.Type, is [MovieReview].Type):
+            return map(data as! TMDBReviewsPagedResponse) as! T
+        case (is KinopoiskReviewsPagedResponse.Type, is [MovieReview].Type):
+            return map(data as! KinopoiskReviewsPagedResponse) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
@@ -53,8 +61,10 @@ final class ResponseMapper: ResponseMapperProtocol {
                 voteAverage: ($0.voteAverage == 0) ? Double.random(in: 5.0...7.0) : $0.voteAverage,
                 genres: map($0.genreIds ?? []),
                 countries: map($0.countries ?? []),
+                persons: [],
                 poster: poster,
-                backdrop: backdrop
+                backdrop: backdrop,
+                similarMovies: []
             )
         }
     }
@@ -68,6 +78,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             url: data.backdropURL(size: .original),
             previewUrl: data.backdropURL(size: .w780)
         )
+        let persons: [TMDBPersonResponseProtocol] = (data.credits?.cast ?? []) + (data.credits?.crew ?? [])
 
         return Movie(
             id: data.id,
@@ -81,14 +92,19 @@ final class ResponseMapper: ResponseMapperProtocol {
             voteAverage: (data.voteAverage == 0) ? Double.random(in: 5.0...7.0) : data.voteAverage,
             genres: map(data.genres ?? []),
             countries: map(data.countries ?? []),
+            persons: map(persons),
             poster: poster,
-            backdrop: backdrop
+            backdrop: backdrop,
+            similarMovies: []
         )
     }
 
     private func map(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {
         return data.docs.map {
-            Movie(
+            // Map brief similar movies data
+            let similarMovies = mapSimilarMovies($0.similarMovies)
+            // Map the underlying movie
+            return Movie(
                 id: $0.id,
                 title: $0.name ?? $0.alternativeName ?? "",
                 alternativeTitle: $0.alternativeName,
@@ -99,7 +115,8 @@ final class ResponseMapper: ResponseMapperProtocol {
                 runtime: String($0.movieLength ?? 0),
                 voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
                 genres: map($0.genres ?? []),
-                countries: map($0.countries),
+                countries: map($0.countries ?? []),
+                persons: map($0.persons ?? []),
                 poster: Movie.Cover(
                     url: $0.poster?.url,
                     previewUrl: $0.poster?.previewUrl
@@ -107,9 +124,68 @@ final class ResponseMapper: ResponseMapperProtocol {
                 backdrop: Movie.Cover(
                     url: $0.backdrop?.url,
                     previewUrl: $0.backdrop?.previewUrl
-                )
+                ),
+                similarMovies: similarMovies
             )
         }
+    }
+
+    // Map KinopoiskMovieResponse to [Movie]?
+    private func mapSimilarMovies(_ similarMovies: [KinopoiskMovieResponseProtocol]?) -> [Movie]? {
+        // Get the similar movies id to onward fetching via the details endpoint
+        return similarMovies?.map { similarMovie in
+            Movie(
+                id: similarMovie.id,
+                title: "",
+                alternativeTitle: nil,
+                description: nil,
+                shortDescription: nil,
+                status: nil,
+                releaseYear: nil,
+                runtime: nil,
+                voteAverage: nil,
+                genres: [],
+                countries: [],
+                persons: [],
+                poster: nil,
+                backdrop: nil,
+                similarMovies: []
+            )
+        }
+    }
+
+    // For details endpoint
+    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> Movie {
+        let movieArray = data.docs.map {
+            // Map brief similar movies data
+            let similarMovies = mapSimilarMovies($0.similarMovies)
+            // Map the underlying movie
+            return Movie(
+                id: $0.id,
+                title: $0.name ?? $0.alternativeName ?? "",
+                alternativeTitle: $0.alternativeName,
+                description: $0.description,
+                shortDescription: $0.shortDescription,
+                status: $0.status,
+                releaseYear: String($0.year ?? Calendar.current.component(.year, from: Date())),
+                runtime: String($0.movieLength ?? 0),
+                voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
+                genres: map($0.genres ?? []),
+                countries: map($0.countries ?? []),
+                persons: map($0.persons ?? []),
+                poster: Movie.Cover(
+                    url: $0.poster?.url,
+                    previewUrl: $0.poster?.previewUrl
+                ),
+                backdrop: Movie.Cover(
+                    url: $0.backdrop?.url,
+                    previewUrl: $0.backdrop?.previewUrl
+                ),
+                similarMovies: similarMovies
+            )
+        }
+
+        return movieArray[0]
     }
 
     // MARK: - Genres
@@ -140,13 +216,74 @@ final class ResponseMapper: ResponseMapperProtocol {
     // MARK: - Countries
     private func map(_ data: [TMDBCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
-            return Movie.ProductionCountry(name: $0.iso_3166_1)
+            Movie.ProductionCountry(name: $0.iso_3166_1, fullName: $0.name)
         }
     }
 
     private func map(_ data: [KinopoiskCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
-            return Movie.ProductionCountry(name: $0.name)
+            Movie.ProductionCountry(name: $0.name, fullName: $0.name)
         }
+    }
+
+    // MARK: - Persons
+    private func map(_ data: [TMDBPersonResponseProtocol]) -> [Movie.Person] {
+        let persons = data.map {
+            Movie.Person(
+                id: $0.id,
+                photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
+                name: $0.name,
+                originalName: $0.original_name,
+                profession: $0.known_for_department
+            )
+        }
+
+        return removeDuplicates(from: persons)
+    }
+
+    private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
+        let persons: [Movie.Person] = data.compactMap {
+            guard let id = $0.id, let name = $0.name else {
+                return nil
+            }
+
+            return Movie.Person(
+                id: id,
+                photo: $0.photo,
+                name: name,
+                originalName: $0.enName,
+                profession: $0.profession
+            )
+        }
+
+        return removeDuplicates(from: persons)
+    }
+
+    // MARK: - Reviews
+    private func map(_ data: TMDBReviewsPagedResponse) -> [MovieReview] {
+        return data.results.map {
+            MovieReview(author: $0.author, review: $0.content)
+        }
+    }
+
+    private func map(_ data: KinopoiskReviewsPagedResponse) -> [MovieReview] {
+        return data.docs.map {
+            MovieReview(author: $0.author, review: $0.review)
+        }
+    }
+}
+
+// MARK: - Helpers
+extension ResponseMapper {
+    private func removeDuplicates(from persons: [Movie.Person]) -> [Movie.Person] {
+        var seenIDs = Set<Int>()
+        var uniquePersons = [Movie.Person]()
+
+        for person in persons where !seenIDs.contains(person.id) {
+            seenIDs.insert(person.id)
+            uniquePersons.append(person)
+        }
+
+        return uniquePersons
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 protocol BriefMovieListItemViewModelProtocol {
+    var id: Int { get }
     var title: String { get }
     var posterURL: URL? { get }
     var genre: String { get }
