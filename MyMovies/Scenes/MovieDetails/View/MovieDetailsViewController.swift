@@ -77,7 +77,7 @@ extension MovieDetailsViewController {
 }
 
 // MARK: - MovieDetailsInteractionDelegate
-extension MovieDetailsViewController: MovieDetailsInteractionDelegate {
+extension MovieDetailsViewController: MovieDetailsViewDelegate {
     func didFetchTitle(_ title: String?) {
         self.title = title
     }

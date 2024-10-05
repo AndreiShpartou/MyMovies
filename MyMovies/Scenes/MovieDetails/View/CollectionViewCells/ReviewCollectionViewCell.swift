@@ -42,7 +42,14 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
     func configure(with review: ReviewViewModelProtocol) {
         authorLabel.text = review.author
         // TMDB sends a string with html tags
-        reviewTextView.text = review.review.convertHtmlToAttributedString()?.string ?? review.review
+        if let attrubitedText = review.review.convertHtmlToAttributedString(
+            font: Typography.Regular.title,
+            textColor: .textColorWhiteGrey
+        ) {
+            reviewTextView.attributedText = attrubitedText
+        } else {
+            reviewTextView.text = review.review
+        }
     }
 }
 

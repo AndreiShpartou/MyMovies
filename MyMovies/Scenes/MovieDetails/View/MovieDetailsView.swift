@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
-    weak var delegate: MovieDetailsInteractionDelegate? {
+    weak var delegate: MovieDetailsViewDelegate? {
         didSet {
             updateDelegates()
         }

@@ -49,7 +49,15 @@ final class TextInfoGeneralView: UIView, TextInfoGeneralViewProtocol {
     func configure(with labelText: String?, and textViewText: String?, title: String) {
         titleLabel.text = title
         label.text = labelText
-        textView.text = textViewText?.convertHtmlToAttributedString()?.string ?? textViewText
+        if let text = textViewText,
+           let attrubitedText = text.convertHtmlToAttributedString(
+            font: Typography.Regular.title,
+            textColor: .textColorWhiteGrey
+           ) {
+            textView.attributedText = attrubitedText
+        } else {
+            textView.text = textViewText
+        }
     }
 }
 

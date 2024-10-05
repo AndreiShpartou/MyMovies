@@ -8,7 +8,7 @@
 import UIKit
 
 final class ReviewCollectionViewHandler: NSObject {
-    weak var delegate: MovieDetailsInteractionDelegate?
+    weak var delegate: MovieDetailsViewDelegate?
 
     private var reviews: [ReviewViewModelProtocol] = []
 

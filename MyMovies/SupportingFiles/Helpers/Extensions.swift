@@ -249,10 +249,11 @@ extension UISearchBar {
 
 // MARK: - String
 extension String {
-    func convertHtmlToAttributedString() -> NSAttributedString? {
+    func convertHtmlToAttributedString(font: UIFont, textColor: UIColor) -> NSAttributedString? {
         guard let data = self.data(using: .utf8) else { return nil }
         do {
-            return try NSAttributedString(
+            let attributedString = NSMutableAttributedString()
+            let content = try NSAttributedString(
                 data: data,
                 options: [
                     .documentType: NSAttributedString.DocumentType.html,
@@ -260,6 +261,15 @@ extension String {
                 ],
                 documentAttributes: nil
             )
+            attributedString.append(content)
+
+            let attributes = [
+                NSAttributedString.Key.font: font,
+                NSAttributedString.Key.foregroundColor: textColor
+            ]
+            attributedString.addAttributes(attributes, range: NSRange(location: 0, length: attributedString.length))
+
+            return attributedString
         } catch {
             debugPrint("Error converting HTML to NSAttributedString: \(error)")
             return nil
