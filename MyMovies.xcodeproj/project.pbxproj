@@ -91,9 +91,9 @@
 		6C83387A2C5D078B000D0399 /* WishlistInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338792C5D078B000D0399 /* WishlistInteractorProtocol.swift */; };
 		6C83387C2C5D079F000D0399 /* WishlistPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387B2C5D079F000D0399 /* WishlistPresenterProtocol.swift */; };
 		6C83387E2C5D07B3000D0399 /* WishlistRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387D2C5D07B3000D0399 /* WishlistRouterProtocol.swift */; };
-		6C8338802C5D07CB000D0399 /* ProfileViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387F2C5D07CB000D0399 /* ProfileViewProtocol.swift */; };
+		6C8338802C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387F2C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift */; };
 		6C8338822C5D07DF000D0399 /* ProfileInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */; };
-		6C8338842C5D07F1000D0399 /* ProfilePresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338832C5D07F1000D0399 /* ProfilePresenterProtocol.swift */; };
+		6C8338842C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338832C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift */; };
 		6C8338862C5D0804000D0399 /* ProfileRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338852C5D0804000D0399 /* ProfileRouterProtocol.swift */; };
 		6C8F861D2CA9497700E43E1A /* PersonCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */; };
 		6C90536D2C5906260068E2BC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C90536C2C5906260068E2BC /* Constants.swift */; };
@@ -151,7 +151,7 @@
 		6CC604D72C55802800241EF2 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D62C55802800241EF2 /* ProfilePresenter.swift */; };
 		6CC604D92C55805400241EF2 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D82C55805400241EF2 /* ProfileInteractor.swift */; };
 		6CC604DB2C55807E00241EF2 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */; };
-		6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DC2C55808C00241EF2 /* ProfileView.swift */; };
+		6CC604DD2C55808C00241EF2 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */; };
 		6CCC4F772C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */; };
 		6CCC4F792C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */; };
 		6CCC4F7B2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */; };
@@ -248,9 +248,9 @@
 		6C8338792C5D078B000D0399 /* WishlistInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C83387B2C5D079F000D0399 /* WishlistPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistPresenterProtocol.swift; sourceTree = "<group>"; };
 		6C83387D2C5D07B3000D0399 /* WishlistRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistRouterProtocol.swift; sourceTree = "<group>"; };
-		6C83387F2C5D07CB000D0399 /* ProfileViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewProtocol.swift; sourceTree = "<group>"; };
+		6C83387F2C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewProtocol.swift; sourceTree = "<group>"; };
 		6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractorProtocol.swift; sourceTree = "<group>"; };
-		6C8338832C5D07F1000D0399 /* ProfilePresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenterProtocol.swift; sourceTree = "<group>"; };
+		6C8338832C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsPresenterProtocol.swift; sourceTree = "<group>"; };
 		6C8338852C5D0804000D0399 /* ProfileRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouterProtocol.swift; sourceTree = "<group>"; };
 		6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C9053672C5904B10068E2BC /* Montserrat-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.otf"; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 		6CC604D62C55802800241EF2 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		6CC604D82C55805400241EF2 /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
 		6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		6CC604DC2C55808C00241EF2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefMovieDescriptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -517,7 +517,7 @@
 		6C59AF192C54FB16006A7BDB /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				6C8338832C5D07F1000D0399 /* ProfilePresenterProtocol.swift */,
+				6C8338832C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift */,
 				6CC604D62C55802800241EF2 /* ProfilePresenter.swift */,
 			);
 			path = Presenter;
@@ -535,8 +535,8 @@
 		6C59AF1B2C54FB21006A7BDB /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6C83387F2C5D07CB000D0399 /* ProfileViewProtocol.swift */,
-				6CC604DC2C55808C00241EF2 /* ProfileView.swift */,
+				6C83387F2C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift */,
+				6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */,
 				6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */,
 			);
 			path = View;
@@ -1323,7 +1323,7 @@
 				6C3A5FA32C92E53400A1BFF2 /* NetworkManagerProtocol.swift in Sources */,
 				6C59AF522C551FBE006A7BDB /* SearchRouter.swift in Sources */,
 				6C74C92D2C7396D00035BD14 /* APIConfiguration.swift in Sources */,
-				6CC604DD2C55808C00241EF2 /* ProfileView.swift in Sources */,
+				6CC604DD2C55808C00241EF2 /* ProfileSettingsView.swift in Sources */,
 				6C0294532C830A36000BE8B3 /* UserGreetingView.swift in Sources */,
 				6C80623A2CAF198300768DC5 /* TextInfoGeneralViewController.swift in Sources */,
 				6CC604D12C557EDD00241EF2 /* WishlistViewController.swift in Sources */,
@@ -1387,7 +1387,7 @@
 				6C8338742C5D0749000D0399 /* MovieDetailsPresenterProtocol.swift in Sources */,
 				6C59AF562C55200D006A7BDB /* SearchInteractor.swift in Sources */,
 				6C59AF042C54F10D006A7BDB /* SceneDelegate.swift in Sources */,
-				6C8338842C5D07F1000D0399 /* ProfilePresenterProtocol.swift in Sources */,
+				6C8338842C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift in Sources */,
 				6C83386C2C5D06E8000D0399 /* PopularMoviesPresenterProtocol.swift in Sources */,
 				6CA2D87E2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift in Sources */,
 				6C7737352C5639E600E5F2CC /* RootRouter.swift in Sources */,
@@ -1395,7 +1395,7 @@
 				6CC604C32C557C2500241EF2 /* MovieDetailsViewController.swift in Sources */,
 				6C7CD0E72C5F742600C71AA1 /* CustomTabBarController.swift in Sources */,
 				6C8338762C5D075C000D0399 /* MovieDetailsRouterProtocol.swift in Sources */,
-				6C8338802C5D07CB000D0399 /* ProfileViewProtocol.swift in Sources */,
+				6C8338802C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift in Sources */,
 				6CF58DB52CA6CD8C00543FA4 /* PersonCollectionViewCell.swift in Sources */,
 				6C939A012C9C245400699F49 /* UpcomingMovieViewModelProtocol.swift in Sources */,
 				6CC604D52C557FE900241EF2 /* ProfileRouter.swift in Sources */,

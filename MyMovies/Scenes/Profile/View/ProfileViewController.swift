@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, ProfileViewProtocol {
-    var presenter: ProfilePresenterProtocol?
+class ProfileViewController: UIViewController {
+    var presenter: ProfileSettingsPresenterProtocol?
 
     private let profileView: UIView
 

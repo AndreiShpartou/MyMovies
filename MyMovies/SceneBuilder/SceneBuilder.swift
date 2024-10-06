@@ -50,11 +50,11 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildProfileScene() -> UIViewController {
-        let view = ProfileView()
+        let view = ProfileSettingsView()
         let viewController = ProfileViewController(profileView: view)
         let router = ProfileRouter(viewController: viewController)
         let interactor = ProfileInteractor()
-        let presenter = ProfilePresenter(view: viewController, interactor: interactor, router: router)
+        let presenter = ProfilePresenter(view: view, interactor: interactor, router: router)
 
         view.presenter = presenter
         viewController.presenter = presenter

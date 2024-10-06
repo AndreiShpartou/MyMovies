@@ -7,13 +7,13 @@
 
 import Foundation
 
-class ProfilePresenter: ProfilePresenterProtocol {
-    weak var view: ProfileViewProtocol?
+class ProfilePresenter: ProfileSettingsPresenterProtocol {
+    weak var view: ProfileSettingsViewProtocol?
     var interactor: ProfileInteractorProtocol
     var router: ProfileRouterProtocol
 
     // MARK: - Init
-    init(view: ProfileViewProtocol?, interactor: ProfileInteractorProtocol, router: ProfileRouterProtocol) {
+    init(view: ProfileSettingsViewProtocol?, interactor: ProfileInteractorProtocol, router: ProfileRouterProtocol) {
         self.view = view
         self.interactor = interactor
         self.router = router

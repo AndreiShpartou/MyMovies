@@ -8,5 +8,5 @@
 import Foundation
 
 class ProfileInteractor: ProfileInteractorProtocol {
-    weak var presenter: ProfilePresenterProtocol?
+    weak var presenter: ProfileSettingsPresenterProtocol?
 }

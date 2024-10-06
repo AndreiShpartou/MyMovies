@@ -10,6 +10,17 @@ import SnapKit
 
 // MARK: - UIView
 extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while let responder = parentResponder {
+            if let viewController = responder as? UIViewController {
+                return viewController
+            }
+            parentResponder = responder.next
+        }
+        return nil
+    }
+
     static func createCommonView(
         clipsToBounds: Bool = false,
         cornderRadius: CGFloat = 0,
@@ -178,6 +189,7 @@ extension UIImageView {
 extension UIActivityIndicatorView {
     static func createSpinner(style: Style) -> UIActivityIndicatorView {
         let spinner = UIActivityIndicatorView(style: style)
+        spinner.color = .primaryBlueAccent
         spinner.hidesWhenStopped = true
 
         return spinner

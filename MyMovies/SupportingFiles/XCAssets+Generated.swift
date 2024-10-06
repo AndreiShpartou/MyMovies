@@ -38,6 +38,7 @@ internal enum Asset {
   internal enum Icons {
     internal static let calendar = ImageAsset(name: "calendar")
     internal static let clock = ImageAsset(name: "clock")
+    internal static let edit = ImageAsset(name: "edit")
     internal static let film = ImageAsset(name: "film")
     internal static let share = ImageAsset(name: "share")
   }
