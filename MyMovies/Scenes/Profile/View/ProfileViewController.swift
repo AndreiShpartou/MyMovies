@@ -10,11 +10,11 @@ import UIKit
 class ProfileViewController: UIViewController {
     var presenter: ProfileSettingsPresenterProtocol?
 
-    private let profileView: UIView
+    private let profileSettingsView: ProfileSettingsViewProtocol
 
     // MARK: - Init
-    init(profileView: UIView) {
-        self.profileView = profileView
+    init(profileSettingsView: ProfileSettingsViewProtocol) {
+        self.profileSettingsView = profileSettingsView
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -25,18 +25,31 @@ class ProfileViewController: UIViewController {
 
     // MARK: - LifeCycle
     override func loadView() {
-        view = profileView
+        view = profileSettingsView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewController()
+        presenter?.viewDidLoad()
     }
 }
 
 // MARK: - Setup
 extension ProfileViewController {
     private func setupViewController() {
+        profileSettingsView.delegate = self
+    }
+
+    private func setupNavigationBar() {
+        title = NSLocalizedString("ProfileSettings", comment: "Profile")
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+}
+
+extension ProfileViewController: ProfileSettingsInteractionDelegate {
+    func didTapEditProfile() {
+        //
     }
 }

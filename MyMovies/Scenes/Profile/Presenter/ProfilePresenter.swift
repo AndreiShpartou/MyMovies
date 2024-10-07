@@ -18,4 +18,8 @@ class ProfilePresenter: ProfileSettingsPresenterProtocol {
         self.interactor = interactor
         self.router = router
     }
+
+    func viewDidLoad() {
+        //
+    }
 }

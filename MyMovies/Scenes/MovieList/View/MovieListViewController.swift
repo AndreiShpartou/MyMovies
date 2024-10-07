@@ -46,6 +46,7 @@ extension MovieListViewController {
     }
 
     private func setupNavigationBar() {
+        title = movieListType.title
         // Setting the custom title font
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: Typography.SemiBold.title,

@@ -7,4 +7,6 @@
 
 import Foundation
 
-protocol ProfileSettingsPresenterProtocol: AnyObject {}
+protocol ProfileSettingsPresenterProtocol: AnyObject {
+    func viewDidLoad()
+}

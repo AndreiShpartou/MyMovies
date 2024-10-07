@@ -51,7 +51,7 @@ final class SceneBuilder: SceneBuilderProtocol {
 
     static func buildProfileScene() -> UIViewController {
         let view = ProfileSettingsView()
-        let viewController = ProfileViewController(profileView: view)
+        let viewController = ProfileViewController(profileSettingsView: view)
         let router = ProfileRouter(viewController: viewController)
         let interactor = ProfileInteractor()
         let presenter = ProfilePresenter(view: view, interactor: interactor, router: router)
@@ -61,7 +61,6 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }
@@ -77,7 +76,6 @@ final class SceneBuilder: SceneBuilderProtocol {
         view.presenter = presenter
         viewController.presenter = presenter
         interactor.presenter = presenter
-        viewController.title = listType.title
 
         return viewController
     }
