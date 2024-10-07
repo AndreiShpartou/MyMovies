@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
+final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     weak var delegate: ProfileSettingsInteractionDelegate? {
         didSet {
             updateDelegates()
