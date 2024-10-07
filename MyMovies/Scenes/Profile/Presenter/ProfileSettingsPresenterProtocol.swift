@@ -9,4 +9,6 @@ import Foundation
 
 protocol ProfileSettingsPresenterProtocol: AnyObject {
     func viewDidLoad()
+    func navigateToEditProfile()
+//    func didSelecctSettingItem(_ item: ProfileSettingsItem)
 }

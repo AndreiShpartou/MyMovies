@@ -54,7 +54,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         let viewController = ProfileViewController(profileSettingsView: view)
         let router = ProfileRouter(viewController: viewController)
         let interactor = ProfileInteractor()
-        let presenter = ProfilePresenter(view: view, interactor: interactor, router: router)
+        let presenter = ProfileSettingsPresenter(view: view, interactor: interactor, router: router)
 
         view.presenter = presenter
         viewController.presenter = presenter

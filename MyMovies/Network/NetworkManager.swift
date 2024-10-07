@@ -93,6 +93,15 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
+    // MARK: - ProfileSettings
+    func fetchUserProfile(completion: () -> Void) {
+        //
+    }
+
+    func fetchSettingsItems(completion: () -> Void) {
+        //
+    }
+
     // MARK: - PerformRequest
     //  Versatile request performer
     private func performRequest<T: Codable>(

@@ -93,7 +93,7 @@
 		6C83387C2C5D079F000D0399 /* WishlistPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387B2C5D079F000D0399 /* WishlistPresenterProtocol.swift */; };
 		6C83387E2C5D07B3000D0399 /* WishlistRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387D2C5D07B3000D0399 /* WishlistRouterProtocol.swift */; };
 		6C8338802C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83387F2C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift */; };
-		6C8338822C5D07DF000D0399 /* ProfileInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */; };
+		6C8338822C5D07DF000D0399 /* ProfileSettingsInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338812C5D07DF000D0399 /* ProfileSettingsInteractorProtocol.swift */; };
 		6C8338842C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338832C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift */; };
 		6C8338862C5D0804000D0399 /* ProfileRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338852C5D0804000D0399 /* ProfileRouterProtocol.swift */; };
 		6C8F861D2CA9497700E43E1A /* PersonCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */; };
@@ -149,7 +149,7 @@
 		6CC604D12C557EDD00241EF2 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D02C557EDD00241EF2 /* WishlistViewController.swift */; };
 		6CC604D32C557F3E00241EF2 /* WishlistBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D22C557F3E00241EF2 /* WishlistBuilder.swift */; };
 		6CC604D52C557FE900241EF2 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D42C557FE900241EF2 /* ProfileRouter.swift */; };
-		6CC604D72C55802800241EF2 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D62C55802800241EF2 /* ProfilePresenter.swift */; };
+		6CC604D72C55802800241EF2 /* ProfileSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D62C55802800241EF2 /* ProfileSettingsPresenter.swift */; };
 		6CC604D92C55805400241EF2 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D82C55805400241EF2 /* ProfileInteractor.swift */; };
 		6CC604DB2C55807E00241EF2 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */; };
 		6CC604DD2C55808C00241EF2 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */; };
@@ -251,7 +251,7 @@
 		6C83387B2C5D079F000D0399 /* WishlistPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistPresenterProtocol.swift; sourceTree = "<group>"; };
 		6C83387D2C5D07B3000D0399 /* WishlistRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistRouterProtocol.swift; sourceTree = "<group>"; };
 		6C83387F2C5D07CB000D0399 /* ProfileSettingsViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewProtocol.swift; sourceTree = "<group>"; };
-		6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractorProtocol.swift; sourceTree = "<group>"; };
+		6C8338812C5D07DF000D0399 /* ProfileSettingsInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C8338832C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsPresenterProtocol.swift; sourceTree = "<group>"; };
 		6C8338852C5D0804000D0399 /* ProfileRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouterProtocol.swift; sourceTree = "<group>"; };
 		6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCollectionViewHandler.swift; sourceTree = "<group>"; };
@@ -307,7 +307,7 @@
 		6CC604D02C557EDD00241EF2 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistViewController.swift; sourceTree = "<group>"; };
 		6CC604D22C557F3E00241EF2 /* WishlistBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistBuilder.swift; sourceTree = "<group>"; };
 		6CC604D42C557FE900241EF2 /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
-		6CC604D62C55802800241EF2 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		6CC604D62C55802800241EF2 /* ProfileSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsPresenter.swift; sourceTree = "<group>"; };
 		6CC604D82C55805400241EF2 /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
 		6CC604DA2C55807E00241EF2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
@@ -520,7 +520,7 @@
 			isa = PBXGroup;
 			children = (
 				6C8338832C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift */,
-				6CC604D62C55802800241EF2 /* ProfilePresenter.swift */,
+				6CC604D62C55802800241EF2 /* ProfileSettingsPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -528,7 +528,7 @@
 		6C59AF1A2C54FB1A006A7BDB /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
-				6C8338812C5D07DF000D0399 /* ProfileInteractorProtocol.swift */,
+				6C8338812C5D07DF000D0399 /* ProfileSettingsInteractorProtocol.swift */,
 				6CC604D82C55805400241EF2 /* ProfileInteractor.swift */,
 			);
 			path = Interactor;
@@ -1344,7 +1344,7 @@
 				6C21983E2CB3C56A0013D8D9 /* ProfileSettingsTableViewCell.swift in Sources */,
 				6CA8F6982C662B4A0090BC8C /* TMDBGenrePagedResponse.swift in Sources */,
 				6CCC4F792C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift in Sources */,
-				6C8338822C5D07DF000D0399 /* ProfileInteractorProtocol.swift in Sources */,
+				6C8338822C5D07DF000D0399 /* ProfileSettingsInteractorProtocol.swift in Sources */,
 				6C8338602C5D0660000D0399 /* MovieListViewProtocol.swift in Sources */,
 				6C939A072C9C3BD200699F49 /* BriefMovieListItemViewModel.swift in Sources */,
 				6C4148402C74ED45004D55BA /* KinopoiskMoviesPagedResponse.swift in Sources */,
@@ -1359,7 +1359,7 @@
 				6C49F3A72C9AD1B2005F182F /* GenreViewModelProtocol.swift in Sources */,
 				6C424F112C94181E0003F487 /* MovieListCollectionViewHandler.swift in Sources */,
 				6CC604C92C557DCC00241EF2 /* WishlistRouter.swift in Sources */,
-				6CC604D72C55802800241EF2 /* ProfilePresenter.swift in Sources */,
+				6CC604D72C55802800241EF2 /* ProfileSettingsPresenter.swift in Sources */,
 				6C59AF482C55176D006A7BDB /* MainView.swift in Sources */,
 				6CCC4F7D2C5E7FD100BA7B8D /* MovieListType.swift in Sources */,
 				6C7CD0E52C5F593700C71AA1 /* CustomTabBar.swift in Sources */,
