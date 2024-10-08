@@ -35,7 +35,7 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
     }
 
     func navigateToEditProfile() {
-//        router.navigateToEditProfile()
+        router.navigateToEditProfile()
     }
 
     func didSelectSettingsItem(_ item: ProfileSettingsItem) {

@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  ProfileSettingsViewController.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 27/07/2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController {
+final class ProfileSettingsViewController: UIViewController {
     var presenter: ProfileSettingsPresenterProtocol?
 
     private let profileSettingsView: ProfileSettingsViewProtocol
@@ -37,19 +37,20 @@ final class ProfileViewController: UIViewController {
 }
 
 // MARK: - Setup
-extension ProfileViewController {
+extension ProfileSettingsViewController {
     private func setupViewController() {
         profileSettingsView.delegate = self
-    }
-
-    private func setupNavigationBar() {
-        title = NSLocalizedString("ProfileSettings", comment: "Profile")
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = NSLocalizedString("Profile", comment: "Profile settings")
+        tabBarController?.title = nil
     }
 }
 
-extension ProfileViewController: ProfileSettingsInteractionDelegate {
+extension ProfileSettingsViewController: ProfileSettingsInteractionDelegate {
     func didTapEditProfile() {
+        //
+    }
+
+    func didSelectSettingsItem(_ item: ProfileSettingsItemViewModelProtocol) {
         //
     }
 }

@@ -41,8 +41,18 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - LifeCycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        iconImageView.image = nil
+        titleLabel.text = nil
+    }
+
     // MARK: - Public
-    func configure(with item: ProfileSettingsItem) {
+    func configure(with item: ProfileSettingsItemViewModelProtocol) {
+        iconImageView.image = item.icon
+        titleLabel.text = item.title
     }
 }
 

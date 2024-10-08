@@ -25,21 +25,18 @@ extension UIView {
         clipsToBounds: Bool = false,
         cornderRadius: CGFloat = 0,
         backgroundColor: UIColor? = nil,
-        frame: CGRect = .zero
+        frame: CGRect = .zero,
+        borderWidth: CGFloat = 0,
+        borderColor: CGColor? = nil
     ) -> UIView {
         let view = UIView(frame: frame)
         view.clipsToBounds = clipsToBounds
         view.backgroundColor = backgroundColor
         view.layer.cornerRadius = cornderRadius
+        view.layer.borderWidth = borderWidth
+        view.layer.borderColor = borderColor
 
         return view
-    }
-
-    func addSubviews(_ views: UIView...) {
-        views.forEach {
-            addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
     }
 
     static func createBorderedViewWithLabel(
@@ -71,6 +68,43 @@ extension UIView {
 
         return view
     }
+
+    func addSubviews(_ views: UIView...) {
+        views.forEach {
+            addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+
+//    // This extension facilitates the association of the table view handler with the table view using Objective-C runtime,
+//    // ensuring that the handler remains in memory without creating retain cycles.
+//
+//    /// Associates an object with the view using a specified key.
+//    /// - Parameters:
+//    ///   - handler: The object to associate.
+//    ///   - key: The key for the association.
+//    func associate(handler: Any, forKey key: UnsafeRawPointer) {
+//        objc_setAssociatedObject(self, key, handler, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//    }
+//    
+//    /// Retrieves the associated object for a specified key.
+//    /// - Parameter key: The key for the association.
+//    /// - Returns: The associated object if it exists.
+//    func associatedObject(forKey key: UnsafeRawPointer) -> Any? {
+//        return objc_getAssociatedObject(self, key)
+//    }
+//    
+//    /// Finds and returns the parent view controller of the view, if any.
+//    var parentViewController: UIViewController? {
+//        var parentResponder: UIResponder? = self
+//        while parentResponder != nil {
+//            parentResponder = parentResponder!.next
+//            if let viewController = parentResponder as? UIViewController {
+//                return viewController
+//            }
+//        }
+//        return nil
+//    }
 }
 
 // MARK: - UICollectionView
@@ -97,6 +131,20 @@ extension UICollectionView {
         }
 
         return collectionView
+    }
+}
+
+// MARK: - UITableViewCell
+extension UITableViewCell {
+    // Adds a bottom border to the cell with specified color, height, and inset.
+    func addBottomBorder(with color: UIColor, height: CGFloat, inset: CGFloat) {
+        let border: UIView = .createCommonView(backgroundColor: color)
+        contentView.addSubviews(border)
+        border.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(inset)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(height)
+        }
     }
 }
 

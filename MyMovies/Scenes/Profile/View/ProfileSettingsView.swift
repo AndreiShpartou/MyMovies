@@ -16,12 +16,18 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     var presenter: ProfileSettingsPresenterProtocol?
 
     // MARK: - UIComponents
+    private let scrollView = UIScrollView()
+    private let contentView: UIView = .createCommonView()
     // Header section
-    private let headerView: UIView = .createCommonView()
+    private let headerView: UIView = .createCommonView(
+        cornderRadius: 20,
+        borderWidth: 2,
+        borderColor: UIColor.primarySoft.cgColor
+    )
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
-        cornerRadius: 40,
+        cornerRadius: 30,
         image: Asset.Avatars.avatarMock.image
     )
     private let nameLabel: UILabel = .createLabel(
@@ -38,8 +44,9 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
 
     // Settings Table
     private lazy var tableView: UITableView = createSettingsTableView()
+//    let handler = ProfileSettingsTableViewHandler()
     // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+//    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -74,32 +81,48 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     }
 
     func showLoadingIndicator() {
-        loadingIndicator.startAnimating()
+//        loadingIndicator.startAnimating()
     }
 
     func hideLoadingIndicator() {
-        loadingIndicator.stopAnimating()
+//        loadingIndicator.stopAnimating()
     }
 
     // MARK: - Presentation logic
-//    func showUserProfile(_ profile: UserProfileViewModelProtocol) {
-//        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.DefaultCovers.defaultProfile.image)
-//        nameLabel.text = profile.name
-//        emailLabel.text = profile.email
-//    }
+    func showUserProfile(_ profile: UserProfileViewModelProtocol) {
+        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarMock.image)
+        nameLabel.text = profile.name
+        emailLabel.text = profile.email
+    }
 
-//    func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol]) {
-//        tableView.reloadData()
-//    }
+    func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol]) {
+        tableView.reloadData()
+    }
 }
 
 // MARK: - Setup
 extension ProfileSettingsView {
     private func setupView() {
         backgroundColor = .primaryBackground
+        addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
+        contentView.addSubviews(headerView, tableView)
+        headerView.addSubviews(profileImageView, nameLabel, emailLabel, editButton)
+
+        setupTableView()
     }
 
     private func updateDelegates() {
+    }
+
+    private func setupTableView() {
+        let handler = ProfileSettingsTableViewHandler()
+        handler.delegate = delegate
+        tableView.dataSource = handler
+        tableView.delegate = handler
+
+        // Associate the handler with the table view to retain it
+//        tableView.associate(handler: handler, forKey: &AssociatedKeys.tableViewHandler)
     }
 }
 
@@ -115,7 +138,7 @@ extension ProfileSettingsView {
 extension ProfileSettingsView {
     private func createEditButton() -> UIButton {
         let button = UIButton(type: .system)
-        let editImage = Asset.Icons.edit.image.withRenderingMode(.alwaysTemplate).withTintColor(.primaryBlueAccent)
+        let editImage = Asset.Icons.edit.image.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal)
         button.setImage(editImage, for: .normal)
         button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
 
@@ -124,8 +147,11 @@ extension ProfileSettingsView {
 
     private func createSettingsTableView() -> UITableView {
         let tableView = UITableView(frame: .zero, style: .grouped)
-//        tableView.register(ProfileSettingsTableViewCell.self, forCellReuseIdentifier: ProfileSettingsTableViewCell.identifier)
+        tableView.register(ProfileSettingsTableViewCell.self, forCellReuseIdentifier: ProfileSettingsTableViewCell.identifier)
         tableView.separatorStyle = .none
+        tableView.layer.cornerRadius = 20
+        tableView.layer.borderWidth = 2
+        tableView.layer.borderColor = UIColor.primarySoft.cgColor
 
         return tableView
     }
@@ -134,5 +160,61 @@ extension ProfileSettingsView {
 // MARK: - Constraints
 extension ProfileSettingsView {
     private func setupConstraints() {
+        setupScrollConstraints()
+        setupHeaderConstraints()
+        setupTableViewConstraints()
+    }
+
+    private func setupScrollConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
+        }
+
+        contentView.snp.makeConstraints { make in
+            make.edges.width.equalToSuperview()
+        }
+
+//        loadingIndicator.snp.makeConstraints { make in
+//            make.center.equalToSuperview()
+//        }
+    }
+
+    private func setupHeaderConstraints() {
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalToSuperview().offset(8)
+            make.height.equalTo(90)
+        }
+
+        profileImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(60)
+        }
+
+        editButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(30)
+        }
+
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(profileImageView.snp.trailing).offset(8)
+            make.trailing.equalTo(editButton.snp.leading).offset(-8)
+            make.top.equalTo(profileImageView).offset(8)
+        }
+
+        emailLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(nameLabel)
+            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+        }
+    }
+
+    private func setupTableViewConstraints() {
+        tableView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(headerView.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+        }
     }
 }

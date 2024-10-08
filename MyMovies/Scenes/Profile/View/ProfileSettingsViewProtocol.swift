@@ -11,8 +11,8 @@ protocol ProfileSettingsViewProtocol: UIView {
     var delegate: ProfileSettingsInteractionDelegate? { get set }
     var presenter: ProfileSettingsPresenterProtocol? { get set }
 
-//    func showUserProfile(_ profile: UserProfileViewModelProtocol)
-//    func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])
+    func showUserProfile(_ profile: UserProfileViewModelProtocol)
+    func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])
     func showError(_ message: String)
     func showLoadingIndicator()
     func hideLoadingIndicator()
@@ -20,5 +20,5 @@ protocol ProfileSettingsViewProtocol: UIView {
 
 protocol ProfileSettingsInteractionDelegate: AnyObject {
     func didTapEditProfile()
-//    func didSelectSettingItem(_ item: ProfileSettingsItem)
+    func didSelectSettingsItem(_ item: ProfileSettingsItemViewModelProtocol)
 }
