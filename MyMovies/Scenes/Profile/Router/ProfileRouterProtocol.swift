@@ -7,4 +7,7 @@
 
 import Foundation
 
-protocol ProfileRouterProtocol: AnyObject {}
+protocol ProfileRouterProtocol: AnyObject {
+    func navigateToEditProfile()
+    func navigateToSettingItem(_ item: ProfileSettingsItem)
+}

@@ -42,9 +42,8 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
     }
 
     // MARK: - Public
-//    func configure(with: item: ProfileSettingsItem) {
-//        
-//    }
+    func configure(with item: ProfileSettingsItem) {
+    }
 }
 
 // MARK: - Setup

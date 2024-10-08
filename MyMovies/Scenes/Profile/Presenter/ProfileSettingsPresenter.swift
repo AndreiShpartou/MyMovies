@@ -38,13 +38,13 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
 //        router.navigateToEditProfile()
     }
 
-//    func didSelectSettingsItem(_ item: ProfileSettingsItem) {
-//        router.navigateToSettingItem(item)
-//    }
+    func didSelectSettingsItem(_ item: ProfileSettingsItem) {
+        router.navigateToSettingItem(item)
+    }
 }
 
 extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
-//    func didFetchUserProfile(_ profile: UserProfile) {
+    func didFetchUserProfile(_ profile: UserProfile) {
 //        guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
 //            view?.showError("Failed to load profile")
 //              view?.showError(NSLocalizedString("Failed to load profile", comment: "Error message for failed profile load"))
@@ -53,9 +53,9 @@ extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
 //            return
 //        }
 //        view?.showUserProfile(profileViewModel)
-//    }
+    }
 
-//    func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {
+    func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {
 //        guard let sectionsViewModel = mapper.map(data: sections, to: [ProfileSettingsSectionViewModel].self) else {
 //            view?.showError(NSLocalizedString("Failed to load settings", comment: "Error message for failed settings load"))
 //            view?.hideLoadingIndicator()
@@ -63,7 +63,7 @@ extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
 //            return
 //        }
 //        view?.showSettingsItems(sectionsViewModel)
-//    }
+    }
 
     func didFailToFetchData(with error: Error) {
         view?.hideLoadingIndicator()
