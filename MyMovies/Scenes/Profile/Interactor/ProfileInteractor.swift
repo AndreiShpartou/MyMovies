@@ -32,13 +32,13 @@ final class ProfileInteractor: ProfileSettingsInteractorProtocol {
     }
 
     func fetchSettingsItems() {
-//        networkManager.fetchSettingsSections { [weak self] result in
-//            switch result {
-//            case .success(let sections):
-//                self?.presenter?.didFetchSettingsItems(sections)
-//            case .failure(let error):
-//                self?.presenter?.didFailToFetchData(with: error)
-//            }
-//        }
+        networkManager.fetchSettingsSections { [weak self] result in
+            switch result {
+            case .success(let sections):
+                self?.presenter?.didFetchSettingsItems(sections)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
     }
 }

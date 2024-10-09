@@ -56,13 +56,13 @@ extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
     }
 
     func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {
-//        guard let sectionsViewModel = mapper.map(data: sections, to: [ProfileSettingsSectionViewModel].self) else {
-//            view?.showError(NSLocalizedString("Failed to load settings", comment: "Error message for failed settings load"))
-//            view?.hideLoadingIndicator()
-//            
-//            return
-//        }
-//        view?.showSettingsItems(sectionsViewModel)
+        guard let sectionsViewModel = mapper.map(data: sections, to: [ProfileSettingsSectionViewModel].self) else {
+            view?.showError(NSLocalizedString("Failed to load settings", comment: "Error message for failed settings load"))
+            view?.hideLoadingIndicator()
+
+            return
+        }
+        view?.showSettingsItems(sectionsViewModel)
     }
 
     func didFailToFetchData(with error: Error) {

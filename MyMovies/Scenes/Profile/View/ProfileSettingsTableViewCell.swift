@@ -11,6 +11,8 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
     static let identifier = "ProfileSettingsTableViewCell"
 
     // MARK: - UIComponents
+    let separatorView: UIView = .createCommonView(backgroundColor: .separator)
+
     private let iconImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
         clipsToBounds: true,
@@ -24,10 +26,8 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
 
     private let chevronImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
-        image: UIImage(systemName: "chevron.right")?.withTintColor(.primaryBlueAccent)
+        image: UIImage(systemName: "chevron.right")?.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal)
     )
-
-    private let separatorView: UIView = .createCommonView(backgroundColor: .separator)
 
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -47,6 +47,7 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
 
         iconImageView.image = nil
         titleLabel.text = nil
+        separatorView.isHidden = false
     }
 
     // MARK: - Public
@@ -76,7 +77,7 @@ extension ProfileSettingsTableViewCell {
         }
 
         chevronImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().offset(-24)
             make.centerY.equalToSuperview()
             make.width.equalTo(8)
             make.height.equalTo(13)
@@ -89,8 +90,8 @@ extension ProfileSettingsTableViewCell {
         }
 
         separatorView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel)
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.equalTo(iconImageView.snp.centerX)
+            make.trailing.equalTo(chevronImageView.snp.centerX)
             make.bottom.equalToSuperview()
             make.height.equalTo(0.5)
         }

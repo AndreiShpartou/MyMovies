@@ -10,7 +10,7 @@ import Foundation
 final class DomainModelMapper: DomainModelMapperProtocol {
     func map<T, Y>(data: T, to returnType: Y.Type) -> Y? {
         switch (data, returnType) {
-        // moviesToViewModel
+        // MoviesToViewModel
         // UpcomingMovies
         case (let data as [MovieProtocol], is [UpcomingMovieViewModel].Type):
             return mapToUpcoming(data) as? Y
@@ -26,11 +26,14 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // Reviews
         case (let data as [MovieReviewProtocol], is [ReviewViewModel].Type):
             return mapToReviews(data) as? Y
-        // genresToViewModel
+        // GenresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
-        // genresToDomainModel
+        // GenresToDomainModel
         case (let data as GenreViewModelProtocol, is Movie.Genre.Type):
+            return map(data) as? Y
+        // SettingsToViewModel
+        case (let data as [ProfileSettingsSection], is [ProfileSettingsSectionViewModel].Type):
             return map(data) as? Y
         default:
             return nil
@@ -150,6 +153,16 @@ extension DomainModelMapper {
     //  [CountryProtocol] -> [CountryViewModelProtocol]
     private func map(_ data: [CountryProtocol]) -> [CountryViewModelProtocol] {
         data.map { CountryViewModel(name: $0.fullName) }
+    }
+
+    //  [ProfileSettingsSection] -> [ProfileSettingsSectionViewModelProtocol]
+    private func map(_ data: [ProfileSettingsSection]) -> [ProfileSettingsSectionViewModelProtocol] {
+        return data.map {
+            let items = $0.items.map {
+                ProfileSettingsItemViewModel(icon: $0.icon, title: $0.title)
+            }
+            return ProfileSettingsSectionViewModel(title: $0.title, items: items)
+        }
     }
 }
 

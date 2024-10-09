@@ -98,8 +98,12 @@ class NetworkManager: NetworkManagerProtocol {
         //
     }
 
-    func fetchSettingsItems(completion: () -> Void) {
-        //
+    func fetchSettingsSections(completion: @escaping (Result<[ProfileSettingsSection], Error>) -> Void) {
+        let settingsSection: [ProfileSettingsSection] = [
+            ProfileSettingsSection(title: "General", items: [.notification, .language]),
+            ProfileSettingsSection(title: "More", items: [.legalAndPolicies, .aboutUs])
+        ]
+        completion(.success(settingsSection))
     }
 
     // MARK: - PerformRequest

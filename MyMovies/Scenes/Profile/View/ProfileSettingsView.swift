@@ -44,9 +44,9 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
 
     // Settings Table
     private lazy var tableView: UITableView = createSettingsTableView()
-//    let handler = ProfileSettingsTableViewHandler()
+    private let tableViewHandler = ProfileSettingsTableViewHandler()
     // Indicators
-//    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -81,11 +81,11 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     }
 
     func showLoadingIndicator() {
-//        loadingIndicator.startAnimating()
+        loadingIndicator.startAnimating()
     }
 
     func hideLoadingIndicator() {
-//        loadingIndicator.stopAnimating()
+        loadingIndicator.stopAnimating()
     }
 
     // MARK: - Presentation logic
@@ -96,7 +96,9 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     }
 
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol]) {
+        tableViewHandler.configure(with: items)
         tableView.reloadData()
+        hideLoadingIndicator()
     }
 }
 
@@ -105,24 +107,13 @@ extension ProfileSettingsView {
     private func setupView() {
         backgroundColor = .primaryBackground
         addSubviews(scrollView)
-        scrollView.addSubviews(contentView)
+        scrollView.addSubviews(contentView, loadingIndicator)
         contentView.addSubviews(headerView, tableView)
         headerView.addSubviews(profileImageView, nameLabel, emailLabel, editButton)
-
-        setupTableView()
     }
 
     private func updateDelegates() {
-    }
-
-    private func setupTableView() {
-        let handler = ProfileSettingsTableViewHandler()
-        handler.delegate = delegate
-        tableView.dataSource = handler
-        tableView.delegate = handler
-
-        // Associate the handler with the table view to retain it
-//        tableView.associate(handler: handler, forKey: &AssociatedKeys.tableViewHandler)
+        tableViewHandler.delegate = delegate
     }
 }
 
@@ -146,12 +137,17 @@ extension ProfileSettingsView {
     }
 
     private func createSettingsTableView() -> UITableView {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(ProfileSettingsTableViewCell.self, forCellReuseIdentifier: ProfileSettingsTableViewCell.identifier)
+        tableView.backgroundColor = .primaryBackground
         tableView.separatorStyle = .none
-        tableView.layer.cornerRadius = 20
-        tableView.layer.borderWidth = 2
-        tableView.layer.borderColor = UIColor.primarySoft.cgColor
+        tableView.isScrollEnabled = false
+        tableView.allowsSelection = true
+        tableView.layer.cornerRadius = 12
+        tableView.clipsToBounds = true
+
+        tableView.dataSource = tableViewHandler
+        tableView.delegate = tableViewHandler
 
         return tableView
     }
@@ -174,9 +170,9 @@ extension ProfileSettingsView {
             make.edges.width.equalToSuperview()
         }
 
-//        loadingIndicator.snp.makeConstraints { make in
-//            make.center.equalToSuperview()
-//        }
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 
     private func setupHeaderConstraints() {
@@ -214,6 +210,7 @@ extension ProfileSettingsView {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(headerView.snp.bottom).offset(16)
+            make.height.equalTo(380)
             make.bottom.equalToSuperview()
         }
     }
