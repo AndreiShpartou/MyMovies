@@ -179,13 +179,15 @@ extension UIImageView {
         contentMode: UIView.ContentMode,
         clipsToBounds: Bool = false,
         cornerRadius: CGFloat = 0,
-        image: UIImage? = nil
+        image: UIImage? = nil,
+        backgroundColor: UIColor? = nil
     ) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = contentMode
         imageView.clipsToBounds = clipsToBounds
         imageView.layer.cornerRadius = cornerRadius
         imageView.image = image
+        imageView.backgroundColor = backgroundColor
 
         return imageView
     }

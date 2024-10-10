@@ -17,6 +17,7 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
     // View for rendering borders
     private let commonView: UIView = .createCommonView(backgroundColor: .primaryBackground)
 
+    private let iconImageBackgroundView: UIView = .createCommonView(cornderRadius: 18, backgroundColor: .primarySoft)
     private let iconImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
         clipsToBounds: true,
@@ -59,7 +60,7 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
 
     // MARK: - Public
     func configure(with item: ProfileSettingsItemViewModelProtocol) {
-        iconImageView.image = item.icon
+        iconImageView.image = item.icon?.withTintColor(.textColorGrey)
         titleLabel.text = item.title
     }
 
@@ -74,9 +75,10 @@ extension ProfileSettingsTableViewCell {
         backgroundColor = .primaryBackground
         contentView.backgroundColor = .primarySoft
         contentView.addSubviews(commonView)
-        commonView.addSubviews(iconImageView, titleLabel, chevronImageView, separatorView)
+        commonView.addSubviews(iconImageBackgroundView, titleLabel, chevronImageView, separatorView)
+        iconImageBackgroundView.addSubviews(iconImageView)
         accessoryType = .none
-        selectionStyle = .default
+        selectionStyle = .none
     }
 }
 
@@ -107,21 +109,25 @@ extension ProfileSettingsTableViewCell {
             bottomCellConstraint = make.bottom.equalToSuperview().constraint
         }
 
-        iconImageView.snp.makeConstraints { make in
+        iconImageBackgroundView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(36)
+        }
+
+        iconImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
 
         chevronImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-24)
             make.centerY.equalToSuperview()
-            make.width.equalTo(8)
-            make.height.equalTo(13)
+            make.width.equalTo(12)
+            make.height.equalTo(25)
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconImageView.snp.trailing).offset(16)
+            make.leading.equalTo(iconImageBackgroundView.snp.trailing).offset(16)
             make.trailing.equalTo(chevronImageView.snp.leading).offset(-8)
             make.centerY.equalToSuperview()
         }

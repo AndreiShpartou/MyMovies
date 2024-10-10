@@ -179,7 +179,7 @@ extension ProfileSettingsView {
         headerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalToSuperview().offset(8)
-            make.height.equalTo(90)
+            make.height.equalTo(100)
         }
 
         profileImageView.snp.makeConstraints { make in
@@ -209,8 +209,8 @@ extension ProfileSettingsView {
     private func setupTableViewConstraints() {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalTo(headerView.snp.bottom).offset(16)
-            make.height.equalTo(390)
+            make.top.equalTo(headerView.snp.bottom).offset(8)
+            make.height.equalTo(500)
             make.bottom.equalToSuperview()
         }
     }

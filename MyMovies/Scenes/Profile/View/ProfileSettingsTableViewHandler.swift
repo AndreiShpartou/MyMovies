@@ -58,7 +58,7 @@ extension ProfileSettingsTableViewHandler: UITableViewDelegate {
         let headerView: UIView = .createCommonView(backgroundColor: .primarySoft)
         let contentView: UIView = .createCommonView(backgroundColor: .primaryBackground)
         let label: UILabel = .createLabel(
-            font: Typography.SemiBold.subhead,
+            font: Typography.SemiBold.largeTitle,
             textColor: .textColorWhite,
             text: headerTitle
         )
@@ -71,11 +71,11 @@ extension ProfileSettingsTableViewHandler: UITableViewDelegate {
         headerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 
         contentView.snp.makeConstraints { make in
-            make.leading.trailing.trailing.equalToSuperview().inset(Constants.bottomBorderHeight)
+            make.leading.trailing.top.equalToSuperview().inset(Constants.bottomBorderHeight)
             make.bottom.equalToSuperview()
         }
         label.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(Constants.headerInset)
+            make.leading.trailing.top.equalToSuperview().inset(Constants.headerInset)
         }
 
         return headerView
@@ -104,11 +104,11 @@ extension ProfileSettingsTableViewHandler: UITableViewDelegate {
 // MARK: - Constants
 extension ProfileSettingsTableViewHandler {
     private enum Constants {
-        static let headerHeight: CGFloat = 50.0
+        static let headerHeight: CGFloat = 40
         static let footerHeight: CGFloat = 0.01
-        static let rowHeight: CGFloat = 60.0
-        static let headerInset: CGFloat = 16.0
+        static let rowHeight: CGFloat = 80
+        static let headerInset: CGFloat = 16
         static let bottomBorderHeight: CGFloat = 2
-        static let bottomBorderInset: CGFloat = 16.0
+        static let bottomBorderInset: CGFloat = 16
     }
 }
