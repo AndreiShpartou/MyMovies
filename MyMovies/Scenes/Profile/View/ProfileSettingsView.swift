@@ -210,7 +210,7 @@ extension ProfileSettingsView {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(headerView.snp.bottom).offset(16)
-            make.height.equalTo(380)
+            make.height.equalTo(390)
             make.bottom.equalToSuperview()
         }
     }

@@ -55,62 +55,30 @@ extension ProfileSettingsTableViewHandler: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerTitle = sections[section].title
-        let headerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
+        let headerView: UIView = .createCommonView(backgroundColor: .primarySoft)
+        let contentView: UIView = .createCommonView(backgroundColor: .primaryBackground)
         let label: UILabel = .createLabel(
             font: Typography.SemiBold.subhead,
             textColor: .textColorWhite,
             text: headerTitle
         )
-        headerView.addSubviews(label)
+        headerView.addSubviews(contentView)
+        contentView.addSubviews(label)
+
+        contentView.layer.cornerRadius = 20
+        contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        headerView.layer.cornerRadius = 20
+        headerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+
+        contentView.snp.makeConstraints { make in
+            make.leading.trailing.trailing.equalToSuperview().inset(Constants.bottomBorderHeight)
+            make.bottom.equalToSuperview()
+        }
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(Constants.headerInset)
         }
 
         return headerView
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let cornerRadius: CGFloat = 10.0
-        let lineWidth: CGFloat = 2
-
-        // deduct the line width to keep the line stay side the view
-        let point1 = CGPoint(x: 0.0 + lineWidth / 2, y: view.frame.height)
-        let point2 = CGPoint(x: 0.0 + lineWidth / 2, y: 0.0 + cornerRadius + lineWidth / 2)
-        let point3 = CGPoint(x: 0.0 + cornerRadius + lineWidth / 2, y: 0.0 + lineWidth / 2)
-        let point4 = CGPoint(x: view.frame.width - cornerRadius - lineWidth / 2, y: 0.0 + lineWidth / 2)
-        let point5 = CGPoint(x: view.frame.width - lineWidth / 2, y: 0.0 + cornerRadius + lineWidth / 2)
-        let point6 = CGPoint(x: view.frame.width - lineWidth / 2, y: view.frame.height - lineWidth / 2)
-
-        // draw the whole line with upper corner radius
-        let path = UIBezierPath()
-        path.move(to: point1)
-        path.addLine(to: point2)
-        path.addArc(
-            withCenter: CGPoint(x: point3.x, y: point2.y),
-            radius: cornerRadius,
-            startAngle: .pi,
-            endAngle: -.pi / 2,
-            clockwise: true
-        )
-        path.addLine(to: point4)
-        path.addArc(
-            withCenter: CGPoint(x: point4.x, y: point5.y),
-            radius: cornerRadius,
-            startAngle: -.pi / 2,
-            endAngle: 0,
-            clockwise: true
-        )
-        path.addLine(to: point6)
-        path.addLine(to: point1)
-
-        let topBorder = CAShapeLayer()
-        topBorder.path = path.cgPath
-        topBorder.lineWidth = lineWidth
-        topBorder.strokeColor = UIColor.purple.cgColor
-        topBorder.fillColor = nil
-
-        // add the line to header view
-        view.layer.addSublayer(topBorder)
     }
 
     // Footer Height to remove extra separators
@@ -128,7 +96,7 @@ extension ProfileSettingsTableViewHandler: UITableViewDelegate {
         }
 
         if indexPath.row == sections[indexPath.section].items.count - 1 {
-            cell.separatorView.isHidden = true
+            cell.createBottomBorder()
         }
     }
 }

@@ -106,20 +106,6 @@ extension UICollectionView {
     }
 }
 
-// MARK: - UITableViewCell
-extension UITableViewCell {
-    // Adds a bottom border to the cell with specified color, height, and inset.
-    func addBottomBorder(with color: UIColor, height: CGFloat, inset: CGFloat) {
-        let border: UIView = .createCommonView(backgroundColor: color)
-        contentView.addSubviews(border)
-        border.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(inset)
-            make.bottom.equalToSuperview()
-            make.height.equalTo(height)
-        }
-    }
-}
-
 // MARK: - UIStackView
 extension UIStackView {
     static func createCommonStackView(

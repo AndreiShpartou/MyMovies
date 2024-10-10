@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import SnapKit
 
 final class ProfileSettingsTableViewCell: UITableViewCell {
     static let identifier = "ProfileSettingsTableViewCell"
 
     // MARK: - UIComponents
-    let separatorView: UIView = .createCommonView(backgroundColor: .separator)
+    private var bottomCellConstraint: Constraint?
+
+    // View for rendering borders
+    private let commonView: UIView = .createCommonView(backgroundColor: .primaryBackground)
 
     private let iconImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
@@ -28,6 +32,8 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
         contentMode: .scaleAspectFit,
         image: UIImage(systemName: "chevron.right")?.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal)
     )
+
+    private let separatorView: UIView = .createCommonView(backgroundColor: .separator)
 
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -48,6 +54,7 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
         iconImageView.image = nil
         titleLabel.text = nil
         separatorView.isHidden = false
+        updateBottomBorder()
     }
 
     // MARK: - Public
@@ -55,21 +62,51 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
         iconImageView.image = item.icon
         titleLabel.text = item.title
     }
+
+    func createBottomBorder() {
+        updateBottomBorder(isLastCell: true)
+    }
 }
 
 // MARK: - Setup
 extension ProfileSettingsTableViewCell {
     private func setupView() {
-        contentView.backgroundColor = .primaryBackground
-        contentView.addSubviews(iconImageView, titleLabel, chevronImageView, separatorView)
+        backgroundColor = .primaryBackground
+        contentView.backgroundColor = .primarySoft
+        contentView.addSubviews(commonView)
+        commonView.addSubviews(iconImageView, titleLabel, chevronImageView, separatorView)
         accessoryType = .none
         selectionStyle = .default
+    }
+}
+
+// MARK: - Helpers
+extension ProfileSettingsTableViewCell {
+    private func updateBottomBorder(isLastCell: Bool = false) {
+        if isLastCell {
+            separatorView.isHidden = true
+            bottomCellConstraint?.update(inset: 2)
+            commonView.layer.cornerRadius = 20
+            commonView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            contentView.layer.cornerRadius = 20
+            contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        } else {
+            bottomCellConstraint?.update(inset: 0)
+            commonView.layer.cornerRadius = 0
+            contentView.layer.cornerRadius = 0
+        }
     }
 }
 
 // MARK: - Constraints
 extension ProfileSettingsTableViewCell {
     private func setupConstraints() {
+        commonView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(2)
+            bottomCellConstraint = make.bottom.equalToSuperview().constraint
+        }
+
         iconImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
