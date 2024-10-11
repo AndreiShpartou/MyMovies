@@ -20,7 +20,7 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     private let contentView: UIView = .createCommonView()
     // Header section
     private let headerView: UIView = .createCommonView(
-        cornderRadius: 20,
+        cornerRadius: 20,
         borderWidth: 2,
         borderColor: UIColor.primarySoft.cgColor
     )

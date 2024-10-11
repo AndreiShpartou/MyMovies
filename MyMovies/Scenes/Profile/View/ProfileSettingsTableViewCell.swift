@@ -17,7 +17,7 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
     // View for rendering borders
     private let commonView: UIView = .createCommonView(backgroundColor: .primaryBackground)
 
-    private let iconImageBackgroundView: UIView = .createCommonView(cornderRadius: 18, backgroundColor: .primarySoft)
+    private let iconImageBackgroundView: UIView = .createCommonView(cornerRadius: 18, backgroundColor: .primarySoft)
     private let iconImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
         clipsToBounds: true,

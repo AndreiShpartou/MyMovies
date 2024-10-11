@@ -29,4 +29,15 @@ final class PlistConfigurationLoader: PlistConfigurationLoaderProtocol {
             language: country.language
         )
     }
+
+    func loadGeneralTextSceneData(for key: String) -> GeneralDetails {
+        guard let generalDict = Bundle.main.object(forInfoDictionaryKey: key) as? [String: String],
+              let labelText = generalDict["labelText"],
+              let textViewText = generalDict["textViewText"],
+              let title = generalDict["title"] else {
+            return GeneralDetails(labelText: nil, textViewText: nil, title: nil)
+        }
+
+        return GeneralDetails(labelText: labelText, textViewText: textViewText, title: title)
+    }
 }

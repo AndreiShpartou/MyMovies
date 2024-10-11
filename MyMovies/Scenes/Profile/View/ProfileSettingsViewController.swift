@@ -50,7 +50,7 @@ extension ProfileSettingsViewController: ProfileSettingsInteractionDelegate {
         //
     }
 
-    func didSelectSettingsItem(_ item: ProfileSettingsItemViewModelProtocol) {
-        //
+    func didSelectSetting(at indexPath: IndexPath) {
+        presenter?.didSelectSetting(at: indexPath)
     }
 }

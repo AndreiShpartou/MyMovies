@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol TextInfoGeneralViewProtocol: UIView {
     var delegate: TextInfoGeneralViewDelegate? { get set }
 
-    func configure(with labelText: String?, and textViewText: String?, title: String)
+    func configure(with labelText: String?, and textViewText: String?, title: String?)
+    func hideDefaultTitle()
 }
 
 protocol TextInfoGeneralViewDelegate: AnyObject {
@@ -27,10 +29,13 @@ final class TextInfoGeneralView: UIView, TextInfoGeneralViewProtocol {
         textColor: .textColorWhiteGrey
     )
     private lazy var closeButton: UIButton = createCloseButton()
+
     private let label: UILabel = .createLabel(
         font: Typography.SemiBold.title,
         textColor: .textColorWhiteGrey
     )
+    private var textLabelTopConstraint: Constraint?
+
     private let textView: UITextView = .createCommonTextView(isScrollEnabled: true)
 
     // MARK: - Init
@@ -46,7 +51,7 @@ final class TextInfoGeneralView: UIView, TextInfoGeneralViewProtocol {
     }
 
     // MARK: - Public
-    func configure(with labelText: String?, and textViewText: String?, title: String) {
+    func configure(with labelText: String?, and textViewText: String?, title: String?) {
         titleLabel.text = title
         label.text = labelText
         if let text = textViewText,
@@ -58,6 +63,12 @@ final class TextInfoGeneralView: UIView, TextInfoGeneralViewProtocol {
         } else {
             textView.text = textViewText
         }
+    }
+
+    func hideDefaultTitle() {
+        titleLabel.isHidden = true
+        closeButton.isHidden = true
+        setupConstraintsIfDefaultTitleHidden()
     }
 }
 
@@ -107,14 +118,21 @@ extension TextInfoGeneralView {
 
         label.snp.makeConstraints { make in
             make.leading.trailing.equalTo(safeAreaLayoutGuide).offset(16)
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            textLabelTopConstraint = make.top.equalTo(titleLabel.snp.bottom).offset(16).constraint
             make.height.greaterThanOrEqualTo(20).priority(.low)
         }
 
         textView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             make.top.equalTo(label.snp.bottom).offset(16)
-            make.bottom.equalTo(safeAreaLayoutGuide).offset(16)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
+        }
+    }
+
+    private func setupConstraintsIfDefaultTitleHidden() {
+        textLabelTopConstraint?.deactivate()
+        label.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).offset(16)
         }
     }
 }

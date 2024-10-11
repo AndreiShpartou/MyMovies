@@ -23,7 +23,7 @@ extension UIView {
 
     static func createCommonView(
         clipsToBounds: Bool = false,
-        cornderRadius: CGFloat = 0,
+        cornerRadius: CGFloat = 0,
         backgroundColor: UIColor? = nil,
         frame: CGRect = .zero,
         borderWidth: CGFloat = 0,
@@ -33,7 +33,7 @@ extension UIView {
         let view = UIView(frame: frame)
         view.clipsToBounds = clipsToBounds
         view.backgroundColor = backgroundColor
-        view.layer.cornerRadius = cornderRadius
+        view.layer.cornerRadius = cornerRadius
         view.layer.borderWidth = borderWidth
         view.layer.borderColor = borderColor
         view.layer.masksToBounds = masksToBounds
@@ -47,7 +47,7 @@ extension UIView {
         borderColor: CGColor = UIColor.primaryBlueAccent.cgColor,
         textColor: UIColor = .primaryBlueAccent
     ) -> UIView {
-        let view: UIView = .createCommonView(cornderRadius: 8)
+        let view: UIView = .createCommonView(cornerRadius: 8)
         view.layer.borderWidth = borderWidth
         view.layer.borderColor = borderColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -164,6 +164,7 @@ extension UITextView {
         textView.isEditable = false
         textView.isUserInteractionEnabled = isUserInteractionEnabled
         textView.isScrollEnabled = isScrollEnabled
+        textView.showsVerticalScrollIndicator = false
         textView.backgroundColor = .clear
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0

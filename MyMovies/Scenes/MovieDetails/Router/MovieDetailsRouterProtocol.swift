@@ -10,4 +10,5 @@ import Foundation
 protocol MovieDetailsRouterProtocol: AnyObject {
     func navigateToMovieDetails(with movie: MovieProtocol)
     func navigateToMovieList(type: MovieListType)
+    func navigateToReviewDetails(with author: String?, and text: String?, title: String)
 }

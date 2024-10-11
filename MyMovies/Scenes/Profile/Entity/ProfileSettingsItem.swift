@@ -38,4 +38,15 @@ enum ProfileSettingsItem: CaseIterable {
             return Asset.Icons.alert.image
         }
     }
+
+    var plistkey: String? {
+        switch self {
+        case .legalAndPolicies:
+            return "legalAndPolicies"
+        case .aboutUs:
+            return "aboutUs"
+        default:
+            return nil
+        }
+    }
 }

@@ -20,5 +20,5 @@ protocol ProfileSettingsViewProtocol: UIView {
 
 protocol ProfileSettingsInteractionDelegate: AnyObject {
     func didTapEditProfile()
-    func didSelectSettingsItem(_ item: ProfileSettingsItemViewModelProtocol)
+    func didSelectSetting(at indexPath: IndexPath)
 }

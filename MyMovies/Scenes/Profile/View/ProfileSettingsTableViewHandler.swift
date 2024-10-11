@@ -48,8 +48,7 @@ extension ProfileSettingsTableViewHandler: UITableViewDelegate {
         }
 
         cell.setSelectedCustrom(true, animated: true)
-        let item = sections[indexPath.section].items[indexPath.row]
-        delegate?.didSelectSettingsItem(item)
+        delegate?.didSelectSetting(at: indexPath)
         cell.setSelectedCustrom(false, animated: true)
     }
 

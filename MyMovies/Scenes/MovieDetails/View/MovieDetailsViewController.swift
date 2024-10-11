@@ -83,10 +83,7 @@ extension MovieDetailsViewController: MovieDetailsViewDelegate {
     }
 
     func didSelectReview(_ author: String?, review: String?) {
-        let reviewDetailsVC = TextInfoGeneralViewController()
-        reviewDetailsVC.configure(with: author, and: review, title: "Review")
-        reviewDetailsVC.modalPresentationStyle = .pageSheet
-        present(reviewDetailsVC, animated: true)
+        presenter?.presentReview(with: author, and: review)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {

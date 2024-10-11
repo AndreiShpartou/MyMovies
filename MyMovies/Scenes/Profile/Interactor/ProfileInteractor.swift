@@ -11,11 +11,17 @@ final class ProfileInteractor: ProfileSettingsInteractorProtocol {
     weak var presenter: ProfileSettingsInteracrotOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
-//    private let userRepository: UserRepositoryProtocol
+
+    private var settingsSections: [ProfileSettingsSection] = []
+    private var plistLoader: PlistConfigurationLoaderProtocol?
 
     // MARK: - Init
-    init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+    init(
+        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader()
+    ) {
         self.networkManager = networkManager
+        self.plistLoader = plistLoader
 //        self.userRepository = userRepository
     }
 
@@ -36,9 +42,19 @@ final class ProfileInteractor: ProfileSettingsInteractorProtocol {
             switch result {
             case .success(let sections):
                 self?.presenter?.didFetchSettingsItems(sections)
+                self?.settingsSections = sections
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
         }
+    }
+
+    func fetchDataForGeneralTextScene(for key: String) {
+        let details = plistLoader?.loadGeneralTextSceneData(for: key)
+        presenter?.didFetchDataForGenerelTextScene(labelText: details?.labelText, textViewText: details?.textViewText, title: details?.title)
+    }
+
+    func getSettingsSectionItem(at indexPath: IndexPath) -> ProfileSettingsItem {
+        return settingsSections[indexPath.section].items[indexPath.row]
     }
 }

@@ -38,8 +38,8 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
         router.navigateToEditProfile()
     }
 
-    func didSelectSettingsItem(_ item: ProfileSettingsItem) {
-        router.navigateToSettingItem(item)
+    func didSelectSetting(at indexPath: IndexPath) {
+        handleSettingsItemSelection(at: indexPath)
     }
 }
 
@@ -65,8 +65,29 @@ extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
         view?.showSettingsItems(sectionsViewModel)
     }
 
+    func didFetchDataForGenerelTextScene(labelText: String?, textViewText: String?, title: String?) {
+        router.navigateToGeneralTextInfoScene(labelText: labelText, textViewText: textViewText, title: title)
+    }
+
     func didFailToFetchData(with error: Error) {
         view?.hideLoadingIndicator()
         view?.showError(error.localizedDescription)
+    }
+}
+
+// MARK: - Private
+extension ProfileSettingsPresenter {
+    private func handleSettingsItemSelection(at indexPath: IndexPath) {
+        let item = interactor.getSettingsSectionItem(at: indexPath)
+        switch item {
+        case .legalAndPolicies, .aboutUs:
+            guard let plistkey = item.plistkey else {
+                return
+            }
+
+            interactor.fetchDataForGeneralTextScene(for: plistkey)
+        default:
+            break
+        }
     }
 }

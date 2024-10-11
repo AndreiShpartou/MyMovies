@@ -9,5 +9,5 @@ import Foundation
 
 protocol ProfileRouterProtocol: AnyObject {
     func navigateToEditProfile()
-    func navigateToSettingItem(_ item: ProfileSettingsItem)
+    func navigateToGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?)
 }

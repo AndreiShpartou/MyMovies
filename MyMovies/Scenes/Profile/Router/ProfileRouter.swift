@@ -21,20 +21,9 @@ class ProfileRouter: ProfileRouterProtocol {
 //        viewController?.navigationController?.pushViewController(editProfileVC, animated: true)
     }
 
-    func navigateToSettingItem(_ item: ProfileSettingsItem) {
-//        switch item {
-//        case .notification:
-//            let notificationVC = SceneBuilder.buildNotificationSettingsScene()
-//            viewController?.navigationController?.pushViewController(notificationVC, animated: true)
-//        case .language:
-//            let languageVC = SceneBuilder.buildLanguageSettingsScene()
-//            viewController?.navigationController?.pushViewController(languageVC, animated: true)
-//        case .legalAndPolicies:
-//            let legalVC = SceneBuilder.buildLegalAndPoliciesScene()
-//            viewController?.navigationController?.pushViewController(legalVC, animated: true)
-//        case .aboutUs:
-//            let aboutUsVC = SceneBuilder.buildAboutUsScene()
-//            viewController?.navigationController?.pushViewController(aboutUsVC, animated: true)
-//        }
+    func navigateToGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) {
+        let generaTextInfolVC = SceneBuilder.buildGeneralTextInfoScene(labelText: labelText, textViewText: textViewText, title: title)
+        generaTextInfolVC.title = title
+        viewController?.navigationController?.pushViewController(generaTextInfolVC, animated: true)
     }
 }

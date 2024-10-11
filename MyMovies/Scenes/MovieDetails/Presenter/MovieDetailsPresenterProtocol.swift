@@ -11,4 +11,5 @@ protocol MovieDetailsPresenterProtocol: AnyObject {
     func viewDidLoad()
     func didTapSeeAllButton(listType: MovieListType)
     func didSelectMovie(movieID: Int)
+    func presentReview(with author: String?, and text: String?)
 }

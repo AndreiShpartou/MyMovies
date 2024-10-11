@@ -26,4 +26,10 @@ final class MovieDetailsRouter: MovieDetailsRouterProtocol {
         viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieListVC, animated: true)
     }
+
+    func navigateToReviewDetails(with author: String?, and text: String?, title: String) {
+        let reviewVC = SceneBuilder.buildGeneralTextInfoScene(labelText: author, textViewText: text, title: title)
+        reviewVC.modalPresentationStyle = .pageSheet
+        viewController?.present(reviewVC, animated: true)
+    }
 }

@@ -12,6 +12,7 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildMovieListScene(listType: MovieListType) -> UIViewController
     static func buildSearchScene() -> UIViewController
     static func buildProfileScene() -> UIViewController
+    static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -91,6 +92,12 @@ final class SceneBuilder: SceneBuilderProtocol {
         viewController.presenter = presenter
         interactor.presenter = presenter
 
+        return viewController
+    }
+
+    static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController {
+        let viewController = TextInfoGeneralViewController()
+        viewController.configure(with: labelText, and: textViewText, title: title)
         return viewController
     }
 }

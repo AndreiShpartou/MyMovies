@@ -17,7 +17,7 @@ final class BriefMovieDescriptionCollectionViewCell: UICollectionViewCell {
         clipsToBounds: true,
         cornerRadius: 8
     )
-    private let captionView: UIView = .createCommonView(cornderRadius: 5, backgroundColor: .primarySoft)
+    private let captionView: UIView = .createCommonView(cornerRadius: 5, backgroundColor: .primarySoft)
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.subhead,
         numberOfLines: 2,
