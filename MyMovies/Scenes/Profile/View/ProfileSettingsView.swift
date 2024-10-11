@@ -145,6 +145,7 @@ extension ProfileSettingsView {
         tableView.allowsSelection = true
         tableView.layer.cornerRadius = 12
         tableView.clipsToBounds = true
+        tableView.allowsMultipleSelection = false
 
         tableView.dataSource = tableViewHandler
         tableView.delegate = tableViewHandler

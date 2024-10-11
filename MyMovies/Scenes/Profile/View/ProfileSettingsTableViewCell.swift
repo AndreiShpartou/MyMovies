@@ -67,6 +67,16 @@ final class ProfileSettingsTableViewCell: UITableViewCell {
     func createBottomBorder() {
         updateBottomBorder(isLastCell: true)
     }
+
+    func setSelectedCustrom(_ selected: Bool, animated: Bool) {
+        if selected {
+            commonView.backgroundColor = .primarySoft
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.commonView.backgroundColor = .primaryBackground
+            }
+        }
+    }
 }
 
 // MARK: - Setup

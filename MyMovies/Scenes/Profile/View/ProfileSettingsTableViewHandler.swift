@@ -43,9 +43,14 @@ extension ProfileSettingsTableViewHandler: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension ProfileSettingsTableViewHandler: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? ProfileSettingsTableViewCell else {
+            return
+        }
+
+        cell.setSelectedCustrom(true, animated: true)
         let item = sections[indexPath.section].items[indexPath.row]
         delegate?.didSelectSettingsItem(item)
-        tableView.deselectRow(at: indexPath, animated: true)
+        cell.setSelectedCustrom(false, animated: true)
     }
 
     // Height for Header
