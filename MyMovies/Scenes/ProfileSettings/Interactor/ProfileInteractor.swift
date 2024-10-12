@@ -27,14 +27,14 @@ final class ProfileInteractor: ProfileSettingsInteractorProtocol {
 
     // MARK: - ProfileSettingsInteractorProtocol
     func fetchUserProfile() {
-//        networkManager.fetchUserProfile { [weak self] result in
-//            switch result {
-//            case .success(let profile):
-//                self?.presenter?.didFetchUserProfile(profile)
-//            case .failure(let error):
-//                self?.presenter?.didFailToFetchData(with: error)
-//            }
-//        }
+        networkManager.fetchUserProfile { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.presenter?.didFetchUserProfile(profile)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
     }
 
     func fetchSettingsItems() {

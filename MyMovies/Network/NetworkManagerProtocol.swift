@@ -14,6 +14,6 @@ protocol NetworkManagerProtocol {
     func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void)
     func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReviewProtocol], Error>) -> Void)
-    func fetchUserProfile(completion: () -> Void)
+    func fetchUserProfile(completion: @escaping (Result<UserProfileProtocol, Error>) -> Void)
     func fetchSettingsSections(completion: @escaping (Result<[ProfileSettingsSection], Error>) -> Void)
 }

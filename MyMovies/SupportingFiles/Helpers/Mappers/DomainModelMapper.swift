@@ -32,6 +32,9 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // GenresToDomainModel
         case (let data as GenreViewModelProtocol, is Movie.Genre.Type):
             return map(data) as? Y
+        // UserProfileToViewModel
+        case (let data as UserProfileProtocol, is UserProfileViewModel.Type):
+            return map(data) as? Y
         // SettingsToViewModel
         case (let data as [ProfileSettingsSection], is [ProfileSettingsSectionViewModel].Type):
             return map(data) as? Y
@@ -139,7 +142,7 @@ extension DomainModelMapper {
 
     // [PersonProtocol] -> [PersonViewModelProtocol]
     private func map(_ data: [PersonProtocol]) -> [PersonViewModelProtocol] {
-        data.map {
+        return data.map {
             PersonViewModel(
                 id: $0.id,
                 photo: URL(string: $0.photo ?? ""),
@@ -152,7 +155,7 @@ extension DomainModelMapper {
 
     //  [CountryProtocol] -> [CountryViewModelProtocol]
     private func map(_ data: [CountryProtocol]) -> [CountryViewModelProtocol] {
-        data.map { CountryViewModel(name: $0.fullName) }
+        return data.map { CountryViewModel(name: $0.fullName) }
     }
 
     //  [ProfileSettingsSection] -> [ProfileSettingsSectionViewModelProtocol]
@@ -163,6 +166,16 @@ extension DomainModelMapper {
             }
             return ProfileSettingsSectionViewModel(title: $0.title, items: items)
         }
+    }
+
+    //  UserProfileProtocol -> UserProfileViewModelProtocol
+    private func map(_ data: UserProfileProtocol) -> UserProfileViewModelProtocol {
+        return UserProfileViewModel(
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            profileImageURL: data.profileImageURL
+        )
     }
 }
 

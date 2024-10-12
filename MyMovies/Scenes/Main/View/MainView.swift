@@ -14,7 +14,6 @@ final class MainView: UIView, MainViewProtocol {
             updateDelegates()
         }
     }
-    var presenter: MainPresenterProtocol?
 
     // MARK: - UIComponents
     private let scrollView = UIScrollView()

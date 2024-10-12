@@ -18,14 +18,13 @@ protocol SceneBuilderProtocol: AnyObject {
 final class SceneBuilder: SceneBuilderProtocol {
     // MARK: - TabBarMainScenes
     static func buildHomeScene() -> UIViewController {
-        let view = MainView()
-        let viewController = MainViewController(mainView: view)
-        let router = MainRouter(viewController: viewController)
         let interactor = MainInteractor()
+        let router = MainRouter()
+        let view = MainView()
         let presenter = MainPresenter(view: view, interactor: interactor, router: router)
+        let viewController = MainViewController(mainView: view, presenter: presenter)
 
-        view.presenter = presenter
-        viewController.presenter = presenter
+        router.viewController = viewController
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
@@ -34,14 +33,13 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildSearchScene() -> UIViewController {
-        let view = SearchView()
-        let viewController = SearchViewController(searchView: view)
-        let router = SearchRouter(viewController: viewController)
         let interactor = SearchInteractor()
-        let presenter = SearchPresenter(view: viewController, interactor: interactor, router: router)
+        let router = SearchRouter()
+        let view = SearchView()
+        let presenter = SearchPresenter(view: view, interactor: interactor, router: router)
+        let viewController = SearchViewController(searchView: view, presenter: presenter)
 
-        view.presenter = presenter
-        viewController.presenter = presenter
+        router.viewController = viewController
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
@@ -51,14 +49,13 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildProfileScene() -> UIViewController {
-        let view = ProfileSettingsView()
-        let viewController = ProfileSettingsViewController(profileSettingsView: view)
-        let router = ProfileRouter(viewController: viewController)
         let interactor = ProfileInteractor()
+        let router = ProfileRouter()
+        let view = ProfileSettingsView()
         let presenter = ProfileSettingsPresenter(view: view, interactor: interactor, router: router)
+        let viewController = ProfileSettingsViewController(profileSettingsView: view, presenter: presenter)
 
-        view.presenter = presenter
-        viewController.presenter = presenter
+        router.viewController = viewController
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
@@ -68,28 +65,26 @@ final class SceneBuilder: SceneBuilderProtocol {
 
     // MARK: - SecondaryScenes
     static func buildMovieListScene(listType: MovieListType) -> UIViewController {
-        let view = MovieListView()
-        let viewController = MovieListViewController(movieListView: view, listType: listType)
-        let router = MovieListRouter(viewController: viewController)
         let interactor = MovieListInteractor()
+        let router = MovieListRouter()
+        let view = MovieListView()
         let presenter = MovieListPresenter(view: view, interactor: interactor, router: router)
+        let viewController = MovieListViewController(movieListView: view, presenter: presenter, listType: listType)
 
-        view.presenter = presenter
-        viewController.presenter = presenter
+        router.viewController = viewController
         interactor.presenter = presenter
 
         return viewController
     }
 
     static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController {
-        let view = MovieDetailsView()
-        let viewController = MovieDetailsViewController(movieDetailsView: view)
-        let router = MovieDetailsRouter(viewController: viewController)
+        let router = MovieDetailsRouter()
         let interactor = MovieDetailsInteractor(movie: movie)
+        let view = MovieDetailsView()
         let presenter = MovieDetailsPresenter(view: view, interactor: interactor, router: router)
+        let viewController = MovieDetailsViewController(movieDetailsView: view, presenter: presenter)
 
-        view.presenter = presenter
-        viewController.presenter = presenter
+        router.viewController = viewController
         interactor.presenter = presenter
 
         return viewController

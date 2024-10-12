@@ -11,7 +11,7 @@ final class MovieListRouter: MovieListRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init
-    init(viewController: UIViewController?) {
+    init(viewController: UIViewController? = nil) {
         self.viewController = viewController
     }
 

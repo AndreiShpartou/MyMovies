@@ -8,7 +8,6 @@
 import UIKit
 
 protocol MainViewProtocol: UIView {
-    var presenter: MainPresenterProtocol? { get set }
     var delegate: MainViewDelegate? { get set }
 
     func showUpcomingMovies(_ movies: [UpcomingMovieViewModelProtocol])

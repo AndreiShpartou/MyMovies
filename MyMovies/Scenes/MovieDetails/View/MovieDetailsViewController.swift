@@ -7,14 +7,19 @@
 
 import UIKit
 
-final class MovieDetailsViewController: UIViewController {
-    var presenter: MovieDetailsPresenterProtocol?
+protocol MovieDetailsViewControllerProtocol {
+    var presenter: MovieDetailsPresenterProtocol { get set }
+}
+
+final class MovieDetailsViewController: UIViewController, MovieDetailsViewControllerProtocol {
+    var presenter: MovieDetailsPresenterProtocol
 
     private let movieDetailsView: MovieDetailsViewProtocol
 
     // MARK: - Init
-    init(movieDetailsView: MovieDetailsViewProtocol) {
+    init(movieDetailsView: MovieDetailsViewProtocol, presenter: MovieDetailsPresenterProtocol) {
         self.movieDetailsView = movieDetailsView
+        self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,7 +37,7 @@ final class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
 
         setupViewController()
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
     }
 }
 
@@ -77,14 +82,14 @@ extension MovieDetailsViewController: MovieDetailsViewDelegate {
     }
 
     func didSelectReview(_ author: String?, review: String?) {
-        presenter?.presentReview(with: author, and: review)
+        presenter.presentReview(with: author, and: review)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
-        presenter?.didTapSeeAllButton(listType: listType)
+        presenter.didTapSeeAllButton(listType: listType)
     }
 
     func didSelectMovie(movieID: Int) {
-        presenter?.didSelectMovie(movieID: movieID)
+        presenter.didSelectMovie(movieID: movieID)
     }
 }

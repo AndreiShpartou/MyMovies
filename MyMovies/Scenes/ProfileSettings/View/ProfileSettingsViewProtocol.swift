@@ -9,7 +9,6 @@ import UIKit
 
 protocol ProfileSettingsViewProtocol: UIView {
     var delegate: ProfileSettingsInteractionDelegate? { get set }
-    var presenter: ProfileSettingsPresenterProtocol? { get set }
 
     func showUserProfile(_ profile: UserProfileViewModelProtocol)
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])

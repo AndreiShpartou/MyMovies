@@ -13,7 +13,7 @@ class SearchPresenter: SearchPresenterProtocol {
     var router: SearchRouterProtocol
 
     // MARK: - Init
-    init(view: SearchViewProtocol?, interactor: SearchInteractorProtocol, router: SearchRouterProtocol) {
+    init(view: SearchViewProtocol? = nil, interactor: SearchInteractorProtocol, router: SearchRouterProtocol) {
         self.view = view
         self.interactor = interactor
         self.router = router

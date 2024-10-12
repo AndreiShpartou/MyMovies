@@ -13,7 +13,6 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
             updateDelegates()
         }
     }
-    var presenter: ProfileSettingsPresenterProtocol?
 
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
@@ -27,19 +26,19 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
-        cornerRadius: 30,
-        image: Asset.Avatars.avatarMock.image
+        cornerRadius: 30
     )
+
     private let nameLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
-        textColor: .textColorWhite,
-        text: "Smith"
+        textColor: .textColorWhite
     )
+
     private let emailLabel: UILabel = .createLabel(
         font: Typography.Regular.subhead,
-        textColor: .textColorGrey,
-        text: "AgentSmithMatrix@gmail.com"
+        textColor: .textColorGrey
     )
+
     private lazy var editButton: UIButton = createEditButton()
 
     // Settings Table
@@ -110,17 +109,25 @@ extension ProfileSettingsView {
         scrollView.addSubviews(contentView, loadingIndicator)
         contentView.addSubviews(headerView, tableView)
         headerView.addSubviews(profileImageView, nameLabel, emailLabel, editButton)
+
+        setupGestureRecognizers()
     }
 
     private func updateDelegates() {
         tableViewHandler.delegate = delegate
+    }
+
+    private func setupGestureRecognizers() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(headerViewTapped))
+        headerView.addGestureRecognizer(tapGesture)
+        headerView.isUserInteractionEnabled = true
     }
 }
 
 // MARK: - ActionMethods
 extension ProfileSettingsView {
     @objc
-    private func editButtonTapped() {
+    private func headerViewTapped() {
         delegate?.didTapEditProfile()
     }
 }
@@ -131,7 +138,6 @@ extension ProfileSettingsView {
         let button = UIButton(type: .system)
         let editImage = Asset.Icons.edit.image.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal)
         button.setImage(editImage, for: .normal)
-        button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
 
         return button
     }

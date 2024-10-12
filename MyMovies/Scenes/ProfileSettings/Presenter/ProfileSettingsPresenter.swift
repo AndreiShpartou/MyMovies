@@ -44,15 +44,14 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
 }
 
 extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
-    func didFetchUserProfile(_ profile: UserProfile) {
-//        guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-//            view?.showError("Failed to load profile")
-//              view?.showError(NSLocalizedString("Failed to load profile", comment: "Error message for failed profile load"))
-//            view?.hideLoadingIndicator()
-//            
-//            return
-//        }
-//        view?.showUserProfile(profileViewModel)
+    func didFetchUserProfile(_ profile: UserProfileProtocol) {
+        guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
+            view?.showError(NSLocalizedString("Failed to load profile", comment: "Error message for failed profile load"))
+            view?.hideLoadingIndicator()
+
+            return
+        }
+        view?.showUserProfile(profileViewModel)
     }
 
     func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {

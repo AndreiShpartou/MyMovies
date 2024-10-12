@@ -7,14 +7,19 @@
 
 import UIKit
 
+protocol ProfileSettingsViewControllerProtocol {
+    var presenter: ProfileSettingsPresenterProtocol { get set }
+}
+
 final class ProfileSettingsViewController: UIViewController {
-    var presenter: ProfileSettingsPresenterProtocol?
+    var presenter: ProfileSettingsPresenterProtocol
 
     private let profileSettingsView: ProfileSettingsViewProtocol
 
     // MARK: - Init
-    init(profileSettingsView: ProfileSettingsViewProtocol) {
+    init(profileSettingsView: ProfileSettingsViewProtocol, presenter: ProfileSettingsPresenterProtocol) {
         self.profileSettingsView = profileSettingsView
+        self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,7 +37,7 @@ final class ProfileSettingsViewController: UIViewController {
         super.viewDidLoad()
 
         setupViewController()
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
     }
 }
 
@@ -48,10 +53,10 @@ extension ProfileSettingsViewController {
 
 extension ProfileSettingsViewController: ProfileSettingsInteractionDelegate {
     func didTapEditProfile() {
-        //
+        presenter.navigateToEditProfile()
     }
 
     func didSelectSetting(at indexPath: IndexPath) {
-        presenter?.didSelectSetting(at: indexPath)
+        presenter.didSelectSetting(at: indexPath)
     }
 }

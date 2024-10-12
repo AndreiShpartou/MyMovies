@@ -7,14 +7,18 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, SearchViewProtocol {
-    var presenter: SearchPresenterProtocol?
+protocol SearchViewControllerProtocol {
+    var presenter: SearchPresenterProtocol { get set }
+}
 
-    let searchView: UIView
+final class SearchViewController: UIViewController, SearchViewControllerProtocol {
+    var presenter: SearchPresenterProtocol
+    let searchView: SearchViewProtocol
 
     // MARK: - Init
-    init(searchView: UIView) {
+    init(searchView: SearchViewProtocol, presenter: SearchPresenterProtocol) {
         self.searchView = searchView
+        self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
     }

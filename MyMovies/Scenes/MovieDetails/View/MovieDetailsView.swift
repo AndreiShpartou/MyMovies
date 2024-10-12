@@ -14,7 +14,6 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
             updateDelegates()
         }
     }
-    var presenter: MovieDetailsPresenterProtocol?
 
     private var movieID: Int?
 

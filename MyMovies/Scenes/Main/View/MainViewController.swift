@@ -7,14 +7,19 @@
 
 import UIKit
 
-final class MainViewController: UIViewController {
-    var presenter: MainPresenterProtocol?
+protocol MainViewControllerProtocol {
+    var presenter: MainPresenterProtocol { get set }
+}
+
+final class MainViewController: UIViewController, MainViewControllerProtocol {
+    var presenter: MainPresenterProtocol
 
     private let mainView: MainViewProtocol
 
     // MARK: - Init
-    init(mainView: MainViewProtocol) {
+    init(mainView: MainViewProtocol, presenter: MainPresenterProtocol) {
         self.mainView = mainView
+        self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,7 +44,7 @@ final class MainViewController: UIViewController {
 
         setupViewController()
         // The initial data loading
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
     }
 }
 
@@ -54,16 +59,16 @@ extension MainViewController {
 extension MainViewController: MainViewDelegate {
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         // Handle genre selection
-        presenter?.didSelectGenre(genre)
+        presenter.didSelectGenre(genre)
     }
 
     func didSelectMovie(movieID: Int) {
         // Handle popular movie selection
-        presenter?.didSelectMovie(movieID: movieID)
+        presenter.didSelectMovie(movieID: movieID)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
-        presenter?.didTapSeeAllButton(listType: listType)
+        presenter.didTapSeeAllButton(listType: listType)
     }
 
     func didScrollUpcomingMoviesItemTo(_ index: Int) {

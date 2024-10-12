@@ -7,14 +7,19 @@
 
 import UIKit
 
+protocol MovieListViewCOntrollerProtocol {
+    var presenter: MovieListPresenterProtocol { get set }
+}
+
 final class MovieListViewController: UIViewController {
-    var presenter: MovieListPresenterProtocol?
+    var presenter: MovieListPresenterProtocol
 
     private let movieListView: MovieListViewProtocol
     private let movieListType: MovieListType
 
-    init(movieListView: MovieListViewProtocol, listType: MovieListType) {
+    init(movieListView: MovieListViewProtocol, presenter: MovieListPresenterProtocol, listType: MovieListType) {
         self.movieListView = movieListView
+        self.presenter = presenter
         self.movieListType = listType
 
         super.init(nibName: nil, bundle: nil)
@@ -34,7 +39,7 @@ final class MovieListViewController: UIViewController {
 
         setupViewController()
         // The initial data loading
-        presenter?.viewDidLoad(listType: movieListType)
+        presenter.viewDidLoad(listType: movieListType)
     }
 }
 
@@ -66,10 +71,10 @@ extension MovieListViewController {
 // MARK: - MovieListViewDelegate
 extension MovieListViewController: MovieListViewInteractionDelegate {
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
-        presenter?.didSelectGenre(genre)
+        presenter.didSelectGenre(genre)
     }
 
     func didSelectMovie(movieID: Int) {
-        presenter?.didSelectMovie(movieID: movieID)
+        presenter.didSelectMovie(movieID: movieID)
     }
 }

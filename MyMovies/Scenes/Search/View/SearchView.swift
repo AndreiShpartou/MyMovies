@@ -7,9 +7,7 @@
 
 import UIKit
 
-class SearchView: UIView {
-    var presenter: SearchPresenterProtocol?
-
+final class SearchView: UIView, SearchViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)

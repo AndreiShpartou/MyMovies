@@ -245,7 +245,7 @@ extension UIButton {
 
         leftButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         leftButton.layer.cornerRadius = 15
-        
+
         leftButton.addTarget(target, action: action, for: .touchUpInside)
 
         return leftButton
