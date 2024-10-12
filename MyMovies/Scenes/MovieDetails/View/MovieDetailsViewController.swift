@@ -45,15 +45,9 @@ extension MovieDetailsViewController {
 
     private func setupNavigationBar() {
         // Setting the custom title font
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: Typography.SemiBold.title,
-            NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
-        ]
+        navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         // Custom left button
-        let leftButton: UIButton = .createBackNavBarButton()
-        leftButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        let leftBarButton = UIBarButtonItem(customView: leftButton)
-        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
         // Custom right button
         let rightButton: UIButton = .createFavouriteButton()
         rightButton.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)

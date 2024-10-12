@@ -48,15 +48,9 @@ extension MovieListViewController {
     private func setupNavigationBar() {
         title = movieListType.title
         // Setting the custom title font
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: Typography.SemiBold.title,
-            NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
-        ]
+        navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         // Custom left button
-        let leftButton: UIButton = .createBackNavBarButton()
-        leftButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        let leftBarButton = UIBarButtonItem(customView: leftButton)
-        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
     }
 }
 

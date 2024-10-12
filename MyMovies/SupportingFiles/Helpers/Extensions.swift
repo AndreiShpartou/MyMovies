@@ -194,6 +194,26 @@ extension UIImageView {
     }
 }
 
+// MARK: - UIBarButtonItem
+extension UIBarButtonItem {
+    static func createCustomBackBarButtonItem(action: Selector, target: Any?) -> UIBarButtonItem {
+//        // Set custom view for the back button
+//        let backgroundView: UIView = .createCommonView(cornerRadius: 18, backgroundColor: .primarySoft)
+//        let buttonImage = UIImage(systemName: "chevron.left")?.withTintColor(.textColorWhite, renderingMode: .alwaysOriginal)
+//        let backButton = UIButton(type: .system)
+//        backButton.setImage(buttonImage, for: .normal)
+//        backButton.tintColor = .primaryBackground
+//        backButton.addTarget(target, action: action, for: .touchUpInside)
+//        // Constraints
+//        backgroundView.addSubviews(backButton)
+//        backgroundView.snp.makeConstraints { $0.width.height.equalTo(36) }
+//        backButton.snp.makeConstraints { $0.center.equalToSuperview() }
+        let backButton: UIButton = .createBackNavBarButton(action: action, target: target)
+
+        return UIBarButtonItem(customView: backButton)
+    }
+}
+
 // MARK: - UIActivityIndicatorView
 extension UIActivityIndicatorView {
     static func createSpinner(style: Style) -> UIActivityIndicatorView {
@@ -217,7 +237,7 @@ extension UIButton {
         return button
     }
 
-    static func createBackNavBarButton() -> UIButton {
+    static func createBackNavBarButton(action: Selector, target: Any?) -> UIButton {
         let leftButton = UIButton(type: .custom)
         leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         leftButton.tintColor = .white
@@ -225,6 +245,8 @@ extension UIButton {
 
         leftButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         leftButton.layer.cornerRadius = 15
+        
+        leftButton.addTarget(target, action: action, for: .touchUpInside)
 
         return leftButton
     }

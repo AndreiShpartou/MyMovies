@@ -5,7 +5,7 @@
 //  Created by Andrei Shpartou on 15/08/2024.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - Print
 func debugPrint(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
@@ -47,4 +47,12 @@ func extractYear(from dateString: String?) -> String {
     }
 
     return dateFormatter.string(from: date)
+}
+
+// MARK: - TextFormatting
+func getNavigationBarTitleAttributes() -> [NSAttributedString.Key: Any]? {
+    return [
+        NSAttributedString.Key.font: Typography.SemiBold.title,
+        NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
+    ]
 }

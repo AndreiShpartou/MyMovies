@@ -41,6 +41,7 @@ extension ProfileSettingsViewController {
     private func setupViewController() {
         profileSettingsView.delegate = self
         navigationItem.title = NSLocalizedString("Profile", comment: "Profile settings")
+        navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         tabBarController?.title = nil
     }
 }
