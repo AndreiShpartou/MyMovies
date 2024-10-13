@@ -8,4 +8,8 @@
 import Foundation
 
 protocol EditProfileInteractorProtocol {
+    var presenter: EditProfileInteractorOutputProtocol? { get set }
+}
+
+protocol EditProfileInteractorOutputProtocol: AnyObject {
 }

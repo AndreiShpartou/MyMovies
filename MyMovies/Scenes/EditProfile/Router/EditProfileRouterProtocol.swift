@@ -5,8 +5,8 @@
 //  Created by Andrei Shpartou on 12/10/2024.
 //
 
-import Foundation
+import UIKit
 
 protocol EditProfileRouterProtocol {
-    var view: EditProfileViewProtocol? { get set }
+    var viewController: UIViewController? { get set }
 }

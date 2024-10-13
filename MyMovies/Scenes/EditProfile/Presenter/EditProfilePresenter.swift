@@ -15,7 +15,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
 
     // MARK: - Init
     init(
-        view: EditProfileViewProtocol,
+        view: EditProfileViewProtocol? = nil,
         interactor: EditProfileInteractorProtocol,
         router: EditProfileRouterProtocol
     ) {
@@ -23,4 +23,8 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         self.interactor = interactor
         self.router = router
     }
+}
+
+// MARK: - Section Heading
+extension EditProfilePresenter: EditProfileInteractorOutputProtocol {
 }

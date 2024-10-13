@@ -13,6 +13,7 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildSearchScene() -> UIViewController
     static func buildProfileScene() -> UIViewController
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController
+    static func buildEditProfileScene() -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -78,8 +79,8 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController {
-        let router = MovieDetailsRouter()
         let interactor = MovieDetailsInteractor(movie: movie)
+        let router = MovieDetailsRouter()
         let view = MovieDetailsView()
         let presenter = MovieDetailsPresenter(view: view, interactor: interactor, router: router)
         let viewController = MovieDetailsViewController(movieDetailsView: view, presenter: presenter)
@@ -93,6 +94,19 @@ final class SceneBuilder: SceneBuilderProtocol {
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController {
         let viewController = TextInfoGeneralViewController()
         viewController.configure(with: labelText, and: textViewText, title: title)
+        return viewController
+    }
+
+    static func buildEditProfileScene() -> UIViewController {
+        let interactor = EditProfileInteractor()
+        let router = EditProfileRouter()
+        let view = EditProfileView()
+        let presenter = EditProfilePresenter(view: view, interactor: interactor, router: router)
+        let viewController = EditProfileViewController(editProfileView: view, presenter: presenter)
+
+        router.viewController = viewController
+        interactor.presenter = presenter
+
         return viewController
     }
 }
