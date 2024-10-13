@@ -16,4 +16,16 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
     init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
         self.networkManager = networkManager
     }
+
+    // MARK: - EditProfileInteractorProtocol
+    func fetchUserProfile() {
+        networkManager.fetchUserProfile { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.presenter?.didFetchUserProfile(profile)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
 }

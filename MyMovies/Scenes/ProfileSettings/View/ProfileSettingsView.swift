@@ -66,16 +66,7 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         }
 
         // Present an alert to the user
-        let alert = UIAlertController(
-            title: NSLocalizedString("Error", comment: "Error alert title"),
-            message: message,
-            preferredStyle: .alert
-        )
-        let action = UIAlertAction(
-            title: NSLocalizedString("OK", comment: "OK button title"),
-            style: .default
-        )
-        alert.addAction(action)
+        let alert = getGlobalAlertController(for: message)
         viewController.present(alert, animated: true, completion: nil)
     }
 
@@ -92,6 +83,7 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarMock.image)
         nameLabel.text = profile.name
         emailLabel.text = profile.email
+        hideLoadingIndicator()
     }
 
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol]) {

@@ -174,6 +174,59 @@ extension UITextView {
     }
 }
 
+// MARK: - UITextField
+extension UITextField {
+    static func createBorderedTextField(
+        placeholder: String? = nil,
+        keyboardType: UIKeyboardType = .default,
+        autocapitalizationType: UITextAutocapitalizationType = .none,
+        isSecureTextEntry: Bool = false
+    ) -> UITextField {
+        let textField = UITextField()
+        textField.backgroundColor = .primaryBackground
+        textField.font = Typography.Medium.subhead
+        textField.textColor = .textColorWhiteGrey
+        textField.tintColor = .textColorWhite
+        textField.keyboardType = keyboardType
+        textField.keyboardAppearance = .dark
+        textField.autocapitalizationType = autocapitalizationType
+        textField.autocorrectionType = .no
+        textField.isSecureTextEntry = isSecureTextEntry
+        // Placeholder
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.textColorDarkGrey]
+        )
+        // Add paddings
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        textField.rightView = paddingView
+        textField.rightViewMode = .always
+        // Adjust border
+        textField.borderStyle = .roundedRect
+        textField.isEnabled = true
+        textField.layer.borderColor = UIColor.primarySoft.cgColor
+
+        return textField
+    }
+
+    func addDoneToolBarButton() {
+        let bar = UIToolbar()
+        let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(closeKeyboard))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        bar.items = [flexSpace, flexSpace, doneBtn]
+        bar.sizeToFit()
+
+        self.inputAccessoryView = bar
+    }
+
+    @objc
+    private func closeKeyboard() {
+        self.resignFirstResponder()
+    }
+}
+
 // MARK: - UIImageView
 extension UIImageView {
     static func createImageView(
@@ -227,6 +280,27 @@ extension UIActivityIndicatorView {
 
 // MARK: - UIButton
 extension UIButton {
+    convenience init(
+        title: String?,
+        font: UIFont? = nil,
+        titleColor: UIColor? = nil,
+        backgroundColor: UIColor? = nil,
+        cornerRadius: CGFloat = 0,
+        action: Selector,
+        target: Any?
+    ) {
+        self.init(type: .system)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = font
+        self.setTitleColor(titleColor, for: .normal)
+        self.setTitleColor(.primarySoft, for: .highlighted)
+        self.titleLabel?.textAlignment = .center
+        self.backgroundColor = backgroundColor
+        self.layer.cornerRadius = cornerRadius
+
+        self.addTarget(target, action: action, for: .touchUpInside)
+    }
+
     static func createFavouriteButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)

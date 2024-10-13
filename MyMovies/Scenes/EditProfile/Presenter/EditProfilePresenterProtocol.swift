@@ -11,4 +11,6 @@ protocol EditProfilePresenterProtocol {
     var view: EditProfileViewProtocol? { get set }
     var interactor: EditProfileInteractorProtocol { get set }
     var router: EditProfileRouterProtocol { get set }
+
+    func viewDidLoad()
 }

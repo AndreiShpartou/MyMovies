@@ -56,3 +56,19 @@ func getNavigationBarTitleAttributes() -> [NSAttributedString.Key: Any]? {
         NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
     ]
 }
+
+// MARK: - Alerts
+func getGlobalAlertController(for message: String) -> UIAlertController {
+    let alert = UIAlertController(
+        title: NSLocalizedString("Error", comment: "Error alert title"),
+        message: message,
+        preferredStyle: .alert
+    )
+    let action = UIAlertAction(
+        title: NSLocalizedString("OK", comment: "OK button title"),
+        style: .default
+    )
+    alert.addAction(action)
+
+    return alert
+}

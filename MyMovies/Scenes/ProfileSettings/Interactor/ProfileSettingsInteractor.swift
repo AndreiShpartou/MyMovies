@@ -1,5 +1,5 @@
 //
-//  ProfileInteractor.swift
+//  ProfileSettingsInteractor.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 27/07/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ProfileInteractor: ProfileSettingsInteractorProtocol {
+final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     weak var presenter: ProfileSettingsInteracrotOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
