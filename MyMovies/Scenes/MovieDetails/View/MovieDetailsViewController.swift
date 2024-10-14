@@ -7,14 +7,19 @@
 
 import UIKit
 
-final class MovieDetailsViewController: UIViewController {
-    var presenter: MovieDetailsPresenterProtocol?
+protocol MovieDetailsViewControllerProtocol {
+    var presenter: MovieDetailsPresenterProtocol { get set }
+}
+
+final class MovieDetailsViewController: UIViewController, MovieDetailsViewControllerProtocol {
+    var presenter: MovieDetailsPresenterProtocol
 
     private let movieDetailsView: MovieDetailsViewProtocol
 
     // MARK: - Init
-    init(movieDetailsView: MovieDetailsViewProtocol) {
+    init(movieDetailsView: MovieDetailsViewProtocol, presenter: MovieDetailsPresenterProtocol) {
         self.movieDetailsView = movieDetailsView
+        self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,7 +37,7 @@ final class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
 
         setupViewController()
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
     }
 }
 
@@ -45,15 +50,9 @@ extension MovieDetailsViewController {
 
     private func setupNavigationBar() {
         // Setting the custom title font
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: Typography.SemiBold.title,
-            NSAttributedString.Key.foregroundColor: UIColor.textColorWhite
-        ]
+        navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         // Custom left button
-        let leftButton: UIButton = .createBackNavBarButton()
-        leftButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        let leftBarButton = UIBarButtonItem(customView: leftButton)
-        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
         // Custom right button
         let rightButton: UIButton = .createFavouriteButton()
         rightButton.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
@@ -83,17 +82,14 @@ extension MovieDetailsViewController: MovieDetailsViewDelegate {
     }
 
     func didSelectReview(_ author: String?, review: String?) {
-        let reviewDetailsVC = TextInfoGeneralViewController()
-        reviewDetailsVC.configure(with: author, and: review, title: "Review")
-        reviewDetailsVC.modalPresentationStyle = .pageSheet
-        present(reviewDetailsVC, animated: true)
+        presenter.presentReview(with: author, and: review)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
-        presenter?.didTapSeeAllButton(listType: listType)
+        presenter.didTapSeeAllButton(listType: listType)
     }
 
     func didSelectMovie(movieID: Int) {
-        presenter?.didSelectMovie(movieID: movieID)
+        presenter.didSelectMovie(movieID: movieID)
     }
 }

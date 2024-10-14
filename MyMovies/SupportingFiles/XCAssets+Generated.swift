@@ -36,10 +36,16 @@ internal enum Asset {
     internal static let defaultPoster = ImageAsset(name: "DefaultPoster")
   }
   internal enum Icons {
+    internal static let alert = ImageAsset(name: "alert")
     internal static let calendar = ImageAsset(name: "calendar")
     internal static let clock = ImageAsset(name: "clock")
+    internal static let edit = ImageAsset(name: "edit")
+    internal static let editProfileImage = ImageAsset(name: "editProfileImage")
     internal static let film = ImageAsset(name: "film")
+    internal static let globe = ImageAsset(name: "globe")
+    internal static let notification = ImageAsset(name: "notification")
     internal static let share = ImageAsset(name: "share")
+    internal static let shield = ImageAsset(name: "shield")
   }
   internal enum Launch {
     internal static let launch = ImageAsset(name: "launch")

@@ -18,7 +18,7 @@ final class MainPresenter: MainPresenterProtocol {
 
     // MARK: - Init
     init(
-        view: MainViewProtocol?,
+        view: MainViewProtocol? = nil,
         interactor: MainInteractorProtocol,
         router: MainRouterProtocol,
         mapper: DomainModelMapperProtocol = DomainModelMapper()

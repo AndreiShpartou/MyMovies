@@ -8,7 +8,7 @@
 import Foundation
 
 final class MovieListInteractor: MovieListInteractorProtocol {
-    var presenter: MovieListInteractorOutputProtocol?
+    weak var presenter: MovieListInteractorOutputProtocol?
     private var listType: MovieListType?
     private let networkManager: NetworkManagerProtocol
 

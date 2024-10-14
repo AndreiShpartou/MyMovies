@@ -46,6 +46,10 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
 
         router.navigateToMovieDetails(with: movie)
     }
+
+    func presentReview(with author: String?, and text: String?) {
+        router.navigateToReviewDetails(with: author, and: text, title: "Review")
+    }
 }
 
 // MARK: - MovieDetailsInteractorOutputProtocol

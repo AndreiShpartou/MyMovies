@@ -13,7 +13,7 @@ final class CustomTabBar: UITabBar {
 
     private let containerView = UIView()
     private let selectionBackgroundView: UIView = .createCommonView(
-        cornderRadius: 12,
+        cornerRadius: 12,
         backgroundColor: .primarySoft.withAlphaComponent(0.5)
     )
 

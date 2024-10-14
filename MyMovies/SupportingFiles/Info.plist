@@ -56,6 +56,86 @@
 			<string>/3/movie/</string>
 		</dict>
 	</dict>
+	<key>aboutUs</key>
+	<dict>
+		<key>labelText</key>
+		<string>Welcome to MyMovies App!</string>
+		<key>textViewText</key>
+		<string>We believe in creating solutions that make everyday life easier, more enjoyable, and more connected. Our team is passionate about technology and innovation, and we’re dedicated to building products that meet the real needs of our users.
+            
+            We are committed to:
+            Innovation: Constantly pushing the boundaries of what’s possible.
+            User Experience: Making every interaction with our app delightful and easy.
+            Trust and Privacy: Protecting your data and maintaining transparency in everything we do.
+            Community: Building tools that bring people together and help them grow.
+            
+            Our Values:
+                Customer-Centricity: Your feedback drives our innovations. We listen carefully to your needs and build solutions around them.
+                Quality: We are committed to maintaining the highest standards in every product we build.
+                Transparency: We believe in being open and honest about how we operate and how we handle your data.
+                Continuous Improvement: We’re always learning, iterating, and improving to ensure we deliver the best experience possible.
+                
+            Get in Touch:
+            We’d love to hear from you! Whether you have feedback, a question, or just want to say hi, feel free to reach out.
+            Email: AndreiShpartou@gmail.com
+        </string>
+		<key>title</key>
+		<string>About Us</string>
+	</dict>
+	<key>legalAndPolicies</key>
+	<dict>
+		<key>labelText</key>
+		<string>Terms</string>
+		<key>textViewText</key>
+		<string>Thank you for choosing to be part of us. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices regarding your personal information, please contact us at AndreiShpartou@gmail.com.This Privacy Policy explains what information we collect, how we use it, and what rights you have concerning it. Please read it carefully to understand our practices.
+            
+            1. Information We Collect
+            
+            We collect personal information that you voluntarily provide to us when you:
+            Register or use our app.
+            Contact customer support.
+            Subscribe to our newsletter or marketing communications.
+            
+            The information we collect includes:
+            Personal Information: Full name, email address, phone number, etc.
+            Device Information: Device type, operating system, IP address, and browser type.
+            Usage Data: Information about how you interact with our app (e.g., pages viewed, features used).
+            
+            We do not collect sensitive personal data such as race, religion, or political affiliations.
+    
+            2. How We Use Your Information
+            
+            We use your personal information for the following purposes:
+            
+            Provide and maintain the app: To offer features and ensure the proper functionality of the app.
+            Improve user experience: To understand your preferences and enhance the app.
+            Marketing and communication: To send promotional messages, updates, and offers (with your consent).
+            Legal purposes: To comply with legal obligations or protect our rights.
+            
+            3. Sharing Your Information
+            
+            We do not share your personal information with third parties except in the following situations:
+            
+            With Service Providers: To assist us in running the app, for example, cloud storage or analytics providers.
+            For Legal Reasons: When required by law or to protect the safety and rights of our company or users.
+            
+            4. Data Security
+            
+            We take your data security seriously. We use appropriate technical and organizational measures to protect your personal information from unauthorized access, loss, or alteration. However, no system is completely secure, and we cannot guarantee its absolute security.
+            
+            5. Third-Party Links. Our app may contain links to external websites or services. We are not responsible for the privacy practices or the content of third-party sites.
+            
+            6. Children’s Privacy
+
+            Our app is not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children under 13. If we become aware that we have inadvertently collected personal data from a child, we will take steps to delete it as soon as possible.
+
+            7. Changes to This Privacy Policy
+
+            We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. When we make changes, we will update the “Effective Date” at the top of this document. Please review this policy regularly to stay informed about how we are protecting your personal information.
+        </string>
+		<key>title</key>
+		<string>Privacy Policy</string>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Regular.otf</string>

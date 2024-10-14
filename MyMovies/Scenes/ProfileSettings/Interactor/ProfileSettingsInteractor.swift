@@ -1,0 +1,60 @@
+//
+//  ProfileSettingsInteractor.swift
+//  MyMovies
+//
+//  Created by Andrei Shpartou on 27/07/2024.
+//
+
+import Foundation
+
+final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
+    weak var presenter: ProfileSettingsInteracrotOutputProtocol?
+
+    private let networkManager: NetworkManagerProtocol
+
+    private var settingsSections: [ProfileSettingsSection] = []
+    private var plistLoader: PlistConfigurationLoaderProtocol?
+
+    // MARK: - Init
+    init(
+        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader()
+    ) {
+        self.networkManager = networkManager
+        self.plistLoader = plistLoader
+//        self.userRepository = userRepository
+    }
+
+    // MARK: - ProfileSettingsInteractorProtocol
+    func fetchUserProfile() {
+        networkManager.fetchUserProfile { [weak self] result in
+            switch result {
+            case .success(let profile):
+                self?.presenter?.didFetchUserProfile(profile)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    func fetchSettingsItems() {
+        networkManager.fetchSettingsSections { [weak self] result in
+            switch result {
+            case .success(let sections):
+                self?.presenter?.didFetchSettingsItems(sections)
+                self?.settingsSections = sections
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    func fetchDataForGeneralTextScene(for key: String) {
+        let details = plistLoader?.loadGeneralTextSceneData(for: key)
+        presenter?.didFetchDataForGenerelTextScene(labelText: details?.labelText, textViewText: details?.textViewText, title: details?.title)
+    }
+
+    func getSettingsSectionItem(at indexPath: IndexPath) -> ProfileSettingsItem {
+        return settingsSections[indexPath.section].items[indexPath.row]
+    }
+}

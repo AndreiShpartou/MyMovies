@@ -16,9 +16,39 @@ final class TextInfoGeneralViewController: UIViewController {
         textInfoView.delegate = self
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupViewController()
+    }
+
     // MARK: - Public
-    func configure(with labelText: String?, and textViewText: String?, title: String) {
+    func configure(with labelText: String?, and textViewText: String?, title: String?) {
         textInfoView.configure(with: labelText, and: textViewText, title: title)
+    }
+}
+
+// MARK: - Setup
+extension TextInfoGeneralViewController {
+    private func setupViewController() {
+        setupNavigationController()
+    }
+
+    private func setupNavigationController() {
+        if let isNavigationBarHidden = navigationController?.isNavigationBarHidden,
+            !isNavigationBarHidden {
+            textInfoView.hideDefaultTitle()
+            navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
+            navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
+        }
+    }
+}
+
+// MARK: - ActionMethods
+extension TextInfoGeneralViewController {
+    @objc
+    private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

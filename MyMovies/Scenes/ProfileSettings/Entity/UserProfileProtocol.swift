@@ -1,0 +1,15 @@
+//
+//  UserProfileProtocol.swift
+//  MyMovies
+//
+//  Created by Andrei Shpartou on 08/10/2024.
+//
+
+import Foundation
+
+protocol UserProfileProtocol: Codable {
+    var id: Int { get }
+    var name: String { get }
+    var email: String { get }
+    var profileImageURL: URL? { get }
+}

@@ -11,7 +11,7 @@ final class MovieDetailsRouter: MovieDetailsRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init
-    init(viewController: UIViewController?) {
+    init(viewController: UIViewController? = nil) {
         self.viewController = viewController
     }
 
@@ -25,5 +25,11 @@ final class MovieDetailsRouter: MovieDetailsRouterProtocol {
         let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
         viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieListVC, animated: true)
+    }
+
+    func navigateToReviewDetails(with author: String?, and text: String?, title: String) {
+        let reviewVC = SceneBuilder.buildGeneralTextInfoScene(labelText: author, textViewText: text, title: title)
+        reviewVC.modalPresentationStyle = .pageSheet
+        viewController?.present(reviewVC, animated: true)
     }
 }

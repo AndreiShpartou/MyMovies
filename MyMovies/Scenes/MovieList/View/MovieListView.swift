@@ -13,7 +13,6 @@ final class MovieListView: UIView, MovieListViewProtocol {
             updateDelegates()
         }
     }
-    var presenter: MovieListPresenterProtocol?
 
     // MARK: - UIComponents
     // Genres collection

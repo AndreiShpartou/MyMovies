@@ -10,25 +10,35 @@ import SnapKit
 
 // MARK: - UIView
 extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while let responder = parentResponder {
+            if let viewController = responder as? UIViewController {
+                return viewController
+            }
+            parentResponder = responder.next
+        }
+        return nil
+    }
+
     static func createCommonView(
         clipsToBounds: Bool = false,
-        cornderRadius: CGFloat = 0,
+        cornerRadius: CGFloat = 0,
         backgroundColor: UIColor? = nil,
-        frame: CGRect = .zero
+        frame: CGRect = .zero,
+        borderWidth: CGFloat = 0,
+        borderColor: CGColor? = nil,
+        masksToBounds: Bool = false
     ) -> UIView {
         let view = UIView(frame: frame)
         view.clipsToBounds = clipsToBounds
         view.backgroundColor = backgroundColor
-        view.layer.cornerRadius = cornderRadius
+        view.layer.cornerRadius = cornerRadius
+        view.layer.borderWidth = borderWidth
+        view.layer.borderColor = borderColor
+        view.layer.masksToBounds = masksToBounds
 
         return view
-    }
-
-    func addSubviews(_ views: UIView...) {
-        views.forEach {
-            addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
     }
 
     static func createBorderedViewWithLabel(
@@ -37,7 +47,7 @@ extension UIView {
         borderColor: CGColor = UIColor.primaryBlueAccent.cgColor,
         textColor: UIColor = .primaryBlueAccent
     ) -> UIView {
-        let view: UIView = .createCommonView(cornderRadius: 8)
+        let view: UIView = .createCommonView(cornerRadius: 8)
         view.layer.borderWidth = borderWidth
         view.layer.borderColor = borderColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -59,6 +69,23 @@ extension UIView {
         }
 
         return view
+    }
+
+    func addSubviews(_ views: UIView...) {
+        views.forEach {
+            addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+
+    func initHideKeyboard() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.addGestureRecognizer(gesture)
+    }
+
+    @objc
+    private func dismissKeyboard() {
+        self.endEditing(true)
     }
 }
 
@@ -147,6 +174,7 @@ extension UITextView {
         textView.isEditable = false
         textView.isUserInteractionEnabled = isUserInteractionEnabled
         textView.isScrollEnabled = isScrollEnabled
+        textView.showsVerticalScrollIndicator = false
         textView.backgroundColor = .clear
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
@@ -156,21 +184,100 @@ extension UITextView {
     }
 }
 
+// MARK: - UITextField
+extension UITextField {
+    static func createBorderedTextField(
+        action: Selector,
+        target: Any?,
+        placeholder: String? = nil,
+        keyboardType: UIKeyboardType = .default,
+        autocapitalizationType: UITextAutocapitalizationType = .none,
+        isSecureTextEntry: Bool = false
+    ) -> UITextField {
+        let textField = UITextField()
+        textField.backgroundColor = .primaryBackground
+        textField.font = Typography.Medium.subhead
+        textField.textColor = .textColorGrey
+//        textField.tintColor = 
+        textField.keyboardType = keyboardType
+        textField.keyboardAppearance = .dark
+        textField.autocapitalizationType = autocapitalizationType
+        textField.autocorrectionType = .no
+        textField.isSecureTextEntry = isSecureTextEntry
+        // Placeholder
+        textField.attributedPlaceholder = NSAttributedString(
+            string: placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.textColorDarkGrey]
+        )
+        // Add paddings
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        textField.rightView = paddingView
+        textField.rightViewMode = .always
+        // Adjust border
+        textField.layer.cornerRadius = 30
+        textField.layer.borderColor = UIColor.primarySoft.cgColor
+        textField.layer.borderWidth = 1.5
+        // Add target
+        textField.addTarget(target, action: action, for: .editingChanged)
+
+        return textField
+    }
+
+    func addDoneToolBarButton() {
+        let bar = UIToolbar()
+        let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(closeKeyboard))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        bar.items = [flexSpace, flexSpace, doneBtn]
+        bar.sizeToFit()
+
+        self.inputAccessoryView = bar
+    }
+
+    @objc
+    private func closeKeyboard() {
+        self.resignFirstResponder()
+    }
+}
+
 // MARK: - UIImageView
 extension UIImageView {
     static func createImageView(
         contentMode: UIView.ContentMode,
         clipsToBounds: Bool = false,
         cornerRadius: CGFloat = 0,
-        image: UIImage? = nil
+        image: UIImage? = nil,
+        backgroundColor: UIColor? = nil
     ) -> UIImageView {
         let imageView = UIImageView()
         imageView.contentMode = contentMode
         imageView.clipsToBounds = clipsToBounds
         imageView.layer.cornerRadius = cornerRadius
         imageView.image = image
+        imageView.backgroundColor = backgroundColor
 
         return imageView
+    }
+}
+
+// MARK: - UIBarButtonItem
+extension UIBarButtonItem {
+    static func createCustomBackBarButtonItem(action: Selector, target: Any?) -> UIBarButtonItem {
+//        // Set custom view for the back button
+//        let backgroundView: UIView = .createCommonView(cornerRadius: 18, backgroundColor: .primarySoft)
+//        let buttonImage = UIImage(systemName: "chevron.left")?.withTintColor(.textColorWhite, renderingMode: .alwaysOriginal)
+//        let backButton = UIButton(type: .system)
+//        backButton.setImage(buttonImage, for: .normal)
+//        backButton.tintColor = .primaryBackground
+//        backButton.addTarget(target, action: action, for: .touchUpInside)
+//        // Constraints
+//        backgroundView.addSubviews(backButton)
+//        backgroundView.snp.makeConstraints { $0.width.height.equalTo(36) }
+//        backButton.snp.makeConstraints { $0.center.equalToSuperview() }
+        let backButton: UIButton = .createBackNavBarButton(action: action, target: target)
+
+        return UIBarButtonItem(customView: backButton)
     }
 }
 
@@ -178,6 +285,7 @@ extension UIImageView {
 extension UIActivityIndicatorView {
     static func createSpinner(style: Style) -> UIActivityIndicatorView {
         let spinner = UIActivityIndicatorView(style: style)
+        spinner.color = .primaryBlueAccent
         spinner.hidesWhenStopped = true
 
         return spinner
@@ -186,6 +294,27 @@ extension UIActivityIndicatorView {
 
 // MARK: - UIButton
 extension UIButton {
+    convenience init(
+        title: String?,
+        font: UIFont? = nil,
+        titleColor: UIColor? = nil,
+        backgroundColor: UIColor? = nil,
+        cornerRadius: CGFloat = 0,
+        action: Selector,
+        target: Any?
+    ) {
+        self.init(type: .system)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = font
+        self.setTitleColor(titleColor, for: .normal)
+        self.setTitleColor(.primarySoft, for: .highlighted)
+        self.titleLabel?.textAlignment = .center
+        self.backgroundColor = backgroundColor
+        self.layer.cornerRadius = cornerRadius
+
+        self.addTarget(target, action: action, for: .touchUpInside)
+    }
+
     static func createFavouriteButton() -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -196,7 +325,7 @@ extension UIButton {
         return button
     }
 
-    static func createBackNavBarButton() -> UIButton {
+    static func createBackNavBarButton(action: Selector, target: Any?) -> UIButton {
         let leftButton = UIButton(type: .custom)
         leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         leftButton.tintColor = .white
@@ -204,6 +333,8 @@ extension UIButton {
 
         leftButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         leftButton.layer.cornerRadius = 15
+
+        leftButton.addTarget(target, action: action, for: .touchUpInside)
 
         return leftButton
     }
