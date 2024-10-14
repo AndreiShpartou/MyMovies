@@ -77,6 +77,16 @@ extension UIView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
+
+    func initHideKeyboard() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.addGestureRecognizer(gesture)
+    }
+
+    @objc
+    private func dismissKeyboard() {
+        self.endEditing(true)
+    }
 }
 
 // MARK: - UICollectionView
@@ -177,6 +187,8 @@ extension UITextView {
 // MARK: - UITextField
 extension UITextField {
     static func createBorderedTextField(
+        action: Selector,
+        target: Any?,
         placeholder: String? = nil,
         keyboardType: UIKeyboardType = .default,
         autocapitalizationType: UITextAutocapitalizationType = .none,
@@ -186,7 +198,7 @@ extension UITextField {
         textField.backgroundColor = .primaryBackground
         textField.font = Typography.Medium.subhead
         textField.textColor = .textColorGrey
-        textField.tintColor = .textColorWhite
+//        textField.tintColor = 
         textField.keyboardType = keyboardType
         textField.keyboardAppearance = .dark
         textField.autocapitalizationType = autocapitalizationType
@@ -207,6 +219,8 @@ extension UITextField {
         textField.layer.cornerRadius = 30
         textField.layer.borderColor = UIColor.primarySoft.cgColor
         textField.layer.borderWidth = 1.5
+        // Add target
+        textField.addTarget(target, action: action, for: .editingChanged)
 
         return textField
     }

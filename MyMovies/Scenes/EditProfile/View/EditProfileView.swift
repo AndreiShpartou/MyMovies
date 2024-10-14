@@ -39,23 +39,38 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     )
     // Body with text fields
     // FullName
-    private let fullNameTextField: UITextField = .createBorderedTextField()
+    private let fullNameTextField: UITextField = .createBorderedTextField(
+        action: #selector(fullNameDidChanged),
+        target: self
+    )
     private let fullNameTitleLabel: InsetLabel = .createInsetLabel(
         font: Typography.Medium.body,
         textColor: .textColorWhiteGrey,
         text: "Full Name",
         backgroundColor: .primaryBackground
     )
-    private let fullNameWarningLabel: UILabel = .createLabel(font: Typography.Medium.body, textColor: .secondaryRed)
+    private let fullNameWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Name is empty"
+    )
     // Email
-    private let emailTextField: UITextField = .createBorderedTextField(keyboardType: .emailAddress)
+    private let emailTextField: UITextField = .createBorderedTextField(
+        action: #selector(emailDidChanged),
+        target: self,
+        keyboardType: .emailAddress
+    )
     private let emailTitleLabel: InsetLabel = .createInsetLabel(
         font: Typography.Medium.body,
         textColor: .textColorWhiteGrey,
         text: "Email",
         backgroundColor: .primaryBackground
     )
-    private let emailWarningLabel: UILabel = .createLabel(font: Typography.Medium.body, textColor: .secondaryRed)
+    private let emailWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Email is empty"
+    )
     // Save Changes
     private lazy var saveChangesButton = UIButton(
         title: "Save Changes",
@@ -72,6 +87,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.initHideKeyboard()
 
         setupView()
         setupConstraints()
@@ -130,10 +146,17 @@ extension EditProfileView {
     }
 
     private func setAdditionalSubviewsPreferences() {
+        fullNameWarningLabel.isHidden = true
+        emailWarningLabel.isHidden = true
+        // Setup label insets
         let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         fullNameTitleLabel.textInsets = textInset
         emailTitleLabel.textInsets = textInset
         // Setup delegation
+        fullNameTextField.delegate = self
+        fullNameTextField.tag = 0
+        emailTextField.delegate = self
+        emailTextField.tag = 1
     }
 
     private func setupGestureRecognizers() {
@@ -170,6 +193,29 @@ extension EditProfileView {
         imagePickerController.sourceType = .photoLibrary
         viewController.present(imagePickerController, animated: true, completion: nil)
     }
+
+    @objc
+    private func fullNameDidChanged() {
+        if let text = fullNameTextField.text,
+            text.isEmpty {
+            fullNameWarningLabel.isHidden = false
+            fullNameTextField.layer.borderColor = UIColor.secondaryRed.cgColor
+        } else {
+            fullNameWarningLabel.isHidden = true
+            fullNameTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+        }
+    }
+
+    @objc private func emailDidChanged() {
+        if let text = emailTextField.text,
+            text.isEmpty {
+            emailWarningLabel.isHidden = false
+            emailTextField.layer.borderColor = UIColor.secondaryRed.cgColor
+        } else {
+            emailWarningLabel.isHidden = true
+            emailTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+        }
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate
@@ -180,6 +226,41 @@ extension EditProfileView: UIImagePickerControllerDelegate, UINavigationControll
 //            saveAvatarToUserDefaults()
         }
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension EditProfileView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.textColor = .textColorWhite
+        if let text = textField.text,
+           !text.isEmpty {
+            textField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+        } else {
+            textField.layer.borderColor = UIColor.secondaryRed.cgColor
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = self.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        let text = textField.text
+        if textField.isEqual(fullNameTextField) {
+//            delegate?.updateFullName(with: text)
+        } else if textField.isEqual(emailTextField) {
+//            delegate?.updateEmail(with: text)
+        }
+
+        textField.textColor = .textColorGrey
+        textField.layer.borderColor = UIColor.primarySoft.cgColor
     }
 }
 
