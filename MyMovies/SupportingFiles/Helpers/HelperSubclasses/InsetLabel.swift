@@ -39,13 +39,15 @@ extension InsetLabel {
         textColor: UIColor? = nil,
         text: String? = nil,
         borderWidth: CGFloat? = nil,
-        borderColor: CGColor? = nil
+        borderColor: CGColor? = nil,
+        backgroundColor: UIColor? = nil
     ) -> InsetLabel {
         let label = InsetLabel()
         label.font = font
         label.numberOfLines = numberOfLines
         label.textAlignment = textAlignment
         label.text = text
+        label.backgroundColor = backgroundColor
         if let textColor = textColor {
             label.textColor = textColor
         }

@@ -185,7 +185,7 @@ extension UITextField {
         let textField = UITextField()
         textField.backgroundColor = .primaryBackground
         textField.font = Typography.Medium.subhead
-        textField.textColor = .textColorWhiteGrey
+        textField.textColor = .textColorGrey
         textField.tintColor = .textColorWhite
         textField.keyboardType = keyboardType
         textField.keyboardAppearance = .dark
@@ -204,9 +204,9 @@ extension UITextField {
         textField.rightView = paddingView
         textField.rightViewMode = .always
         // Adjust border
-        textField.borderStyle = .roundedRect
-        textField.isEnabled = true
+        textField.layer.cornerRadius = 30
         textField.layer.borderColor = UIColor.primarySoft.cgColor
+        textField.layer.borderWidth = 1.5
 
         return textField
     }

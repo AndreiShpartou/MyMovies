@@ -36,6 +36,27 @@ class EditProfileViewController: UIViewController, EditProfileViewControllerProt
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupViewController()
         presenter.viewDidLoad()
+    }
+}
+
+// MARK: - Setup
+extension EditProfileViewController {
+    private func setupViewController() {
+        setupNavigationController()
+    }
+
+    private func setupNavigationController() {
+        navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
+        navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
+    }
+}
+
+// MARK: - ActionMethods
+extension EditProfileViewController {
+    @objc
+    private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }

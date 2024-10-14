@@ -18,9 +18,10 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         cornerRadius: 50
     )
     // Header
+    private let editBackgroundView: UIView = .createCommonView(cornerRadius: 20, backgroundColor: .primarySoft)
     private let editIconImageView: UIImageView = .createImageView(
-        contentMode: .center,
-        cornerRadius: 15,
+        contentMode: .scaleAspectFit,
+        cornerRadius: 8,
         image: Asset.Icons.editProfileImage.image.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal),
         backgroundColor: .primarySoft
     )
@@ -34,32 +35,34 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     private let emailLabel: UILabel = .createLabel(
         font: Typography.Medium.subhead,
         textAlignment: .center,
-        textColor: .textColorWhiteGrey
+        textColor: .textColorGrey
     )
     // Body with text fields
     // FullName
     private let fullNameTextField: UITextField = .createBorderedTextField()
     private let fullNameTitleLabel: InsetLabel = .createInsetLabel(
-        font: Typography.Medium.caption,
+        font: Typography.Medium.body,
         textColor: .textColorWhiteGrey,
-        text: "Full Name"
+        text: "Full Name",
+        backgroundColor: .primaryBackground
     )
-    private let fullNameWarningLabel: UILabel = .createLabel(font: Typography.Medium.caption, textColor: .secondaryRed)
+    private let fullNameWarningLabel: UILabel = .createLabel(font: Typography.Medium.body, textColor: .secondaryRed)
     // Email
     private let emailTextField: UITextField = .createBorderedTextField(keyboardType: .emailAddress)
     private let emailTitleLabel: InsetLabel = .createInsetLabel(
-        font: Typography.Medium.caption,
+        font: Typography.Medium.body,
         textColor: .textColorWhiteGrey,
-        text: "Email"
+        text: "Email",
+        backgroundColor: .primaryBackground
     )
-    private let emailWarningLabel: UILabel = .createLabel(font: Typography.Medium.caption, textColor: .secondaryRed)
+    private let emailWarningLabel: UILabel = .createLabel(font: Typography.Medium.body, textColor: .secondaryRed)
     // Save Changes
     private lazy var saveChangesButton = UIButton(
         title: "Save Changes",
         font: Typography.Medium.title,
         titleColor: .textColorWhite,
         backgroundColor: .primaryBlueAccent,
-        cornerRadius: 25,
+        cornerRadius: 30,
         action: #selector(didTapSaveChanges),
         target: self
     )
@@ -113,7 +116,8 @@ extension EditProfileView {
         backgroundColor = .primaryBackground
         // Header
         addSubviews(loadingIndicator)
-        addSubviews(profileImageView, editIconImageView, fullNameLabel, emailLabel)
+        editBackgroundView.addSubviews(editIconImageView)
+        addSubviews(profileImageView, editBackgroundView, fullNameLabel, emailLabel)
         // Body
         addSubviews(fullNameTextField, fullNameTitleLabel, fullNameWarningLabel)
         addSubviews(emailTextField, emailTitleLabel, emailWarningLabel)
@@ -124,7 +128,7 @@ extension EditProfileView {
     }
 
     private func setAdditionalSubviewsPreferences() {
-        let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+        let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         fullNameTitleLabel.textInsets = textInset
         emailTitleLabel.textInsets = textInset
     }
@@ -153,10 +157,15 @@ extension EditProfileView {
             make.width.height.equalTo(100)
         }
 
+        editBackgroundView.snp.makeConstraints { make in
+            make.top.equalTo(profileImageView.snp.centerY).offset(16)
+            make.leading.equalTo(profileImageView.snp.centerX).offset(16)
+            make.width.height.equalTo(40)
+        }
+
         editIconImageView.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.centerY).offset(24)
-            make.leading.equalTo(profileImageView.snp.centerX).offset(24)
-            make.width.height.equalTo(30)
+            make.center.equalTo(editBackgroundView)
+            make.width.height.equalTo(16)
         }
 
         fullNameLabel.snp.makeConstraints { make in
@@ -178,7 +187,7 @@ extension EditProfileView {
         fullNameTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(emailLabel.snp.bottom).offset(32)
-            make.height.equalTo(50)
+            make.height.equalTo(60)
         }
 
         fullNameTitleLabel.snp.makeConstraints { make in
@@ -194,7 +203,7 @@ extension EditProfileView {
         emailTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(fullNameWarningLabel.snp.bottom).offset(24)
-            make.height.equalTo(50)
+            make.height.equalTo(60)
         }
 
         emailTitleLabel.snp.makeConstraints { make in
@@ -212,7 +221,7 @@ extension EditProfileView {
         saveChangesButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
-            make.height.equalTo(50)
+            make.height.equalTo(60)
         }
     }
 }

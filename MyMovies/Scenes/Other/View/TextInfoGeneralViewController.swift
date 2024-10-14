@@ -19,7 +19,7 @@ final class TextInfoGeneralViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupView()
+        setupViewController()
     }
 
     // MARK: - Public
@@ -30,7 +30,7 @@ final class TextInfoGeneralViewController: UIViewController {
 
 // MARK: - Setup
 extension TextInfoGeneralViewController {
-    private func setupView() {
+    private func setupViewController() {
         setupNavigationController()
     }
 
