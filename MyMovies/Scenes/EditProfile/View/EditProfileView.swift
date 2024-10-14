@@ -125,12 +125,30 @@ extension EditProfileView {
         addSubviews(saveChangesButton)
         // Additional subviews setup
         setAdditionalSubviewsPreferences()
+
+        setupGestureRecognizers()
     }
 
     private func setAdditionalSubviewsPreferences() {
         let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         fullNameTitleLabel.textInsets = textInset
         emailTitleLabel.textInsets = textInset
+        // Setup delegation
+    }
+
+    private func setupGestureRecognizers() {
+        // Tap gesture for profileImageView
+        let profileImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        profileImageView.addGestureRecognizer(profileImageViewTapGesture)
+        profileImageView.isUserInteractionEnabled = true
+        // Tap gesture for editBackgroundView
+        let editBackgroundViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        editBackgroundView.addGestureRecognizer(editBackgroundViewTapGesture)
+        editBackgroundView.isUserInteractionEnabled = true
+        // Tap gesture for editIconImageView
+        let editIconImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        editIconImageView.addGestureRecognizer(editIconImageViewTapGesture)
+        editIconImageView.isUserInteractionEnabled = true
     }
 }
 
@@ -139,6 +157,29 @@ extension EditProfileView {
     @objc
     private func didTapSaveChanges() {
         delegate?.didTapSaveChanges()
+    }
+
+    @objc
+    private func imageViewTapped() {
+        guard let viewController = parentViewController else {
+            return
+        }
+
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .photoLibrary
+        viewController.present(imagePickerController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension EditProfileView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let selectedImage = info[.originalImage] as? UIImage {
+            profileImageView.image = selectedImage
+//            saveAvatarToUserDefaults()
+        }
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 
