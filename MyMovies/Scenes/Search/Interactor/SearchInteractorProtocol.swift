@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SearchInteractorProtocol: AnyObject {
-    var presenter: SearchInteractorOutputProtocol, { get set }
+    var presenter: SearchInteractorOutputProtocol? { get set }
 
     func fetchInitialData()
     func performSearch(with query: String)
