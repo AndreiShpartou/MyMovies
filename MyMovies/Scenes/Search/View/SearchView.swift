@@ -8,6 +8,8 @@
 import UIKit
 
 final class SearchView: UIView, SearchViewProtocol {
+    weak var delegate: SearchViewDelegate?
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
