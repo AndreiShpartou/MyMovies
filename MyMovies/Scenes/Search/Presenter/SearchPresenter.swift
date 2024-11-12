@@ -51,11 +51,11 @@ class SearchPresenter: SearchPresenterProtocol {
 
     func didSelectActor(actorID: Int) {
         // Handle actor selection
-        router.navigateToActorDetails(with: actorID)
+        // router.navigateToActorDetails(with: actorID)
     }
 
     func didTapSeeAllButton() {
-        router.navigateToMovieList()
+        // router.navigateToMovieList()
     }
 }
 

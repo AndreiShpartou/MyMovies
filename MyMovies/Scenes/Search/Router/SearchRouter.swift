@@ -16,15 +16,21 @@ class SearchRouter: SearchRouterProtocol {
     }
 
     // MARK: - Navigation
-    func navigateToMovieDetails(with movieID: Int) {
-        //
+    func navigateToMovieDetails(with movie: MovieProtocol) {
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }
 
-    func navigateToActorDetails(with actorID: Int) {
-        //
+    func navigateToActorDetails(with actor: ActorProtocol) {
+        // let actorDetailsVC = SceneBuilder.buildActorDetailsScene(for: actor)
+        // viewController?.navigationController?.isNavigationBarHidden = false
+        // viewController?.navigationController?.pushViewController(actorDetailsVC, animated: true)
     }
 
-    func navigateToMovieList() {
-        //
+    func navigateToMovieList(type: MovieListType) {
+        let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieListVC, animated: true)
     }
 }

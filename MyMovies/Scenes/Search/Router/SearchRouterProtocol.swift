@@ -10,7 +10,7 @@ import UIKit
 protocol SearchRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
-    func navigateToMovieDetails(with movieID: Int)
-    func navigateToActorDetails(with actorID: Int)
-    func navigateToMovieList()
+    func navigateToMovieDetails(with movie: MovieProtocol)
+    func navigateToActorDetails(with actor: ActorProtocol)
+    func navigateToMovieList(type: MovieListType)
 }
