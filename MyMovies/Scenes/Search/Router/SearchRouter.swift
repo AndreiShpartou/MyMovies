@@ -14,4 +14,17 @@ class SearchRouter: SearchRouterProtocol {
     init(viewController: UIViewController? = nil) {
         self.viewController = viewController
     }
+
+    // MARK: - Navigation
+    func navigateToMovieDetails(with movieID: Int) {
+        //
+    }
+
+    func navigateToActorDetails(with actorID: Int) {
+        //
+    }
+
+    func navigateToMovieList() {
+        //
+    }
 }

@@ -7,4 +7,6 @@
 
 import Foundation
 
-protocol ActorProtocol {}
+protocol ActorProtocol {
+    var name: String { get }
+}

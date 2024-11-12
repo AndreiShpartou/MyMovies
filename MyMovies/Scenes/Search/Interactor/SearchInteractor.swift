@@ -13,8 +13,28 @@ protocol DataPersistenceManagerProtocol {
     func fetchRecentlySearchedMovies() -> [MovieProtocol]
 }
 class DataPersistenceManager: DataPersistenceManagerProtocol {
-    func saveSearchQuery(_ query: String)
-    func fetchRecentlySearchedMovies() -> [MovieProtocol]
+    func saveSearchQuery(_ query: String) {}
+    func fetchRecentlySearchedMovies() -> [MovieProtocol] {
+        return [
+            Movie(
+            id: 1,
+            title: "s",
+            alternativeTitle: "s",
+            description: "s",
+            shortDescription: "s",
+            status: "s",
+            releaseYear: "s",
+            runtime: "s",
+            voteAverage: 9.9,
+            genres: [],
+            countries: [],
+            persons: [],
+            poster: nil,
+            backdrop: nil,
+            similarMovies: nil
+        )
+        ]
+    }
 }
 
 class SearchInteractor: SearchInteractorProtocol {
@@ -79,12 +99,16 @@ class SearchInteractor: SearchInteractorProtocol {
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             if let movie = fetchedUpcomingMovie {
-                self?.presenter?.didFetchUpcomingMovie(movie)
+                self.presenter?.didFetchUpcomingMovie(movie)
             }
-            self?.presenter?.didFetchGenres(fetchedGenres)
-            self?.presenter?.didFetchPopularMovies(fetchedPopularMovies)
-            self?.presenter?.didFetchRecentlySearchedMovies([])
+            self.presenter?.didFetchGenres(fetchedGenres)
+            self.presenter?.didFetchPopularMovies(fetchedPopularMovies)
+            self.presenter?.didFetchRecentlySearchedMovies([])
         }
+    }
+
+    func fetchPopularMovies() {
+        //
     }
 
     func performSearch(with query: String) {
@@ -104,16 +128,16 @@ class SearchInteractor: SearchInteractorProtocol {
                 case .failure(let error):
                     self?.presenter?.didFailToFetchData(with: error)
                 }
-            } else {
-                // Perform movie search
-                networkManager.searchMovies(query: query) { [weak self] result in
-                    switch result {
-                    case .success(let movies):
-                        self?.presenter?.didFetchSearchResults(movies)
-                        self?.saveSearchQuery(query)
-                    case .failure(let error):
-                        self?.presenter?.didFailToFetchData(with: error)
-                    }
+            }
+        } else {
+            // Perform movie search
+            networkManager.searchMovies(query: query) { [weak self] result in
+                switch result {
+                case .success(let movies):
+                    self?.presenter?.didFetchSearchResults(movies)
+                    self?.saveSearchQuery(query)
+                case .failure(let error):
+                    self?.presenter?.didFailToFetchData(with: error)
                 }
             }
         }
@@ -136,7 +160,7 @@ class SearchInteractor: SearchInteractorProtocol {
 
         for actor in actors {
             group.enter()
-            networkManager.fetchMoviesByActor(actor: actor) { [weak self] result in
+            networkManager.fetchMovieByActor(actor: actor) { [weak self] result in
                 switch result {
                 case .success(let movies):
                     relatedMovies.append(contentsOf: movies)

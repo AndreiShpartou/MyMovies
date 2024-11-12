@@ -68,6 +68,9 @@ class NetworkManager: NetworkManagerProtocol {
         fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
     }
 
+    func fetchMovieByActor(actor: ActorProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        //
+    }
     // MARK: - Genres
     // Get the list of official genres for movies
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
@@ -105,6 +108,15 @@ class NetworkManager: NetworkManagerProtocol {
             ProfileSettingsSection(title: "More", items: [.legalAndPolicies, .aboutUs])
         ]
         completion(.success(settingsSection))
+    }
+
+    // MARK: - Search
+    func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        //
+    }
+
+    func searchActors(query: String, completion: @escaping (Result<[ActorProtocol], Error>) -> Void) {
+        //
     }
 
     // MARK: - PerformRequest

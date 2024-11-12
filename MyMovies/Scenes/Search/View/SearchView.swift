@@ -20,6 +20,55 @@ final class SearchView: UIView, SearchViewProtocol {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - SearchViewProtocol
+    func showGenres(_ genres: [GenreViewModelProtocol]) {
+        //
+    }
+
+    func showUpcomingMovie(_ movie: UpcomingMovieViewModelProtocol) {
+        //
+    }
+
+    func showRecentlySearchedMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
+        //
+    }
+
+    func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
+        //
+    }
+
+    func showSearchResults(_ movies: [BriefMovieListItemViewModelProtocol]) {
+        //
+    }
+
+    func showActorResults(_ actors: [ActorViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol]) {
+        //
+    }
+
+    func showNoResults() {
+        //
+    }
+
+    func hideAllElements() {
+        //
+    }
+
+    func showInitialElements() {
+        //
+    }
+
+    func showLoading() {
+        //
+    }
+
+    func hideLoading() {
+        //
+    }
+
+    func showError(error: Error) {
+        //
+    }
 }
 
 // MARK: - Setup

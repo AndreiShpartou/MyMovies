@@ -12,6 +12,7 @@ protocol SearchInteractorProtocol: AnyObject {
 
     func fetchInitialData()
     func performSearch(with query: String)
+    func fetchPopularMovies()
     func fetchRecentlySearchedMovies()
 }
 
