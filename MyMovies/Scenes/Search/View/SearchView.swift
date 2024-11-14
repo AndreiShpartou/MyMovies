@@ -177,6 +177,7 @@ extension SearchView {
 //        genresCollectionViewHandler.delegate = delegate
 //        upcomingMovieCollectionView.delegate = delegate
 //        recentlySearchedCollectionView.delegate = delegate
+        searchBar.delegate = delegate
     }
 
     private func setupHandlers() {

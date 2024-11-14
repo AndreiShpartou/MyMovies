@@ -13,7 +13,8 @@ protocol SearchViewControllerProtocol {
 
 final class SearchViewController: UIViewController, SearchViewControllerProtocol {
     var presenter: SearchPresenterProtocol
-    let searchView: SearchViewProtocol
+
+    private let searchView: SearchViewProtocol
 
     // MARK: - Init
     init(searchView: SearchViewProtocol, presenter: SearchPresenterProtocol) {
@@ -36,11 +37,47 @@ final class SearchViewController: UIViewController, SearchViewControllerProtocol
         super.viewDidLoad()
 
         setupViewController()
+        presenter.viewDidLoad()
     }
 }
 
 // MARK: - Setup
 extension SearchViewController {
     private func setupViewController() {
+        searchView.delegate = self
+    }
+}
+
+// MARK: - SearchViewDelegate
+extension SearchViewController: SearchViewDelegate {
+    func didSearch(query: String) {
+        presenter.didSearch(query: query)
+    }
+
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        presenter.didSelectGenre(genre)
+    }
+
+    func didSelectMovie(movieID: Int) {
+        presenter.didSelectMovie(movieID: movieID)
+    }
+
+    func didSelectActor(actorID: Int) {
+        presenter.didSelectActor(actorID: actorID)
+    }
+
+    func didTapSeeAllButton() {
+        presenter.didTapSeeAllButton()
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        presenter.didSearch(query: searchText)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

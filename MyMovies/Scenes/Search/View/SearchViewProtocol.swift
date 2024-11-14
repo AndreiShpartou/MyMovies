@@ -24,7 +24,7 @@ protocol SearchViewProtocol: UIView {
     func showError(error: Error)
 }
 
-protocol SearchViewDelegate: AnyObject {
+protocol SearchViewDelegate: AnyObject, UISearchBarDelegate {
     func didSearch(query: String)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didSelectMovie(movieID: Int)
