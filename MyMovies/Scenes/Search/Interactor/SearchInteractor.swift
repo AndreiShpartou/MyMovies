@@ -118,13 +118,13 @@ class SearchInteractor: SearchInteractorProtocol {
             return
         }
 
-        if isActorSearchQuery(query) {
-            // Perform actor search
-            networkManager.searchActors(query: query) { [weak self] result in
+        if isPersonSearchQuery(query) {
+            // Perform person search
+            networkManager.searchPersons(query: query) { [weak self] result in
                 switch result {
-                case .success(let actors):
+                case .success(let persons):
                     // Fetch related movies
-                    self?.fetchRelatedMovies(for: actors)
+                    self?.fetchRelatedMovies(for: persons)
                 case .failure(let error):
                     self?.presenter?.didFailToFetchData(with: error)
                 }
@@ -149,18 +149,18 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     // MARK: - Private
-    private func isActorSearchQuery(_ query: String) -> Bool {
-        return query.contains("actor")
+    private func isPersonSearchQuery(_ query: String) -> Bool {
+        return query.contains("person")
     }
 
-    private func fetchRelatedMovies(for actors: [ActorProtocol]) {
-        // Fetch related movies for each actor
+    private func fetchRelatedMovies(for persons: [PersonProtocol]) {
+        // Fetch related movies for each person
         var relatedMovies: [MovieProtocol] = []
         let group = DispatchGroup()
 
-        for actor in actors {
+        for person in persons {
             group.enter()
-            networkManager.fetchMovieByActor(actor: actor) { [weak self] result in
+            networkManager.fetchMovieByPerson(person: person) { [weak self] result in
                 switch result {
                 case .success(let movies):
                     relatedMovies.append(contentsOf: movies)
@@ -172,8 +172,8 @@ class SearchInteractor: SearchInteractorProtocol {
         }
 
         group.notify(queue: .main) { [weak self] in
-            self?.presenter?.didFetchActorResults(actors, relatedMovies: relatedMovies)
-            self?.saveSearchQuery(actors.map { $0.name }.joined(separator: ", ") )
+            self?.presenter?.didFetchPersonResults(persons, relatedMovies: relatedMovies)
+            self?.saveSearchQuery(persons.map { $0.name }.joined(separator: ", ") )
         }
     }
 

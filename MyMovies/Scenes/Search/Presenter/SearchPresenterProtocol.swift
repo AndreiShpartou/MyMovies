@@ -16,6 +16,6 @@ protocol SearchPresenterProtocol: AnyObject {
     func didSearch(query: String)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didSelectMovie(movieID: Int)
-    func didSelectActor(actorID: Int)
+    func didSelectPerson(personID: Int)
     func didTapSeeAllButton()
 }

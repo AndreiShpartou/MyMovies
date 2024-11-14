@@ -62,8 +62,8 @@ extension SearchViewController: SearchViewDelegate {
         presenter.didSelectMovie(movieID: movieID)
     }
 
-    func didSelectActor(actorID: Int) {
-        presenter.didSelectActor(actorID: actorID)
+    func didSelectPerson(personID: Int) {
+        presenter.didSelectPerson(personID: personID)
     }
 
     func didTapSeeAllButton() {

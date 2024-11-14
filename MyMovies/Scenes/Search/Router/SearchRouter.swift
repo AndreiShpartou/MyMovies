@@ -22,10 +22,10 @@ class SearchRouter: SearchRouterProtocol {
         viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }
 
-    func navigateToActorDetails(with actor: ActorProtocol) {
-        // let actorDetailsVC = SceneBuilder.buildActorDetailsScene(for: actor)
+    func navigateToPersonDetails(with person: PersonProtocol) {
+        // let personDetailsVC = SceneBuilder.buildPersonDetailsScene(for: actor)
         // viewController?.navigationController?.isNavigationBarHidden = false
-        // viewController?.navigationController?.pushViewController(actorDetailsVC, animated: true)
+        // viewController?.navigationController?.pushViewController(personDetailsVC, animated: true)
     }
 
     func navigateToMovieList(type: MovieListType) {

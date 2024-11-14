@@ -68,7 +68,7 @@ class NetworkManager: NetworkManagerProtocol {
         fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
     }
 
-    func fetchMovieByActor(actor: ActorProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchMovieByPerson(person: PersonProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         //
     }
     // MARK: - Genres
@@ -115,7 +115,7 @@ class NetworkManager: NetworkManagerProtocol {
         //
     }
 
-    func searchActors(query: String, completion: @escaping (Result<[ActorProtocol], Error>) -> Void) {
+    func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
         //
     }
 

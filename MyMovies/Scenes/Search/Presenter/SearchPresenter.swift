@@ -49,9 +49,9 @@ class SearchPresenter: SearchPresenterProtocol {
 //        router.navigateToMovieDetails(with: <#T##MovieProtocol#>)
     }
 
-    func didSelectActor(actorID: Int) {
-        // Handle actor selection
-        // router.navigateToActorDetails(with: actorID)
+    func didSelectPerson(personID: Int) {
+        // Handle person selection
+        // router.navigateToPersonDetails(with: personID)
     }
 
     func didTapSeeAllButton() {
@@ -113,13 +113,13 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         view?.hideLoading()
     }
 
-    func didFetchActorResults(_ actors: [ActorProtocol], relatedMovies: [MovieProtocol]) {
-        guard let actorViewModels = mapper.map(data: actors, to: [ActorViewModel].self),
+    func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol]) {
+        guard let personViewModels = mapper.map(data: persons, to: [PersonViewModel].self),
               let relatedMoviesViewModels = mapper.map(data: relatedMovies, to: [BriefMovieListItemViewModel].self) else {
             return
         }
 
-        view?.showActorResults(actorViewModels, relatedMovies: relatedMoviesViewModels)
+        view?.showPersonResults(personViewModels, relatedMovies: relatedMoviesViewModels)
         view?.hideLoading()
     }
 

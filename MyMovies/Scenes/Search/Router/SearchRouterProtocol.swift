@@ -11,6 +11,6 @@ protocol SearchRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
     func navigateToMovieDetails(with movie: MovieProtocol)
-    func navigateToActorDetails(with actor: ActorProtocol)
+    func navigateToPersonDetails(with person: PersonProtocol)
     func navigateToMovieList(type: MovieListType)
 }

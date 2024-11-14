@@ -22,6 +22,6 @@ protocol SearchInteractorOutputProtocol: AnyObject {
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol])
     func didFetchPopularMovies(_ movies: [MovieProtocol])
     func didFetchSearchResults(_ movies: [MovieProtocol])
-    func didFetchActorResults(_ actors: [ActorProtocol], relatedMovies: [MovieProtocol])
+    func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol])
     func didFailToFetchData(with error: Error)
 }

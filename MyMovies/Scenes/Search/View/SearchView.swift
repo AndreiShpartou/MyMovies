@@ -100,9 +100,9 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedCollectionView.isHidden = false
     }
 
-    func showActorResults(_ actors: [ActorViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol]) {
+    func showPersonResults(_ persons: [PersonViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol]) {
         hideAllElements()
-        // Implement actor collection view and related movies collection view
+        // Implement person collection view and related movies collection view
     }
 
     func showNoResults() {

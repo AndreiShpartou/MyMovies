@@ -15,7 +15,7 @@ protocol SearchViewProtocol: UIView {
     func showRecentlySearchedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showSearchResults(_ movies: [BriefMovieListItemViewModelProtocol])
-    func showActorResults(_ actors: [ActorViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol])
+    func showPersonResults(_ persons: [PersonViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol])
     func showNoResults()
     func hideAllElements()
     func showInitialElements()
@@ -28,6 +28,6 @@ protocol SearchViewDelegate: AnyObject, UISearchBarDelegate {
     func didSearch(query: String)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didSelectMovie(movieID: Int)
-    func didSelectActor(actorID: Int)
+    func didSelectPerson(personID: Int)
     func didTapSeeAllButton()
 }
