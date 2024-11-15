@@ -7,45 +7,15 @@
 
 import Foundation
 
-// MARK: - Temporary protocols
-protocol DataPersistenceManagerProtocol {
-    func saveSearchQuery(_ query: String)
-    func fetchRecentlySearchedMovies() -> [MovieProtocol]
-}
-class DataPersistenceManager: DataPersistenceManagerProtocol {
-    func saveSearchQuery(_ query: String) {}
-    func fetchRecentlySearchedMovies() -> [MovieProtocol] {
-        return [
-            Movie(
-            id: 1,
-            title: "s",
-            alternativeTitle: "s",
-            description: "s",
-            shortDescription: "s",
-            status: "s",
-            releaseYear: "s",
-            runtime: "s",
-            voteAverage: 9.9,
-            genres: [],
-            countries: [],
-            persons: [],
-            poster: nil,
-            backdrop: nil,
-            similarMovies: nil
-        )
-        ]
-    }
-}
-
 class SearchInteractor: SearchInteractorProtocol {
     weak var presenter: SearchInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
-    private let dataPersistenceManager: DataPersistenceManagerProtocol
+    private let dataPersistenceManager: DataPersistenceProtocol
 
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        dataPersistenceManager: DataPersistenceManagerProtocol = DataPersistenceManager()
+        dataPersistenceManager: DataPersistenceProtocol = DataPersistenceManager.shared
     ) {
         self.networkManager = networkManager
         self.dataPersistenceManager = dataPersistenceManager
