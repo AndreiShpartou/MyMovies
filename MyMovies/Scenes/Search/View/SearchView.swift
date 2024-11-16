@@ -29,6 +29,18 @@ final class SearchView: UIView, SearchViewProtocol {
         cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
 
+    private let personsLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
+        text: "Persons"
+    )
+
+    private let personsCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 50, height: 50),
+        cellTypesDict: [PersonCircleCollectionViewCell.identifier: PersonCircleCollectionViewCell.self],
+        scrollDirection: .horizontal
+    )
+
     private let upcomingMovieLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
@@ -56,6 +68,7 @@ final class SearchView: UIView, SearchViewProtocol {
 
     // MARK: - CollectionViewHandlers
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
+    private lazy var personsCollectionViewHandler = PersonsCircleCollectionViewHandler()
     private lazy var upcomingMovieCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
     private lazy var recentlySearchedCollectionViewHandler = BriefMovieDescriptionHandler()
 
@@ -102,7 +115,13 @@ final class SearchView: UIView, SearchViewProtocol {
 
     func showPersonResults(_ persons: [PersonViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol]) {
         hideAllElements()
-        // Implement person collection view and related movies collection view
+        // Show persons collection
+        personsCollectionViewHandler.configure(with: persons)
+        personsCollectionView.reloadData()
+        personsLabel.isHidden = false
+        personsCollectionView.isHidden = false
+        // Show related movies
+        showSearchResults(relatedMovies)
     }
 
     func showNoResults() {
@@ -118,6 +137,8 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedLabel.isHidden = true
         recentlySearchedCollectionView.isHidden = true
         noResultsView.isHidden = true
+        personsLabel.isHidden = true
+        personsCollectionView.isHidden = true
     }
 
     func showInitialElements() {
@@ -158,6 +179,8 @@ extension SearchView {
             searchBar,
             genresLabel,
             genresCollectionView,
+            personsLabel,
+            personsCollectionView,
             upcomingMovieLabel,
             upcomingMovieCollectionView,
             recentlySearchedLabel,
@@ -165,9 +188,6 @@ extension SearchView {
             noResultsView,
             loadingIndicator
         )
-
-        // Initially hide noResultsView
-        noResultsView.isHidden = true
 
         setupDelegates()
         setupHandlers()
@@ -184,11 +204,11 @@ extension SearchView {
 //        genresCollectionViewHandler.delegate = delegate
 //        genresCollectionView.delegate = genresCollectionViewHandler
 //        genresCollectionView.dataSource = genresCollectionViewHandler
-//        
+//
 //        upcomingMovieCollectionViewHandler.delegate = delegate
 //        upcomingMovieCollectionView.delegate = upcomingMovieCollectionViewHandler
 //        upcomingMovieCollectionView.dataSource = upcomingMovieCollectionViewHandler
-//        
+//
 //        recentlySearchedHandler.delegate = delegate
 //        recentlySearchedCollectionView.delegate = recentlySearchedHandler
 //        recentlySearchedCollectionView.dataSource = recentlySearchedHandler
@@ -268,6 +288,17 @@ extension SearchView {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(300)
             make.bottom.lessThanOrEqualToSuperview().offset(-16)
+        }
+
+        personsLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(recentlySearchedCollectionView.snp.bottom).offset(16)
+        }
+
+        personsCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(personsLabel.snp.bottom).offset(8)
+            make.height.equalTo(50)
         }
 
         noResultsView.snp.makeConstraints { make in

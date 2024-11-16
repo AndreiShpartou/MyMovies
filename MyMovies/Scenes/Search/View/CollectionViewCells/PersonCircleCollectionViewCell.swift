@@ -9,8 +9,9 @@ import UIKit
 import Kingfisher
 
 final class PersonCircleCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = "PersonCollectionViewCell"
+    static let identifier = "PersonCollectionViewCell"
 
+    // MARK: - UIComponents
     private let personImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
@@ -33,6 +34,15 @@ final class PersonCircleCollectionViewCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Lifecycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        personImageView.kf.cancelDownloadTask()
+        personImageView.image = nil
+        nameLabel.text = nil
     }
 
     // MARK: - Public

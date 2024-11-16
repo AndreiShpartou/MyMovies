@@ -69,6 +69,7 @@
 		6C8062362CAEEEFC00768DC5 /* ReviewCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062352CAEEEFC00768DC5 /* ReviewCollectionViewHandler.swift */; };
 		6C8062382CAF15B800768DC5 /* TextInfoGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062372CAF15B800768DC5 /* TextInfoGeneralView.swift */; };
 		6C80623A2CAF198300768DC5 /* TextInfoGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8062392CAF198300768DC5 /* TextInfoGeneralViewController.swift */; };
+		6C81BC592CE89D7500FAA055 /* PersonsCircleCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81BC582CE89D7500FAA055 /* PersonsCircleCollectionViewHandler.swift */; };
 		6C8338502C5CE430000D0399 /* MainViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C83384F2C5CE430000D0399 /* MainViewProtocol.swift */; };
 		6C8338522C5CE504000D0399 /* MainInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338512C5CE504000D0399 /* MainInteractorProtocol.swift */; };
 		6C8338542C5CE520000D0399 /* MainPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8338532C5CE520000D0399 /* MainPresenterProtocol.swift */; };
@@ -239,6 +240,7 @@
 		6C8062352CAEEEFC00768DC5 /* ReviewCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C8062372CAF15B800768DC5 /* TextInfoGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInfoGeneralView.swift; sourceTree = "<group>"; };
 		6C8062392CAF198300768DC5 /* TextInfoGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInfoGeneralViewController.swift; sourceTree = "<group>"; };
+		6C81BC582CE89D7500FAA055 /* PersonsCircleCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonsCircleCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C83384F2C5CE430000D0399 /* MainViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewProtocol.swift; sourceTree = "<group>"; };
 		6C8338512C5CE504000D0399 /* MainInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C8338532C5CE520000D0399 /* MainPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenterProtocol.swift; sourceTree = "<group>"; };
@@ -1144,6 +1146,7 @@
 		6CADCC572CE8970C003C06A3 /* CollectionViewHandlers */ = {
 			isa = PBXGroup;
 			children = (
+				6C81BC582CE89D7500FAA055 /* PersonsCircleCollectionViewHandler.swift */,
 			);
 			path = CollectionViewHandlers;
 			sourceTree = "<group>";
@@ -1468,6 +1471,7 @@
 				6CC604C92C557DCC00241EF2 /* WishlistRouter.swift in Sources */,
 				6CC604D72C55802800241EF2 /* ProfileSettingsPresenter.swift in Sources */,
 				6C59AF482C55176D006A7BDB /* MainView.swift in Sources */,
+				6C81BC592CE89D7500FAA055 /* PersonsCircleCollectionViewHandler.swift in Sources */,
 				6C9B45F52CB59A930053B8D7 /* ProfileSettingsTableViewHandler.swift in Sources */,
 				6CCC4F7D2C5E7FD100BA7B8D /* MovieListType.swift in Sources */,
 				6C7CD0E52C5F593700C71AA1 /* CustomTabBar.swift in Sources */,
