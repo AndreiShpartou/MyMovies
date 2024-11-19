@@ -31,7 +31,7 @@ class SearchPresenter: SearchPresenterProtocol {
     func viewDidLoad() {
         view?.showLoading()
         interactor.fetchInitialData()
-        interactor.fetchRecentlySearchedMovies()
+//        interactor.fetchRecentlySearchedMovies()
     }
 
     func didSearch(query: String) {
@@ -67,11 +67,10 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         }
 
         view?.showGenres(genreViewModels)
-        view?.hideLoading()
     }
 
     func didFetchUpcomingMovie(_ movie: MovieProtocol) {
-        guard let upcomingMovieViewModel = mapper.map(data: movie, to: UpcomingMovieViewModel.self) else {
+        guard let upcomingMovieViewModel = mapper.map(data: movie, to: MovieListItemViewModel.self) else {
             return
         }
 

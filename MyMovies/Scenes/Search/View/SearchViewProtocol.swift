@@ -11,7 +11,7 @@ protocol SearchViewProtocol: UIView {
     var delegate: SearchViewDelegate? { get set }
 
     func showGenres(_ genres: [GenreViewModelProtocol])
-    func showUpcomingMovie(_ movie: UpcomingMovieViewModelProtocol)
+    func showUpcomingMovie(_ movie: MovieListItemViewModelProtocol)
     func showRecentlySearchedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showSearchResults(_ movies: [BriefMovieListItemViewModelProtocol])
@@ -24,7 +24,7 @@ protocol SearchViewProtocol: UIView {
     func showError(error: Error)
 }
 
-protocol SearchViewDelegate: AnyObject, UISearchBarDelegate {
+protocol SearchViewDelegate: AnyObject, UISearchBarDelegate, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, MovieListCollectionViewDelegate {
     func didSearch(query: String)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didSelectMovie(movieID: Int)

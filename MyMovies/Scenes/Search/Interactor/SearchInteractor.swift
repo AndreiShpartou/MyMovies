@@ -47,11 +47,20 @@ class SearchInteractor: SearchInteractorProtocol {
         networkManager.fetchMovies(type: .upcomingMovies) { [weak self] result in
             switch result {
             case .success(let movies):
-                fetchedUpcomingMovie = movies.first
+                guard let movie = movies.first else {
+                    return
+                }
+                
+                self?.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
+                    DispatchQueue.main.async {
+                        fetchedUpcomingMovie = detailedMovies.first
+                        group.leave()
+                    }
+                }
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
+                group.leave()
             }
-            group.leave()
         }
 
         // Fetching popular movies
@@ -60,6 +69,7 @@ class SearchInteractor: SearchInteractorProtocol {
             switch result {
             case .success(let movies):
                 fetchedPopularMovies = movies
+
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
@@ -68,12 +78,11 @@ class SearchInteractor: SearchInteractorProtocol {
 
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
+            self.presenter?.didFetchGenres(fetchedGenres)
+            self.presenter?.didFetchPopularMovies(fetchedPopularMovies)
             if let movie = fetchedUpcomingMovie {
                 self.presenter?.didFetchUpcomingMovie(movie)
             }
-            self.presenter?.didFetchGenres(fetchedGenres)
-            self.presenter?.didFetchPopularMovies(fetchedPopularMovies)
-            self.presenter?.didFetchRecentlySearchedMovies([])
         }
     }
 

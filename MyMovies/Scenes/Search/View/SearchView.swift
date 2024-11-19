@@ -16,6 +16,7 @@ final class SearchView: UIView, SearchViewProtocol {
     }
 
     // MARK: - UI Components
+    private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Type title, categories, years, etc.")
 
     private let genresLabel: UILabel = .createLabel(
@@ -49,7 +50,10 @@ final class SearchView: UIView, SearchViewProtocol {
 
     private let upcomingMovieCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
-        cellTypesDict: [UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self]
+        cellTypesDict: [
+            MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
 
     private let recentlySearchedLabel: UILabel = .createLabel(
@@ -60,7 +64,10 @@ final class SearchView: UIView, SearchViewProtocol {
 
     private let recentlySearchedCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
-        cellTypesDict: [BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self]
+        cellTypesDict: [
+            BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
 
     private lazy var noResultsView: UIView = createNoResultsView()
@@ -69,7 +76,7 @@ final class SearchView: UIView, SearchViewProtocol {
     // MARK: - CollectionViewHandlers
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     private lazy var personsCollectionViewHandler = PersonsCircleCollectionViewHandler()
-    private lazy var upcomingMovieCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
+    private lazy var upcomingMovieCollectionViewHandler = MovieListCollectionViewHandler()
     private lazy var recentlySearchedCollectionViewHandler = BriefMovieDescriptionHandler()
 
     // MARK: - Init
@@ -77,6 +84,7 @@ final class SearchView: UIView, SearchViewProtocol {
         super.init(frame: frame)
 
         setupView()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -89,7 +97,7 @@ final class SearchView: UIView, SearchViewProtocol {
         genresCollectionView.reloadData()
     }
 
-    func showUpcomingMovie(_ movie: UpcomingMovieViewModelProtocol) {
+    func showUpcomingMovie(_ movie: MovieListItemViewModelProtocol) {
         upcomingMovieCollectionViewHandler.configure(with: [movie])
         upcomingMovieCollectionView.reloadData()
     }
@@ -175,8 +183,9 @@ extension SearchView {
     private func setupView() {
         backgroundColor = .primaryBackground
 
+        searchBarContainerView.addSubviews(searchBar)
         addSubviews(
-            searchBar,
+            searchBarContainerView,
             genresLabel,
             genresCollectionView,
             personsLabel,
@@ -191,27 +200,25 @@ extension SearchView {
 
         setupDelegates()
         setupHandlers()
+        showInitialElements()
     }
 
     private func setupDelegates() {
-//        genresCollectionViewHandler.delegate = delegate
-//        upcomingMovieCollectionView.delegate = delegate
-//        recentlySearchedCollectionView.delegate = delegate
         searchBar.delegate = delegate
     }
 
     private func setupHandlers() {
-//        genresCollectionViewHandler.delegate = delegate
-//        genresCollectionView.delegate = genresCollectionViewHandler
-//        genresCollectionView.dataSource = genresCollectionViewHandler
-//
-//        upcomingMovieCollectionViewHandler.delegate = delegate
-//        upcomingMovieCollectionView.delegate = upcomingMovieCollectionViewHandler
-//        upcomingMovieCollectionView.dataSource = upcomingMovieCollectionViewHandler
-//
-//        recentlySearchedHandler.delegate = delegate
-//        recentlySearchedCollectionView.delegate = recentlySearchedHandler
-//        recentlySearchedCollectionView.dataSource = recentlySearchedHandler
+        genresCollectionViewHandler.delegate = delegate
+        genresCollectionView.delegate = genresCollectionViewHandler
+        genresCollectionView.dataSource = genresCollectionViewHandler
+
+        upcomingMovieCollectionViewHandler.delegate = delegate
+        upcomingMovieCollectionView.delegate = upcomingMovieCollectionViewHandler
+        upcomingMovieCollectionView.dataSource = upcomingMovieCollectionViewHandler
+
+        recentlySearchedCollectionViewHandler.delegate = delegate
+        recentlySearchedCollectionView.delegate = recentlySearchedCollectionViewHandler
+        recentlySearchedCollectionView.dataSource = recentlySearchedCollectionViewHandler
     }
 }
 
@@ -250,44 +257,61 @@ extension SearchView {
 // MARK: - Constraints
 extension SearchView {
     private func setupConstraints() {
-        searchBar.snp.makeConstraints { make in
+        setupSearchBarConstraints()
+        setupGenresSectionConstraints()
+        setupCollectionViewsConstraints()
+        setupOtherConstraints()
+    }
+
+    private func setupSearchBarConstraints() {
+        searchBarContainerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide).offset(8)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(40)
+            make.height.equalTo(60)
         }
 
+        searchBar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-16)
+        }
+    }
+
+    private func setupGenresSectionConstraints() {
         genresLabel.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(searchBarContainerView.snp.bottom).offset(16)
         }
 
         genresCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(genresLabel.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview()
+            make.top.equalTo(genresLabel.snp.bottom).offset(16)
             make.height.equalTo(50)
         }
+    }
 
+    private func setupCollectionViewsConstraints() {
         upcomingMovieLabel.snp.makeConstraints { make in
-            make.top.equalTo(genresCollectionView.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(genresCollectionView.snp.bottom).offset(16)
         }
 
         upcomingMovieCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(upcomingMovieLabel.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(300)
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalTo(upcomingMovieLabel.snp.bottom).offset(16)
+            make.height.equalTo(200)
         }
 
         recentlySearchedLabel.snp.makeConstraints { make in
-            make.top.equalTo(upcomingMovieCollectionView.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(upcomingMovieCollectionView.snp.bottom).offset(24)
         }
 
         recentlySearchedCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(recentlySearchedLabel.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalTo(recentlySearchedLabel.snp.bottom).offset(16)
             make.height.equalTo(300)
-            make.bottom.lessThanOrEqualToSuperview().offset(-16)
         }
 
         personsLabel.snp.makeConstraints { make in
@@ -297,13 +321,15 @@ extension SearchView {
 
         personsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(personsLabel.snp.bottom).offset(8)
+            make.top.equalTo(personsLabel.snp.bottom).offset(16)
             make.height.equalTo(50)
         }
+    }
 
+    private func setupOtherConstraints() {
         noResultsView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(40)
+            make.center.equalToSuperview()
         }
 
         loadingIndicator.snp.makeConstraints { make in

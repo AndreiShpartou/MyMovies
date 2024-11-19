@@ -8,8 +8,12 @@
 import Foundation
 import UIKit
 
+protocol MovieListCollectionViewDelegate: AnyObject {
+    func didSelectMovie(movieID: Int)
+}
+
 final class MovieListCollectionViewHandler: NSObject {
-    weak var delegate: MovieListViewInteractionDelegate?
+    weak var delegate: MovieListCollectionViewDelegate?
 
     private var movies: [MovieListItemViewModelProtocol] = []
 

@@ -50,6 +50,10 @@ extension SearchViewController {
 
 // MARK: - SearchViewDelegate
 extension SearchViewController: SearchViewDelegate {
+    func didScrollUpcomingMoviesItemTo(_ index: Int) {
+        //
+    }
+
     func didSearch(query: String) {
         presenter.didSearch(query: query)
     }
