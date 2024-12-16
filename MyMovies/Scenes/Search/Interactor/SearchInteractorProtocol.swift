@@ -12,15 +12,12 @@ protocol SearchInteractorProtocol: AnyObject {
 
     func fetchInitialData()
     func performSearch(with query: String)
-    func fetchPopularMovies()
-    func fetchRecentlySearchedMovies()
 }
 
 protocol SearchInteractorOutputProtocol: AnyObject {
     func didFetchGenres(_ genres: [GenreProtocol])
     func didFetchUpcomingMovie(_ movie: MovieProtocol)
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol])
-    func didFetchPopularMovies(_ movies: [MovieProtocol])
     func didFetchSearchResults(_ movies: [MovieProtocol])
     func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol])
     func didFailToFetchData(with error: Error)

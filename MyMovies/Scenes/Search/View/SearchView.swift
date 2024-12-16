@@ -109,11 +109,6 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedCollectionView.reloadData()
     }
 
-    func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
-        recentlySearchedCollectionViewHandler.configure(with: movies)
-        recentlySearchedCollectionView.reloadData()
-    }
-
     func showSearchResults(_ movies: [BriefMovieListItemViewModelProtocol]) {
         hideAllElements()
         recentlySearchedCollectionViewHandler.configure(with: movies)

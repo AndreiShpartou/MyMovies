@@ -13,7 +13,6 @@ protocol SearchViewProtocol: UIView {
     func showGenres(_ genres: [GenreViewModelProtocol])
     func showUpcomingMovie(_ movie: MovieListItemViewModelProtocol)
     func showRecentlySearchedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
-    func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showSearchResults(_ movies: [BriefMovieListItemViewModelProtocol])
     func showPersonResults(_ persons: [PersonViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol])
     func showNoResults()

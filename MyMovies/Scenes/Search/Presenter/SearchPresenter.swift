@@ -82,20 +82,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
-        if recentlySeachedMoviesViewModels.isEmpty {
-            // Fetch popular movies
-            interactor.fetchPopularMovies()
-        } else {
-            view?.showRecentlySearchedMovies(recentlySeachedMoviesViewModels)
-        }
-    }
-
-    func didFetchPopularMovies(_ movies: [MovieProtocol]) {
-        guard let popularMoviesViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            return
-        }
-
-        view?.showPopularMovies(popularMoviesViewModels)
+        view?.showRecentlySearchedMovies(recentlySeachedMoviesViewModels)
         view?.hideLoading()
     }
 

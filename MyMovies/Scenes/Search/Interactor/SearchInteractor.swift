@@ -23,12 +23,11 @@ class SearchInteractor: SearchInteractorProtocol {
 
     // MARK: - Public
     func fetchInitialData() {
-        // Fetch genres, upcoming movie, popular movies
+        // Fetch genres, upcoming movie
         let group = DispatchGroup()
 
         var fetchedGenres: [GenreProtocol] = []
         var fetchedUpcomingMovie: MovieProtocol?
-        var fetchedPopularMovies: [MovieProtocol] = []
 
         // Fetching genres
         group.enter()
@@ -63,31 +62,13 @@ class SearchInteractor: SearchInteractorProtocol {
             }
         }
 
-        // Fetching popular movies
-        group.enter()
-        networkManager.fetchMovies(type: .popularMovies) { [weak self] result in
-            switch result {
-            case .success(let movies):
-                fetchedPopularMovies = movies
-
-            case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
-            }
-            group.leave()
-        }
-
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             self.presenter?.didFetchGenres(fetchedGenres)
-            self.presenter?.didFetchPopularMovies(fetchedPopularMovies)
             if let movie = fetchedUpcomingMovie {
                 self.presenter?.didFetchUpcomingMovie(movie)
             }
         }
-    }
-
-    func fetchPopularMovies() {
-        //
     }
 
     func performSearch(with query: String) {
@@ -122,12 +103,12 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    func fetchRecentlySearchedMovies() {
+    // MARK: - Private
+    private func fetchRecentlySearchedMovies() {
         let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
         presenter?.didFetchRecentlySearchedMovies(recentlySearched)
     }
 
-    // MARK: - Private
     private func isPersonSearchQuery(_ query: String) -> Bool {
         return query.contains("person")
     }
