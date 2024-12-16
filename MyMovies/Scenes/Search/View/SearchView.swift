@@ -11,11 +11,13 @@ import SnapKit
 final class SearchView: UIView, SearchViewProtocol {
     weak var delegate: SearchViewDelegate? {
         didSet {
-            setupDelegates()
+            updateDelegates()
         }
     }
 
     // MARK: - UI Components
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Type title, categories, years, etc.")
 
@@ -128,7 +130,7 @@ final class SearchView: UIView, SearchViewProtocol {
         personsCollectionView.reloadData()
         personsLabel.isHidden = false
         personsCollectionView.isHidden = false
-        // Show related movies
+        // Show related movie
         showSearchResults(relatedMovies)
     }
 
@@ -156,6 +158,8 @@ final class SearchView: UIView, SearchViewProtocol {
         upcomingMovieCollectionView.isHidden = false
         recentlySearchedLabel.isHidden = false
         recentlySearchedCollectionView.isHidden = false
+        personsLabel.isHidden = true
+        personsCollectionView.isHidden = true
         noResultsView.isHidden = true
     }
 
@@ -183,9 +187,11 @@ extension SearchView {
     private func setupView() {
         backgroundColor = .primaryBackground
 
-        searchBarContainerView.addSubviews(searchBar)
-        addSubviews(
-            searchBarContainerView,
+        addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
+        scrollView.showsVerticalScrollIndicator = false
+
+        contentView.addSubviews(
             genresLabel,
             genresCollectionView,
             personsLabel,
@@ -195,19 +201,19 @@ extension SearchView {
             recentlySearchedLabel,
             recentlySearchedCollectionView,
             noResultsView,
-            loadingIndicator
+            loadingIndicator,
+            searchBarContainerView
         )
+        searchBarContainerView.addSubviews(searchBar)
 
-        setupDelegates()
         setupHandlers()
         showInitialElements()
     }
 
-    private func setupDelegates() {
-        searchBar.delegate = delegate
-    }
-
     private func setupHandlers() {
+        searchBar.delegate = delegate
+        scrollView.delegate = self
+
         genresCollectionViewHandler.delegate = delegate
         genresCollectionView.delegate = genresCollectionViewHandler
         genresCollectionView.dataSource = genresCollectionViewHandler
@@ -219,6 +225,9 @@ extension SearchView {
         recentlySearchedCollectionViewHandler.delegate = delegate
         recentlySearchedCollectionView.delegate = recentlySearchedCollectionViewHandler
         recentlySearchedCollectionView.dataSource = recentlySearchedCollectionViewHandler
+    }
+
+    private func updateDelegates() {
     }
 }
 
@@ -254,19 +263,46 @@ extension SearchView {
     }
 }
 
+// MARK: - UIScrollViewDelegate
+extension SearchView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yOffset = scrollView.contentOffset.y
+        if yOffset > 8 {
+            searchBarContainerView.snp.updateConstraints { make in
+                make.top.greaterThanOrEqualToSuperview().offset(yOffset)
+            }
+        } else {
+            searchBarContainerView.snp.updateConstraints { make in
+                make.top.greaterThanOrEqualToSuperview().offset(8)
+            }
+        }
+    }
+}
+
 // MARK: - Constraints
 extension SearchView {
     private func setupConstraints() {
+        setupScrollViewConstraints()
         setupSearchBarConstraints()
         setupGenresSectionConstraints()
         setupCollectionViewsConstraints()
         setupOtherConstraints()
     }
 
+    private func setupScrollViewConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
+        }
+
+        contentView.snp.makeConstraints { make in
+            make.edges.width.equalToSuperview()
+        }
+    }
+
     private func setupSearchBarConstraints() {
         searchBarContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(safeAreaLayoutGuide).offset(8)
+            make.top.greaterThanOrEqualToSuperview().offset(8)
             make.height.equalTo(60)
         }
 
@@ -280,7 +316,7 @@ extension SearchView {
     private func setupGenresSectionConstraints() {
         genresLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(searchBarContainerView.snp.bottom).offset(16)
+            make.top.equalToSuperview().offset(76)
         }
 
         genresCollectionView.snp.makeConstraints { make in
@@ -312,6 +348,7 @@ extension SearchView {
             make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(recentlySearchedLabel.snp.bottom).offset(16)
             make.height.equalTo(300)
+            make.bottom.equalToSuperview().offset(-16)
         }
 
         personsLabel.snp.makeConstraints { make in

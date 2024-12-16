@@ -50,7 +50,7 @@ class SearchInteractor: SearchInteractorProtocol {
                 guard let movie = movies.first else {
                     return
                 }
-                
+
                 self?.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
                     DispatchQueue.main.async {
                         fetchedUpcomingMovie = detailedMovies.first
