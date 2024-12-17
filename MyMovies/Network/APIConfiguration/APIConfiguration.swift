@@ -52,6 +52,10 @@ enum Endpoint {
     case movieDetails(id: Int, type: MovieListType? = nil)
     // Get the movie reviews
     case reviews(id: Int)
+    // Search movies
+    case searchMovies(query: String)
+    // Search persons
+    case searchPersons(query: String)
 
     var rawValue: String {
         switch self {
@@ -63,6 +67,10 @@ enum Endpoint {
             return "movieDetails"
         case .reviews:
             return "reviews"
+        case .searchMovies:
+            return "searchMovies"
+        case .searchPersons:
+            return "searchPersons"
         }
     }
 }
@@ -145,6 +153,14 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBReviewsPagedResponse.self
         case (.kinopoisk, .reviews):
             return KinopoiskReviewsPagedResponse.self
+        case (.tmdb, .searchMovies):
+            return TMDBMoviesPagedResponse.self
+        case (.kinopoisk, .searchMovies):
+            return KinopoiskMoviesPagedResponse.self
+        case (.tmdb, .searchPersons):
+            return TMDBPersonsPagedResponse.self
+        case (.kinopoisk, .searchPersons):
+            return KinopoiskPersonsPagedResponse.self
         default:
             return nil
         }

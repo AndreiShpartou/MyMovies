@@ -15,6 +15,8 @@
 		6C2B03332C64BC4F0057E518 /* GenresCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2B03322C64BC4F0057E518 /* GenresCollectionViewHandler.swift */; };
 		6C2B03352C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2B03342C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift */; };
 		6C2B03372C64DE3C0057E518 /* BriefMovieDescriptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2B03362C64DE3C0057E518 /* BriefMovieDescriptionHandler.swift */; };
+		6C391E5D2D107F5100448CC5 /* TMDBPersonResponseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C391E5C2D107F5100448CC5 /* TMDBPersonResponseProtocol.swift */; };
+		6C391E5F2D107FFE00448CC5 /* TMDBPersonResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C391E5E2D107FFE00448CC5 /* TMDBPersonResponse.swift */; };
 		6C3A5FA32C92E53400A1BFF2 /* NetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3A5FA22C92E53400A1BFF2 /* NetworkManagerProtocol.swift */; };
 		6C4148382C74715E004D55BA /* ResponseMapperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4148372C74715E004D55BA /* ResponseMapperProtocol.swift */; };
 		6C41483A2C7471D7004D55BA /* ResponseMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4148392C7471D7004D55BA /* ResponseMapper.swift */; };
@@ -163,6 +165,10 @@
 		6CEB59412CBBBEBA005062DC /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEB59402CBBBEBA005062DC /* EditProfileViewController.swift */; };
 		6CEB59442CBBF9F0005062DC /* InsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEB59432CBBF9F0005062DC /* InsetLabel.swift */; };
 		6CF58DB52CA6CD8C00543FA4 /* PersonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF58DB42CA6CD8C00543FA4 /* PersonCollectionViewCell.swift */; };
+		6CF693C42D11589E00026B11 /* TMDBPersonsPagedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF693C32D11589E00026B11 /* TMDBPersonsPagedResponse.swift */; };
+		6CF693C62D115D8400026B11 /* KinopoiskPersonResponseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF693C52D115D8400026B11 /* KinopoiskPersonResponseProtocol.swift */; };
+		6CF693C82D115DEF00026B11 /* KinopoiskPersonResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF693C72D115DEF00026B11 /* KinopoiskPersonResponse.swift */; };
+		6CF693CA2D115F0200026B11 /* KinopoiskPersonsPagedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF693C92D115F0200026B11 /* KinopoiskPersonsPagedResponse.swift */; };
 		6CFCEB102CBAA33D00126B38 /* EditProfileViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFCEB0F2CBAA33D00126B38 /* EditProfileViewProtocol.swift */; };
 		6CFCEB132CBAA36200126B38 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFCEB122CBAA36200126B38 /* EditProfileView.swift */; };
 		6CFCEB152CBAC40900126B38 /* EditProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFCEB142CBAC40900126B38 /* EditProfileInteractor.swift */; };
@@ -184,6 +190,8 @@
 		6C2B03322C64BC4F0057E518 /* GenresCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C2B03342C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C2B03362C64DE3C0057E518 /* BriefMovieDescriptionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefMovieDescriptionHandler.swift; sourceTree = "<group>"; };
+		6C391E5C2D107F5100448CC5 /* TMDBPersonResponseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBPersonResponseProtocol.swift; sourceTree = "<group>"; };
+		6C391E5E2D107FFE00448CC5 /* TMDBPersonResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBPersonResponse.swift; sourceTree = "<group>"; };
 		6C3A5FA22C92E53400A1BFF2 /* NetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerProtocol.swift; sourceTree = "<group>"; };
 		6C4148372C74715E004D55BA /* ResponseMapperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMapperProtocol.swift; sourceTree = "<group>"; };
 		6C4148392C7471D7004D55BA /* ResponseMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseMapper.swift; sourceTree = "<group>"; };
@@ -334,6 +342,10 @@
 		6CEB59402CBBBEBA005062DC /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		6CEB59432CBBF9F0005062DC /* InsetLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetLabel.swift; sourceTree = "<group>"; };
 		6CF58DB42CA6CD8C00543FA4 /* PersonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCollectionViewCell.swift; sourceTree = "<group>"; };
+		6CF693C32D11589E00026B11 /* TMDBPersonsPagedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBPersonsPagedResponse.swift; sourceTree = "<group>"; };
+		6CF693C52D115D8400026B11 /* KinopoiskPersonResponseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KinopoiskPersonResponseProtocol.swift; sourceTree = "<group>"; };
+		6CF693C72D115DEF00026B11 /* KinopoiskPersonResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KinopoiskPersonResponse.swift; sourceTree = "<group>"; };
+		6CF693C92D115F0200026B11 /* KinopoiskPersonsPagedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KinopoiskPersonsPagedResponse.swift; sourceTree = "<group>"; };
 		6CFCEB0F2CBAA33D00126B38 /* EditProfileViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewProtocol.swift; sourceTree = "<group>"; };
 		6CFCEB122CBAA36200126B38 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		6CFCEB142CBAC40900126B38 /* EditProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileInteractor.swift; sourceTree = "<group>"; };
@@ -933,14 +945,17 @@
 			isa = PBXGroup;
 			children = (
 				6C916C3B2C639B4A00A9F091 /* TMDBPagedResponseProtocol.swift */,
-				6C916C3D2C639E3200A9F091 /* TMDBMoviesPagedResponse.swift */,
 				6C9834592C76064200C6D368 /* TMDBMovieResponseProtocol.swift */,
+				6C916C3D2C639E3200A9F091 /* TMDBMoviesPagedResponse.swift */,
 				6C98345B2C7606D300C6D368 /* TMDBMovieResponse.swift */,
 				6C98345D2C760E7800C6D368 /* TMDBGenrePagedResponseProtocol.swift */,
 				6CA8F6972C662B4A0090BC8C /* TMDBGenrePagedResponse.swift */,
-				6CA2D8792CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift */,
 				6CA2D87D2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift */,
+				6CA2D8792CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift */,
 				6CA2D87F2CAD1D4D00CFC297 /* TMDBReviewResponse.swift */,
+				6C391E5C2D107F5100448CC5 /* TMDBPersonResponseProtocol.swift */,
+				6CF693C32D11589E00026B11 /* TMDBPersonsPagedResponse.swift */,
+				6C391E5E2D107FFE00448CC5 /* TMDBPersonResponse.swift */,
 			);
 			path = tmdb;
 			sourceTree = "<group>";
@@ -949,12 +964,15 @@
 			isa = PBXGroup;
 			children = (
 				6C41483D2C74EBBE004D55BA /* KinopoiskPagedResponseProtocol.swift */,
-				6C41483F2C74ED45004D55BA /* KinopoiskMoviesPagedResponse.swift */,
 				6C9834552C76009C00C6D368 /* KinopoiskMovieResponseProtocol.swift */,
+				6C41483F2C74ED45004D55BA /* KinopoiskMoviesPagedResponse.swift */,
 				6C9834572C7600D400C6D368 /* KinopoiskMovieResponse.swift */,
-				6CA2D8852CAD45D600CFC297 /* KinopoiskReviewsPagedResponse.swift */,
 				6CA2D8872CAD462600CFC297 /* KinopoiskReviewResponseProtocol.swift */,
+				6CA2D8852CAD45D600CFC297 /* KinopoiskReviewsPagedResponse.swift */,
 				6CA2D8892CAD466500CFC297 /* KinopoiskReviewResponse.swift */,
+				6CF693C52D115D8400026B11 /* KinopoiskPersonResponseProtocol.swift */,
+				6CF693C92D115F0200026B11 /* KinopoiskPersonsPagedResponse.swift */,
+				6CF693C72D115DEF00026B11 /* KinopoiskPersonResponse.swift */,
 			);
 			path = kinopoisk;
 			sourceTree = "<group>";
@@ -1386,6 +1404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CF693C62D115D8400026B11 /* KinopoiskPersonResponseProtocol.swift in Sources */,
 				6C98345C2C7606D300C6D368 /* TMDBMovieResponse.swift in Sources */,
 				6C59AF022C54F10D006A7BDB /* AppDelegate.swift in Sources */,
 				6C9B45E62CB518040053B8D7 /* UserProfile.swift in Sources */,
@@ -1427,11 +1446,13 @@
 				6C424F0F2C9417D00003F487 /* MovieListCollectionViewCell.swift in Sources */,
 				6C9C75932C6DFED0003E98FE /* GlobalFunctions.swift in Sources */,
 				6CC604D92C55805400241EF2 /* ProfileSettingsInteractor.swift in Sources */,
+				6C391E5D2D107F5100448CC5 /* TMDBPersonResponseProtocol.swift in Sources */,
 				6CCC4F772C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift in Sources */,
 				6C74C9282C7395D40035BD14 /* AppConfiguration.swift in Sources */,
 				6C916C3C2C639B4A00A9F091 /* TMDBPagedResponseProtocol.swift in Sources */,
 				6C9C75952C6E1DF1003E98FE /* AppConfigurationManager.swift in Sources */,
 				6C3A5FA32C92E53400A1BFF2 /* NetworkManagerProtocol.swift in Sources */,
+				6CF693CA2D115F0200026B11 /* KinopoiskPersonsPagedResponse.swift in Sources */,
 				6C59AF522C551FBE006A7BDB /* SearchRouter.swift in Sources */,
 				6CFCEB102CBAA33D00126B38 /* EditProfileViewProtocol.swift in Sources */,
 				6C74C92D2C7396D00035BD14 /* APIConfiguration.swift in Sources */,
@@ -1442,6 +1463,7 @@
 				6C8062382CAF15B800768DC5 /* TextInfoGeneralView.swift in Sources */,
 				6CBEE8DB2C60E8090053BFD9 /* NetworkManager.swift in Sources */,
 				6C7CD0E32C5F4E5700C71AA1 /* CustomTabBarItem.swift in Sources */,
+				6C391E5F2D107FFE00448CC5 /* TMDBPersonResponse.swift in Sources */,
 				6C59AF612C553B2F006A7BDB /* MovieListPresenter.swift in Sources */,
 				6C70EB272C6CB3CA004DA1A9 /* NetworkHelper.swift in Sources */,
 				6C7737372C563B6600E5F2CC /* SceneBuilder.swift in Sources */,
@@ -1476,6 +1498,7 @@
 				6CCC4F7D2C5E7FD100BA7B8D /* MovieListType.swift in Sources */,
 				6C7CD0E52C5F593700C71AA1 /* CustomTabBar.swift in Sources */,
 				6CBCD4B22C578F8E00609EDF /* Extensions.swift in Sources */,
+				6CF693C82D115DEF00026B11 /* KinopoiskPersonResponse.swift in Sources */,
 				6C98345E2C760E7900C6D368 /* TMDBGenrePagedResponseProtocol.swift in Sources */,
 				6C9B45F32CB5289B0053B8D7 /* ProfileSettingsSection.swift in Sources */,
 				6C90536D2C5906260068E2BC /* Constants.swift in Sources */,
@@ -1490,6 +1513,7 @@
 				6CA2D88A2CAD466500CFC297 /* KinopoiskReviewResponse.swift in Sources */,
 				6C83385E2C5CE5B7000D0399 /* SearchRouterProtocol.swift in Sources */,
 				6C83385C2C5CE5A3000D0399 /* SearchPresenterProtocol.swift in Sources */,
+				6CF693C42D11589E00026B11 /* TMDBPersonsPagedResponse.swift in Sources */,
 				6CFCEB132CBAA36200126B38 /* EditProfileView.swift in Sources */,
 				6CEB59442CBBF9F0005062DC /* InsetLabel.swift in Sources */,
 				6C41483E2C74EBBE004D55BA /* KinopoiskPagedResponseProtocol.swift in Sources */,

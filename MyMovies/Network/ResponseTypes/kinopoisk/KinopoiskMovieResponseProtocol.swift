@@ -44,13 +44,3 @@ protocol KinopoiskCoverResponseProtocol: Codable {
     var url: String? { get }
     var previewUrl: String? { get }
 }
-
-protocol KinopoiskPersonResponseProtocol: Codable {
-    var id: Int? { get }
-    var photo: String? { get }
-    var name: String? { get }
-    var enName: String? { get }
-    var description: String? { get }
-    var profession: String? { get }
-    var enProfession: String? { get }
-}

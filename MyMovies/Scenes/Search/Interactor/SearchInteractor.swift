@@ -78,27 +78,24 @@ class SearchInteractor: SearchInteractorProtocol {
             return
         }
 
-        if isPersonSearchQuery(query) {
-            // Perform person search
-            networkManager.searchPersons(query: query) { [weak self] result in
-                switch result {
-                case .success(let persons):
-                    // Fetch related movies
-                    self?.fetchRelatedMovies(for: persons)
-                case .failure(let error):
-                    self?.presenter?.didFailToFetchData(with: error)
-                }
+        // Perform person search
+        networkManager.searchPersons(query: query) { [weak self] result in
+            switch result {
+            case .success(let persons):
+                // Fetch related movies
+                self?.fetchRelatedMovies(for: persons)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
             }
-        } else {
-            // Perform movie search
-            networkManager.searchMovies(query: query) { [weak self] result in
-                switch result {
-                case .success(let movies):
-                    self?.presenter?.didFetchSearchResults(movies)
-                    self?.saveSearchQuery(query)
-                case .failure(let error):
-                    self?.presenter?.didFailToFetchData(with: error)
-                }
+        }
+        // Perform movie search
+        networkManager.searchMovies(query: query) { [weak self] result in
+            switch result {
+            case .success(let movies):
+                self?.presenter?.didFetchSearchResults(movies)
+                self?.saveSearchQuery(query)
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
             }
         }
     }
@@ -107,10 +104,6 @@ class SearchInteractor: SearchInteractorProtocol {
     private func fetchRecentlySearchedMovies() {
         let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
         presenter?.didFetchRecentlySearchedMovies(recentlySearched)
-    }
-
-    private func isPersonSearchQuery(_ query: String) -> Bool {
-        return query.contains("person")
     }
 
     private func fetchRelatedMovies(for persons: [PersonProtocol]) {

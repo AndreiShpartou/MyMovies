@@ -52,24 +52,8 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
             return movieCrew
         }
 
-        private let movieCast: [Person]?
-        private let movieCrew: [Person]?
-
-        struct Person: TMDBPersonResponseProtocol {
-            var id: Int
-            var name: String
-            var original_name: String
-            var profile_path: String?
-            var known_for_department: String?
-
-            func personPhotoURL(path: String?, size: PersonSize = .w185) -> String? {
-                guard let path = path else {
-                    return nil
-                }
-
-                return ImageURLBuilder.buildURL(for: path, size: size)
-            }
-        }
+        private let movieCast: [TMDBPersonResponse]?
+        private let movieCrew: [TMDBPersonResponse]?
 
         enum CodingKeys: String, CodingKey {
             case movieCast = "cast"

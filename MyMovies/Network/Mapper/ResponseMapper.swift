@@ -32,6 +32,11 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBReviewsPagedResponse) as! T
         case (is KinopoiskReviewsPagedResponse.Type, is [MovieReview].Type):
             return map(data as! KinopoiskReviewsPagedResponse) as! T
+        // Persons
+        case (is TMDBPersonsPagedResponse.Type, is [Movie.Person].Type):
+            return map(data as! TMDBPersonsPagedResponse) as! T
+        case (is KinopoiskPersonsPagedResponse.Type, is [Movie.Person].Type):
+            return map(data as! KinopoiskPersonsPagedResponse) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
@@ -227,6 +232,14 @@ final class ResponseMapper: ResponseMapperProtocol {
     }
 
     // MARK: - Persons
+    private func map(_ data: TMDBPersonsPagedResponse) -> [Movie.Person] {
+        return map(data.results)
+    }
+
+    private func map(_ data: KinopoiskPersonsPagedResponse) -> [Movie.Person] {
+        return map(data.docs)
+    }
+
     private func map(_ data: [TMDBPersonResponseProtocol]) -> [Movie.Person] {
         let persons = data.map {
             Movie.Person(
