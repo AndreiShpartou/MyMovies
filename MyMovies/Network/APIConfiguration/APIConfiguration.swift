@@ -189,6 +189,12 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .movieDetails(let id, .similarMovies)):
             let queryParameters: [String: Any] = ["id": String(id)]
             return queryParameters
+        case (.tmdb, .searchMovies(let query)),
+                (.tmdb, .searchPersons(let query)),
+                 (.kinopoisk, .searchMovies(let query)),
+                  (.kinopoisk, .searchPersons(let query)):
+            let queryParameters: [String: Any] = ["query": query.trimmingCharacters(in: .whitespaces)]
+                return queryParameters
         default:
             return [:]
         }

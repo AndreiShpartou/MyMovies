@@ -31,6 +31,7 @@ class SearchPresenter: SearchPresenterProtocol {
     func viewDidLoad() {
         view?.showLoading()
         interactor.fetchInitialData()
+        interactor.performSearch(with: "The Matrix")
 //        interactor.fetchRecentlySearchedMovies()
     }
 

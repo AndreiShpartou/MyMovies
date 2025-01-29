@@ -112,11 +112,25 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: - Search
     func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        //
+        performRequest(for: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
+            switch result {
+            case .success(let movies):
+                completion(.success(movies))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
-        //
+        performRequest(for: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
+            switch result {
+            case .success(let persons):
+                completion(.success(persons))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     // MARK: - PerformRequest

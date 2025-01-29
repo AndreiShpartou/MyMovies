@@ -93,7 +93,7 @@ class SearchInteractor: SearchInteractorProtocol {
             switch result {
             case .success(let movies):
                 self?.presenter?.didFetchSearchResults(movies)
-                self?.saveSearchQuery(query)
+//                self?.saveSearchQuery(query)
             case .failure(let error):
                 self?.presenter?.didFailToFetchData(with: error)
             }
