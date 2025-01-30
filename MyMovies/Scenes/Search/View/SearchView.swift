@@ -97,6 +97,8 @@ final class SearchView: UIView, SearchViewProtocol {
     func showGenres(_ genres: [GenreViewModelProtocol]) {
         genresCollectionViewHandler.configure(with: genres)
         genresCollectionView.reloadData()
+
+        setupAdditionalDefaultPreferences()
     }
 
     func showUpcomingMovie(_ movie: MovieListItemViewModelProtocol) {
@@ -166,7 +168,7 @@ final class SearchView: UIView, SearchViewProtocol {
         loadingIndicator.stopAnimating()
     }
 
-    func showError(error: Error) {
+    func showError(_ error: Error) {
         guard let viewController = parentViewController else {
             return
         }
@@ -223,6 +225,13 @@ extension SearchView {
     }
 
     private func updateDelegates() {
+    }
+
+    private func setupAdditionalDefaultPreferences() {
+        // Default selection of the first item
+        let defaultIndexPath = IndexPath(item: 0, section: 0)
+        genresCollectionView.selectItem(at: defaultIndexPath, animated: false, scrollPosition: .left)
+        genresCollectionViewHandler.collectionView(genresCollectionView, didSelectItemAt: defaultIndexPath)
     }
 }
 

@@ -20,7 +20,7 @@ protocol SearchViewProtocol: UIView {
     func showInitialElements()
     func showLoading()
     func hideLoading()
-    func showError(error: Error)
+    func showError(_ error: Error)
 }
 
 protocol SearchViewDelegate: AnyObject, UISearchBarDelegate, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, MovieListCollectionViewDelegate {

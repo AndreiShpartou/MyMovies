@@ -31,7 +31,6 @@ class SearchPresenter: SearchPresenterProtocol {
     func viewDidLoad() {
         view?.showLoading()
         interactor.fetchInitialData()
-        interactor.performSearch(with: "The Matrix")
 //        interactor.fetchRecentlySearchedMovies()
     }
 
@@ -63,7 +62,11 @@ class SearchPresenter: SearchPresenterProtocol {
 // MARK: - SearchInteractorOutputProtocol
 extension SearchPresenter: SearchInteractorOutputProtocol {
     func didFetchGenres(_ genres: [GenreProtocol]) {
+        view?.hideLoading()
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
+            let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
+            view?.showError(error)
+
             return
         }
 
@@ -72,6 +75,9 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
     func didFetchUpcomingMovie(_ movie: MovieProtocol) {
         guard let upcomingMovieViewModel = mapper.map(data: movie, to: MovieListItemViewModel.self) else {
+            let error = AppError.customError(message: "Failed to map Upcoming Movies", comment: "Error message for failed movies loading")
+            view?.showError(error)
+
             return
         }
 
@@ -79,15 +85,18 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
     }
 
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol]) {
-        guard let recentlySeachedMoviesViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+        guard let recentlySearchedMoviesViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            let error = AppError.customError(message: "Failed to map Recently Searched Movies", comment: "Error message for failed movies loading")
+            view?.showError(error)
+
             return
         }
 
-        view?.showRecentlySearchedMovies(recentlySeachedMoviesViewModels)
-        view?.hideLoading()
+        view?.showRecentlySearchedMovies(recentlySearchedMoviesViewModels)
     }
 
     func didFetchSearchResults(_ movies: [MovieProtocol]) {
+        view?.hideLoading()
         guard let searchResultsViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
             return
         }
@@ -97,21 +106,28 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         } else {
             view?.showSearchResults(searchResultsViewModels)
         }
-        view?.hideLoading()
     }
 
     func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol]) {
-        guard let personViewModels = mapper.map(data: persons, to: [PersonViewModel].self),
-              let relatedMoviesViewModels = mapper.map(data: relatedMovies, to: [BriefMovieListItemViewModel].self) else {
+        guard let personViewModels = mapper.map(data: persons, to: [PersonViewModel].self) else {
+            let error = AppError.customError(message: "Failed to map Persons", comment: "Error message for failed persons loading")
+            view?.showError(error)
+
+            return
+        }
+
+        guard let relatedMoviesViewModels = mapper.map(data: relatedMovies, to: [BriefMovieListItemViewModel].self) else {
+            let error = AppError.customError(message: "Failed to map Related Movies", comment: "Error message for failed related movies loading")
+            view?.showError(error)
+
             return
         }
 
         view?.showPersonResults(personViewModels, relatedMovies: relatedMoviesViewModels)
-        view?.hideLoading()
     }
 
     func didFailToFetchData(with error: Error) {
         view?.hideLoading()
-        view?.showError(error: error)
+        view?.showError(error)
     }
 }
