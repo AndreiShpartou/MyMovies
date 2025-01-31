@@ -225,6 +225,9 @@ extension SearchView {
     }
 
     private func updateDelegates() {
+        genresCollectionViewHandler.delegate = delegate
+        upcomingMovieCollectionViewHandler.delegate = delegate
+        recentlySearchedCollectionViewHandler.delegate = delegate
     }
 
     private func setupAdditionalDefaultPreferences() {
@@ -338,7 +341,7 @@ extension SearchView {
         }
 
         upcomingMovieCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(4)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(upcomingMovieLabel.snp.bottom).offset(16)
             make.height.equalTo(200)
         }
@@ -349,7 +352,7 @@ extension SearchView {
         }
 
         recentlySearchedCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(4)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(recentlySearchedLabel.snp.bottom).offset(16)
             make.height.equalTo(300)
             make.bottom.equalToSuperview().offset(-16)

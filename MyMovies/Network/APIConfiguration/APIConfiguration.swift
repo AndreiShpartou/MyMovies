@@ -125,6 +125,8 @@ struct APIConfiguration: APIConfigurationProtocol {
         switch (provider, endpoint) {
         case (.kinopoisk, .movieDetails(_, type: .popularMovies)),
             (.kinopoisk, .movieDetails(_, type: .upcomingMovies)),
+            (.kinopoisk, .movieDetails(_, type: .topRatedMovies)),
+            (.kinopoisk, .movieDetails(_, type: .theHighestGrossingMovies)),
             (.kinopoisk, .movieDetails(_, type: nil)):
             return false
         default:
@@ -140,10 +142,14 @@ struct APIConfiguration: APIConfigurationProtocol {
             return [KinopoiskMovieResponse.Genre].self
         case (.tmdb, .movieList(type: .upcomingMovies)),
             (.tmdb, .movieList(type: .popularMovies)),
+            (.tmdb, .movieList(type: .topRatedMovies)),
+            (.tmdb, .movieList(type: .theHighestGrossingMovies)),
             (.tmdb, .movieList(type: .similarMovies)):
             return TMDBMoviesPagedResponse.self
         case (.kinopoisk, .movieList(type: .upcomingMovies)),
-            (.kinopoisk, .movieList(type: .popularMovies)):
+            (.kinopoisk, .movieList(type: .popularMovies)),
+            (.kinopoisk, .movieList(type: .topRatedMovies)),
+            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
@@ -202,14 +208,20 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
         switch (provider, endpoint) {
-        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
+        case (.tmdb, .movieList(type: .upcomingMovies)),
+            (.tmdb, .movieList(type: .popularMovies)),
+            (.tmdb, .movieList(type: .topRatedMovies)),
+            (.tmdb, .movieList(type: .theHighestGrossingMovies)):
             guard let genreID = genre.id else {
                 return [:]
             }
             let queryParameters: [String: Any] = ["with_genres": genreID]
 
             return queryParameters
-        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
+        case (.kinopoisk, .movieList(type: .upcomingMovies)),
+            (.kinopoisk, .movieList(type: .popularMovies)),
+            (.kinopoisk, .movieList(type: .topRatedMovies)),
+            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)):
             guard let genreName = genre.rawName,
                   let defaultAllGenresName = DefaultValue.genre.rawName,
                     genreName != defaultAllGenresName else {

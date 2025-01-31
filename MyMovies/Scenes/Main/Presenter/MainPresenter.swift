@@ -34,6 +34,8 @@ final class MainPresenter: MainPresenterProtocol {
         interactor.fetchMovieGenres()
         interactor.fetchUpcomingMovies()
         interactor.fetchPopularMovies()
+        interactor.fetchTopRatedMovies()
+        interactor.fetchTheHighestGrossingMovies()
     }
 
     func didSelectMovie(movieID: Int) {
@@ -50,6 +52,8 @@ final class MainPresenter: MainPresenterProtocol {
         }
 
         interactor.fetchPopularMoviesWithGenresFiltering(genre: movieGenre)
+        interactor.fetchTopRatedMoviesWithGenresFiltering(genre: movieGenre)
+        interactor.fetchTheHighestGrossingMoviesWithGenresFiltering(genre: movieGenre)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
@@ -83,6 +87,24 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showPopularMovies(popularMovieViewModels)
+        self.movies.append(contentsOf: movies)
+    }
+
+    func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
+        guard let topRatedMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            return
+        }
+
+        view?.showTopRatedMovies(topRatedMovieViewModels)
+        self.movies.append(contentsOf: movies)
+    }
+
+    func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
+        guard let theHighestGrossingMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            return
+        }
+
+        view?.showTheHighestGrossingMovies(theHighestGrossingMovieViewModels)
         self.movies.append(contentsOf: movies)
     }
 

@@ -70,6 +70,42 @@ final class MainView: UIView, MainViewProtocol {
         ]
     )
     private lazy var popularMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
+    // Top rated section
+    private let topRatedMoviesLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
+        text: "Top rated"
+    )
+    private lazy var seeAllTopRatedMoviesButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapSeeAllTopRatedMoviesButton),
+        target: self
+    )
+    private let topRatedMoviesCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 150, height: 300),
+        cellTypesDict: [
+            BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+            ]
+    )
+    private lazy var topRatedMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
+    // The highest grossing section
+    private let theHighestGrossingMoviesLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
+        text: "The highest grossing"
+    )
+    private lazy var seeAllTheHighestGrossingMoviesButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapSeeTheHighestGrossingMoviesButton),
+        target: self
+    )
+    private let theHighestGrossingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 150, height: 300),
+        cellTypesDict: [
+            BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+            ]
+    )
+    private lazy var theHighestGrossingCollectionViewHandler = BriefMovieDescriptionHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -104,6 +140,16 @@ final class MainView: UIView, MainViewProtocol {
         popularMoviesCollectionView.reloadData()
     }
 
+    func showTopRatedMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
+        topRatedMoviesCollectionViewHandler.configure(with: movies)
+        topRatedMoviesCollectionView.reloadData()
+    }
+
+    func showTheHighestGrossingMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
+        theHighestGrossingCollectionViewHandler.configure(with: movies)
+        theHighestGrossingMoviesCollectionView.reloadData()
+    }
+
     func scrollToUpcomingMovieItem(_ index: Int) {
         upComingMoviesPageControl.currentPage = index
         updatePageControlImages(index: index)
@@ -134,6 +180,12 @@ extension MainView {
             popularMoviesLabel,
             seeAllPopularMoviesButton,
             popularMoviesCollectionView,
+            topRatedMoviesLabel,
+            seeAllTopRatedMoviesButton,
+            topRatedMoviesCollectionView,
+            theHighestGrossingMoviesLabel,
+            seeAllTheHighestGrossingMoviesButton,
+            theHighestGrossingMoviesCollectionView,
             searchBarContainerView
         )
         searchBarContainerView.addSubviews(searchBar)
@@ -151,6 +203,12 @@ extension MainView {
         // Popular movies
         popularMoviesCollectionView.delegate = popularMoviesCollectionViewHandler
         popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
+        // Top rated movies
+        topRatedMoviesCollectionView.delegate = topRatedMoviesCollectionViewHandler
+        topRatedMoviesCollectionView.dataSource = topRatedMoviesCollectionViewHandler
+        // The highest grossing movies
+        theHighestGrossingMoviesCollectionView.delegate = theHighestGrossingCollectionViewHandler
+        theHighestGrossingMoviesCollectionView.dataSource = theHighestGrossingCollectionViewHandler
         // Scroll
         scrollView.delegate = self
     }
@@ -186,6 +244,8 @@ extension MainView {
         upcomingMoviesCollectionViewHandler.delegate = delegate
         genresCollectionViewHandler.delegate = delegate
         popularMoviesCollectionViewHandler.delegate = delegate
+        topRatedMoviesCollectionViewHandler.delegate = delegate
+        theHighestGrossingCollectionViewHandler.delegate = delegate
     }
 }
 
@@ -199,6 +259,16 @@ extension MainView {
     @objc
     private func didTapSeeAllPopularMoviesButton(_ sender: UIButton) {
         delegate?.didTapSeeAllButton(listType: .popularMovies)
+    }
+
+    @objc
+    private func didTapSeeAllTopRatedMoviesButton(_ sender: UIButton) {
+        delegate?.didTapSeeAllButton(listType: .topRatedMovies)
+    }
+
+    @objc
+    private func didTapSeeTheHighestGrossingMoviesButton(_ sender: UIButton) {
+        delegate?.didTapSeeAllButton(listType: .theHighestGrossingMovies)
     }
 }
 
@@ -263,6 +333,8 @@ extension MainView {
         setupUpcomingMoviesSectionConstraints()
         setupGenresSectionConstraints()
         setupPopularMoviesSectionConstraints()
+        setupTopRatedMoviesSectionConstraints()
+        setupTheHighestGrossingMoviesSectionConstraints()
     }
 
     private func setupScrollConstraints() {
@@ -350,6 +422,44 @@ extension MainView {
         popularMoviesCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(popularMoviesLabel.snp.bottom).offset(16)
+            make.height.equalTo(300)
+        }
+    }
+
+    private func setupTopRatedMoviesSectionConstraints() {
+        // Top rated movies section
+        topRatedMoviesLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.top.equalTo(popularMoviesCollectionView.snp.bottom).offset(24)
+        }
+
+        seeAllTopRatedMoviesButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(topRatedMoviesLabel)
+        }
+
+        topRatedMoviesCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalTo(topRatedMoviesLabel.snp.bottom).offset(16)
+            make.height.equalTo(300)
+        }
+    }
+
+    private func setupTheHighestGrossingMoviesSectionConstraints() {
+        // The highest grossing movies section
+        theHighestGrossingMoviesLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.top.equalTo(topRatedMoviesCollectionView.snp.bottom).offset(24)
+        }
+
+        seeAllTheHighestGrossingMoviesButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(theHighestGrossingMoviesLabel)
+        }
+
+        theHighestGrossingMoviesCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.top.equalTo(theHighestGrossingMoviesLabel.snp.bottom).offset(16)
             make.height.equalTo(300)
             make.bottom.equalToSuperview()
         }

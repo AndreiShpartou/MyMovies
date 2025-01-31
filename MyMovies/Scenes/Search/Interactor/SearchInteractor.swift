@@ -67,6 +67,30 @@ class SearchInteractor: SearchInteractorProtocol {
             self.presenter?.didFetchGenres(fetchedGenres)
             if let movie = fetchedUpcomingMovie {
                 self.presenter?.didFetchUpcomingMovie(movie)
+            } else {
+            }
+        }
+    }
+
+    // Get upcoming movies filtered by genre
+    func fetchUpcomingMoviesWWithGenresFiltering(genre: GenreProtocol) {
+        networkManager.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
+            switch result {
+            case .success(let movies):
+                guard let movie = movies.first else {
+                    return
+                }
+
+                self?.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
+                    DispatchQueue.main.async {
+                        if let movie = detailedMovies.first {
+                            self?.presenter?.didFetchUpcomingMovie(movie)
+                        } else {
+                        }
+                    }
+                }
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
             }
         }
     }

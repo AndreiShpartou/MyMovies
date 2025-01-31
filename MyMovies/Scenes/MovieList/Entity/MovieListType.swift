@@ -22,6 +22,10 @@ enum MovieListType {
     case upcomingMovies
     // Get a list of movies ordered by popularity
     case popularMovies
+    // Get a list of the current top rated movies
+    case topRatedMovies
+    // Get a list of the highest-grossing movies. By default, this list will only include movies that have a box office revenue value.
+    case theHighestGrossingMovies
     // Get list of similar movies
     case similarMovies(id: Int)
 
@@ -35,6 +39,10 @@ enum MovieListType {
             return "Upcoming Movies"
         case .popularMovies:
             return "Popular Movies"
+        case .topRatedMovies:
+            return "Top Rated Movies"
+        case .theHighestGrossingMovies:
+            return "The Highest Grossing Movies"
         case .similarMovies:
             return "Similar Movies"
         }
@@ -46,6 +54,10 @@ enum MovieListType {
             return "upcomingMovies"
         case .popularMovies:
             return "popularMovies"
+        case .topRatedMovies:
+            return "topRatedMovies"
+        case .theHighestGrossingMovies:
+            return "theHighestGrossingMovies"
         case .similarMovies:
             return "similarMovies"
         }

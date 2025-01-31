@@ -11,7 +11,7 @@
 		<key>Authorization</key>
 		<dict>
 			<key>X-API-KEY</key>
-			<string>CD1F5E2-EHGM43S-NGWDFK8-5EQGH6A</string>
+			<string>CA0Y6V3-4JPMCKW-PTSQ135-YPKXT4X</string>
 		</dict>
 		<key>Provider</key>
 		<string>kinopoisk</string>
@@ -23,6 +23,10 @@
 			<string>/v1/movie/possible-values-by-field?field=genres.name</string>
 			<key>popularMovies</key>
 			<string>/v1.4/movie?page=1&amp;limit=10&amp;lists=popular-films&amp;selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies&amp;notNullFields=similarMovies.id</string>
+			<key>topRatedMovies</key>
+			<string>/v1.4/movie?page=1&amp;limit=10&amp;selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies&amp;notNullFields=rating.kp&amp;sortField=rating.kp&amp;sortType=-1&amp;type=movie&amp;rating.imdb=8-9.3&amp;votes.imdb=10000-6666666</string>
+			<key>theHighestGrossingMovies</key>
+			<string>/v1.4/movie?page=1&amp;limit=10&amp;lists=box-usa-all-time&amp;selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies&amp;notNullFields=similarMovies.id</string>
 			<key>movieDetails</key>
 			<string>/v1.4/movie?selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies</string>
 			<key>reviews</key>
@@ -52,6 +56,10 @@
 			<string>/3/genre/movie/list</string>
 			<key>popularMovies</key>
 			<string>/3/discover/movie?include_adult=false&amp;include_video=false&amp;language=en-US&amp;page=1&amp;sort_by=popularity.desc</string>
+			<key>topRatedMovies</key>
+			<string>/3/discover/movie?include_adult=false&amp;include_video=false&amp;language=en-US&amp;page=1&amp;sort_by=vote_average.desc&amp;vote_count.gte=10000</string>
+			<key>theHighestGrossingMovies</key>
+			<string>/3/discover/movie?include_adult=false&amp;include_video=false&amp;language=en-US&amp;page=1&amp;sort_by=revenue.desc</string>
 			<key>movieDetails</key>
 			<string>/3/movie/</string>
 			<key>reviews</key>

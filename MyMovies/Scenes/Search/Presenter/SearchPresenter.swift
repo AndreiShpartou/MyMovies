@@ -41,7 +41,14 @@ class SearchPresenter: SearchPresenterProtocol {
 
     // MARK: - Private
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
-        //
+        guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+            let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
+            view?.showError(error)
+
+            return
+        }
+
+        interactor.fetchUpcomingMoviesWWithGenresFiltering(genre: movieGenre)
     }
 
     func didSelectMovie(movieID: Int) {
