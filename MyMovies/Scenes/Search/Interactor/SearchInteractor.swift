@@ -47,6 +47,7 @@ class SearchInteractor: SearchInteractorProtocol {
             switch result {
             case .success(let movies):
                 guard let movie = movies.first else {
+                    self?.presenter?.didFetchUpcomingMovies([])
                     return
                 }
 
@@ -66,26 +67,29 @@ class SearchInteractor: SearchInteractorProtocol {
             guard let self = self else { return }
             self.presenter?.didFetchGenres(fetchedGenres)
             if let movie = fetchedUpcomingMovie {
-                self.presenter?.didFetchUpcomingMovie(movie)
+                self.presenter?.didFetchUpcomingMovies([movie])
             } else {
+                self.presenter?.didFetchUpcomingMovies([])
             }
         }
     }
 
     // Get upcoming movies filtered by genre
-    func fetchUpcomingMoviesWWithGenresFiltering(genre: GenreProtocol) {
+    func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
         networkManager.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
             switch result {
             case .success(let movies):
                 guard let movie = movies.first else {
+                    self?.presenter?.didFetchUpcomingMovies([])
                     return
                 }
 
                 self?.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
                     DispatchQueue.main.async {
                         if let movie = detailedMovies.first {
-                            self?.presenter?.didFetchUpcomingMovie(movie)
+                            self?.presenter?.didFetchUpcomingMovies([movie])
                         } else {
+                            self?.presenter?.didFetchUpcomingMovies([])
                         }
                     }
                 }

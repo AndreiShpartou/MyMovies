@@ -50,7 +50,7 @@ class SearchPresenter: SearchPresenterProtocol {
             return
         }
 
-        interactor.fetchUpcomingMoviesWWithGenresFiltering(genre: movieGenre)
+        interactor.fetchUpcomingMoviesWithGenresFiltering(genre: movieGenre)
     }
 
     func didSelectMovie(movieID: Int) {
@@ -86,16 +86,16 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         view?.showGenres(genreViewModels)
     }
 
-    func didFetchUpcomingMovie(_ movie: MovieProtocol) {
-        guard let upcomingMovieViewModel = mapper.map(data: movie, to: MovieListItemViewModel.self) else {
+    func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
+        guard let upcomingMoviesViewModel = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Upcoming Movies", comment: "Error message for failed movies loading")
             view?.showError(error)
 
             return
         }
 
-        view?.showUpcomingMovie(upcomingMovieViewModel)
-        self.movies.append(contentsOf: [movie])
+        view?.showUpcomingMovies(upcomingMoviesViewModel)
+        self.movies.append(contentsOf: movies)
     }
 
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol]) {

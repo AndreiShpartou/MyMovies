@@ -101,8 +101,8 @@ final class SearchView: UIView, SearchViewProtocol {
         setupAdditionalDefaultPreferences()
     }
 
-    func showUpcomingMovie(_ movie: MovieListItemViewModelProtocol) {
-        upcomingMovieCollectionViewHandler.configure(with: [movie])
+    func showUpcomingMovies(_ movies: [MovieListItemViewModelProtocol]) {
+        upcomingMovieCollectionViewHandler.configure(with: movies)
         upcomingMovieCollectionView.reloadData()
     }
 

@@ -11,13 +11,13 @@ protocol SearchInteractorProtocol: AnyObject {
     var presenter: SearchInteractorOutputProtocol? { get set }
 
     func fetchInitialData()
-    func fetchUpcomingMoviesWWithGenresFiltering(genre: GenreProtocol)
+    func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol)
     func performSearch(with query: String)
 }
 
 protocol SearchInteractorOutputProtocol: AnyObject {
     func didFetchGenres(_ genres: [GenreProtocol])
-    func didFetchUpcomingMovie(_ movie: MovieProtocol)
+    func didFetchUpcomingMovies(_ movies: [MovieProtocol])
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol])
     func didFetchSearchResults(_ movies: [MovieProtocol])
     func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol])
