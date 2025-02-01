@@ -13,6 +13,8 @@ class SearchPresenter: SearchPresenterProtocol {
     var router: SearchRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
+    // Temporary entities persistance switch to CoreData
+    private var movies: [MovieProtocol] = []
 
     // MARK: - Init
     init(
@@ -53,7 +55,11 @@ class SearchPresenter: SearchPresenterProtocol {
 
     func didSelectMovie(movieID: Int) {
         // Handle movie selection
-//        router.navigateToMovieDetails(with: <#T##MovieProtocol#>)
+        guard let movie = movies.first(where: { $0.id == movieID }) else {
+            return
+        }
+
+        router.navigateToMovieDetails(with: movie)
     }
 
     func didSelectPerson(personID: Int) {
@@ -89,6 +95,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         }
 
         view?.showUpcomingMovie(upcomingMovieViewModel)
+        self.movies.append(contentsOf: [movie])
     }
 
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol]) {
@@ -100,6 +107,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         }
 
         view?.showRecentlySearchedMovies(recentlySearchedMoviesViewModels)
+        self.movies.append(contentsOf: movies)
     }
 
     func didFetchSearchResults(_ movies: [MovieProtocol]) {
@@ -112,6 +120,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             view?.showNoResults()
         } else {
             view?.showSearchResults(searchResultsViewModels)
+            self.movies.append(contentsOf: movies)
         }
     }
 
