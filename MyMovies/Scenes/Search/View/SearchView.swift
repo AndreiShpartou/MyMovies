@@ -231,9 +231,8 @@ extension SearchView {
         personsCollectionView.delegate = personsCollectionViewHandler
         personsCollectionView.dataSource = personsCollectionViewHandler
 
-        searchBar.delegate = self
-
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
+        tapGestureRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(tapGestureRecognizer)
     }
 
@@ -241,6 +240,8 @@ extension SearchView {
         genresCollectionViewHandler.delegate = delegate
         upcomingMovieCollectionViewHandler.delegate = delegate
         recentlySearchedCollectionViewHandler.delegate = delegate
+        personsCollectionViewHandler.delegate = delegate
+        searchBar.delegate = delegate
     }
 
     private func setupAdditionalDefaultPreferences() {
@@ -303,38 +304,6 @@ extension SearchView: UIScrollViewDelegate {
                 make.top.greaterThanOrEqualToSuperview().offset(8)
             }
         }
-    }
-}
-
-// MARK: - UISearchBarDelegate
-extension SearchView: UISearchBarDelegate {
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        return true
-    }
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // delegate?.searchBar(searchBar, textDidChange: searchText)
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        // delegate?.searchBarSearchButtonClicked(searchBar)
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        // delegate?.searchBarCancelButtonClicked(searchBar)
-    }
-
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Highlight the search bar
-        searchBar.searchTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
-        // delegate?.searchBarTextDidBeginEditing(searchBar)
-    }
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        // Remove the highlight
-        searchBar.searchTextField.layer.borderColor = UIColor.primarySoft.cgColor
-        // delegate?.searchBarTextDidEndEditing(searchBar)
     }
 }
 

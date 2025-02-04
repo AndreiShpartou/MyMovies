@@ -15,6 +15,8 @@ class SearchPresenter: SearchPresenterProtocol {
     private let mapper: DomainModelMapperProtocol
     // Temporary entities persistance switch to CoreData
     private var movies: [MovieProtocol] = []
+    // A property to hold debouncing work item
+    private var searchDebounceWorkItem: DispatchWorkItem?
 
     // MARK: - Init
     init(
@@ -37,8 +39,19 @@ class SearchPresenter: SearchPresenterProtocol {
     }
 
     func didSearch(query: String) {
-        view?.showLoading()
-        interactor.performSearch(with: query)
+        // Cancel any previously scheduled search
+        searchDebounceWorkItem?.cancel()
+
+        // Wrap search query in a DispatchWorkItem
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            view?.showLoading()
+            self.interactor.performSearch(with: query)
+        }
+        searchDebounceWorkItem = workItem
+
+        // Schedule the search after 0.84 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.84, execute: workItem)
     }
 
     // MARK: - Private
@@ -83,6 +96,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
+        view?.showInitialElements()
         view?.showGenres(genreViewModels)
     }
 
@@ -94,6 +108,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
+        view?.showInitialElements()
         view?.showUpcomingMovies(upcomingMoviesViewModel)
         self.movies.append(contentsOf: movies)
     }
@@ -106,6 +121,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
+        view?.showInitialElements()
         view?.showRecentlySearchedMovies(recentlySearchedMoviesViewModels)
         self.movies.append(contentsOf: movies)
     }

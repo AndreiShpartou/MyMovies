@@ -55,10 +55,6 @@ extension SearchViewController: SearchViewDelegate {
         //
     }
 
-    func didSearch(query: String) {
-        presenter.didSearch(query: query)
-    }
-
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         presenter.didSelectGenre(genre)
     }
@@ -88,5 +84,15 @@ extension SearchViewController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Highlight the search bar
+        searchBar.searchTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        // Remove the highlight
+        searchBar.searchTextField.layer.borderColor = UIColor.primarySoft.cgColor
     }
 }

@@ -24,7 +24,6 @@ protocol SearchViewProtocol: UIView {
 }
 
 protocol SearchViewDelegate: AnyObject, UISearchBarDelegate, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, MovieListCollectionViewDelegate, PersonsCollectionViewDelegate {
-    func didSearch(query: String)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didSelectMovie(movieID: Int)
     func didSelectPerson(personID: Int)
