@@ -19,7 +19,11 @@ final class SearchView: UIView, SearchViewProtocol {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
-    private let searchBar: UISearchBar = .createSearchBar(placeholder: "Type title, categories, years, etc.")
+    private let searchBar: UISearchBar = .createSearchBar(
+        placeholder: "Type title, categories, years, etc.",
+        textFieldCornedRadius: 8,
+        textFieldBorderWidth: 0.7
+    )
 
     private let genresLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
@@ -222,6 +226,15 @@ extension SearchView {
         recentlySearchedCollectionViewHandler.delegate = delegate
         recentlySearchedCollectionView.delegate = recentlySearchedCollectionViewHandler
         recentlySearchedCollectionView.dataSource = recentlySearchedCollectionViewHandler
+
+        personsCollectionViewHandler.delegate = delegate
+        personsCollectionView.delegate = personsCollectionViewHandler
+        personsCollectionView.dataSource = personsCollectionViewHandler
+
+        searchBar.delegate = self
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
+        addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func updateDelegates() {
@@ -235,6 +248,13 @@ extension SearchView {
         let defaultIndexPath = IndexPath(item: 0, section: 0)
         genresCollectionView.selectItem(at: defaultIndexPath, animated: false, scrollPosition: .left)
         genresCollectionViewHandler.collectionView(genresCollectionView, didSelectItemAt: defaultIndexPath)
+    }
+}
+
+// MARK: - Action Methods
+extension SearchView {
+    @objc private func viewWasTapped() {
+        endEditing(true)
     }
 }
 
@@ -283,6 +303,38 @@ extension SearchView: UIScrollViewDelegate {
                 make.top.greaterThanOrEqualToSuperview().offset(8)
             }
         }
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension SearchView: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // delegate?.searchBar(searchBar, textDidChange: searchText)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        // delegate?.searchBarSearchButtonClicked(searchBar)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        // delegate?.searchBarCancelButtonClicked(searchBar)
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Highlight the search bar
+        searchBar.searchTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+        // delegate?.searchBarTextDidBeginEditing(searchBar)
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        // Remove the highlight
+        searchBar.searchTextField.layer.borderColor = UIColor.primarySoft.cgColor
+        // delegate?.searchBarTextDidEndEditing(searchBar)
     }
 }
 

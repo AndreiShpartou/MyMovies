@@ -50,6 +50,7 @@ extension SearchViewController {
 
 // MARK: - SearchViewDelegate
 extension SearchViewController: SearchViewDelegate {
+
     func didScrollUpcomingMoviesItemTo(_ index: Int) {
         //
     }
@@ -68,6 +69,10 @@ extension SearchViewController: SearchViewDelegate {
 
     func didSelectPerson(personID: Int) {
         presenter.didSelectPerson(personID: personID)
+    }
+
+    func didSelectPerson(person: PersonViewModelProtocol) {
+        //
     }
 
     func didTapSeeAllButton() {
