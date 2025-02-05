@@ -113,23 +113,23 @@ class SearchInteractor: SearchInteractorProtocol {
         currentSearchToken = token
 
         // Perform person search
-//        networkManager.searchPersons(query: query) { [weak self] result in
-//            guard let self = self, self.currentSearchToken == token else { return }
-//            switch result {
-//            case .success(let persons):
-//                // Fetch related movies
-//                self.fetchRelatedMovies(for: persons, token: token)
-//            case .failure(let error):
-//                self.presenter?.didFailToFetchData(with: error)
-//            }
-//        }
+        networkManager.searchPersons(query: query) { [weak self] result in
+            guard let self = self, self.currentSearchToken == token else { return }
+            switch result {
+            case .success(let persons):
+                // Fetch related movies
+                self.presenter?.didFetchPersonsSearchResults(persons)
+            case .failure(let error):
+                self.presenter?.didFailToFetchData(with: error)
+            }
+        }
         // Perform movie search
         networkManager.searchMovies(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
 
             switch result {
             case .success(let movies):
-                self.presenter?.didFetchSearchResults(movies)
+                self.presenter?.didFetchMoviesSearchResults(movies)
 //                self?.saveSearchQuery(query)
             case .failure(let error):
                 self.presenter?.didFailToFetchData(with: error)
@@ -143,38 +143,38 @@ class SearchInteractor: SearchInteractorProtocol {
         presenter?.didFetchRecentlySearchedMovies(recentlySearched)
     }
 
-    // Fetch related movies for the found person
-    private func fetchRelatedMovies(for persons: [PersonProtocol], token: UUID) {
-        // Fetch related movies for each person
-        var relatedMovies: [MovieProtocol] = []
-        let group = DispatchGroup()
-
-        for person in persons {
-            group.enter()
-            networkManager.fetchMovieByPerson(person: person) { [weak self] result in
-                guard let self = self, self.currentSearchToken == token else {
-                    group.leave()
-
-                    return
-                }
-
-                switch result {
-                case .success(let movies):
-                    relatedMovies.append(contentsOf: movies)
-                case .failure(let error):
-                    self.presenter?.didFailToFetchData(with: error)
-                }
-                group.leave()
-            }
-        }
-
-        group.notify(queue: .main) { [weak self] in
-            guard let self = self, self.currentSearchToken == token else { return }
-
-            self.presenter?.didFetchPersonResults(persons, relatedMovies: relatedMovies)
-            self.saveSearchQuery(persons.map { $0.name }.joined(separator: ", ") )
-        }
-    }
+//    // Fetch related movies for the found person
+//    private func fetchRelatedMovies(for persons: [PersonProtocol], token: UUID) {
+//        // Fetch related movies for each person
+//        var relatedMovies: [MovieProtocol] = []
+//        let group = DispatchGroup()
+//
+//        for person in persons {
+//            group.enter()
+//            networkManager.fetchMovieByPerson(person: person) { [weak self] result in
+//                guard let self = self, self.currentSearchToken == token else {
+//                    group.leave()
+//
+//                    return
+//                }
+//
+//                switch result {
+//                case .success(let movies):
+//                    relatedMovies.append(contentsOf: movies)
+//                case .failure(let error):
+//                    self.presenter?.didFailToFetchData(with: error)
+//                }
+//                group.leave()
+//            }
+//        }
+//
+//        group.notify(queue: .main) { [weak self] in
+//            guard let self = self, self.currentSearchToken == token else { return }
+//
+//            self.presenter?.didFetchPersonsSearchResults(persons)
+//            self.saveSearchQuery(persons.map { $0.name }.joined(separator: ", ") )
+//        }
+//    }
 
     private func saveSearchQuery(_ query: String) {
         // Save search query

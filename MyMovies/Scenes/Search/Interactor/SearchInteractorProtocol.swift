@@ -19,7 +19,7 @@ protocol SearchInteractorOutputProtocol: AnyObject {
     func didFetchGenres(_ genres: [GenreProtocol])
     func didFetchUpcomingMovies(_ movies: [MovieProtocol])
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol])
-    func didFetchSearchResults(_ movies: [MovieProtocol])
-    func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol])
+    func didFetchMoviesSearchResults(_ movies: [MovieProtocol])
+    func didFetchPersonsSearchResults(_ persons: [PersonProtocol])
     func didFailToFetchData(with error: Error)
 }

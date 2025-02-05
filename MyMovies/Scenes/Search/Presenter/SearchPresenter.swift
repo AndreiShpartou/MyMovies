@@ -45,6 +45,7 @@ class SearchPresenter: SearchPresenterProtocol {
         // Wrap search query in a DispatchWorkItem
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
+            view?.hideAllElements()
             view?.showLoading()
             self.interactor.performSearch(with: query)
         }
@@ -126,21 +127,21 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         self.movies.append(contentsOf: movies)
     }
 
-    func didFetchSearchResults(_ movies: [MovieProtocol]) {
+    func didFetchMoviesSearchResults(_ movies: [MovieProtocol]) {
         view?.hideLoading()
-        guard let searchResultsViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+        guard let searchResultsViewModels = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
             return
         }
 
         if searchResultsViewModels.isEmpty {
             view?.showNoResults()
         } else {
-            view?.showSearchResults(searchResultsViewModels)
+            view?.showMoviesSearchResults(searchResultsViewModels)
             self.movies.append(contentsOf: movies)
         }
     }
 
-    func didFetchPersonResults(_ persons: [PersonProtocol], relatedMovies: [MovieProtocol]) {
+    func didFetchPersonsSearchResults(_ persons: [PersonProtocol]) {
         guard let personViewModels = mapper.map(data: persons, to: [PersonViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Persons", comment: "Error message for failed persons loading")
             view?.showError(error)
@@ -148,14 +149,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
-        guard let relatedMoviesViewModels = mapper.map(data: relatedMovies, to: [BriefMovieListItemViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Related Movies", comment: "Error message for failed related movies loading")
-            view?.showError(error)
-
-            return
-        }
-
-        view?.showPersonResults(personViewModels, relatedMovies: relatedMoviesViewModels)
+        view?.showPersonsSearchResults(personViewModels)
     }
 
     func didFailToFetchData(with error: Error) {

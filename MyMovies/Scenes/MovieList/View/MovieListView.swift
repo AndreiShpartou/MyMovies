@@ -25,7 +25,10 @@ final class MovieListView: UIView, MovieListViewProtocol {
     private let movieListCollection: UICollectionView = .createCommonCollectionView(
         // overridden in the MovieListCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellTypesDict: [MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self],
+        cellTypesDict: [
+            MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ],
         scrollDirection: .vertical,
         minimumLineSpacing: 12
     )

@@ -36,18 +36,6 @@ final class SearchView: UIView, SearchViewProtocol {
         cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
 
-    private let personsLabel: UILabel = .createLabel(
-        font: Typography.SemiBold.largeTitle,
-        textColor: .textColorWhite,
-        text: "Persons"
-    )
-
-    private let personsCollectionView: UICollectionView = .createCommonCollectionView(
-        itemSize: CGSize(width: 50, height: 50),
-        cellTypesDict: [PersonCircleCollectionViewCell.identifier: PersonCircleCollectionViewCell.self],
-        scrollDirection: .horizontal
-    )
-
     private let upcomingMovieLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
@@ -76,14 +64,51 @@ final class SearchView: UIView, SearchViewProtocol {
         ]
     )
 
+    private let discoveredPersonsLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
+        text: "Persons"
+    )
+
+    private let discoveredPersonsCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 50, height: 50),
+        cellTypesDict: [PersonCircleCollectionViewCell.identifier: PersonCircleCollectionViewCell.self],
+        scrollDirection: .horizontal
+    )
+
+    private let discoveredMoviesLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textColor: .textColorWhite,
+        text: "Discovered Movies"
+    )
+
+    private let discoveredMoviesCollectionView: UICollectionView = .createCommonCollectionView(
+        // overridden in the MovieListCollectionViewHandler
+        itemSize: CGSize(width: 50, height: 50),
+        cellTypesDict: [
+            MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ],
+        scrollDirection: .vertical,
+        minimumLineSpacing: 12
+    )
+
+    private let searchResultsStackView: UIStackView = .createCommonStackView(
+        axis: .vertical,
+        spacing: 16,
+        distribution: .fill,
+        alignment: .fill
+    )
+
     private lazy var noResultsView: UIView = createNoResultsView()
     private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
 
     // MARK: - CollectionViewHandlers
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
-    private lazy var personsCollectionViewHandler = PersonsCircleCollectionViewHandler()
+    private lazy var discoveredPersonsCollectionViewHandler = PersonsCircleCollectionViewHandler()
     private lazy var upcomingMovieCollectionViewHandler = MovieListCollectionViewHandler()
     private lazy var recentlySearchedCollectionViewHandler = BriefMovieDescriptionHandler()
+    private lazy var discoveredMoviesCollectionViewHandler = MovieListCollectionViewHandler()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -115,24 +140,36 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedCollectionView.reloadData()
     }
 
-    func showSearchResults(_ movies: [BriefMovieListItemViewModelProtocol]) {
-        hideAllElements()
-        recentlySearchedCollectionViewHandler.configure(with: movies)
-        recentlySearchedCollectionView.reloadData()
-        recentlySearchedLabel.text = "Search Results"
-        recentlySearchedLabel.isHidden = false
-        recentlySearchedCollectionView.isHidden = false
+    func showMoviesSearchResults(_ movies: [MovieListItemViewModelProtocol]) {
+        guard !movies.isEmpty else {
+            discoveredMoviesLabel.isHidden = true
+            discoveredMoviesCollectionView.isHidden = true
+
+            return
+        }
+        // Show movies collection
+        discoveredMoviesCollectionViewHandler.configure(with: movies)
+        discoveredMoviesCollectionView.reloadData()
+        discoveredMoviesLabel.isHidden = false
+        discoveredMoviesCollectionView.isHidden = false
+        searchResultsStackView.isHidden = false
+        layoutIfNeeded()
     }
 
-    func showPersonResults(_ persons: [PersonViewModelProtocol], relatedMovies: [BriefMovieListItemViewModelProtocol]) {
-        hideAllElements()
+    func showPersonsSearchResults(_ persons: [PersonViewModelProtocol]) {
+        guard !persons.isEmpty else {
+            discoveredPersonsLabel.isHidden = true
+            discoveredPersonsCollectionView.isHidden = true
+
+            return
+        }
         // Show persons collection
-        personsCollectionViewHandler.configure(with: persons)
-        personsCollectionView.reloadData()
-        personsLabel.isHidden = false
-        personsCollectionView.isHidden = false
-        // Show related movie
-        showSearchResults(relatedMovies)
+        discoveredPersonsCollectionViewHandler.configure(with: persons)
+        discoveredPersonsCollectionView.reloadData()
+        discoveredPersonsCollectionView.isHidden = false
+        discoveredPersonsLabel.isHidden = false
+        searchResultsStackView.isHidden = false
+        layoutIfNeeded()
     }
 
     func showNoResults() {
@@ -148,8 +185,11 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedLabel.isHidden = true
         recentlySearchedCollectionView.isHidden = true
         noResultsView.isHidden = true
-        personsLabel.isHidden = true
-        personsCollectionView.isHidden = true
+        searchResultsStackView.isHidden = true
+        discoveredPersonsLabel.isHidden = true
+        discoveredPersonsCollectionView.isHidden = true
+        discoveredMoviesLabel.isHidden = true
+        discoveredMoviesCollectionView.isHidden = true
     }
 
     func showInitialElements() {
@@ -159,9 +199,13 @@ final class SearchView: UIView, SearchViewProtocol {
         upcomingMovieCollectionView.isHidden = false
         recentlySearchedLabel.isHidden = false
         recentlySearchedCollectionView.isHidden = false
-        personsLabel.isHidden = true
-        personsCollectionView.isHidden = true
+        discoveredPersonsLabel.isHidden = true
+        discoveredPersonsCollectionView.isHidden = true
         noResultsView.isHidden = true
+        discoveredPersonsLabel.isHidden = true
+        discoveredPersonsCollectionView.isHidden = true
+        discoveredMoviesLabel.isHidden = true
+        discoveredMoviesCollectionView.isHidden = true
     }
 
     func showLoading() {
@@ -189,23 +233,27 @@ extension SearchView {
         backgroundColor = .primaryBackground
 
         addSubviews(scrollView)
+        addSubviews(searchResultsStackView)
         scrollView.addSubviews(contentView)
+        scrollView.addSubviews(noResultsView)
         scrollView.showsVerticalScrollIndicator = false
 
         contentView.addSubviews(
             genresLabel,
             genresCollectionView,
-            personsLabel,
-            personsCollectionView,
             upcomingMovieLabel,
             upcomingMovieCollectionView,
             recentlySearchedLabel,
             recentlySearchedCollectionView,
-            noResultsView,
             loadingIndicator,
             searchBarContainerView
         )
         searchBarContainerView.addSubviews(searchBar)
+        // Arrange search results subviews
+        searchResultsStackView.addArrangedSubview(discoveredPersonsLabel)
+        searchResultsStackView.addArrangedSubview(discoveredPersonsCollectionView)
+        searchResultsStackView.addArrangedSubview(discoveredMoviesLabel)
+        searchResultsStackView.addArrangedSubview(discoveredMoviesCollectionView)
 
         setupHandlers()
         showInitialElements()
@@ -227,9 +275,13 @@ extension SearchView {
         recentlySearchedCollectionView.delegate = recentlySearchedCollectionViewHandler
         recentlySearchedCollectionView.dataSource = recentlySearchedCollectionViewHandler
 
-        personsCollectionViewHandler.delegate = delegate
-        personsCollectionView.delegate = personsCollectionViewHandler
-        personsCollectionView.dataSource = personsCollectionViewHandler
+        discoveredPersonsCollectionViewHandler.delegate = delegate
+        discoveredPersonsCollectionView.delegate = discoveredPersonsCollectionViewHandler
+        discoveredPersonsCollectionView.dataSource = discoveredPersonsCollectionViewHandler
+
+        discoveredMoviesCollectionViewHandler.delegate = delegate
+        discoveredMoviesCollectionView.delegate = discoveredMoviesCollectionViewHandler
+        discoveredMoviesCollectionView.dataSource = discoveredMoviesCollectionViewHandler
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
         tapGestureRecognizer.cancelsTouchesInView = false
@@ -240,7 +292,8 @@ extension SearchView {
         genresCollectionViewHandler.delegate = delegate
         upcomingMovieCollectionViewHandler.delegate = delegate
         recentlySearchedCollectionViewHandler.delegate = delegate
-        personsCollectionViewHandler.delegate = delegate
+        discoveredPersonsCollectionViewHandler.delegate = delegate
+        discoveredMoviesCollectionViewHandler.delegate = delegate
         searchBar.delegate = delegate
     }
 
@@ -270,12 +323,13 @@ extension SearchView {
         // Label
         let captionLabel: UILabel = .createLabel(
             font: Typography.Medium.largeTitle,
+            numberOfLines: 0,
             textAlignment: .center,
             textColor: .textColorWhite,
             text: "We Are Sorry, We Can't Find The Movie :("
         )
 
-        view.addSubviews(imageView, captionLabel)
+        view.addSubviews(captionLabel, imageView)
 
         imageView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
@@ -283,7 +337,7 @@ extension SearchView {
         }
 
         captionLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(16)
+            make.bottom.equalTo(imageView.snp.top).offset(-16)
             make.leading.trailing.equalToSuperview()
         }
 
@@ -378,17 +432,6 @@ extension SearchView {
             make.height.equalTo(300)
             make.bottom.equalToSuperview().offset(-16)
         }
-
-        personsLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(recentlySearchedCollectionView.snp.bottom).offset(16)
-        }
-
-        personsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(personsLabel.snp.bottom).offset(16)
-            make.height.equalTo(50)
-        }
     }
 
     private func setupOtherConstraints() {
@@ -399,6 +442,12 @@ extension SearchView {
 
         loadingIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
+        }
+
+        searchResultsStackView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
+            make.top.equalTo(safeAreaLayoutGuide).offset(76)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
         }
     }
 }
