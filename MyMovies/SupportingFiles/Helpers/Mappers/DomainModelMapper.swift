@@ -30,6 +30,9 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // Reviews
         case (let data as [MovieReviewProtocol], is [ReviewViewModel].Type):
             return mapToReviews(data) as? Y
+        // Persons
+        case (let data as [PersonProtocol], is [PersonViewModel].Type):
+            return map(data) as? Y
         // GenresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y

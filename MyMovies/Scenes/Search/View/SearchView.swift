@@ -71,9 +71,10 @@ final class SearchView: UIView, SearchViewProtocol {
     )
 
     private let discoveredPersonsCollectionView: UICollectionView = .createCommonCollectionView(
-        itemSize: CGSize(width: 50, height: 50),
+        itemSize: CGSize(width: 90, height: 110),
         cellTypesDict: [PersonCircleCollectionViewCell.identifier: PersonCircleCollectionViewCell.self],
-        scrollDirection: .horizontal
+        scrollDirection: .horizontal,
+        minimumLineSpacing: 12
     )
 
     private let discoveredMoviesLabel: UILabel = .createLabel(
@@ -448,6 +449,10 @@ extension SearchView {
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             make.top.equalTo(safeAreaLayoutGuide).offset(76)
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
+        }
+
+        discoveredPersonsCollectionView.snp.makeConstraints { make in
+            make.height.equalTo(110)
         }
     }
 }

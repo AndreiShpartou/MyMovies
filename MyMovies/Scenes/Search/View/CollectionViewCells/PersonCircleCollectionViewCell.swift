@@ -15,11 +15,11 @@ final class PersonCircleCollectionViewCell: UICollectionViewCell {
     private let personImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
-        cornerRadius: 25
+        cornerRadius: 40
     )
 
     private let nameLabel: UILabel = .createLabel(
-        font: Typography.Medium.title,
+        font: Typography.Medium.body,
         textAlignment: .center,
         textColor: .textColorWhiteGrey
     )
@@ -63,8 +63,8 @@ extension PersonCircleCollectionViewCell {
 extension PersonCircleCollectionViewCell {
     private func setupConstraints() {
         personImageView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.width.equalTo(50)
+            make.centerX.top.equalToSuperview()
+            make.height.width.equalTo(80)
         }
 
         nameLabel.snp.makeConstraints { make in
