@@ -14,4 +14,5 @@ protocol APIConfigurationProtocol {
     func authorizationHeader() -> [String: String]
     func defaultQueryParameters(for endpoint: Endpoint) -> [String: Any]
     func genreFilteringQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any]
+    func getProviderAPI() -> Provider
 }

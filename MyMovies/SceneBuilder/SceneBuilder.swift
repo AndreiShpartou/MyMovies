@@ -78,7 +78,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         return viewController
     }
 
-    static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController {
+    static func buildMovieDetailsScene(for movie: MovieProtocol, fetchDetails: Bool = false) -> UIViewController {
         let interactor = MovieDetailsInteractor(movie: movie)
         let router = MovieDetailsRouter()
         let view = MovieDetailsView()
@@ -87,6 +87,7 @@ final class SceneBuilder: SceneBuilderProtocol {
 
         router.viewController = viewController
         interactor.presenter = presenter
+        interactor.fetchDetails = fetchDetails
 
         return viewController
     }

@@ -120,6 +120,10 @@ struct APIConfiguration: APIConfigurationProtocol {
         return authHeader
     }
 
+    func getProviderAPI() -> Provider {
+        return provider
+    }
+
     // MARK: - Private
     private func isActive(endpoint: Endpoint, for provider: Provider) -> Bool {
         switch (provider, endpoint) {

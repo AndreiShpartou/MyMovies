@@ -17,7 +17,7 @@ class SearchRouter: SearchRouterProtocol {
 
     // MARK: - Navigation
     func navigateToMovieDetails(with movie: MovieProtocol) {
-        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie, fetchDetails: true)
         viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }

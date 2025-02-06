@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 class NetworkManager: NetworkManagerProtocol {
+
     static let shared = NetworkManager()
 
     var apiConfig: APIConfigurationProtocol? {
@@ -131,6 +132,15 @@ class NetworkManager: NetworkManagerProtocol {
                 completion(.failure(error))
             }
         }
+    }
+
+    // MARK: - ProviderAPI
+    func getProviderAPI() -> Provider? {
+        guard let apiConfig = apiConfig else {
+            return nil
+        }
+
+        return apiConfig.getProviderAPI()
     }
 
     // MARK: - PerformRequest
