@@ -39,6 +39,12 @@ final class SearchViewController: UIViewController, SearchViewControllerProtocol
         setupViewController()
         presenter.viewDidLoad()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.isNavigationBarHidden = true
+    }
 }
 
 // MARK: - Setup

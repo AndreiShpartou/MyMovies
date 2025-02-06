@@ -154,6 +154,8 @@ final class SearchView: UIView, SearchViewProtocol {
         discoveredMoviesLabel.isHidden = false
         discoveredMoviesCollectionView.isHidden = false
         searchResultsStackView.isHidden = false
+        searchResultsStackView.isUserInteractionEnabled = true
+        scrollView.isScrollEnabled = false
         layoutIfNeeded()
     }
 
@@ -170,6 +172,8 @@ final class SearchView: UIView, SearchViewProtocol {
         discoveredPersonsCollectionView.isHidden = false
         discoveredPersonsLabel.isHidden = false
         searchResultsStackView.isHidden = false
+        searchResultsStackView.isUserInteractionEnabled = true
+        scrollView.isScrollEnabled = false
         layoutIfNeeded()
     }
 
@@ -187,10 +191,8 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedCollectionView.isHidden = true
         noResultsView.isHidden = true
         searchResultsStackView.isHidden = true
-        discoveredPersonsLabel.isHidden = true
-        discoveredPersonsCollectionView.isHidden = true
-        discoveredMoviesLabel.isHidden = true
-        discoveredMoviesCollectionView.isHidden = true
+        searchResultsStackView.isUserInteractionEnabled = false
+        scrollView.isScrollEnabled = false
     }
 
     func showInitialElements() {
@@ -203,10 +205,9 @@ final class SearchView: UIView, SearchViewProtocol {
         discoveredPersonsLabel.isHidden = true
         discoveredPersonsCollectionView.isHidden = true
         noResultsView.isHidden = true
-        discoveredPersonsLabel.isHidden = true
-        discoveredPersonsCollectionView.isHidden = true
-        discoveredMoviesLabel.isHidden = true
-        discoveredMoviesCollectionView.isHidden = true
+        searchResultsStackView.isHidden = true
+        searchResultsStackView.isUserInteractionEnabled = false
+        scrollView.isScrollEnabled = true
     }
 
     func showLoading() {
@@ -234,9 +235,9 @@ extension SearchView {
         backgroundColor = .primaryBackground
 
         addSubviews(scrollView)
+        addSubviews(noResultsView)
         addSubviews(searchResultsStackView)
         scrollView.addSubviews(contentView)
-        scrollView.addSubviews(noResultsView)
         scrollView.showsVerticalScrollIndicator = false
 
         contentView.addSubviews(
@@ -437,8 +438,9 @@ extension SearchView {
 
     private func setupOtherConstraints() {
         noResultsView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(40)
-            make.center.equalToSuperview()
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
+            make.top.equalTo(safeAreaLayoutGuide).offset(76)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
         }
 
         loadingIndicator.snp.makeConstraints { make in

@@ -154,7 +154,7 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
         case (.kinopoisk, .movieDetails):
-            return KinopoiskMoviesPagedResponse.self
+            return KinopoiskMovieResponse.self
         case (.tmdb, .reviews):
             return TMDBReviewsPagedResponse.self
         case (.kinopoisk, .reviews):
@@ -192,9 +192,10 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .reviews(let id)):
             let queryParameters: [String: Any] = ["movieId": String(id)]
             return queryParameters
-        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
-            let queryParameters: [String: Any] = ["id": String(id)]
-            return queryParameters
+//        Moved to path parameters
+//        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
+//            let queryParameters: [String: Any] = ["id": String(id)]
+//            return queryParameters
         case (.tmdb, .searchMovies(let query)),
                 (.tmdb, .searchPersons(let query)),
                  (.kinopoisk, .searchMovies(let query)),
@@ -249,6 +250,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             return "\(id)/reviews"
         case (.tmdb, .movieList(type: .similarMovies(let id))):
             return "\(id)/similar"
+        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
+            return "\(id)"
         default:
             return ""
         }

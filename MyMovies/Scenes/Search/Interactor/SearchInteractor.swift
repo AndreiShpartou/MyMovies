@@ -46,27 +46,30 @@ class SearchInteractor: SearchInteractorProtocol {
         // Fetching upcoming movies
         group.enter()
         networkManager.fetchMovies(type: .upcomingMovies) { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .success(let movies):
                 guard let movie = movies.first else {
-                    self?.presenter?.didFetchUpcomingMovies([])
+                    self.presenter?.didFetchUpcomingMovies([])
                     return
                 }
 
-                self?.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
+                self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
                     DispatchQueue.main.async {
                         fetchedUpcomingMovie = detailedMovies.first
                         group.leave()
                     }
                 }
             case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
+                self.presenter?.didFailToFetchData(with: error)
                 group.leave()
             }
         }
 
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
+
             self.presenter?.didFetchGenres(fetchedGenres)
             if let movie = fetchedUpcomingMovie {
                 self.presenter?.didFetchUpcomingMovies([movie])
@@ -79,14 +82,17 @@ class SearchInteractor: SearchInteractorProtocol {
     // Get upcoming movies filtered by genre
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
         networkManager.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .success(let movies):
                 guard let movie = movies.first else {
-                    self?.presenter?.didFetchUpcomingMovies([])
+                    self.presenter?.didFetchUpcomingMovies([])
+
                     return
                 }
 
-                self?.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
+                self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { [weak self] detailedMovies in
                     DispatchQueue.main.async {
                         if let movie = detailedMovies.first {
                             self?.presenter?.didFetchUpcomingMovies([movie])
@@ -96,7 +102,7 @@ class SearchInteractor: SearchInteractorProtocol {
                     }
                 }
             case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
+                self.presenter?.didFailToFetchData(with: error)
             }
         }
     }
@@ -129,7 +135,11 @@ class SearchInteractor: SearchInteractorProtocol {
 
             switch result {
             case .success(let movies):
-                self.presenter?.didFetchMoviesSearchResults(movies)
+                self.networkManager.fetchMoviesDetails(for: movies, type: .upcomingMovies) { [weak self] detailedMovies in
+                    DispatchQueue.main.async {
+                        self?.presenter?.didFetchMoviesSearchResults(detailedMovies)
+                    }
+                }
 //                self?.saveSearchQuery(query)
             case .failure(let error):
                 self.presenter?.didFailToFetchData(with: error)
