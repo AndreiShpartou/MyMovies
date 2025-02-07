@@ -27,5 +27,5 @@ protocol SearchViewDelegate: AnyObject, UISearchBarDelegate, GenresCollectionVie
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didSelectMovie(movieID: Int)
     func didSelectPerson(personID: Int)
-    func didTapSeeAllButton()
+    func didTapSeeAllButton(listType: MovieListType)
 }

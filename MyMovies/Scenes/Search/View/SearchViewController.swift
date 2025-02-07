@@ -77,8 +77,8 @@ extension SearchViewController: SearchViewDelegate {
         //
     }
 
-    func didTapSeeAllButton() {
-        presenter.didTapSeeAllButton()
+    func didTapSeeAllButton(listType: MovieListType) {
+        presenter.didTapSeeAllButton(listType: listType)
     }
 }
 

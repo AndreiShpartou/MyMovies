@@ -26,8 +26,10 @@ enum MovieListType {
     case topRatedMovies
     // Get a list of the highest-grossing movies. By default, this list will only include movies that have a box office revenue value.
     case theHighestGrossingMovies
-    // Get list of similar movies
+    // Get a list of similar movies
     case similarMovies(id: Int)
+    // Get a list of searched movies
+    case searchedMovies(query: String)
 
     var endpoint: Endpoint {
         return .movieList(type: self)
@@ -45,6 +47,8 @@ enum MovieListType {
             return "The Highest Grossing Movies"
         case .similarMovies:
             return "Similar Movies"
+        case .searchedMovies:
+            return "Discovered Movies"
         }
     }
 
@@ -60,6 +64,8 @@ enum MovieListType {
             return "theHighestGrossingMovies"
         case .similarMovies:
             return "similarMovies"
+        case .searchedMovies:
+            return "searchMovies"
         }
     }
 }

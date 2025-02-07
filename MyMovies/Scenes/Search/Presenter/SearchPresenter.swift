@@ -55,7 +55,6 @@ class SearchPresenter: SearchPresenterProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.84, execute: workItem)
     }
 
-    // MARK: - Private
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
             let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
@@ -81,8 +80,8 @@ class SearchPresenter: SearchPresenterProtocol {
         // router.navigateToPersonDetails(with: personID)
     }
 
-    func didTapSeeAllButton() {
-        // router.navigateToMovieList()
+    func didTapSeeAllButton(listType: MovieListType) {
+        router.navigateToMovieList(type: listType)
     }
 }
 

@@ -56,6 +56,11 @@ final class SearchView: UIView, SearchViewProtocol {
         text: "Recently Searched"
     )
 
+    private lazy var seeAllRecentlySearchedButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapAllRecentlySearchedButton),
+        target: self
+    )
+
     private let recentlySearchedCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -82,6 +87,13 @@ final class SearchView: UIView, SearchViewProtocol {
         textColor: .textColorWhite,
         text: "Discovered Movies"
     )
+
+    private lazy var seeAllDiscoveredMoviesButton: UIButton = .createSeeAllButton(
+        action: #selector(didTapAllDiscoveredMoviesButton),
+        target: self
+    )
+
+    private let commonLabelsView: UIView = .createCommonView(backgroundColor: .primaryBackground)
 
     private let discoveredMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the MovieListCollectionViewHandler
@@ -188,6 +200,7 @@ final class SearchView: UIView, SearchViewProtocol {
         upcomingMovieLabel.isHidden = true
         upcomingMovieCollectionView.isHidden = true
         recentlySearchedLabel.isHidden = true
+        seeAllRecentlySearchedButton.isHidden = true
         recentlySearchedCollectionView.isHidden = true
         noResultsView.isHidden = true
         searchResultsStackView.isHidden = true
@@ -201,6 +214,7 @@ final class SearchView: UIView, SearchViewProtocol {
         upcomingMovieLabel.isHidden = false
         upcomingMovieCollectionView.isHidden = false
         recentlySearchedLabel.isHidden = false
+        seeAllRecentlySearchedButton.isHidden = false
         recentlySearchedCollectionView.isHidden = false
         discoveredPersonsLabel.isHidden = true
         discoveredPersonsCollectionView.isHidden = true
@@ -246,6 +260,7 @@ extension SearchView {
             upcomingMovieLabel,
             upcomingMovieCollectionView,
             recentlySearchedLabel,
+            seeAllRecentlySearchedButton,
             recentlySearchedCollectionView,
             loadingIndicator,
             searchBarContainerView
@@ -254,7 +269,8 @@ extension SearchView {
         // Arrange search results subviews
         searchResultsStackView.addArrangedSubview(discoveredPersonsLabel)
         searchResultsStackView.addArrangedSubview(discoveredPersonsCollectionView)
-        searchResultsStackView.addArrangedSubview(discoveredMoviesLabel)
+        searchResultsStackView.addArrangedSubview(commonLabelsView)
+        commonLabelsView.addSubviews(discoveredMoviesLabel, seeAllDiscoveredMoviesButton)
         searchResultsStackView.addArrangedSubview(discoveredMoviesCollectionView)
 
         setupHandlers()
@@ -311,6 +327,16 @@ extension SearchView {
 extension SearchView {
     @objc private func viewWasTapped() {
         endEditing(true)
+    }
+
+    @objc
+    private func didTapAllRecentlySearchedButton(sender: UIButton) {
+//        delegate?.didTapSeeAllRecentlySearchedButton()
+    }
+
+    @objc
+    private func didTapAllDiscoveredMoviesButton(sender: UIButton) {
+        delegate?.didTapSeeAllButton(listType: .searchedMovies(query: searchBar.text ?? ""))
     }
 }
 
@@ -428,11 +454,20 @@ extension SearchView {
             make.top.equalTo(upcomingMovieCollectionView.snp.bottom).offset(24)
         }
 
+        seeAllRecentlySearchedButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(recentlySearchedLabel)
+        }
+
         recentlySearchedCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(recentlySearchedLabel.snp.bottom).offset(16)
             make.height.equalTo(300)
             make.bottom.equalToSuperview().offset(-16)
+        }
+
+        discoveredPersonsCollectionView.snp.makeConstraints { make in
+            make.height.equalTo(110)
         }
     }
 
@@ -453,8 +488,18 @@ extension SearchView {
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
         }
 
-        discoveredPersonsCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(110)
+        commonLabelsView.snp.makeConstraints { make in
+            make.height.equalTo(discoveredMoviesLabel.intrinsicContentSize.height)
+        }
+
+        discoveredMoviesLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+
+        seeAllDiscoveredMoviesButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(discoveredMoviesLabel)
         }
     }
 }

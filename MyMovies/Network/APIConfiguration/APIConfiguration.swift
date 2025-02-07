@@ -148,12 +148,14 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.tmdb, .movieList(type: .popularMovies)),
             (.tmdb, .movieList(type: .topRatedMovies)),
             (.tmdb, .movieList(type: .theHighestGrossingMovies)),
-            (.tmdb, .movieList(type: .similarMovies)):
+            (.tmdb, .movieList(type: .similarMovies)),
+            (.tmdb, .movieList(type: .searchedMovies)):
             return TMDBMoviesPagedResponse.self
         case (.kinopoisk, .movieList(type: .upcomingMovies)),
             (.kinopoisk, .movieList(type: .popularMovies)),
             (.kinopoisk, .movieList(type: .topRatedMovies)),
-            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)):
+            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)),
+            (.kinopoisk, .movieList(type: .searchedMovies)):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
@@ -196,16 +198,18 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .reviews(let id)):
             let queryParameters: [String: Any] = ["movieId": String(id)]
             return queryParameters
-//        Moved to path parameters
-//        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
-//            let queryParameters: [String: Any] = ["id": String(id)]
-//            return queryParameters
+            //        Moved to path parameters
+            //        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
+            //            let queryParameters: [String: Any] = ["id": String(id)]
+            //            return queryParameters
         case (.tmdb, .searchMovies(let query)),
-                (.tmdb, .searchPersons(let query)),
-                 (.kinopoisk, .searchMovies(let query)),
-                  (.kinopoisk, .searchPersons(let query)):
+            (.tmdb, .searchPersons(let query)),
+            (.kinopoisk, .searchMovies(let query)),
+            (.kinopoisk, .searchPersons(let query)),
+            (.tmdb, .movieList(type: .searchedMovies(let query))),
+            (.kinopoisk, .movieList(type: .searchedMovies(let query))):
             let queryParameters: [String: Any] = ["query": query.trimmingCharacters(in: .whitespaces)]
-                return queryParameters
+            return queryParameters
         default:
             return [:]
         }
