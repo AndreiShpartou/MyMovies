@@ -21,35 +21,37 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     }
 
     func fetchMovie() {
+        presenter?.didFetchMovie(movie)
         // Most of the time, the movie details are already loaded, so we don't need to fetch them again
         // Except for Kinopoisk API, which doesn't provide details in search results
-        guard fetchDetails,
-              let provider = networkManager.getProviderAPI(),
-              provider == .kinopoisk else {
-            presenter?.didFetchMovie(movie)
 
-            return
-        }
-
-        // Workaround for Kinopoisk API search result list (search responses don't include details)
-        let type = MovieListType.similarMovies(id: movie.id)
-        networkManager.fetchMovieDetails(for: movie, type: type) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let detailedMovie):
-                DispatchQueue.main.async {
-                    self.movie = detailedMovie
-                    self.fetchSimilarMovies()
-                    self.presenter?.didFetchMovie(detailedMovie)
-
-                    return
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.presenter?.didFailToFetchData(with: error)
-                }
-            }
-        }
+//        guard fetchDetails,
+//              let provider = networkManager.getProviderAPI(),
+//              provider == .kinopoisk else {
+//            presenter?.didFetchMovie(movie)
+//
+//            return
+//        }
+//
+//        // Workaround for Kinopoisk API search result list (search responses don't include details)
+//        let type = MovieListType.similarMovies(id: movie.id)
+//        networkManager.fetchMovieDetails(for: movie, type: type) { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let detailedMovie):
+//                DispatchQueue.main.async {
+//                    self.movie = detailedMovie
+//                    self.fetchSimilarMovies()
+//                    self.presenter?.didFetchMovie(detailedMovie)
+//
+//                    return
+//                }
+//            case .failure(let error):
+//                DispatchQueue.main.async {
+//                    self.presenter?.didFailToFetchData(with: error)
+//                }
+//            }
+//        }
     }
 
     func fetchReviews() {

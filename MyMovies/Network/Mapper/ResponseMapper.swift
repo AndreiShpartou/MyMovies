@@ -18,10 +18,10 @@ final class ResponseMapper: ResponseMapperProtocol {
         case (is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! KinopoiskMoviesPagedResponse) as! T
         // Kinopoisk movie details
-//        case (is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
-//            return mapToDetails(data as! KinopoiskMoviesPagedResponse) as! T
-        case (is KinopoiskMovieResponse.Type, is Movie.Type):
-            return mapToDetails(data as! KinopoiskMovieResponse) as! T
+        case (is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
+            return map(data as! KinopoiskMoviesPagedResponse)[0] as! T
+//        case (is KinopoiskMovieResponse.Type, is Movie.Type):
+//            return mapToDetails(data as! KinopoiskMovieResponse) as! T
         // TMDB movie details
         case (is TMDBMovieResponse.Type, is Movie.Type):
             return map(data as! TMDBMovieResponse) as! T
@@ -162,41 +162,41 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
-    // For details endpoint
-    private func mapToDetails(_ data: KinopoiskMovieResponse) -> Movie {
-        // Map brief similar movies data
-        let similarMovies = mapSimilarMovies(data.similarMovies)
-        // Map the underlying movie
-        return Movie(
-            id: data.id,
-            title: data.name ?? data.alternativeName ?? "",
-            alternativeTitle: data.alternativeName,
-            description: data.description,
-            shortDescription: data.shortDescription,
-            status: data.status,
-            releaseYear: String(data.year ?? Calendar.current.component(.year, from: Date())),
-            runtime: String(data.movieLength ?? 0),
-            voteAverage: (data.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : data.rating?.kp,
-            genres: map(data.genres ?? []),
-            countries: map(data.countries ?? []),
-            persons: map(data.persons ?? []),
-            poster: Movie.Cover(
-                url: data.poster?.url,
-                previewUrl: data.poster?.previewUrl
-            ),
-            backdrop: Movie.Cover(
-                url: data.backdrop?.url,
-                previewUrl: data.backdrop?.previewUrl
-            ),
-            similarMovies: similarMovies
-        )
-    }
-
 //    // For details endpoint
-//    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> Movie {
+//    private func mapToDetails(_ data: KinopoiskMovieResponse) -> Movie {
+//        // Map brief similar movies data
+//        let similarMovies = mapSimilarMovies(data.similarMovies)
+//        // Map the underlying movie
+//        return Movie(
+//            id: data.id,
+//            title: data.name ?? data.alternativeName ?? "",
+//            alternativeTitle: data.alternativeName,
+//            description: data.description,
+//            shortDescription: data.shortDescription,
+//            status: data.status,
+//            releaseYear: String(data.year ?? Calendar.current.component(.year, from: Date())),
+//            runtime: String(data.movieLength ?? 0),
+//            voteAverage: (data.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : data.rating?.kp,
+//            genres: map(data.genres ?? []),
+//            countries: map(data.countries ?? []),
+//            persons: map(data.persons ?? []),
+//            poster: Movie.Cover(
+//                url: data.poster?.url,
+//                previewUrl: data.poster?.previewUrl
+//            ),
+//            backdrop: Movie.Cover(
+//                url: data.backdrop?.url,
+//                previewUrl: data.backdrop?.previewUrl
+//            ),
+//            similarMovies: similarMovies
+//        )
+//    }
+
+    // For details endpoint
+//    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {
 //        let movieArray = data.docs.map {
 //            // Map brief similar movies data
-//            let similarMovies = mapSimilarMovies($0.similarMovies)
+//            let similarMovxies = mapSimilarMovies($0.similarMovies)
 //            // Map the underlying movie
 //            return Movie(
 //                id: $0.id,
@@ -223,7 +223,7 @@ final class ResponseMapper: ResponseMapperProtocol {
 //            )
 //        }
 //
-//        return movieArray[0]
+//        return movieArray
 //    }
 
     // MARK: - Genres

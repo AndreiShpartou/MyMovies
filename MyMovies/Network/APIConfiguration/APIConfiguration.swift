@@ -44,12 +44,14 @@ enum Provider: String {
 
 // MARK: - Endpoints
 enum Endpoint {
-    // Get a list of movies by type
-    case movieList(type: MovieListType)
     // Get the list of official genres for movies
     case genres
+    // Get a list of movies by type
+    case movieList(type: MovieListType)
     // Get the movie details by ID
     case movieDetails(id: Int, type: MovieListType? = nil)
+    // Get the details for an array of movie IDs
+    case moviesDetails(ids: [Int])
     // Get the movie reviews
     case reviews(id: Int)
     // Search movies
@@ -59,11 +61,16 @@ enum Endpoint {
 
     var rawValue: String {
         switch self {
-        case .movieList(let type):
-            return type.rawValue
         case .genres:
             return "genres"
-        case .movieDetails:
+        case .movieList(let type):
+            return type.rawValue
+        // Utilize one separate request for one movie
+        case .movieDetails,
+        // Utilize the same endpoint but with different query parameters
+        // One request with [Ids] parameter for all movies
+        // Available only for Kinopoisk API, for now
+                .moviesDetails:
             return "movieDetails"
         case .reviews:
             return "reviews"
@@ -131,7 +138,10 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.kinopoisk, .movieDetails(_, type: .upcomingMovies)),
             (.kinopoisk, .movieDetails(_, type: .topRatedMovies)),
             (.kinopoisk, .movieDetails(_, type: .theHighestGrossingMovies)),
+            (.kinopoisk, .movieDetails(_, type: .searchedMovies)),
             (.kinopoisk, .movieDetails(_, type: nil)):
+            return false
+        case (.tmdb, .moviesDetails):
             return false
         default:
             return true
@@ -149,26 +159,24 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.tmdb, .movieList(type: .topRatedMovies)),
             (.tmdb, .movieList(type: .theHighestGrossingMovies)),
             (.tmdb, .movieList(type: .similarMovies)),
-            (.tmdb, .movieList(type: .searchedMovies)):
+            (.tmdb, .movieList(type: .searchedMovies)),
+            (.tmdb, .searchMovies):
             return TMDBMoviesPagedResponse.self
         case (.kinopoisk, .movieList(type: .upcomingMovies)),
             (.kinopoisk, .movieList(type: .popularMovies)),
             (.kinopoisk, .movieList(type: .topRatedMovies)),
             (.kinopoisk, .movieList(type: .theHighestGrossingMovies)),
-            (.kinopoisk, .movieList(type: .searchedMovies)):
+            (.kinopoisk, .movieList(type: .searchedMovies)),
+            (.kinopoisk, .searchMovies),
+            (.kinopoisk, .movieDetails),
+            (.kinopoisk, .moviesDetails):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
-        case (.kinopoisk, .movieDetails):
-            return KinopoiskMovieResponse.self
         case (.tmdb, .reviews):
             return TMDBReviewsPagedResponse.self
         case (.kinopoisk, .reviews):
             return KinopoiskReviewsPagedResponse.self
-        case (.tmdb, .searchMovies):
-            return TMDBMoviesPagedResponse.self
-        case (.kinopoisk, .searchMovies):
-            return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .searchPersons):
             return TMDBPersonsPagedResponse.self
         case (.kinopoisk, .searchPersons):
@@ -198,10 +206,12 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .reviews(let id)):
             let queryParameters: [String: Any] = ["movieId": String(id)]
             return queryParameters
-            //        Moved to path parameters
-            //        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
-            //            let queryParameters: [String: Any] = ["id": String(id)]
-            //            return queryParameters
+        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
+            let queryParameters: [String: Any] = ["id": String(id)]
+            return queryParameters
+        case (.kinopoisk, .moviesDetails(let ids)):
+            let queryParameters: [String: Any] = ["id": ids.map { String($0) }]
+            return queryParameters
         case (.tmdb, .searchMovies(let query)),
             (.tmdb, .searchPersons(let query)),
             (.kinopoisk, .searchMovies(let query)),
@@ -258,8 +268,9 @@ struct APIConfiguration: APIConfigurationProtocol {
             return "\(id)/reviews"
         case (.tmdb, .movieList(type: .similarMovies(let id))):
             return "\(id)/similar"
-        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
-            return "\(id)"
+            //        // Movied to query parameters
+            //        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
+            //            return "\(id)"
         default:
             return ""
         }

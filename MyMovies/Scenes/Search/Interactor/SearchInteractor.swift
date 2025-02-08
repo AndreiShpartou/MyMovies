@@ -132,14 +132,13 @@ class SearchInteractor: SearchInteractorProtocol {
         // Perform movie search
         networkManager.searchMovies(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
-
             switch result {
             case .success(let movies):
-                self.networkManager.fetchMoviesDetails(for: movies, type: .upcomingMovies) { [weak self] detailedMovies in
-                    DispatchQueue.main.async {
-                        self?.presenter?.didFetchMoviesSearchResults(detailedMovies)
-                    }
-                }
+                // Fetch details with a single request for all movies
+                // Kinopoisk API supports multiple movie details request
+                // Disabled for the TMDB API. It returns the same movie collection without requests
+                self.fetchMoviesDetails(for: movies.map { $0.id }, defaultValue: movies)
+
 //                self?.saveSearchQuery(query)
             case .failure(let error):
                 self.presenter?.didFailToFetchData(with: error)
@@ -148,6 +147,31 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     // MARK: - Private
+    private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
+        networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let detailedMovies):
+                DispatchQueue.main.async {
+                    // Fetch details with a separate request for each movie
+                    // TMDB API does not support multiple movie details request
+                    // Disabled for the Kinopoisk API. It returns the same movie collection without requests
+                    self.fetchMoviesDetails(for: detailedMovies)
+                }
+            case .failure(let error):
+                self.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    private func fetchMoviesDetails(for movies: [MovieProtocol]) {
+        networkManager.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
+            DispatchQueue.main.async {
+                self?.presenter?.didFetchMoviesSearchResults(detailedMovies)
+            }
+        }
+    }
+
     private func fetchRecentlySearchedMovies() {
         let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
         presenter?.didFetchRecentlySearchedMovies(recentlySearched)

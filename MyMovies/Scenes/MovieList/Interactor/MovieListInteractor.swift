@@ -64,14 +64,48 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
-                DispatchQueue.main.async {
-                    self?.presenter?.didFetchMovieList(detailedMovies)
-                }
-            }
+            self.fetchDetails(for: movies, fetchType: fetchType)
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
                 self?.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    private func fetchDetails(for movies: [MovieProtocol], fetchType: MovieListType) {
+        switch fetchType {
+        case .searchedMovies:
+            // Kinopoisk API doesn't contain movie details in search results
+            // Fetch details with a single request for all movies
+            // Kinopoisk API supports multiple movie details request
+            // Disabled for the TMDB API. It returns the same movie collection without requests
+            self.fetchMoviesDetails(for: movies.map { $0.id }, defaultValue: movies)
+        default:
+            fetchMoviesDetails(for: movies)
+        }
+    }
+
+    private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
+        networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let detailedMovies):
+                DispatchQueue.main.async {
+                    // Fetch details with a separate request for each movie
+                    // TMDB API does not support multiple movie details request
+                    // Disabled for the Kinopoisk API. It returns the same movie collection without requests
+                    self.fetchMoviesDetails(for: detailedMovies)
+                }
+            case .failure(let error):
+                self.presenter?.didFailToFetchData(with: error)
+            }
+        }
+    }
+
+    private func fetchMoviesDetails(for movies: [MovieProtocol]) {
+        networkManager.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
+            DispatchQueue.main.async {
+                self?.presenter?.didFetchMovieList(detailedMovies)
             }
         }
     }

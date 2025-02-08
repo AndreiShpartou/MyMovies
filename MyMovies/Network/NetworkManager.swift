@@ -39,7 +39,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
-    // Get movie details for an array of movies
+    // Get movie details for each movie in the array (separate requests for each movie)
     func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void) {
         var detailedMovies = [MovieProtocol]()
         let dispatchGroup = DispatchGroup()
@@ -63,6 +63,20 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
+    // Get movie details by array of id (single request for all movies)
+    // For now, only Kinopoisk API supported
+    func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        let encoding = URLEncoding(arrayEncoding: .noBrackets)
+        performRequest(for: .moviesDetails(ids: ids), defaultValue: defaultValue as? [Movie], encoding: encoding) { (result: Result<[Movie], Error>) in
+            switch result {
+            case .success(let movies):
+                completion(.success(movies))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     // MARK: - MoviesFilteredByGenre
     func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         let queryParameters = getGenreQueryParameters(for: genre, endpoint: type.endpoint)
@@ -72,6 +86,7 @@ class NetworkManager: NetworkManagerProtocol {
     func fetchMovieByPerson(person: PersonProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         //
     }
+
     // MARK: - Genres
     // Get the list of official genres for movies
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
@@ -150,6 +165,7 @@ class NetworkManager: NetworkManagerProtocol {
         queryParameters: [String: Any] = [:],
         // For the case when an endpoint is non-active for current API provider
         defaultValue: T? = nil,
+        encoding: ParameterEncoding = URLEncoding.default,
         completion: @escaping (Result<T, Error>) -> Void
     ) {
         guard let apiConfig = apiConfig else {
@@ -187,7 +203,7 @@ class NetworkManager: NetworkManagerProtocol {
         // Apply additional headers
         // headers.headers.append(//)
 
-        AF.request(url, parameters: parameters, headers: headers).responseData { [weak self] response in
+        AF.request(url, parameters: parameters, encoding: encoding, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)
         }
     }

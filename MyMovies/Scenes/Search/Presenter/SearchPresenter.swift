@@ -136,7 +136,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             view?.showNoResults()
         } else {
             view?.showMoviesSearchResults(searchResultsViewModels)
-            self.movies.append(contentsOf: movies)
+            self.movies = movies
         }
     }
 
