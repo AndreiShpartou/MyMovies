@@ -128,25 +128,31 @@ class NetworkManager: NetworkManagerProtocol {
 
     // MARK: - Search
     func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        performRequest(for: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
-            switch result {
-            case .success(let movies):
-                completion(.success(movies))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        searchItems(endpoint: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
+            completion(result.map { $0 as [MovieProtocol] })
         }
+//        performRequest(for: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
+//            switch result {
+//            case .success(let movies):
+//                completion(.success(movies))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
     }
 
     func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
-        performRequest(for: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
-            switch result {
-            case .success(let persons):
-                completion(.success(persons))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
+            completion(result.map { $0 as [PersonProtocol] })
         }
+//        performRequest(for: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
+//            switch result {
+//            case .success(let persons):
+//                completion(.success(persons))
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
     }
 
     // MARK: - ProviderAPI
@@ -246,5 +252,14 @@ class NetworkManager: NetworkManagerProtocol {
     // MARK: - GenreFiltering
     private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
         return apiConfig?.genreFilteringQueryParameters(for: genre, endpoint: endpoint) ?? [:]
+    }
+    
+    // MARK: - SearchItems
+    private func searchItems<T: Codable>(
+        endpoint: Endpoint,
+        encoding: ParameterEncoding = URLEncoding.default,
+        completion: @escaping (Result<[T], Error>) -> Void
+    ) {
+        performRequest(for: endpoint, encoding: encoding, completion: completion)
     }
 }
