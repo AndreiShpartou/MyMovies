@@ -14,4 +14,23 @@ class SearchRouter: SearchRouterProtocol {
     init(viewController: UIViewController? = nil) {
         self.viewController = viewController
     }
+
+    // MARK: - Navigation
+    func navigateToMovieDetails(with movie: MovieProtocol) {
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie, fetchDetails: true)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
+    }
+
+    func navigateToPersonDetails(with person: PersonProtocol) {
+        // let personDetailsVC = SceneBuilder.buildPersonDetailsScene(for: actor)
+        // viewController?.navigationController?.isNavigationBarHidden = false
+        // viewController?.navigationController?.pushViewController(personDetailsVC, animated: true)
+    }
+
+    func navigateToMovieList(type: MovieListType) {
+        let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieListVC, animated: true)
+    }
 }

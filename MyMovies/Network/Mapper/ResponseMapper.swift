@@ -13,13 +13,16 @@ final class ResponseMapper: ResponseMapperProtocol {
         case (let fromType, let toType) where fromType == toType:
             return data as! T
         // movies
-        case ( is TMDBMoviesPagedResponse.Type, is [Movie].Type):
+        case (is TMDBMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! TMDBMoviesPagedResponse) as! T
-        case ( is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
+        case (is KinopoiskMoviesPagedResponse.Type, is [Movie].Type):
             return map(data as! KinopoiskMoviesPagedResponse) as! T
         // Kinopoisk movie details
-        case ( is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
-            return mapToDetails(data as! KinopoiskMoviesPagedResponse) as! T
+        case (is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
+            return map(data as! KinopoiskMoviesPagedResponse)[0] as! T
+//        case (is KinopoiskMovieResponse.Type, is Movie.Type):
+//            return mapToDetails(data as! KinopoiskMovieResponse) as! T
+        // TMDB movie details
         case (is TMDBMovieResponse.Type, is Movie.Type):
             return map(data as! TMDBMovieResponse) as! T
         // genres
@@ -32,6 +35,11 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBReviewsPagedResponse) as! T
         case (is KinopoiskReviewsPagedResponse.Type, is [MovieReview].Type):
             return map(data as! KinopoiskReviewsPagedResponse) as! T
+        // Persons
+        case (is TMDBPersonsPagedResponse.Type, is [Movie.Person].Type):
+            return map(data as! TMDBPersonsPagedResponse) as! T
+        case (is KinopoiskPersonsPagedResponse.Type, is [Movie.Person].Type):
+            return map(data as! KinopoiskPersonsPagedResponse) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
@@ -154,39 +162,69 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
-    // For details endpoint
-    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> Movie {
-        let movieArray = data.docs.map {
-            // Map brief similar movies data
-            let similarMovies = mapSimilarMovies($0.similarMovies)
-            // Map the underlying movie
-            return Movie(
-                id: $0.id,
-                title: $0.name ?? $0.alternativeName ?? "",
-                alternativeTitle: $0.alternativeName,
-                description: $0.description,
-                shortDescription: $0.shortDescription,
-                status: $0.status,
-                releaseYear: String($0.year ?? Calendar.current.component(.year, from: Date())),
-                runtime: String($0.movieLength ?? 0),
-                voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
-                genres: map($0.genres ?? []),
-                countries: map($0.countries ?? []),
-                persons: map($0.persons ?? []),
-                poster: Movie.Cover(
-                    url: $0.poster?.url,
-                    previewUrl: $0.poster?.previewUrl
-                ),
-                backdrop: Movie.Cover(
-                    url: $0.backdrop?.url,
-                    previewUrl: $0.backdrop?.previewUrl
-                ),
-                similarMovies: similarMovies
-            )
-        }
+//    // For details endpoint
+//    private func mapToDetails(_ data: KinopoiskMovieResponse) -> Movie {
+//        // Map brief similar movies data
+//        let similarMovies = mapSimilarMovies(data.similarMovies)
+//        // Map the underlying movie
+//        return Movie(
+//            id: data.id,
+//            title: data.name ?? data.alternativeName ?? "",
+//            alternativeTitle: data.alternativeName,
+//            description: data.description,
+//            shortDescription: data.shortDescription,
+//            status: data.status,
+//            releaseYear: String(data.year ?? Calendar.current.component(.year, from: Date())),
+//            runtime: String(data.movieLength ?? 0),
+//            voteAverage: (data.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : data.rating?.kp,
+//            genres: map(data.genres ?? []),
+//            countries: map(data.countries ?? []),
+//            persons: map(data.persons ?? []),
+//            poster: Movie.Cover(
+//                url: data.poster?.url,
+//                previewUrl: data.poster?.previewUrl
+//            ),
+//            backdrop: Movie.Cover(
+//                url: data.backdrop?.url,
+//                previewUrl: data.backdrop?.previewUrl
+//            ),
+//            similarMovies: similarMovies
+//        )
+//    }
 
-        return movieArray[0]
-    }
+    // For details endpoint
+//    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {
+//        let movieArray = data.docs.map {
+//            // Map brief similar movies data
+//            let similarMovxies = mapSimilarMovies($0.similarMovies)
+//            // Map the underlying movie
+//            return Movie(
+//                id: $0.id,
+//                title: $0.name ?? $0.alternativeName ?? "",
+//                alternativeTitle: $0.alternativeName,
+//                description: $0.description,
+//                shortDescription: $0.shortDescription,
+//                status: $0.status,
+//                releaseYear: String($0.year ?? Calendar.current.component(.year, from: Date())),
+//                runtime: String($0.movieLength ?? 0),
+//                voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
+//                genres: map($0.genres ?? []),
+//                countries: map($0.countries ?? []),
+//                persons: map($0.persons ?? []),
+//                poster: Movie.Cover(
+//                    url: $0.poster?.url,
+//                    previewUrl: $0.poster?.previewUrl
+//                ),
+//                backdrop: Movie.Cover(
+//                    url: $0.backdrop?.url,
+//                    previewUrl: $0.backdrop?.previewUrl
+//                ),
+//                similarMovies: similarMovies
+//            )
+//        }
+//
+//        return movieArray
+//    }
 
     // MARK: - Genres
     private func map(_ data: TMDBGenrePagedResponseProtocol) -> [Movie.Genre] {
@@ -227,6 +265,14 @@ final class ResponseMapper: ResponseMapperProtocol {
     }
 
     // MARK: - Persons
+    private func map(_ data: TMDBPersonsPagedResponse) -> [Movie.Person] {
+        return map(data.results)
+    }
+
+    private func map(_ data: KinopoiskPersonsPagedResponse) -> [Movie.Person] {
+        return map(data.docs)
+    }
+
     private func map(_ data: [TMDBPersonResponseProtocol]) -> [Movie.Person] {
         let persons = data.map {
             Movie.Person(

@@ -39,7 +39,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     )
     // Body with text fields
     // FullName
-    private let fullNameTextField: UITextField = .createBorderedTextField(
+    private lazy var fullNameTextField: UITextField = .createBorderedTextField(
         action: #selector(fullNameDidChanged),
         target: self
     )
@@ -55,7 +55,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         text: "* Name is empty"
     )
     // Email
-    private let emailTextField: UITextField = .createBorderedTextField(
+    private lazy var emailTextField: UITextField = .createBorderedTextField(
         action: #selector(emailDidChanged),
         target: self,
         keyboardType: .emailAddress

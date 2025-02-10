@@ -32,7 +32,7 @@ extension BriefMovieDescriptionHandler: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaceHolderCollectionViewCell.identifier, for: indexPath) as? PlaceHolderCollectionViewCell else {
                 fatalError("Failed to dequeue PlaceHolderCollectionViewCell")
             }
-            cell.configure(with: Asset.DefaultCovers.defaultPlaceholder.image, and: "There Are No Similar Movies Yet!")
+            cell.configure(with: Asset.DefaultCovers.defaultPlaceholder.image, and: "There Are No Data Yet!")
 
             return cell
         } else {

@@ -9,9 +9,10 @@ import Foundation
 
 class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     weak var presenter: MovieDetailsInteractorOutputProtocol?
+    var fetchDetails = false
 
     private let networkManager: NetworkManagerProtocol
-    private let movie: MovieProtocol
+    private var movie: MovieProtocol
 
     // MARK: - Init
     init(movie: MovieProtocol, networkManager: NetworkManagerProtocol = NetworkManager.shared) {
@@ -20,7 +21,10 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     }
 
     func fetchMovie() {
-        presenter?.didFetchMovie(movie)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.presenter?.didFetchMovie(self.movie)
+        }
     }
 
     func fetchReviews() {

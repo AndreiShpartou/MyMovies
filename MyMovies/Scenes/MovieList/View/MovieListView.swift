@@ -25,7 +25,10 @@ final class MovieListView: UIView, MovieListViewProtocol {
     private let movieListCollection: UICollectionView = .createCommonCollectionView(
         // overridden in the MovieListCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellTypesDict: [MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self],
+        cellTypesDict: [
+            MovieListCollectionViewCell.identifier: MovieListCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ],
         scrollDirection: .vertical,
         minimumLineSpacing: 12
     )
@@ -47,6 +50,15 @@ final class MovieListView: UIView, MovieListViewProtocol {
     func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
         genresCollectionHandler.configure(with: genres)
         genresCollection.reloadData()
+
+        if genres.isEmpty {
+            genresCollection.snp.updateConstraints { make in
+                make.height.equalTo(0)
+                make.top.equalTo(safeAreaLayoutGuide).inset(0)
+            }
+
+            return
+        }
 
         setupAdditionalDefaultPreferences()
     }

@@ -44,7 +44,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.isNavigationBarHidden = true
+//        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }
@@ -78,7 +78,7 @@ final class SceneBuilder: SceneBuilderProtocol {
         return viewController
     }
 
-    static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController {
+    static func buildMovieDetailsScene(for movie: MovieProtocol, fetchDetails: Bool = false) -> UIViewController {
         let interactor = MovieDetailsInteractor(movie: movie)
         let router = MovieDetailsRouter()
         let view = MovieDetailsView()
@@ -87,8 +87,26 @@ final class SceneBuilder: SceneBuilderProtocol {
 
         router.viewController = viewController
         interactor.presenter = presenter
+        interactor.fetchDetails = fetchDetails
 
         return viewController
+    }
+
+    static func buildPersonDetailsScene(for person: PersonProtocol) -> UIViewController {
+//        let interactor = PersonDetailsInteractor(person: person)
+//        let router = PersonDetailsRouter()
+//        let view = PersonDetailsView()
+//        let presenter = PersonDetailsPresenter(view: view, interactor: interactor, router: router)
+//        let viewController = PersonDetailsViewController(personDetailsView: view, presenter: presenter)
+//
+//        router.viewController = viewController
+//        interactor.presenter = presenter
+//        
+//        let navigationController = UINavigationController(rootViewController: viewController)
+//        navigationController.isNavigationBarHidden = false
+//        
+//        return navigationController
+        return UIViewController()
     }
 
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController {

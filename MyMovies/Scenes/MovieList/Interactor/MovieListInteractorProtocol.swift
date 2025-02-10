@@ -10,7 +10,7 @@ import Foundation
 protocol MovieListInteractorProtocol {
     var presenter: MovieListInteractorOutputProtocol? { get set }
 
-    func fetchMovieGenres()
+    func fetchMovieGenres(type: MovieListType)
     func fetchMovieList(type: MovieListType)
     func fetchMovieListWithGenresFiltering(genre: GenreProtocol)
 }

@@ -8,8 +8,12 @@
 import Foundation
 import UIKit
 
+protocol MovieListCollectionViewDelegate: AnyObject {
+    func didSelectMovie(movieID: Int)
+}
+
 final class MovieListCollectionViewHandler: NSObject {
-    weak var delegate: MovieListViewInteractionDelegate?
+    weak var delegate: MovieListCollectionViewDelegate?
 
     private var movies: [MovieListItemViewModelProtocol] = []
 
@@ -22,22 +26,35 @@ final class MovieListCollectionViewHandler: NSObject {
 // MARK: - UICollectionViewDataSource
 extension MovieListCollectionViewHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return max(movies.count, 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
-            fatalError("Failed to dequeue MovieListCollectionViewCell")
-        }
-        cell.configure(with: movies[indexPath.row])
+        if movies.isEmpty {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaceHolderCollectionViewCell.identifier, for: indexPath) as? PlaceHolderCollectionViewCell else {
+                fatalError("Failed to dequeue PlaceHolderCollectionViewCell")
+            }
+            cell.configure(with: Asset.DefaultCovers.defaultPlaceholder.image, and: "There Are No Data Yet!")
 
-        return cell
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
+                fatalError("Failed to dequeue MovieListCollectionViewCell")
+            }
+            cell.configure(with: movies[indexPath.row])
+
+            return cell
+        }
     }
 }
 
 // MARK: - UICollectionViewDelegate
 extension MovieListCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard !movies.isEmpty else {
+            return
+        }
+
         let movieID = movies[indexPath.row].id
         delegate?.didSelectMovie(movieID: movieID)
     }

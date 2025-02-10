@@ -20,12 +20,19 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // MovieList
         case (let data as [MovieProtocol], is [MovieListItemViewModel].Type):
             return mapToList(data) as? Y
+        case (let data as MovieProtocol, is MovieListItemViewModel.Type):
+            return mapToList(data) as? Y
         // MovieDetails
         case (let data as MovieProtocol, is MovieDetailsViewModel.Type):
             return mapToDetails(data) as? Y
+        case (let data as MovieProtocol, is UpcomingMovieViewModel.Type):
+            return mapToUpcoming(data) as? Y
         // Reviews
         case (let data as [MovieReviewProtocol], is [ReviewViewModel].Type):
             return mapToReviews(data) as? Y
+        // Persons
+        case (let data as [PersonProtocol], is [PersonViewModel].Type):
+            return map(data) as? Y
         // GenresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
@@ -46,7 +53,7 @@ final class DomainModelMapper: DomainModelMapperProtocol {
 
 // MARK: - ToViewModel
 extension DomainModelMapper {
-    // MovieProtocol -> UpcomingMovieViewModelProtocol
+    // [MovieProtocol] -> [UpcomingMovieViewModelProtocol]
     private func mapToUpcoming(_ data: [MovieProtocol]) -> [UpcomingMovieViewModelProtocol] {
         let movieViewModels: [UpcomingMovieViewModel] = data.map {
             return UpcomingMovieViewModel(
@@ -59,6 +66,17 @@ extension DomainModelMapper {
         }
 
         return movieViewModels
+    }
+
+    // MovieProtocol -> UpcomingMovieViewModelProtocol
+    private func mapToUpcoming(_ data: MovieProtocol) -> UpcomingMovieViewModelProtocol {
+        return UpcomingMovieViewModel(
+            id: data.id,
+            title: data.title,
+            shortDescription: data.shortDescription,
+            posterURL: URL(string: data.poster?.url ?? ""),
+            backdropURL: URL(string: data.backdrop?.url ?? "")
+        )
     }
 
     // MovieProtocol -> BriefMovieListItemViewModelProtocol
@@ -76,7 +94,7 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
-    // MovieProtocol -> MovieListViewModelProtocol
+    // [MovieProtocol] -> [MovieListViewModelProtocol]
     private func mapToList(_ data: [MovieProtocol]) -> [MovieListItemViewModelProtocol] {
         let movieViewModels: [MovieListItemViewModel] = data.map {
             let runtime = ($0.runtime == "0" || $0.runtime == nil) ? String(Int.random(in: 90...120)) : $0.runtime!
@@ -93,6 +111,21 @@ extension DomainModelMapper {
         }
 
         return movieViewModels
+    }
+
+    // MovieProtocol -> MovieListViewModelProtocol
+    private func mapToList(_ data: MovieProtocol) -> MovieListItemViewModelProtocol {
+            let runtime = (data.runtime == "0" || data.runtime == nil) ? String(Int.random(in: 90...120)) : data.runtime!
+            return MovieListItemViewModel(
+                id: data.id,
+                title: data.title,
+                voteAverage: String(format: "%.1f", data.voteAverage ?? Double.random(in: 4.4...7.7)),
+                genre: data.genres.first?.name ?? "Action",
+                countries: data.countries.map { $0.name },
+                posterURL: URL(string: data.poster?.url ?? ""),
+                releaseYear: extractYear(from: data.releaseYear),
+                runtime: "\(runtime) Minutes"
+            )
     }
 
     // MovieProtocol -> MovieDetailsViewModelProtocol
@@ -132,7 +165,7 @@ extension DomainModelMapper {
 
             return GenreViewModel(id: $0.id, name: name)
         }
-        if addDefaultValue {
+        if !genreViewModels.isEmpty, addDefaultValue {
             // Add the "All" genre at the start
             genreViewModels.insert(GenreViewModel(name: "All"), at: 0)
         }

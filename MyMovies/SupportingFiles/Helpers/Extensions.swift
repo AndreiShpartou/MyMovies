@@ -353,7 +353,9 @@ extension UIButton {
 extension UISearchBar {
     static func createSearchBar(
         style: UISearchBar.Style = .minimal,
-        placeholder: String
+        placeholder: String,
+        textFieldCornedRadius: CGFloat = 0,
+        textFieldBorderWidth: CGFloat = 0
     ) -> UISearchBar {
         let searchBar = UISearchBar()
         searchBar.placeholder = placeholder
@@ -364,6 +366,8 @@ extension UISearchBar {
         }
 
         textField.backgroundColor = .primarySoft
+        textField.layer.cornerRadius = textFieldCornedRadius
+        textField.layer.borderWidth = textFieldBorderWidth
         textField.snp.makeConstraints { make in
             make.leading.trailing.top.bottom.equalTo(searchBar)
         }

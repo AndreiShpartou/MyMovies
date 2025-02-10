@@ -6,8 +6,13 @@
 //
 import UIKit
 
+protocol UpcomingMoviesCollectionViewDelegate: AnyObject {
+    func didSelectMovie(movieID: Int)
+    func didScrollUpcomingMoviesItemTo(_ index: Int)
+}
+
 final class UpcomingMoviesCollectionViewHandler: NSObject {
-    weak var delegate: MainViewDelegate?
+    weak var delegate: UpcomingMoviesCollectionViewDelegate?
 
     private var movies: [UpcomingMovieViewModelProtocol] = []
 
@@ -16,6 +21,7 @@ final class UpcomingMoviesCollectionViewHandler: NSObject {
         self.movies = movies
     }
 }
+
 // MARK: - UICollectionViewDataSource
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -23,12 +29,21 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UpcomingMoviesCollectionViewCell.identifier, for: indexPath) as? UpcomingMoviesCollectionViewCell else {
-            fatalError("Failed to dequeue MovieListsCollectionViewCell")
-        }
-        cell.configure(with: movies[indexPath.row])
+        if movies.isEmpty {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaceHolderCollectionViewCell.identifier, for: indexPath) as? PlaceHolderCollectionViewCell else {
+                fatalError("Failed to dequeue PlaceHolderCollectionViewCell")
+            }
+            cell.configure(with: Asset.DefaultCovers.defaultPlaceholder.image, and: "There Is No Movie Yet!")
 
-        return cell
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UpcomingMoviesCollectionViewCell.identifier, for: indexPath) as? UpcomingMoviesCollectionViewCell else {
+                fatalError("Failed to dequeue MovieListsCollectionViewCell")
+            }
+            cell.configure(with: movies[indexPath.row])
+
+            return cell
+        }
     }
 }
 

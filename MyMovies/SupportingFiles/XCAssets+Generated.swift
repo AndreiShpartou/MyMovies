@@ -54,6 +54,9 @@ internal enum Asset {
     internal static let selected = ImageAsset(name: "Selected")
     internal static let unselected = ImageAsset(name: "Unselected")
   }
+  internal enum Search {
+    internal static let noResults = ImageAsset(name: "NoResults")
+  }
   internal enum TabBarIcons {
     internal static let home = ImageAsset(name: "Home")
     internal static let homeSelected = ImageAsset(name: "HomeSelected")

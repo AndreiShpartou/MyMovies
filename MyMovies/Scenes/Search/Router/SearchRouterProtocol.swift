@@ -9,4 +9,8 @@ import UIKit
 
 protocol SearchRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
+
+    func navigateToMovieDetails(with movie: MovieProtocol)
+    func navigateToPersonDetails(with person: PersonProtocol)
+    func navigateToMovieList(type: MovieListType)
 }

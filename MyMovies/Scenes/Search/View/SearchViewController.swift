@@ -13,7 +13,8 @@ protocol SearchViewControllerProtocol {
 
 final class SearchViewController: UIViewController, SearchViewControllerProtocol {
     var presenter: SearchPresenterProtocol
-    let searchView: SearchViewProtocol
+
+    private let searchView: SearchViewProtocol
 
     // MARK: - Init
     init(searchView: SearchViewProtocol, presenter: SearchPresenterProtocol) {
@@ -36,11 +37,68 @@ final class SearchViewController: UIViewController, SearchViewControllerProtocol
         super.viewDidLoad()
 
         setupViewController()
+        presenter.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.isNavigationBarHidden = true
     }
 }
 
 // MARK: - Setup
 extension SearchViewController {
     private func setupViewController() {
+        searchView.delegate = self
+    }
+}
+
+// MARK: - SearchViewDelegate
+extension SearchViewController: SearchViewDelegate {
+
+    func didScrollUpcomingMoviesItemTo(_ index: Int) {
+        //
+    }
+
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        presenter.didSelectGenre(genre)
+    }
+
+    func didSelectMovie(movieID: Int) {
+        presenter.didSelectMovie(movieID: movieID)
+    }
+
+    func didSelectPerson(personID: Int) {
+        presenter.didSelectPerson(personID: personID)
+    }
+
+    func didSelectPerson(person: PersonViewModelProtocol) {
+        //
+    }
+
+    func didTapSeeAllButton(listType: MovieListType) {
+        presenter.didTapSeeAllButton(listType: listType)
+    }
+}
+
+// MARK: - UISearchBarDelegate
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        presenter.didSearch(query: searchText)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Highlight the search bar
+        searchBar.searchTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        // Remove the highlight
+        searchBar.searchTextField.layer.borderColor = UIColor.primarySoft.cgColor
     }
 }

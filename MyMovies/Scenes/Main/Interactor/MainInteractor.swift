@@ -28,10 +28,34 @@ final class MainInteractor: MainInteractorProtocol {
         fetchMovies(type: .popularMovies)
     }
 
+    // MARK: - TopRatedMovies
+    func fetchTopRatedMovies() {
+        fetchMovies(type: .topRatedMovies)
+    }
+
+    // MARK: - TheHighestGrossingMovies
+    func fetchTheHighestGrossingMovies() {
+        fetchMovies(type: .theHighestGrossingMovies)
+    }
+
     // Get popular movies filtered by genre
     func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
         networkManager.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .popularMovies)
+        }
+    }
+
+    // Get top rated movies filtered by genre
+    func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol) {
+        networkManager.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
+            self?.handleMovieFetchResult(result, fetchType: .topRatedMovies)
+        }
+    }
+
+    // Get the highest grossing movies filtered by genre
+    func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol) {
+        networkManager.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
+            self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies)
         }
     }
 
@@ -81,6 +105,10 @@ final class MainInteractor: MainInteractorProtocol {
             presenter?.didFetchUpcomingMovies(movies)
         case .popularMovies:
             presenter?.didFetchPopularMovies(movies)
+        case .topRatedMovies:
+            presenter?.didFetchTopRatedMovies(movies)
+        case .theHighestGrossingMovies:
+            presenter?.didFetchTheHighestGrossingMovies(movies)
         default:
             break
         }

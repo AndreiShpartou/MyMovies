@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 
 class NetworkManager: NetworkManagerProtocol {
+
     static let shared = NetworkManager()
 
     var apiConfig: APIConfigurationProtocol? {
@@ -38,7 +39,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
-    // Get movie details for an array of movies
+    // Get movie details for each movie in the array (separate requests for each movie)
     func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void) {
         var detailedMovies = [MovieProtocol]()
         let dispatchGroup = DispatchGroup()
@@ -62,10 +63,33 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
+    // Get movie details by array of id (single request for all movies)
+    // For now, only Kinopoisk API supported
+    func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        let encoding = URLEncoding(arrayEncoding: .noBrackets)
+        performRequest(for: .moviesDetails(ids: ids), defaultValue: defaultValue as? [Movie], encoding: encoding) { (result: Result<[Movie], Error>) in
+            switch result {
+            case .success(let movies):
+                // Movie details may appear in a different order. Therefore, we have to sort them
+                // Build a dictionary: movie ID -> movie
+                let moviesDictionary = Dictionary(uniqueKeysWithValues: movies.map { ($0.id, $0) })
+                // Sort movies by the original order of IDs
+                let sortedMovies = ids.compactMap { moviesDictionary[$0] }
+                completion(.success(sortedMovies))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     // MARK: - MoviesFilteredByGenre
     func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         let queryParameters = getGenreQueryParameters(for: genre, endpoint: type.endpoint)
         fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
+    }
+
+    func fetchMovieByPerson(person: PersonProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        //
     }
 
     // MARK: - Genres
@@ -107,6 +131,19 @@ class NetworkManager: NetworkManagerProtocol {
         completion(.success(settingsSection))
     }
 
+    // MARK: - Search
+    func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        searchItems(endpoint: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
+            completion(result.map { $0 as [MovieProtocol] })
+        }
+    }
+
+    func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
+        searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
+            completion(result.map { $0 as [PersonProtocol] })
+        }
+    }
+
     // MARK: - PerformRequest
     //  Versatile request performer
     private func performRequest<T: Codable>(
@@ -114,6 +151,7 @@ class NetworkManager: NetworkManagerProtocol {
         queryParameters: [String: Any] = [:],
         // For the case when an endpoint is non-active for current API provider
         defaultValue: T? = nil,
+        encoding: ParameterEncoding = URLEncoding.default,
         completion: @escaping (Result<T, Error>) -> Void
     ) {
         guard let apiConfig = apiConfig else {
@@ -151,7 +189,7 @@ class NetworkManager: NetworkManagerProtocol {
         // Apply additional headers
         // headers.headers.append(//)
 
-        AF.request(url, parameters: parameters, headers: headers).responseData { [weak self] response in
+        AF.request(url, parameters: parameters, encoding: encoding, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)
         }
     }
@@ -194,5 +232,14 @@ class NetworkManager: NetworkManagerProtocol {
     // MARK: - GenreFiltering
     private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
         return apiConfig?.genreFilteringQueryParameters(for: genre, endpoint: endpoint) ?? [:]
+    }
+
+    // MARK: - SearchItems
+    private func searchItems<T: Codable>(
+        endpoint: Endpoint,
+        encoding: ParameterEncoding = URLEncoding.default,
+        completion: @escaping (Result<[T], Error>) -> Void
+    ) {
+        performRequest(for: endpoint, encoding: encoding, completion: completion)
     }
 }

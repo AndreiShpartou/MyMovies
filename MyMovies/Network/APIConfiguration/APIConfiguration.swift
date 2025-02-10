@@ -44,25 +44,40 @@ enum Provider: String {
 
 // MARK: - Endpoints
 enum Endpoint {
-    // Get a list of movies by type
-    case movieList(type: MovieListType)
     // Get the list of official genres for movies
     case genres
+    // Get a list of movies by type
+    case movieList(type: MovieListType)
     // Get the movie details by ID
     case movieDetails(id: Int, type: MovieListType? = nil)
+    // Get the details for an array of movie IDs
+    case moviesDetails(ids: [Int])
     // Get the movie reviews
     case reviews(id: Int)
+    // Search movies
+    case searchMovies(query: String)
+    // Search persons
+    case searchPersons(query: String)
 
     var rawValue: String {
         switch self {
-        case .movieList(let type):
-            return type.rawValue
         case .genres:
             return "genres"
-        case .movieDetails:
+        case .movieList(let type):
+            return type.rawValue
+        // Utilize one separate request for one movie
+        case .movieDetails,
+        // .moviesDetails - Utilize the same endpoint but with different query parameters
+        // One request with [Ids] parameter for all movies
+        // Available only for Kinopoisk API, for now
+                .moviesDetails:
             return "movieDetails"
         case .reviews:
             return "reviews"
+        case .searchMovies:
+            return "searchMovies"
+        case .searchPersons:
+            return "searchPersons"
         }
     }
 }
@@ -117,7 +132,12 @@ struct APIConfiguration: APIConfigurationProtocol {
         switch (provider, endpoint) {
         case (.kinopoisk, .movieDetails(_, type: .popularMovies)),
             (.kinopoisk, .movieDetails(_, type: .upcomingMovies)),
+            (.kinopoisk, .movieDetails(_, type: .topRatedMovies)),
+            (.kinopoisk, .movieDetails(_, type: .theHighestGrossingMovies)),
+            (.kinopoisk, .movieDetails(_, type: .searchedMovies)),
             (.kinopoisk, .movieDetails(_, type: nil)):
+            return false
+        case (.tmdb, .moviesDetails):
             return false
         default:
             return true
@@ -132,19 +152,31 @@ struct APIConfiguration: APIConfigurationProtocol {
             return [KinopoiskMovieResponse.Genre].self
         case (.tmdb, .movieList(type: .upcomingMovies)),
             (.tmdb, .movieList(type: .popularMovies)),
-            (.tmdb, .movieList(type: .similarMovies)):
+            (.tmdb, .movieList(type: .topRatedMovies)),
+            (.tmdb, .movieList(type: .theHighestGrossingMovies)),
+            (.tmdb, .movieList(type: .similarMovies)),
+            (.tmdb, .movieList(type: .searchedMovies)),
+            (.tmdb, .searchMovies):
             return TMDBMoviesPagedResponse.self
         case (.kinopoisk, .movieList(type: .upcomingMovies)),
-            (.kinopoisk, .movieList(type: .popularMovies)):
+            (.kinopoisk, .movieList(type: .popularMovies)),
+            (.kinopoisk, .movieList(type: .topRatedMovies)),
+            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)),
+            (.kinopoisk, .movieList(type: .searchedMovies)),
+            (.kinopoisk, .searchMovies),
+            (.kinopoisk, .movieDetails),
+            (.kinopoisk, .moviesDetails):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
-        case (.kinopoisk, .movieDetails):
-            return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .reviews):
             return TMDBReviewsPagedResponse.self
         case (.kinopoisk, .reviews):
             return KinopoiskReviewsPagedResponse.self
+        case (.tmdb, .searchPersons):
+            return TMDBPersonsPagedResponse.self
+        case (.kinopoisk, .searchPersons):
+            return KinopoiskPersonsPagedResponse.self
         default:
             return nil
         }
@@ -173,6 +205,17 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .movieDetails(let id, .similarMovies)):
             let queryParameters: [String: Any] = ["id": String(id)]
             return queryParameters
+        case (.kinopoisk, .moviesDetails(let ids)):
+            let queryParameters: [String: Any] = ["id": ids.map { String($0) }]
+            return queryParameters
+        case (.tmdb, .searchMovies(let query)),
+            (.tmdb, .searchPersons(let query)),
+            (.kinopoisk, .searchMovies(let query)),
+            (.kinopoisk, .searchPersons(let query)),
+            (.tmdb, .movieList(type: .searchedMovies(let query))),
+            (.kinopoisk, .movieList(type: .searchedMovies(let query))):
+            let queryParameters: [String: Any] = ["query": query.trimmingCharacters(in: .whitespaces)]
+            return queryParameters
         default:
             return [:]
         }
@@ -180,14 +223,20 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
         switch (provider, endpoint) {
-        case (.tmdb, .movieList(type: .upcomingMovies)), (.tmdb, .movieList(type: .popularMovies)):
+        case (.tmdb, .movieList(type: .upcomingMovies)),
+            (.tmdb, .movieList(type: .popularMovies)),
+            (.tmdb, .movieList(type: .topRatedMovies)),
+            (.tmdb, .movieList(type: .theHighestGrossingMovies)):
             guard let genreID = genre.id else {
                 return [:]
             }
             let queryParameters: [String: Any] = ["with_genres": genreID]
 
             return queryParameters
-        case (.kinopoisk, .movieList(type: .upcomingMovies)), (.kinopoisk, .movieList(type: .popularMovies)):
+        case (.kinopoisk, .movieList(type: .upcomingMovies)),
+            (.kinopoisk, .movieList(type: .popularMovies)),
+            (.kinopoisk, .movieList(type: .topRatedMovies)),
+            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)):
             guard let genreName = genre.rawName,
                   let defaultAllGenresName = DefaultValue.genre.rawName,
                     genreName != defaultAllGenresName else {
