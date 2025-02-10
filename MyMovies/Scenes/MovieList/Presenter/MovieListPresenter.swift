@@ -30,7 +30,7 @@ final class MovieListPresenter: MovieListPresenterProtocol {
     }
 
     func viewDidLoad(listType: MovieListType) {
-        interactor.fetchMovieGenres()
+        interactor.fetchMovieGenres(type: listType)
         interactor.fetchMovieList(type: listType)
     }
 

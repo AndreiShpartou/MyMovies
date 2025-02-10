@@ -165,7 +165,7 @@ extension DomainModelMapper {
 
             return GenreViewModel(id: $0.id, name: name)
         }
-        if addDefaultValue {
+        if !genreViewModels.isEmpty, addDefaultValue {
             // Add the "All" genre at the start
             genreViewModels.insert(GenreViewModel(name: "All"), at: 0)
         }

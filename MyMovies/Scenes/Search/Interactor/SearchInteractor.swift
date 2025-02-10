@@ -38,7 +38,9 @@ class SearchInteractor: SearchInteractorProtocol {
             case .success(let genres):
                 fetchedGenres = genres
             case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
             }
             group.leave()
         }
@@ -51,7 +53,10 @@ class SearchInteractor: SearchInteractorProtocol {
             switch result {
             case .success(let movies):
                 guard let movie = movies.first else {
-                    self.presenter?.didFetchUpcomingMovies([])
+                    DispatchQueue.main.async {
+                        self.presenter?.didFetchUpcomingMovies([])
+                    }
+
                     return
                 }
 
@@ -62,8 +67,11 @@ class SearchInteractor: SearchInteractorProtocol {
                     }
                 }
             case .failure(let error):
-                self.presenter?.didFailToFetchData(with: error)
-                group.leave()
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+
+                    group.leave()
+                }
             }
         }
 
@@ -72,9 +80,13 @@ class SearchInteractor: SearchInteractorProtocol {
 
             self.presenter?.didFetchGenres(fetchedGenres)
             if let movie = fetchedUpcomingMovie {
-                self.presenter?.didFetchUpcomingMovies([movie])
+                DispatchQueue.main.async {
+                    self.presenter?.didFetchUpcomingMovies([movie])
+                }
             } else {
-                self.presenter?.didFetchUpcomingMovies([])
+                DispatchQueue.main.async {
+                    self.presenter?.didFetchUpcomingMovies([])
+                }
             }
         }
     }
@@ -87,22 +99,28 @@ class SearchInteractor: SearchInteractorProtocol {
             switch result {
             case .success(let movies):
                 guard let movie = movies.first else {
-                    self.presenter?.didFetchUpcomingMovies([])
+                    DispatchQueue.main.async {
+                        self.presenter?.didFetchUpcomingMovies([])
+                    }
 
                     return
                 }
 
                 self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { [weak self] detailedMovies in
-                    DispatchQueue.main.async {
-                        if let movie = detailedMovies.first {
+                    if let movie = detailedMovies.first {
+                        DispatchQueue.main.async {
                             self?.presenter?.didFetchUpcomingMovies([movie])
-                        } else {
+                        }
+                    } else {
+                        DispatchQueue.main.async {
                             self?.presenter?.didFetchUpcomingMovies([])
                         }
                     }
                 }
             case .failure(let error):
-                self.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }
@@ -124,9 +142,13 @@ class SearchInteractor: SearchInteractorProtocol {
             switch result {
             case .success(let persons):
                 // Fetch related movies
-                self.presenter?.didFetchPersonsSearchResults(persons)
+                DispatchQueue.main.async {
+                    self.presenter?.didFetchPersonsSearchResults(persons)
+                }
             case .failure(let error):
-                self.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
         // Perform movie search
@@ -141,7 +163,9 @@ class SearchInteractor: SearchInteractorProtocol {
 
 //                self?.saveSearchQuery(query)
             case .failure(let error):
-                self.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }
@@ -159,7 +183,9 @@ class SearchInteractor: SearchInteractorProtocol {
                     self.fetchMoviesDetails(for: detailedMovies)
                 }
             case .failure(let error):
-                self.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }

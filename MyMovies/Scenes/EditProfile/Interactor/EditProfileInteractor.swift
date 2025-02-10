@@ -22,9 +22,13 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
         networkManager.fetchUserProfile { [weak self] result in
             switch result {
             case .success(let profile):
-                self?.presenter?.didFetchUserProfile(profile)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchUserProfile(profile)
+                }
             case .failure(let error):
-                self?.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }

@@ -51,6 +51,15 @@ final class MovieListView: UIView, MovieListViewProtocol {
         genresCollectionHandler.configure(with: genres)
         genresCollection.reloadData()
 
+        if genres.isEmpty {
+            genresCollection.snp.updateConstraints { make in
+                make.height.equalTo(0)
+                make.top.equalTo(safeAreaLayoutGuide).inset(0)
+            }
+
+            return
+        }
+
         setupAdditionalDefaultPreferences()
     }
 

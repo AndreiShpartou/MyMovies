@@ -19,18 +19,15 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // MARK: - Genres
     // Fetch genres
-    func fetchMovieGenres() {
-        networkManager.fetchGenres { [weak self] result in
-            switch result {
-            case .success(let genres):
-                DispatchQueue.main.async {
-                    self?.presenter?.didFetchMovieGenres(genres)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.presenter?.didFailToFetchData(with: error)
-                }
+    func fetchMovieGenres(type: MovieListType) {
+        switch type {
+        case .searchedMovies:
+            // APIs don't support genre filtering for searched movies
+            DispatchQueue.main.async {
+                self.presenter?.didFetchMovieGenres([])
             }
+        default:
+            fetchGenres()
         }
     }
 
@@ -54,6 +51,21 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     }
 
     // MARK: - Private
+    private func fetchGenres() {
+        networkManager.fetchGenres { [weak self] result in
+            switch result {
+            case .success(let genres):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchMovieGenres(genres)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
+            }
+        }
+    }
+
     private func fetchMovies(type: MovieListType) {
         networkManager.fetchMovies(type: type) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
@@ -97,7 +109,9 @@ final class MovieListInteractor: MovieListInteractorProtocol {
                     self.fetchMoviesDetails(for: detailedMovies)
                 }
             case .failure(let error):
-                self.presenter?.didFailToFetchData(with: error)
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }
