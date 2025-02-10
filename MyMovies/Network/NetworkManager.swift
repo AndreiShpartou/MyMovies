@@ -70,7 +70,12 @@ class NetworkManager: NetworkManagerProtocol {
         performRequest(for: .moviesDetails(ids: ids), defaultValue: defaultValue as? [Movie], encoding: encoding) { (result: Result<[Movie], Error>) in
             switch result {
             case .success(let movies):
-                completion(.success(movies))
+                // Movie details may appear in a different order. Therefore, we have to sort them
+                // Build a dictionary: movie ID -> movie
+                let moviesDictionary = Dictionary(uniqueKeysWithValues: movies.map { ($0.id, $0) })
+                // Sort movies by the original order of IDs
+                let sortedMovies = ids.compactMap { moviesDictionary[$0] }
+                completion(.success(sortedMovies))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -131,37 +136,12 @@ class NetworkManager: NetworkManagerProtocol {
         searchItems(endpoint: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
             completion(result.map { $0 as [MovieProtocol] })
         }
-//        performRequest(for: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
-//            switch result {
-//            case .success(let movies):
-//                completion(.success(movies))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
     }
 
     func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
         searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
             completion(result.map { $0 as [PersonProtocol] })
         }
-//        performRequest(for: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
-//            switch result {
-//            case .success(let persons):
-//                completion(.success(persons))
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-    }
-
-    // MARK: - ProviderAPI
-    func getProviderAPI() -> Provider? {
-        guard let apiConfig = apiConfig else {
-            return nil
-        }
-
-        return apiConfig.getProviderAPI()
     }
 
     // MARK: - PerformRequest
@@ -253,7 +233,7 @@ class NetworkManager: NetworkManagerProtocol {
     private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
         return apiConfig?.genreFilteringQueryParameters(for: genre, endpoint: endpoint) ?? [:]
     }
-    
+
     // MARK: - SearchItems
     private func searchItems<T: Codable>(
         endpoint: Endpoint,

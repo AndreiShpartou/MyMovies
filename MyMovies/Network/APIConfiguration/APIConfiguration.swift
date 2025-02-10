@@ -67,7 +67,7 @@ enum Endpoint {
             return type.rawValue
         // Utilize one separate request for one movie
         case .movieDetails,
-        // Utilize the same endpoint but with different query parameters
+        // .moviesDetails - Utilize the same endpoint but with different query parameters
         // One request with [Ids] parameter for all movies
         // Available only for Kinopoisk API, for now
                 .moviesDetails:
@@ -125,10 +125,6 @@ struct APIConfiguration: APIConfigurationProtocol {
 
     func authorizationHeader() -> [String: String] {
         return authHeader
-    }
-
-    func getProviderAPI() -> Provider {
-        return provider
     }
 
     // MARK: - Private
@@ -268,9 +264,6 @@ struct APIConfiguration: APIConfigurationProtocol {
             return "\(id)/reviews"
         case (.tmdb, .movieList(type: .similarMovies(let id))):
             return "\(id)/similar"
-            //        // Movied to query parameters
-            //        case (.kinopoisk, .movieDetails(let id, .similarMovies)):
-            //            return "\(id)"
         default:
             return ""
         }
