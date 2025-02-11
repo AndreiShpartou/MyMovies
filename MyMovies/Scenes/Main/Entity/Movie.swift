@@ -105,7 +105,6 @@ struct Movie: MovieProtocol {
         var id: Int
         var photo: String?
         var name: String
-        var originalName: String?
         var profession: String?
     }
 }

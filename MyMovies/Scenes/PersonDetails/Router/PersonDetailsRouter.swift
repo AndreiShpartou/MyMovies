@@ -1,13 +1,13 @@
 //
-//  SearchRouter.swift
+//  PersonDetailsRouter.swift
 //  MyMovies
 //
-//  Created by Andrei Shpartou on 27/07/2024.
+//  Created by Andrei Shpartou on 11/02/2025.
 //
 
 import UIKit
 
-class SearchRouter: SearchRouterProtocol {
+final class PersonDetailsRouter: PersonDetailsRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init
@@ -15,17 +15,10 @@ class SearchRouter: SearchRouterProtocol {
         self.viewController = viewController
     }
 
-    // MARK: - Navigation
     func navigateToMovieDetails(with movie: MovieProtocol) {
         let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
         viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
-    }
-
-    func navigateToPersonDetails(with person: PersonProtocol) {
-        // let personDetailsVC = SceneBuilder.buildPersonDetailsScene(for: actor)
-        // viewController?.navigationController?.isNavigationBarHidden = false
-        // viewController?.navigationController?.pushViewController(personDetailsVC, animated: true)
     }
 
     func navigateToMovieList(type: MovieListType) {

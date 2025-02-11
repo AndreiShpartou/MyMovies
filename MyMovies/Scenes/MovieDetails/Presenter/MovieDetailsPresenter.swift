@@ -29,6 +29,7 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         self.mapper = mapper
     }
 
+    // MARK: - Public
     func viewDidLoad() {
         interactor.fetchMovie()
         interactor.fetchReviews()

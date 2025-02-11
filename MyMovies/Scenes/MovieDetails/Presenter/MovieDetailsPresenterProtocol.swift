@@ -8,6 +8,10 @@
 import Foundation
 
 protocol MovieDetailsPresenterProtocol: AnyObject {
+    var view: MovieDetailsViewProtocol? { get set }
+    var interactor: MovieDetailsInteractorProtocol { get set }
+    var router: MovieDetailsRouterProtocol { get set }
+
     func viewDidLoad()
     func didTapSeeAllButton(listType: MovieListType)
     func didSelectMovie(movieID: Int)

@@ -27,7 +27,6 @@ protocol PersonViewModelProtocol {
     var id: Int { get }
     var photo: URL? { get }
     var name: String { get }
-    var originalName: String? { get }
     var profession: String? { get }
 }
 

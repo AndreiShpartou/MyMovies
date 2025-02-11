@@ -279,7 +279,6 @@ final class ResponseMapper: ResponseMapperProtocol {
                 id: $0.id,
                 photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
                 name: $0.name,
-                originalName: $0.original_name,
                 profession: $0.known_for_department
             )
         }
@@ -297,7 +296,6 @@ final class ResponseMapper: ResponseMapperProtocol {
                 id: id,
                 photo: $0.photo,
                 name: name,
-                originalName: $0.enName,
                 profession: $0.profession
             )
         }
