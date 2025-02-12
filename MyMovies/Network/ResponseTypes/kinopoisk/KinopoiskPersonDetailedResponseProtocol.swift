@@ -8,9 +8,9 @@
 import Foundation
 
 protocol KinopoiskPersonDetailedResponseProtocol: Codable {
-    var id: Int? { get }
+    var id: Int { get }
     var photo: String? { get }
-    var name: String? { get }
+    var name: String { get }
     var birthday: String? { get }
     var death: String? { get }
     var birthPlace: [CommonValueProtocol]? { get }

@@ -45,7 +45,7 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 // MARK: - PeroonDetailsInteractorOutputProtocol
 extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     func didFetchPersonDetails(_ person: PersonDetailsProtocol) {
-        guard let personViewModel = mapper.map(data: person, to: PersonDetailsViewModel.self) else {
+        guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
             //            view?.showError(NSLocalizedString("Failed to load person", comment: "Error message for failed person load"))
             //            view?.hideLoading()
 

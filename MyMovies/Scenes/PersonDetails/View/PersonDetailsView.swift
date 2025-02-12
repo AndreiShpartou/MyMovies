@@ -72,7 +72,7 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
     }
 
     // MARK: - PersonDetailsViewProtocol
-    func showPersonDetails(_ person: PersonDetailsViewModelProtocol) {
+    func showPersonDetails(_ person: PersonDetailedViewModelProtocol) {
         // photo
         personImageView.kf.setImage(with: person.photo, placeholder: Asset.Avatars.avatarDefault.image)
         // details

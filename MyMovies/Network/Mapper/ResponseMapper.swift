@@ -40,6 +40,10 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBPersonsPagedResponse) as! T
         case (is KinopoiskPersonsPagedResponse.Type, is [Movie.Person].Type):
             return map(data as! KinopoiskPersonsPagedResponse) as! T
+        case ( is TMDBPersonDetailedResponse.Type, is PersonDetailed.Type):
+            return map(data as! TMDBPersonDetailedResponse) as! T
+        case (is KinopoiskPersonDetailedResponse.Type, is PersonDetailed.Type):
+            return map(data as! KinopoiskPersonDetailedResponse) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
@@ -301,6 +305,31 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
 
         return removeDuplicates(from: persons)
+    }
+
+    // MARK: - Person Detailed
+    private func map(_ data: TMDBPersonDetailedResponseProtocol) -> PersonDetailed {
+        return PersonDetailed(
+            id: data.id,
+            name: data.name,
+            photo: data.personPhotoURL(path: data.profile_path, size: .w185),
+            birthDay: data.birthday,
+            birthPlace: data.place_of_birth,
+            deathDay: data.deathday,
+            department: data.known_for_department
+        )
+    }
+
+    private func map(_ data: KinopoiskPersonDetailedResponseProtocol) -> PersonDetailed {
+        return PersonDetailed(
+            id: data.id,
+            name: data.name,
+            photo: data.photo,
+            birthDay: data.birthday,
+            birthPlace: data.birthPlace?.map { $0.value }.joined(separator: ", "),
+            deathDay: data.death,
+            department: data.profession?.map { $0.value }.joined(separator: ", ")
+        )
     }
 
     // MARK: - Reviews

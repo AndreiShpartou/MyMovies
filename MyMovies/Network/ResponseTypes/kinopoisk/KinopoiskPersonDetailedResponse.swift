@@ -8,9 +8,9 @@
 import Foundation
 
 struct KinopoiskPersonDetailedResponse: KinopoiskPersonDetailedResponseProtocol {
-    var id: Int?
+    var id: Int
     var photo: String?
-    var name: String?
+    var name: String
     var birthday: String?
     var death: String?
     var birthPlace: [CommonValueProtocol]? {

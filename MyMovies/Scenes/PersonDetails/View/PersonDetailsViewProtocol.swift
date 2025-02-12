@@ -10,7 +10,7 @@ import UIKit
 protocol PersonDetailsViewProtocol: UIView {
     var delegate: PersonDetailsViewDelegate? { get set }
 
-    func showPersonDetails(_ person: PersonDetailsViewModelProtocol)
+    func showPersonDetails(_ person: PersonDetailedViewModelProtocol)
     func showPersonMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showLoading()
     func hideLoading()

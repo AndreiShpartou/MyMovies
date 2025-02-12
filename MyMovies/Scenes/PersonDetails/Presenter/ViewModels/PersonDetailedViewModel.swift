@@ -1,5 +1,5 @@
 //
-//  PersonDetailsViewModel.swift
+//  PersonDetailedViewModel.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 11/02/2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PersonDetailsViewModel: PersonDetailsViewModelProtocol {
+struct PersonDetailedViewModel: PersonDetailedViewModelProtocol {
     var id: Int
     var name: String
     var photo: URL?
