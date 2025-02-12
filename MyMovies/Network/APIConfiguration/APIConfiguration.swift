@@ -56,6 +56,8 @@ enum Endpoint {
     case reviews(id: Int)
     // Get person details
     case personDetails(id: Int)
+    // Get person related movies
+    case personRelatedMovies(id: Int)
     // Search movies
     case searchMovies(query: String)
     // Search persons
@@ -78,6 +80,8 @@ enum Endpoint {
             return "reviews"
         case .personDetails:
             return "personDetails"
+        case .personRelatedMovies:
+            return "personRelatedMovies"
         case .searchMovies:
             return "searchMovies"
         case .searchPersons:
@@ -139,6 +143,7 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.kinopoisk, .movieDetails(_, type: .topRatedMovies)),
             (.kinopoisk, .movieDetails(_, type: .theHighestGrossingMovies)),
             (.kinopoisk, .movieDetails(_, type: .searchedMovies)),
+            (.kinopoisk, .movieDetails(_, type: .personRelatedMovies)),
             (.kinopoisk, .movieDetails(_, type: nil)):
             return false
         case (.tmdb, .moviesDetails):
@@ -160,7 +165,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.tmdb, .movieList(type: .theHighestGrossingMovies)),
             (.tmdb, .movieList(type: .similarMovies)),
             (.tmdb, .movieList(type: .searchedMovies)),
-            (.tmdb, .searchMovies):
+            (.tmdb, .searchMovies),
+            (.tmdb, .personRelatedMovies):
             return TMDBMoviesPagedResponse.self
         case (.kinopoisk, .movieList(type: .upcomingMovies)),
             (.kinopoisk, .movieList(type: .popularMovies)),
@@ -169,7 +175,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.kinopoisk, .movieList(type: .searchedMovies)),
             (.kinopoisk, .searchMovies),
             (.kinopoisk, .movieDetails),
-            (.kinopoisk, .moviesDetails):
+            (.kinopoisk, .moviesDetails),
+            (.kinopoisk, .personRelatedMovies):
             return KinopoiskMoviesPagedResponse.self
         case (.tmdb, .movieDetails):
             return TMDBMovieResponse.self
@@ -215,6 +222,12 @@ struct APIConfiguration: APIConfigurationProtocol {
             return queryParameters
         case (.kinopoisk, .moviesDetails(let ids)):
             let queryParameters: [String: Any] = ["id": ids.map { String($0) }]
+            return queryParameters
+        case (.kinopoisk, .personRelatedMovies(let id)):
+            let queryParameters: [String: Any] = ["persons.id": String(id)]
+            return queryParameters
+        case (.tmdb, .personRelatedMovies(let id)):
+            let queryParameters: [String: Any] = ["with_people": String(id)]
             return queryParameters
         case (.tmdb, .searchMovies(let query)),
             (.tmdb, .searchPersons(let query)),

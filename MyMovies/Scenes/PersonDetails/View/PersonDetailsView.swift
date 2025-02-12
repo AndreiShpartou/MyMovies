@@ -92,7 +92,7 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         department.text = person.department
     }
 
-    func showPersonMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
+    func showPersonRelatedMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
         relatedMoviesCollectionViewHandler.configure(with: movies)
         relatedMoviesCollectionView.reloadData()
     }

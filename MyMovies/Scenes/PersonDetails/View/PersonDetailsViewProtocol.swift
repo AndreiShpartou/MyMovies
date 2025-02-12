@@ -11,7 +11,7 @@ protocol PersonDetailsViewProtocol: UIView {
     var delegate: PersonDetailsViewDelegate? { get set }
 
     func showPersonDetails(_ person: PersonDetailedViewModelProtocol)
-    func showPersonMovies(_ movies: [BriefMovieListItemViewModelProtocol])
+    func showPersonRelatedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showLoading()
     func hideLoading()
     func showError(_ error: Error)

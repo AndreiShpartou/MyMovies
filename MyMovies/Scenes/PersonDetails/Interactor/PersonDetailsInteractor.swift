@@ -44,5 +44,24 @@ extension PersonDetailsInteractor {
     }
 
     private func fetchPersonRelatedMovies() {
+        networkManager.fetchPersonRelatedMovies(for: personID) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let movies):
+                self.fetchMoviesDetails(for: movies)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
+            }
+        }
+    }
+
+    private func fetchMoviesDetails(for movies: [MovieProtocol]) {
+        networkManager.fetchMoviesDetails(for: movies, type: .personRelatedMovies(id: personID)) { [weak self] detailedMovies in
+            DispatchQueue.main.async {
+                self?.presenter?.didFetchPersonRelatedMovies(detailedMovies)
+            }
+        }
     }
 }

@@ -30,6 +30,8 @@ enum MovieListType {
     case similarMovies(id: Int)
     // Get a list of searched movies
     case searchedMovies(query: String)
+    // Get a list of person related movies
+    case personRelatedMovies(id: Int)
 
     var endpoint: Endpoint {
         return .movieList(type: self)
@@ -49,6 +51,8 @@ enum MovieListType {
             return "Similar Movies"
         case .searchedMovies:
             return "Discovered Movies"
+        case .personRelatedMovies:
+            return "Person Related Movies"
         }
     }
 
@@ -66,6 +70,8 @@ enum MovieListType {
             return "similarMovies"
         case .searchedMovies:
             return "searchMovies"
+        case .personRelatedMovies:
+            return "personRelatedMovies"
         }
     }
 }

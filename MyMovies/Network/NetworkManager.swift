@@ -88,10 +88,6 @@ class NetworkManager: NetworkManagerProtocol {
         fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
     }
 
-    func fetchMovieByPerson(person: PersonProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
-        //
-    }
-
     // MARK: - PersonDetails
     // Get details for a specific person
     func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailedProtocol, Error>) -> Void) {
@@ -99,6 +95,19 @@ class NetworkManager: NetworkManagerProtocol {
             switch result {
             case .success(let personDetails):
                 completion(.success(personDetails))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    // MARK: - PersonRelatedMovies
+    // Get movies related to a specific person
+    func fetchPersonRelatedMovies(for personID: Int, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: .personRelatedMovies(id: personID)) { (result: Result<[Movie], Error>) in
+            switch result {
+            case .success(let movies):
+                completion(.success(movies))
             case .failure(let error):
                 completion(.failure(error))
             }

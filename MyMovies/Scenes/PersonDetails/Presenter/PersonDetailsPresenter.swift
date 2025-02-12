@@ -45,6 +45,7 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 // MARK: - PeroonDetailsInteractorOutputProtocol
 extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     func didFetchPersonDetails(_ person: PersonDetailedProtocol) {
+        view?.hideLoading()
         guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
             let error = AppError.customError(message: "Failed to map Detailed person", comment: "Error message for failed detailed person loading")
             view?.showError(error)
@@ -55,8 +56,15 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
         view?.showPersonDetails(personViewModel)
     }
 
-    func didFetchRelatedMovies(_ movies: [MovieProtocol]) {
-        //
+    func didFetchPersonRelatedMovies(_ movies: [MovieProtocol]) {
+        guard let movieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            let error = AppError.customError(message: "Failed to map Related movies", comment: "Error message for failed related movies loading")
+            view?.showError(error)
+
+            return
+        }
+
+        view?.showPersonRelatedMovies(movieViewModels)
     }
 
     func didFailToFetchData(with error: Error) {

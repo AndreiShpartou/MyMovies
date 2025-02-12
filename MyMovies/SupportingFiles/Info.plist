@@ -34,7 +34,7 @@
 			<key>personDetails</key>
 			<string>/v1.4/person/</string>
 			<key>personRelatedMovies</key>
-			<string></string>
+			<string>/v1.4/movie?selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies&amp;type=!tv-series</string>
 			<key>reviews</key>
 			<string>/v1.4/review?page=1&amp;limit=7</string>
 			<key>searchMovies</key>
@@ -75,7 +75,7 @@
 			<key>personDetails</key>
 			<string>/3/person/</string>
 			<key>personRelatedMovies</key>
-			<string></string>
+			<string>/3/discover/movie?include_adult=false&amp;include_video=false&amp;language=en-US&amp;page=1&amp;sort_by=popularity.desc</string>
 			<key>searchMovies</key>
 			<string>/3/search/movie</string>
 			<key>searchPersons</key>
