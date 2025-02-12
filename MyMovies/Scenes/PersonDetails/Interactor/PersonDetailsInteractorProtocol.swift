@@ -10,10 +10,11 @@ import Foundation
 protocol PersonDetailsInteractorProtocol: AnyObject {
     var presenter: PersonDetailsInteractorOutputProtocol? { get set }
 
-    func fetchPersonDetails()
+    func fetchDetails()
 }
 
 protocol PersonDetailsInteractorOutputProtocol: AnyObject {
-    func didFetchPersonDetails(_ person: PersonDetailsProtocol)
+    func didFetchPersonDetails(_ person: PersonDetailedProtocol)
+    func didFetchRelatedMovies(_ movies: [MovieProtocol])
     func didFailToFetchData(with error: Error)
 }

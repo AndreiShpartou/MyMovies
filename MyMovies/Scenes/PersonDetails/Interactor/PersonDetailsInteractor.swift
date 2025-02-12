@@ -20,6 +20,29 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     // MARK: - Public
-    func fetchPersonDetails() {
+    func fetchDetails() {
+        fetchPersonDetails()
+        fetchPersonRelatedMovies()
+    }
+}
+
+// MARK: - Private
+extension PersonDetailsInteractor {
+    private func fetchPersonDetails() {
+        networkManager.fetchPersonDetails(for: personID) { [weak self] result in
+            switch result {
+            case .success(let detailedPerson):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchPersonDetails(detailedPerson)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
+            }
+        }
+    }
+
+    private func fetchPersonRelatedMovies() {
     }
 }

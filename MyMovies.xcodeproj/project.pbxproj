@@ -105,7 +105,6 @@
 		6C87B0632D5BA68B003F44FC /* PersonDetailsInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B0622D5BA68B003F44FC /* PersonDetailsInteractorProtocol.swift */; };
 		6C87B0652D5BA6C7003F44FC /* PersonDetailsViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B0642D5BA6C7003F44FC /* PersonDetailsViewProtocol.swift */; };
 		6C87B0672D5BA9FB003F44FC /* PersonDetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B0662D5BA9FB003F44FC /* PersonDetailsInteractor.swift */; };
-		6C87B0692D5BABDB003F44FC /* PersonDetailsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B0682D5BABDB003F44FC /* PersonDetailsProtocol.swift */; };
 		6C87B06B2D5BB30B003F44FC /* PersonDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B06A2D5BB30B003F44FC /* PersonDetailsViewController.swift */; };
 		6C87B06D2D5BBA35003F44FC /* PersonDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B06C2D5BBA35003F44FC /* PersonDetailsView.swift */; };
 		6C8F861D2CA9497700E43E1A /* PersonCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */; };
@@ -303,7 +302,6 @@
 		6C87B0622D5BA68B003F44FC /* PersonDetailsInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C87B0642D5BA6C7003F44FC /* PersonDetailsViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsViewProtocol.swift; sourceTree = "<group>"; };
 		6C87B0662D5BA9FB003F44FC /* PersonDetailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsInteractor.swift; sourceTree = "<group>"; };
-		6C87B0682D5BABDB003F44FC /* PersonDetailsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsProtocol.swift; sourceTree = "<group>"; };
 		6C87B06A2D5BB30B003F44FC /* PersonDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsViewController.swift; sourceTree = "<group>"; };
 		6C87B06C2D5BBA35003F44FC /* PersonDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsView.swift; sourceTree = "<group>"; };
 		6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCollectionViewHandler.swift; sourceTree = "<group>"; };
@@ -869,7 +867,6 @@
 		6C59AF392C550746006A7BDB /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				6C87B0682D5BABDB003F44FC /* PersonDetailsProtocol.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -1578,7 +1575,6 @@
 				6C916C3C2C639B4A00A9F091 /* TMDBPagedResponseProtocol.swift in Sources */,
 				6C9C75952C6E1DF1003E98FE /* AppConfigurationManager.swift in Sources */,
 				6C3A5FA32C92E53400A1BFF2 /* NetworkManagerProtocol.swift in Sources */,
-				6C87B0692D5BABDB003F44FC /* PersonDetailsProtocol.swift in Sources */,
 				6CF693CA2D115F0200026B11 /* KinopoiskPersonsPagedResponse.swift in Sources */,
 				6C59AF522C551FBE006A7BDB /* SearchRouter.swift in Sources */,
 				6CFCEB102CBAA33D00126B38 /* EditProfileViewProtocol.swift in Sources */,

@@ -14,7 +14,7 @@ protocol PersonDetailsViewProtocol: UIView {
     func showPersonMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showLoading()
     func hideLoading()
-    func showError(error: Error)
+    func showError(_ error: Error)
 }
 
 protocol PersonDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelegate {

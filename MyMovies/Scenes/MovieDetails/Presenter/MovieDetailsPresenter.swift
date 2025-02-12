@@ -48,6 +48,10 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         router.navigateToMovieDetails(with: movie)
     }
 
+    func didSelectPerson(personID: Int) {
+        router.navigateToPersonDetails(with: personID)
+    }
+
     func presentReview(with author: String?, and text: String?) {
         router.navigateToReviewDetails(with: author, and: text, title: "Review")
     }

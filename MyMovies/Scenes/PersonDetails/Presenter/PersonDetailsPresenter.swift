@@ -29,8 +29,8 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-//        view?.showLoading()
-//        interactor.fetchPersonDetails()
+        view?.showLoading()
+        interactor.fetchDetails()
     }
 
     func didSelectMovie(movie: MovieProtocol) {
@@ -44,15 +44,19 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 
 // MARK: - PeroonDetailsInteractorOutputProtocol
 extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
-    func didFetchPersonDetails(_ person: PersonDetailsProtocol) {
+    func didFetchPersonDetails(_ person: PersonDetailedProtocol) {
         guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
-            //            view?.showError(NSLocalizedString("Failed to load person", comment: "Error message for failed person load"))
-            //            view?.hideLoading()
+            let error = AppError.customError(message: "Failed to map Detailed person", comment: "Error message for failed detailed person loading")
+            view?.showError(error)
 
             return
         }
 
-        //        view?.showPersonDetails(personViewModel)
+        view?.showPersonDetails(personViewModel)
+    }
+
+    func didFetchRelatedMovies(_ movies: [MovieProtocol]) {
+        //
     }
 
     func didFailToFetchData(with error: Error) {

@@ -44,7 +44,7 @@ final class PersonDetailsViewController: UIViewController, PersonDetailsViewCont
 // MARK: - Setup
 extension PersonDetailsViewController {
     private func setupViewController() {
-//        personDetailsView.delegate = self
+        personDetailsView.delegate = self
         setupNavigationBar()
     }
 
@@ -72,5 +72,15 @@ extension PersonDetailsViewController {
     @objc
     private func favouriteButtonTapped(_ sender: UIButton) {
         // Handle favourite button action
+    }
+}
+
+extension PersonDetailsViewController: PersonDetailsViewDelegate {
+    func didTapSeeAllButton(listType: MovieListType) {
+        //
+    }
+
+    func didSelectMovie(movieID: Int) {
+        //
     }
 }

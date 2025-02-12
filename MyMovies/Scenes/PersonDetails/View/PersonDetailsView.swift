@@ -22,7 +22,8 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
     // Header section
     private let personImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
-        clipsToBounds: true
+        clipsToBounds: true,
+        cornerRadius: 12
     )
     private let nameLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
@@ -50,7 +51,7 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         target: self
     )
     private let relatedMoviesCollectionView: UICollectionView = .createCommonCollectionView(
-        itemSize: CGSize(width: 120, height: 230),
+        itemSize: CGSize(width: 200, height: 400),
         cellTypesDict: [
             BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
             PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
@@ -106,7 +107,7 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         isUserInteractionEnabled = true
     }
 
-    func showError(error: Error) {
+    func showError(_ error: Error) {
         guard let viewController = parentViewController else {
             return
         }
@@ -179,8 +180,8 @@ extension PersonDetailsView {
     private func setupMainConstraints() {
         personImageView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().offset(16)
-            make.width.equalTo(100)
-            make.height.equalTo(150)
+            make.width.equalTo(UIScreen.main.bounds.width * 0.7 / 2)
+            make.height.equalTo(personImageView.snp.width).multipliedBy(1.5)
         }
 
         nameLabel.snp.makeConstraints { make in
@@ -201,7 +202,7 @@ extension PersonDetailsView {
 
         relatedMoviesLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(personImageView.snp.bottom).offset(24)
+            make.top.equalTo(personImageView.snp.bottom).offset(32)
         }
 
         seeAllButton.snp.makeConstraints { make in
@@ -212,7 +213,7 @@ extension PersonDetailsView {
         relatedMoviesCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(relatedMoviesLabel.snp.bottom).offset(8)
-            make.height.equalTo(230)
+            make.height.equalTo(400)
             make.bottom.equalToSuperview().offset(-16)
         }
     }

@@ -92,4 +92,8 @@ extension MovieDetailsViewController: MovieDetailsViewDelegate {
     func didSelectMovie(movieID: Int) {
         presenter.didSelectMovie(movieID: movieID)
     }
+
+    func didSelectPerson(personID: Int) {
+        presenter.didSelectPerson(personID: personID)
+    }
 }

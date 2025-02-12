@@ -14,6 +14,7 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildProfileScene() -> UIViewController
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController
     static func buildEditProfileScene() -> UIViewController
+    static func buildPersonDetailsScene(for personID: Int) -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -91,21 +92,17 @@ final class SceneBuilder: SceneBuilderProtocol {
         return viewController
     }
 
-    static func buildPersonDetailsScene(for person: PersonProtocol) -> UIViewController {
-//        let interactor = PersonDetailsInteractor(person: person)
-//        let router = PersonDetailsRouter()
-//        let view = PersonDetailsView()
-//        let presenter = PersonDetailsPresenter(view: view, interactor: interactor, router: router)
-//        let viewController = PersonDetailsViewController(personDetailsView: view, presenter: presenter)
-//
-//        router.viewController = viewController
-//        interactor.presenter = presenter
-//        
-//        let navigationController = UINavigationController(rootViewController: viewController)
-//        navigationController.isNavigationBarHidden = false
-//        
-//        return navigationController
-        return UIViewController()
+    static func buildPersonDetailsScene(for personID: Int) -> UIViewController {
+        let interactor = PersonDetailsInteractor(personID: personID)
+        let router = PersonDetailsRouter()
+        let view = PersonDetailsView()
+        let presenter = PersonDetailsPresenter(view: view, interactor: interactor, router: router)
+        let viewController = PersonDetailsViewController(personDetailsView: view, presenter: presenter)
+
+        router.viewController = viewController
+        interactor.presenter = presenter
+
+        return viewController
     }
 
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController {

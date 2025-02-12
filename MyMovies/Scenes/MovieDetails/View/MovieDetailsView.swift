@@ -233,6 +233,7 @@ extension MovieDetailsView {
 
     private func updateDelegates() {
         reviewsCollectionViewHandler.delegate = delegate
+        personCollectionViewHandler.delegate = delegate
         similarMoviesCollectionViewHandler.delegate = delegate
     }
 }

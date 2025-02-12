@@ -92,6 +92,19 @@ class NetworkManager: NetworkManagerProtocol {
         //
     }
 
+    // MARK: - PersonDetails
+    // Get details for a specific person
+    func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailedProtocol, Error>) -> Void) {
+        performRequest(for: .personDetails(id: personID)) { (result: Result<PersonDetailed, Error>) in
+            switch result {
+            case .success(let personDetails):
+                completion(.success(personDetails))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     // MARK: - Genres
     // Get the list of official genres for movies
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
