@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol CommonValueProtocol: Codable {
+    var value: String { get }
+}

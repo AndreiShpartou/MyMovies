@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+struct CommonValue: CommonValueProtocol {
+    var value: String
+}

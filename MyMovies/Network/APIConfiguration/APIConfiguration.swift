@@ -54,6 +54,8 @@ enum Endpoint {
     case moviesDetails(ids: [Int])
     // Get the movie reviews
     case reviews(id: Int)
+    // Get person details
+    case personDetails(id: Int)
     // Search movies
     case searchMovies(query: String)
     // Search persons
@@ -74,6 +76,8 @@ enum Endpoint {
             return "movieDetails"
         case .reviews:
             return "reviews"
+        case .personDetails:
+            return "personDetails"
         case .searchMovies:
             return "searchMovies"
         case .searchPersons:
@@ -173,6 +177,10 @@ struct APIConfiguration: APIConfigurationProtocol {
             return TMDBReviewsPagedResponse.self
         case (.kinopoisk, .reviews):
             return KinopoiskReviewsPagedResponse.self
+        case (.tmdb, .personDetails):
+            return TMDBPersonDetailedResponse.self
+        case (.kinopoisk, .personDetails):
+            return KinopoiskPersonDetailedResponse.self
         case (.tmdb, .searchPersons):
             return TMDBPersonsPagedResponse.self
         case (.kinopoisk, .searchPersons):
@@ -264,6 +272,8 @@ struct APIConfiguration: APIConfigurationProtocol {
             return "\(id)/reviews"
         case (.tmdb, .movieList(type: .similarMovies(let id))):
             return "\(id)/similar"
+        case (_, .personDetails(let id)):
+            return "\(id)"
         default:
             return ""
         }

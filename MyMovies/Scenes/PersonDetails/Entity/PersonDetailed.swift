@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+struct PersonDetailed: PersonDetailedProtocol {
+    var id: Int
+    var name: String
+    var photo: String?
+    var birthDay: String?
+    var birthPlace: String?
+    var deathDay: String?
+    var department: String?
+}
