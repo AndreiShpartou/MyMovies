@@ -155,7 +155,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         setFullStoryTextHeight()
     }
 
-    // MARK: - Public
+    // MARK: - MovieDetailsViewProtocol
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol) {
         backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)

@@ -12,13 +12,12 @@ protocol PersonDetailsViewProtocol: UIView {
 
     func showPersonDetails(_ person: PersonDetailsViewModelProtocol)
     func showPersonMovies(_ movies: [BriefMovieListItemViewModelProtocol])
-    func showLoadingIndicator()
-    func hideLoadingIndicator()
+    func showLoading()
+    func hideLoading()
     func showError(error: Error)
 }
 
-protocol PersonDetailsViewDelegate: AnyObject {
-    func didFetchTitle(_ title: String?)
+protocol PersonDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelegate {
     func didTapSeeAllButton(listType: MovieListType)
     func didSelectMovie(movieID: Int)
 }

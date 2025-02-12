@@ -77,19 +77,16 @@ class SearchInteractor: SearchInteractorProtocol {
 
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
-
-            self.presenter?.didFetchGenres(fetchedGenres)
-            if let movie = fetchedUpcomingMovie {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                self.presenter?.didFetchGenres(fetchedGenres)
+                if let movie = fetchedUpcomingMovie {
                     self.presenter?.didFetchUpcomingMovies([movie])
-                }
-            } else {
-                DispatchQueue.main.async {
+                } else {
                     self.presenter?.didFetchUpcomingMovies([])
                 }
             }
         }
-    }
+}
 
     // Get upcoming movies filtered by genre
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
