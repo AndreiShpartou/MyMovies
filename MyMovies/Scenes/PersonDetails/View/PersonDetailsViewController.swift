@@ -76,6 +76,10 @@ extension PersonDetailsViewController {
 }
 
 extension PersonDetailsViewController: PersonDetailsViewDelegate {
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        //
+    }
+
     func didTapSeeAllButton(listType: MovieListType) {
         //
     }

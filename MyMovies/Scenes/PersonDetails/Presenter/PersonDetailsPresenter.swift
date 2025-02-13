@@ -30,7 +30,17 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
     // MARK: - Public
     func viewDidLoad() {
         view?.showLoading()
-        interactor.fetchDetails()
+        interactor.fetchPersonDetails()
+        interactor.fetchMovieGenres()
+        interactor.fetchPersonRelatedMovies()
+    }
+
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+            return
+        }
+
+        interactor.fetchPersonRelatedMoviesWithGenresFiltering(for: movieGenre)
     }
 
     func didSelectMovie(movie: MovieProtocol) {
@@ -45,7 +55,6 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 // MARK: - PeroonDetailsInteractorOutputProtocol
 extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     func didFetchPersonDetails(_ person: PersonDetailedProtocol) {
-        view?.hideLoading()
         guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
             let error = AppError.customError(message: "Failed to map Detailed person", comment: "Error message for failed detailed person loading")
             view?.showError(error)
@@ -56,7 +65,20 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
         view?.showPersonDetails(personViewModel)
     }
 
+    func didFetchMovieGenres(_ genres: [GenreProtocol]) {
+        // Map to ViewModel
+        guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
+            let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
+            view?.showError(error)
+
+            return
+        }
+
+        view?.showMovieGenres(genreViewModels)
+    }
+    
     func didFetchPersonRelatedMovies(_ movies: [MovieProtocol]) {
+        view?.hideLoading()
         guard let movieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Related movies", comment: "Error message for failed related movies loading")
             view?.showError(error)

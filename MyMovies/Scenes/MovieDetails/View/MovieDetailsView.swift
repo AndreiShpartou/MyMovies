@@ -552,7 +552,7 @@ extension MovieDetailsView {
     private func setupSimilarMoviesConstraints() {
         // Popular movies section
         similarMoviesLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.equalToSuperview().inset(16)
             make.top.equalTo(reviewsCollectionView.snp.bottom).offset(24)
         }
 

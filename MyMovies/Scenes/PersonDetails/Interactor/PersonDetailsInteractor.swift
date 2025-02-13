@@ -20,15 +20,7 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     // MARK: - Public
-    func fetchDetails() {
-        fetchPersonDetails()
-        fetchPersonRelatedMovies()
-    }
-}
-
-// MARK: - Private
-extension PersonDetailsInteractor {
-    private func fetchPersonDetails() {
+    func fetchPersonDetails() {
         networkManager.fetchPersonDetails(for: personID) { [weak self] result in
             switch result {
             case .success(let detailedPerson):
@@ -43,7 +35,22 @@ extension PersonDetailsInteractor {
         }
     }
 
-    private func fetchPersonRelatedMovies() {
+    func fetchMovieGenres() {
+        networkManager.fetchGenres { [weak self] result in
+            switch result {
+            case .success(let genres):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFetchMovieGenres(genres)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
+                }
+            }
+        }
+    }
+
+    func fetchPersonRelatedMovies() {
         networkManager.fetchPersonRelatedMovies(for: personID) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -57,6 +64,13 @@ extension PersonDetailsInteractor {
         }
     }
 
+    func fetchPersonRelatedMoviesWithGenresFiltering(for genre: GenreProtocol) {
+        //
+    }
+}
+
+// MARK: - Private
+extension PersonDetailsInteractor {
     private func fetchMoviesDetails(for movies: [MovieProtocol]) {
         networkManager.fetchMoviesDetails(for: movies, type: .personRelatedMovies(id: personID)) { [weak self] detailedMovies in
             DispatchQueue.main.async {

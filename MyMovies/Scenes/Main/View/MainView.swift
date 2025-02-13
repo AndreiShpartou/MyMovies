@@ -410,7 +410,7 @@ extension MainView {
     private func setupPopularMoviesSectionConstraints() {
         // Popular movies section
         popularMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(16)
             make.top.equalTo(genresCollectionView.snp.bottom).offset(24)
         }
 
@@ -429,7 +429,7 @@ extension MainView {
     private func setupTopRatedMoviesSectionConstraints() {
         // Top rated movies section
         topRatedMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(16)
             make.top.equalTo(popularMoviesCollectionView.snp.bottom).offset(24)
         }
 
@@ -448,7 +448,7 @@ extension MainView {
     private func setupTheHighestGrossingMoviesSectionConstraints() {
         // The highest grossing movies section
         theHighestGrossingMoviesLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(24)
+            make.leading.equalToSuperview().offset(16)
             make.top.equalTo(topRatedMoviesCollectionView.snp.bottom).offset(24)
         }
 

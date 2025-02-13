@@ -40,6 +40,17 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         numberOfLines: 0,
         textColor: .textColorGrey
     )
+    // Genres collection
+    private let genresLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.title,
+        textColor: .textColorWhite,
+        text: "Genres"
+    )
+    private let genresCollectionView: UICollectionView = .createCommonCollectionView(
+        itemSize: CGSize(width: 100, height: 40),
+        cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
+    )
+    private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
     // Related movies section
     private let relatedMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
@@ -51,7 +62,7 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         target: self
     )
     private let relatedMoviesCollectionView: UICollectionView = .createCommonCollectionView(
-        itemSize: CGSize(width: 200, height: 400),
+        itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
             BriefMovieDescriptionCollectionViewCell.identifier: BriefMovieDescriptionCollectionViewCell.self,
             PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
@@ -92,6 +103,13 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         department.text = person.department
     }
 
+    func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
+        genresCollectionViewHandler.configure(with: genres)
+        genresCollectionView.reloadData()
+
+        setupAdditionalDefaultPreferences()
+    }
+
     func showPersonRelatedMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
         relatedMoviesCollectionViewHandler.configure(with: movies)
         relatedMoviesCollectionView.reloadData()
@@ -125,13 +143,15 @@ extension PersonDetailsView {
 
         addSubviews(scrollView, loadingIndicator)
         scrollView.addSubviews(contentView)
-        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
 
         contentView.addSubviews(
             personImageView,
             nameLabel,
             birthInfoLabel,
             department,
+            genresLabel,
+            genresCollectionView,
             relatedMoviesLabel,
             seeAllButton,
             relatedMoviesCollectionView
@@ -142,12 +162,24 @@ extension PersonDetailsView {
     }
 
     private func setupHandlers() {
+        // peron related movies
         relatedMoviesCollectionView.dataSource = relatedMoviesCollectionViewHandler
         relatedMoviesCollectionView.delegate = relatedMoviesCollectionViewHandler
+        // genres
+        genresCollectionView.dataSource = genresCollectionViewHandler
+        genresCollectionView.delegate = genresCollectionViewHandler
     }
 
     func updateDelegates() {
         relatedMoviesCollectionViewHandler.delegate = delegate
+        genresCollectionViewHandler.delegate = delegate
+    }
+    
+    private func setupAdditionalDefaultPreferences() {
+        // Default selection of the first item
+        let defaultIndexPath = IndexPath(item: 0, section: 0)
+        genresCollectionView.selectItem(at: defaultIndexPath, animated: false, scrollPosition: .left)
+        genresCollectionViewHandler.collectionView(genresCollectionView, didSelectItemAt: defaultIndexPath)
     }
 }
 
@@ -163,6 +195,7 @@ extension PersonDetailsView {
 extension PersonDetailsView {
     private func setupConstraints() {
         setupScrollConstraints()
+        setupHeaderConstraints()
         setupMainConstraints()
         setupOtherConstraints()
     }
@@ -174,13 +207,14 @@ extension PersonDetailsView {
 
         contentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+            make.bottom.equalTo(relatedMoviesCollectionView).offset(16)
         }
     }
 
-    private func setupMainConstraints() {
+    private func setupHeaderConstraints() {
         personImageView.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().offset(16)
-            make.width.equalTo(UIScreen.main.bounds.width * 0.7 / 2)
+            make.leading.top.equalToSuperview().offset(8)
+            make.width.equalTo(UIScreen.main.bounds.width * 0.8 / 2)
             make.height.equalTo(personImageView.snp.width).multipliedBy(1.5)
         }
 
@@ -199,10 +233,23 @@ extension PersonDetailsView {
             make.leading.trailing.equalTo(nameLabel)
             make.top.equalTo(birthInfoLabel.snp.bottom).offset(8)
         }
+    }
+
+    private func setupMainConstraints() {
+        genresLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(personImageView.snp.bottom).offset(24)
+        }
+
+        genresCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(genresLabel.snp.bottom).offset(16)
+            make.height.equalTo(40)
+        }
 
         relatedMoviesLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(personImageView.snp.bottom).offset(32)
+            make.top.equalTo(genresCollectionView.snp.bottom).offset(24)
         }
 
         seeAllButton.snp.makeConstraints { make in
@@ -211,10 +258,9 @@ extension PersonDetailsView {
         }
 
         relatedMoviesCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(relatedMoviesLabel.snp.bottom).offset(8)
-            make.height.equalTo(400)
-            make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(300)
         }
     }
 
