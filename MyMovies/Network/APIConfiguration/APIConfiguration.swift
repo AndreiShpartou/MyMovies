@@ -165,6 +165,7 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.tmdb, .movieList(type: .theHighestGrossingMovies)),
             (.tmdb, .movieList(type: .similarMovies)),
             (.tmdb, .movieList(type: .searchedMovies)),
+            (.tmdb, .movieList(type: .personRelatedMovies)),
             (.tmdb, .searchMovies),
             (.tmdb, .personRelatedMovies):
             return TMDBMoviesPagedResponse.self
@@ -173,6 +174,7 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.kinopoisk, .movieList(type: .topRatedMovies)),
             (.kinopoisk, .movieList(type: .theHighestGrossingMovies)),
             (.kinopoisk, .movieList(type: .searchedMovies)),
+             (.kinopoisk, .movieList(type: .personRelatedMovies)),
             (.kinopoisk, .searchMovies),
             (.kinopoisk, .movieDetails),
             (.kinopoisk, .moviesDetails),
@@ -223,10 +225,12 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .moviesDetails(let ids)):
             let queryParameters: [String: Any] = ["id": ids.map { String($0) }]
             return queryParameters
-        case (.kinopoisk, .personRelatedMovies(let id)):
+        case (.kinopoisk, .personRelatedMovies(let id)),
+            (.kinopoisk, .movieList(type: .personRelatedMovies(let id))):
             let queryParameters: [String: Any] = ["persons.id": String(id)]
             return queryParameters
-        case (.tmdb, .personRelatedMovies(let id)):
+        case (.tmdb, .personRelatedMovies(let id)),
+            (.tmdb, .movieList(type: .personRelatedMovies(let id))):
             let queryParameters: [String: Any] = ["with_people": String(id)]
             return queryParameters
         case (.tmdb, .searchMovies(let query)),
@@ -247,7 +251,8 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.tmdb, .movieList(type: .upcomingMovies)),
             (.tmdb, .movieList(type: .popularMovies)),
             (.tmdb, .movieList(type: .topRatedMovies)),
-            (.tmdb, .movieList(type: .theHighestGrossingMovies)):
+            (.tmdb, .movieList(type: .theHighestGrossingMovies)),
+            (.tmdb, .movieList(type: .personRelatedMovies)):
             guard let genreID = genre.id else {
                 return [:]
             }
@@ -257,7 +262,8 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.kinopoisk, .movieList(type: .upcomingMovies)),
             (.kinopoisk, .movieList(type: .popularMovies)),
             (.kinopoisk, .movieList(type: .topRatedMovies)),
-            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)):
+            (.kinopoisk, .movieList(type: .theHighestGrossingMovies)),
+             (.kinopoisk, .movieList(type: .personRelatedMovies)):
             guard let genreName = genre.rawName,
                   let defaultAllGenresName = DefaultValue.genre.rawName,
                     genreName != defaultAllGenresName else {

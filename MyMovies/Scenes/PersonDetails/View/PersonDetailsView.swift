@@ -174,7 +174,7 @@ extension PersonDetailsView {
         relatedMoviesCollectionViewHandler.delegate = delegate
         genresCollectionViewHandler.delegate = delegate
     }
-    
+
     private func setupAdditionalDefaultPreferences() {
         // Default selection of the first item
         let defaultIndexPath = IndexPath(item: 0, section: 0)

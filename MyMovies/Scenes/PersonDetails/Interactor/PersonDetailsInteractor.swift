@@ -65,7 +65,18 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     func fetchPersonRelatedMoviesWithGenresFiltering(for genre: GenreProtocol) {
-        //
+        let type = MovieListType.personRelatedMovies(id: personID)
+        networkManager.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let movies):
+                self.fetchMoviesDetails(for: movies)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
+            }
+        }
     }
 }
 
