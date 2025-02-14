@@ -31,18 +31,18 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         textColor: .textColorWhite
     )
     private let birthInfoLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.subhead,
         numberOfLines: 0,
         textColor: .textColorGrey
     )
-    private let department: UILabel = .createLabel(
-        font: Typography.Medium.body,
+    private let departmentLabel: UILabel = .createLabel(
+        font: Typography.Medium.subhead,
         numberOfLines: 0,
         textColor: .textColorGrey
     )
     // Genres collection
     private let genresLabel: UILabel = .createLabel(
-        font: Typography.SemiBold.title,
+        font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Genres"
     )
@@ -86,21 +86,21 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
     // MARK: - PersonDetailsViewProtocol
     func showPersonDetails(_ person: PersonDetailedViewModelProtocol) {
         // photo
-        personImageView.kf.setImage(with: person.photo, placeholder: Asset.Avatars.avatarDefault.image)
+        personImageView.kf.setImage(with: person.photo, placeholder: Asset.DefaultCovers.defaultPerson.image)
         // details
         nameLabel.text = person.name
         var birthInfo: String = ""
-        if let birthDay = person.birthDay {
+        if let birthDay = person.birthDay, birthDay != "" {
             birthInfo += "Born: \(birthDay)"
         }
-        if let birthPlace = person.birthPlace {
+        if let birthPlace = person.birthPlace, birthPlace != "" {
             birthInfo += "\nPlace of Birth: \(birthPlace)"
         }
-        if let deathDay = person.deathDay {
+        if let deathDay = person.deathDay, deathDay != "" {
             birthInfo += "\nDied: \(deathDay)"
         }
         birthInfoLabel.text = birthInfo
-        department.text = person.department
+        departmentLabel.text = person.department
     }
 
     func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
@@ -149,7 +149,7 @@ extension PersonDetailsView {
             personImageView,
             nameLabel,
             birthInfoLabel,
-            department,
+            departmentLabel,
             genresLabel,
             genresCollectionView,
             relatedMoviesLabel,
@@ -213,7 +213,7 @@ extension PersonDetailsView {
 
     private func setupHeaderConstraints() {
         personImageView.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().offset(8)
+            make.leading.top.equalToSuperview().offset(16)
             make.width.equalTo(UIScreen.main.bounds.width * 0.8 / 2)
             make.height.equalTo(personImageView.snp.width).multipliedBy(1.5)
         }
@@ -229,9 +229,9 @@ extension PersonDetailsView {
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
         }
 
-        department.snp.makeConstraints { make in
+        departmentLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(nameLabel)
-            make.top.equalTo(birthInfoLabel.snp.bottom).offset(8)
+            make.top.equalTo(birthInfoLabel.snp.bottom).offset(16)
         }
     }
 

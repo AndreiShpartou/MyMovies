@@ -193,9 +193,9 @@ extension DomainModelMapper {
             id: data.id,
             name: data.name,
             photo: URL(string: data.photo ?? ""),
-            birthDay: data.birthDay,
+            birthDay: unifiedDateString(from: data.birthDay),
             birthPlace: data.birthPlace,
-            deathDay: data.deathDay,
+            deathDay: unifiedDateString(from: data.deathDay),
             department: data.department
         )
     }

@@ -76,7 +76,7 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
 
         view?.showMovieGenres(genreViewModels)
     }
-    
+
     func didFetchPersonRelatedMovies(_ movies: [MovieProtocol]) {
         view?.hideLoading()
         guard let movieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
