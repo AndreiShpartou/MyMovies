@@ -73,10 +73,6 @@ extension SearchViewController: SearchViewDelegate {
         presenter.didSelectPerson(personID: personID)
     }
 
-    func didSelectPerson(person: PersonViewModelProtocol) {
-        //
-    }
-
     func didTapSeeAllButton(listType: MovieListType) {
         presenter.didTapSeeAllButton(listType: listType)
     }

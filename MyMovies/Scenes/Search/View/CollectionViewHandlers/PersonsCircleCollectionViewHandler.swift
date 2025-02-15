@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PersonsCollectionViewDelegate: AnyObject {
-    func didSelectPerson(person: PersonViewModelProtocol)
+    func didSelectPerson(personID: Int)
 }
 
 final class PersonsCircleCollectionViewHandler: NSObject {
@@ -42,6 +42,6 @@ extension PersonsCircleCollectionViewHandler: UICollectionViewDataSource {
 extension PersonsCircleCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPerson = persons[indexPath.row]
-        delegate?.didSelectPerson(person: selectedPerson)
+        delegate?.didSelectPerson(personID: selectedPerson.id)
     }
 }
