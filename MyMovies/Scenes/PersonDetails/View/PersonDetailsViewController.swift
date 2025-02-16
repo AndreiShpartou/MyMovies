@@ -85,6 +85,6 @@ extension PersonDetailsViewController: PersonDetailsViewDelegate {
     }
 
     func didSelectMovie(movieID: Int) {
-        //
+        presenter.didSelectMovie(movieID: movieID)
     }
 }

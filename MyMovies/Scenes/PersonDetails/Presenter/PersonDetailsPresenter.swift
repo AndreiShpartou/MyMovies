@@ -13,6 +13,8 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
     var router: PersonDetailsRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
+    // Temporary entities persistance switch to CoreData
+    private var personRelatedMovies: [MovieProtocol] = []
 
     // MARK: - Init
     init(
@@ -43,7 +45,11 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
         interactor.fetchPersonRelatedMoviesWithGenresFiltering(for: movieGenre)
     }
 
-    func didSelectMovie(movie: MovieProtocol) {
+    func didSelectMovie(movieID: Int) {
+        guard let movie = personRelatedMovies.first(where: { $0.id == movieID }) else {
+            return
+        }
+
         router.navigateToMovieDetails(with: movie)
     }
 
@@ -87,6 +93,7 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
         }
 
         view?.showPersonRelatedMovies(movieViewModels)
+        personRelatedMovies = movies
     }
 
     func didFailToFetchData(with error: Error) {

@@ -14,6 +14,6 @@ protocol PersonDetailsPresenterProtocol: AnyObject {
 
     func viewDidLoad()
     func didSelectGenre(_ genre: GenreViewModelProtocol)
-    func didSelectMovie(movie: MovieProtocol)
+    func didSelectMovie(movieID: Int)
     func didTapSeeAllButton(listType: MovieListType)
 }
