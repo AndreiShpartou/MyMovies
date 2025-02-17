@@ -80,8 +80,8 @@ extension PersonDetailsViewController: PersonDetailsViewDelegate {
         presenter.didSelectGenre(genre)
     }
 
-    func didTapSeeAllButton(listType: MovieListType) {
-        //
+    func didTapSeeAllButton() {
+        presenter.didTapSeeAllButton()
     }
 
     func didSelectMovie(movieID: Int) {

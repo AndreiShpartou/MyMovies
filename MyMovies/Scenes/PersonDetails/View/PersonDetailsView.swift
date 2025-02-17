@@ -187,7 +187,7 @@ extension PersonDetailsView {
 extension PersonDetailsView {
     @objc
     private func didTapSeeAllButton() {
-//        delegate?.didTapSeeAllButton()
+        delegate?.didTapSeeAllButton()
     }
 }
 
