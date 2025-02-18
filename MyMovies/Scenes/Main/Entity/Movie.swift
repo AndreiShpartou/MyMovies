@@ -106,5 +106,6 @@ struct Movie: MovieProtocol {
         var photo: String?
         var name: String
         var profession: String?
+        var popularity: Float?
     }
 }

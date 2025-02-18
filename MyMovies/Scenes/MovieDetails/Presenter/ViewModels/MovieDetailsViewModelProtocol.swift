@@ -28,6 +28,7 @@ protocol PersonViewModelProtocol {
     var photo: URL? { get }
     var name: String { get }
     var profession: String? { get }
+    var popularity: Float { get }
 }
 
 protocol CountryViewModelProtocol {

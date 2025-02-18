@@ -13,6 +13,7 @@ struct TMDBPersonResponse: TMDBPersonResponseProtocol {
     var original_name: String
     var profile_path: String?
     var known_for_department: String?
+    var popularity: Float?
 
     func personPhotoURL(path: String?, size: PersonSize = .w185) -> String? {
         guard let path = path else {

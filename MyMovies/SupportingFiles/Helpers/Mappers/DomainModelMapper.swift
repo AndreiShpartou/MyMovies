@@ -182,7 +182,8 @@ extension DomainModelMapper {
                 id: $0.id,
                 photo: URL(string: $0.photo ?? ""),
                 name: $0.name,
-                profession: $0.profession
+                profession: $0.profession,
+                popularity: $0.popularity ?? 0
             )
         }
     }

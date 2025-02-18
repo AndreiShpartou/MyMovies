@@ -62,4 +62,5 @@ struct PersonViewModel: PersonViewModelProtocol {
     var photo: URL?
     var name: String
     var profession: String?
+    var popularity: Float
 }

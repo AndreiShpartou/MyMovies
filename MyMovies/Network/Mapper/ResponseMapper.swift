@@ -283,7 +283,8 @@ final class ResponseMapper: ResponseMapperProtocol {
                 id: $0.id,
                 photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
                 name: $0.name,
-                profession: $0.known_for_department
+                profession: $0.known_for_department,
+                popularity: $0.popularity ?? 0
             )
         }
 
