@@ -299,7 +299,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             return Movie.Person(
                 id: id,
                 photo: $0.photo,
-                name: name,
+                name: !name.isEmpty ? name : $0.enName ?? "",
                 profession: $0.profession
             )
         }
