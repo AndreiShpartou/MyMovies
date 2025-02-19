@@ -10,7 +10,8 @@ import Foundation
 struct KinopoiskPersonDetailedResponse: KinopoiskPersonDetailedResponseProtocol {
     var id: Int
     var photo: String?
-    var name: String
+    var name: String?
+    var enName: String?
     var birthday: String?
     var death: String?
     var birthPlace: [CommonValueProtocol]? {
@@ -27,6 +28,7 @@ struct KinopoiskPersonDetailedResponse: KinopoiskPersonDetailedResponseProtocol 
         case id
         case photo
         case name
+        case enName
         case birthday
         case death
         case birthPlaces = "birthPlace"

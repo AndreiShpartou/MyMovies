@@ -193,7 +193,7 @@ extension DomainModelMapper {
         return PersonDetailedViewModel(
             id: data.id,
             name: data.name,
-            photo: URL(string: data.photo ?? ""),
+            photo: data.photo?.sanitizedURL,
             birthDay: unifiedDateString(from: data.birthDay),
             birthPlace: data.birthPlace,
             deathDay: unifiedDateString(from: data.deathDay),

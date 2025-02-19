@@ -293,14 +293,17 @@ final class ResponseMapper: ResponseMapperProtocol {
 
     private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
         let persons: [Movie.Person] = data.compactMap {
-            guard let id = $0.id, let name = $0.name else {
+            guard let id = $0.id else {
                 return nil
             }
+
+            let name = $0.name ?? ""
+            let enName = $0.enName ?? ""
 
             return Movie.Person(
                 id: id,
                 photo: $0.photo,
-                name: !name.isEmpty ? name : $0.enName ?? "",
+                name: name.isEmpty ? enName : name,
                 profession: $0.profession
             )
         }
@@ -324,7 +327,7 @@ final class ResponseMapper: ResponseMapperProtocol {
     private func map(_ data: KinopoiskPersonDetailedResponseProtocol) -> PersonDetailed {
         return PersonDetailed(
             id: data.id,
-            name: data.name,
+            name: data.name == nil ? data.enName ?? "" : data.name ?? "",
             photo: data.photo,
             birthDay: data.birthday,
             birthPlace: data.birthPlace?.map { $0.value }.joined(separator: ", "),
