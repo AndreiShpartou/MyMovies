@@ -13,6 +13,7 @@ protocol TMDBPersonResponseProtocol: PagedResponseResultProtocol {
     var original_name: String { get }
     var profile_path: String? { get }
     var known_for_department: String? { get }
+    var popularity: Float? { get }
 
     func personPhotoURL(path: String?, size: PersonSize) -> String?
 }

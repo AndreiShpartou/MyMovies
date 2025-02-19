@@ -40,6 +40,10 @@ final class ResponseMapper: ResponseMapperProtocol {
             return map(data as! TMDBPersonsPagedResponse) as! T
         case (is KinopoiskPersonsPagedResponse.Type, is [Movie.Person].Type):
             return map(data as! KinopoiskPersonsPagedResponse) as! T
+        case ( is TMDBPersonDetailedResponse.Type, is PersonDetailed.Type):
+            return map(data as! TMDBPersonDetailedResponse) as! T
+        case (is KinopoiskPersonDetailedResponse.Type, is PersonDetailed.Type):
+            return map(data as! KinopoiskPersonDetailedResponse) as! T
         default:
             throw NetworkError.unsupportedMappingTypes
         }
@@ -279,8 +283,8 @@ final class ResponseMapper: ResponseMapperProtocol {
                 id: $0.id,
                 photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
                 name: $0.name,
-                originalName: $0.original_name,
-                profession: $0.known_for_department
+                profession: $0.known_for_department,
+                popularity: $0.popularity ?? 0
             )
         }
 
@@ -289,20 +293,47 @@ final class ResponseMapper: ResponseMapperProtocol {
 
     private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
         let persons: [Movie.Person] = data.compactMap {
-            guard let id = $0.id, let name = $0.name else {
+            guard let id = $0.id else {
                 return nil
             }
+
+            let name = $0.name ?? ""
+            let enName = $0.enName ?? ""
 
             return Movie.Person(
                 id: id,
                 photo: $0.photo,
-                name: name,
-                originalName: $0.enName,
+                name: name.isEmpty ? enName : name,
                 profession: $0.profession
             )
         }
 
         return removeDuplicates(from: persons)
+    }
+
+    // MARK: - Person Detailed
+    private func map(_ data: TMDBPersonDetailedResponseProtocol) -> PersonDetailed {
+        return PersonDetailed(
+            id: data.id,
+            name: data.name,
+            photo: data.personPhotoURL(path: data.profile_path, size: .w185),
+            birthDay: data.birthday,
+            birthPlace: data.place_of_birth,
+            deathDay: data.deathday,
+            department: data.known_for_department
+        )
+    }
+
+    private func map(_ data: KinopoiskPersonDetailedResponseProtocol) -> PersonDetailed {
+        return PersonDetailed(
+            id: data.id,
+            name: data.name == nil ? data.enName ?? "" : data.name ?? "",
+            photo: data.photo,
+            birthDay: data.birthday,
+            birthPlace: data.birthPlace?.map { $0.value }.joined(separator: ", "),
+            deathDay: data.death,
+            department: data.profession?.map { $0.value }.joined(separator: ", ")
+        )
     }
 
     // MARK: - Reviews

@@ -384,6 +384,19 @@ extension UISearchBar {
 
 // MARK: - String
 extension String {
+    // Returns a properly formatted URL string by replacing repeated schemes if present.
+    var sanitizedURLString: String {
+        if self.hasPrefix("https:https:") {
+            return self.replacingOccurrences(of: "https:https:", with: "https:")
+        }
+
+        return self
+    }
+
+    var sanitizedURL: URL? {
+        return URL(string: self.sanitizedURLString)
+    }
+
     func convertHtmlToAttributedString(font: UIFont, textColor: UIColor) -> NSAttributedString? {
         guard let data = self.data(using: .utf8) else { return nil }
         do {

@@ -29,6 +29,7 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         self.mapper = mapper
     }
 
+    // MARK: - Public
     func viewDidLoad() {
         interactor.fetchMovie()
         interactor.fetchReviews()
@@ -45,6 +46,10 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         }
 
         router.navigateToMovieDetails(with: movie)
+    }
+
+    func didSelectPerson(personID: Int) {
+        router.navigateToPersonDetails(with: personID)
     }
 
     func presentReview(with author: String?, and text: String?) {

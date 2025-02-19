@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PersonsCollectionViewDelegate: AnyObject {
-    func didSelectPerson(person: PersonViewModelProtocol)
+    func didSelectPerson(personID: Int)
 }
 
 final class PersonsCircleCollectionViewHandler: NSObject {
@@ -19,6 +19,7 @@ final class PersonsCircleCollectionViewHandler: NSObject {
     // MARK: - Public
     func configure(with persons: [PersonViewModelProtocol]) {
         self.persons = persons
+        self.persons.sort { $0.popularity > $1.popularity }
     }
 }
 
@@ -42,6 +43,6 @@ extension PersonsCircleCollectionViewHandler: UICollectionViewDataSource {
 extension PersonsCircleCollectionViewHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPerson = persons[indexPath.row]
-        delegate?.didSelectPerson(person: selectedPerson)
+        delegate?.didSelectPerson(personID: selectedPerson.id)
     }
 }

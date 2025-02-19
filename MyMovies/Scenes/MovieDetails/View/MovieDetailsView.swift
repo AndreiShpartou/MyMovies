@@ -155,7 +155,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         setFullStoryTextHeight()
     }
 
-    // MARK: - Public
+    // MARK: - MovieDetailsViewProtocol
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol) {
         backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
@@ -233,6 +233,7 @@ extension MovieDetailsView {
 
     private func updateDelegates() {
         reviewsCollectionViewHandler.delegate = delegate
+        personCollectionViewHandler.delegate = delegate
         similarMoviesCollectionViewHandler.delegate = delegate
     }
 }
@@ -400,10 +401,10 @@ extension MovieDetailsView {
             return
         }
 
-        let persons = moviePersons.sorted {
-            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
-        }
-        personCollectionViewHandler.configure(with: persons)
+//        let persons = moviePersons.sorted {
+//            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
+//        }
+        personCollectionViewHandler.configure(with: moviePersons)
         personsCollectionView.reloadData()
     }
 }
@@ -551,7 +552,7 @@ extension MovieDetailsView {
     private func setupSimilarMoviesConstraints() {
         // Popular movies section
         similarMoviesLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.equalToSuperview().inset(16)
             make.top.equalTo(reviewsCollectionView.snp.bottom).offset(24)
         }
 

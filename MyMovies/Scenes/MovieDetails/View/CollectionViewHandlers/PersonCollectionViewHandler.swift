@@ -8,12 +8,19 @@
 import Foundation
 import UIKit
 
+protocol PersonCollectionViewHandlerDelegate: AnyObject {
+    func didSelectPerson(personID: Int)
+}
+
 final class PersonCollectionViewHandler: NSObject {
+    weak var delegate: PersonCollectionViewHandlerDelegate?
+
     private var persons: [PersonViewModelProtocol] = []
 
     // MARK: - Public
     func configure(with persons: [PersonViewModelProtocol]) {
         self.persons = persons
+        self.persons.sort { $0.popularity > $1.popularity }
     }
 }
 
@@ -35,6 +42,9 @@ extension PersonCollectionViewHandler: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension PersonCollectionViewHandler: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didSelectPerson(personID: persons[indexPath.row].id)
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

@@ -77,19 +77,16 @@ class SearchInteractor: SearchInteractorProtocol {
 
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
-
-            self.presenter?.didFetchGenres(fetchedGenres)
-            if let movie = fetchedUpcomingMovie {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                self.presenter?.didFetchGenres(fetchedGenres)
+                if let movie = fetchedUpcomingMovie {
                     self.presenter?.didFetchUpcomingMovies([movie])
-                }
-            } else {
-                DispatchQueue.main.async {
+                } else {
                     self.presenter?.didFetchUpcomingMovies([])
                 }
             }
         }
-    }
+}
 
     // Get upcoming movies filtered by genre
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
@@ -176,12 +173,10 @@ class SearchInteractor: SearchInteractorProtocol {
             guard let self = self else { return }
             switch result {
             case .success(let detailedMovies):
-                DispatchQueue.main.async {
-                    // Fetch details with a separate request for each movie
-                    // TMDB API does not support multiple movie details request
-                    // Disabled for the Kinopoisk API. It returns the same movie collection without requests
-                    self.fetchMoviesDetails(for: detailedMovies)
-                }
+                // Fetch details with a separate request for each movie
+                // TMDB API does not support multiple movie details request
+                // Disabled for the Kinopoisk API. It returns the same movie collection without requests
+                self.fetchMoviesDetails(for: detailedMovies)
             case .failure(let error):
                 DispatchQueue.main.async {
                     self.presenter?.didFailToFetchData(with: error)

@@ -11,7 +11,7 @@
 		<key>Authorization</key>
 		<dict>
 			<key>X-API-KEY</key>
-			<string>RH9700B-VAJ47JC-P92YAMQ-5WRVNRQ</string>
+			<string>YGNWPD2-KY7MSX4-KTC4RS6-H8W2C2M</string>
 		</dict>
 		<key>Provider</key>
 		<string>kinopoisk</string>
@@ -31,6 +31,10 @@
 			<string>/v1.4/movie?selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies</string>
 			<key>movieDetails_Disabled</key>
 			<string>/v1.4/movie/</string>
+			<key>personDetails</key>
+			<string>/v1.4/person/</string>
+			<key>personRelatedMovies</key>
+			<string>/v1.4/movie?selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies&amp;type=!tv-series&amp;sortField=rating.kp&amp;sortType=-1</string>
 			<key>reviews</key>
 			<string>/v1.4/review?page=1&amp;limit=7</string>
 			<key>searchMovies</key>
@@ -68,6 +72,10 @@
 			<string>/3/movie/</string>
 			<key>similarMovies</key>
 			<string>/3/movie/</string>
+			<key>personDetails</key>
+			<string>/3/person/</string>
+			<key>personRelatedMovies</key>
+			<string>/3/discover/movie?include_adult=false&amp;include_video=false&amp;language=en-US&amp;page=1&amp;sort_by=popularity.desc</string>
 			<key>searchMovies</key>
 			<string>/3/search/movie</string>
 			<key>searchPersons</key>

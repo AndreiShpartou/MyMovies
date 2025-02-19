@@ -1,24 +1,24 @@
 //
-//  MovieDetailsViewController.swift
+//  PersonDetailsViewController.swift
 //  MyMovies
 //
-//  Created by Andrei Shpartou on 27/07/2024.
+//  Created by Andrei Shpartou on 11/02/2025.
 //
 
 import UIKit
 
-protocol MovieDetailsViewControllerProtocol {
-    var presenter: MovieDetailsPresenterProtocol { get set }
+protocol PersonDetailsViewControllerProtocol: AnyObject {
+    var presenter: PersonDetailsPresenterProtocol { get set }
 }
 
-final class MovieDetailsViewController: UIViewController, MovieDetailsViewControllerProtocol {
-    var presenter: MovieDetailsPresenterProtocol
+final class PersonDetailsViewController: UIViewController, PersonDetailsViewControllerProtocol {
+    var presenter: PersonDetailsPresenterProtocol
 
-    private let movieDetailsView: MovieDetailsViewProtocol
+    private let personDetailsView: PersonDetailsViewProtocol
 
     // MARK: - Init
-    init(movieDetailsView: MovieDetailsViewProtocol, presenter: MovieDetailsPresenterProtocol) {
-        self.movieDetailsView = movieDetailsView
+    init(personDetailsView: PersonDetailsViewProtocol, presenter: PersonDetailsPresenterProtocol) {
+        self.personDetailsView = personDetailsView
         self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
@@ -28,9 +28,9 @@ final class MovieDetailsViewController: UIViewController, MovieDetailsViewContro
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - LifeCycle
+    // MARK: - Lifecycle
     override func loadView() {
-        view = movieDetailsView
+        view = personDetailsView
     }
 
     override func viewDidLoad() {
@@ -42,9 +42,9 @@ final class MovieDetailsViewController: UIViewController, MovieDetailsViewContro
 }
 
 // MARK: - Setup
-extension MovieDetailsViewController {
+extension PersonDetailsViewController {
     private func setupViewController() {
-        movieDetailsView.delegate = self
+        personDetailsView.delegate = self
         setupNavigationBar()
     }
 
@@ -62,7 +62,7 @@ extension MovieDetailsViewController {
 }
 
 // MARK: - ActionMethods
-extension MovieDetailsViewController {
+extension PersonDetailsViewController {
     @objc
     private func backButtonTapped(_ sender: UIButton) {
         // Handle back button action
@@ -75,25 +75,16 @@ extension MovieDetailsViewController {
     }
 }
 
-// MARK: - MovieDetailsInteractionDelegate
-extension MovieDetailsViewController: MovieDetailsViewDelegate {
-    func didFetchTitle(_ title: String?) {
-        self.title = title
+extension PersonDetailsViewController: PersonDetailsViewDelegate {
+    func didSelectGenre(_ genre: GenreViewModelProtocol) {
+        presenter.didSelectGenre(genre)
     }
 
-    func didSelectReview(_ author: String?, review: String?) {
-        presenter.presentReview(with: author, and: review)
-    }
-
-    func didTapSeeAllButton(listType: MovieListType) {
-        presenter.didTapSeeAllButton(listType: listType)
+    func didTapSeeAllButton() {
+        presenter.didTapSeeAllButton()
     }
 
     func didSelectMovie(movieID: Int) {
         presenter.didSelectMovie(movieID: movieID)
-    }
-
-    func didSelectPerson(personID: Int) {
-        presenter.didSelectPerson(personID: personID)
     }
 }

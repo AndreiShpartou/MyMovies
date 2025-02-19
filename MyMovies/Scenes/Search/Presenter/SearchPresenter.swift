@@ -77,7 +77,7 @@ class SearchPresenter: SearchPresenterProtocol {
 
     func didSelectPerson(personID: Int) {
         // Handle person selection
-        // router.navigateToPersonDetails(with: personID)
+        router.navigateToPersonDetails(with: personID)
     }
 
     func didTapSeeAllButton(listType: MovieListType) {

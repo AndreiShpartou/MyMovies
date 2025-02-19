@@ -11,6 +11,7 @@ protocol MovieDetailsRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
     func navigateToMovieDetails(with movie: MovieProtocol)
+    func navigateToPersonDetails(with personID: Int)
     func navigateToMovieList(type: MovieListType)
     func navigateToReviewDetails(with author: String?, and text: String?, title: String)
 }

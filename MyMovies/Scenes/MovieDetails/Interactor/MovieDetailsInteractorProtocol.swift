@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MovieDetailsInteractorProtocol: AnyObject {
-    var fetchDetails: Bool { get set }
+    var presenter: MovieDetailsInteractorOutputProtocol? { get set }
 
     func fetchMovie()
     func fetchReviews()

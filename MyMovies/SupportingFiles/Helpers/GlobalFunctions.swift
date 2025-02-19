@@ -37,6 +37,38 @@ func formatDate(_ date: Date) -> String {
     return dateFormatter.string(from: date)
 }
 
+// Function to parse date from string (Uses for the birthdate and death date of a person)
+func unifiedDateString(from input: String?) -> String? {
+    // Return nil if input is nil or empty
+    guard let input = input, !input.isEmpty else { return nil }
+
+    // Define the possible input date formats.
+    let inputFormats = [
+        "yyyy-MM-dd",                    // TMDB format
+        "yyyy-MM-dd'T'HH:mm:ss.SSSZ"       // Kinopoisk format
+    ]
+
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+    var parsedDate: Date?
+    // Try to parse the input using each format.
+    for format in inputFormats {
+        dateFormatter.dateFormat = format
+        if let date = dateFormatter.date(from: input) {
+            parsedDate = date
+            break
+        }
+    }
+
+    // If parsing fails, return nil.
+    guard let date = parsedDate else { return nil }
+
+    // Set the output format you desire.
+    dateFormatter.dateFormat = "MMMM d, yyyy"
+    return dateFormatter.string(from: date)
+}
+
 func extractYear(from dateString: String?) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy"

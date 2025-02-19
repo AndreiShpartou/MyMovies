@@ -45,6 +45,6 @@ protocol PersonProtocol: Codable {
     var id: Int { get }
     var photo: String? { get }
     var name: String { get }
-    var originalName: String? { get }
     var profession: String? { get }
+    var popularity: Float? { get }
 }

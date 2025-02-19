@@ -1,16 +1,15 @@
 //
-//  SearchRouterProtocol.swift
+//  PersonDetailsRouterProtocol.swift
 //  MyMovies
 //
-//  Created by Andrei Shpartou on 02/08/2024.
+//  Created by Andrei Shpartou on 11/02/2025.
 //
 
 import UIKit
 
-protocol SearchRouterProtocol: AnyObject {
+protocol PersonDetailsRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
     func navigateToMovieDetails(with movie: MovieProtocol)
-    func navigateToPersonDetails(with personID: Int)
     func navigateToMovieList(type: MovieListType)
 }
