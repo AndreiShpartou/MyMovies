@@ -401,10 +401,10 @@ extension MovieDetailsView {
             return
         }
 
-        let persons = moviePersons.sorted {
-            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
-        }
-        personCollectionViewHandler.configure(with: persons)
+//        let persons = moviePersons.sorted {
+//            $0.photo?.absoluteString ?? "" > $1.photo?.absoluteString ?? ""
+//        }
+        personCollectionViewHandler.configure(with: moviePersons)
         personsCollectionView.reloadData()
     }
 }
