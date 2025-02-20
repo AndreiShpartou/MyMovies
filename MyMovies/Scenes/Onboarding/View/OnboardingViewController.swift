@@ -50,14 +50,14 @@ extension OnboardingViewController {
 // MARK: - OnboardingViewDelegate
 extension OnboardingViewController: OnboardingViewDelegate {
     func didTapSkip() {
-        //
+        presenter.didTapSkip()
     }
 
     func didTapNext() {
-        //
+        presenter.didTapNext()
     }
 
     func didTapGetStarted() {
-        //
+        presenter.didTapGetStarted()
     }
 }

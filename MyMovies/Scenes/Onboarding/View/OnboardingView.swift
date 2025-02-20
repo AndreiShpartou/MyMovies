@@ -6,9 +6,58 @@
 //
 
 import UIKit
+import Lottie
 
 final class OnboardingView: UIView, OnboardingViewProtocol {
     weak var delegate: OnboardingViewDelegate?
+
+    // MARK: - Data
+    private var pages: [OnboardingPageViewModelProtocol] = []
+    private var currentIndex: Int = 0
+
+    // MARK: - UI Components
+    private let titleLabel: UILabel = .createLabel(
+        font: Typography.SemiBold.largeTitle,
+        textAlignment: .center,
+        textColor: .textColorWhite
+    )
+    private let descriptionLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        numberOfLines: 0,
+        textAlignment: .center,
+        textColor: .textColorWhiteGrey
+    )
+    private let animationView = LottieAnimationView()
+    private let pageControl = UIPageControl()
+    // Navigation buttons
+    private lazy var skipButton = UIButton(
+        title: "Skip",
+        font: Typography.SemiBold.body,
+        titleColor: .primaryBlueAccent,
+        backgroundColor: .clear,
+        cornerRadius: 0,
+        action: #selector(didTapSkip),
+        target: self
+    )
+    private lazy var nextButton = UIButton(
+        title: "Next",
+        font: Typography.SemiBold.body,
+        titleColor: .textColorWhite,
+        backgroundColor: .primaryBlueAccent,
+        cornerRadius: 8,
+        action: #selector(didTapNext),
+        target: self
+    )
+
+    private lazy var getStartedButton = UIButton(
+        title: "Get Started",
+        font: Typography.SemiBold.body,
+        titleColor: .textColorWhite,
+        backgroundColor: .secondaryGreen,
+        cornerRadius: 8,
+        action: #selector(didTapGetStarted),
+        target: self
+    )
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -24,11 +73,37 @@ final class OnboardingView: UIView, OnboardingViewProtocol {
 
     // MARK: - OnboardingViewProtocol
     func configurePages(_ pages: [OnboardingPageViewModelProtocol]) {
-        //
+        self.pages = pages
+        pageControl.numberOfPages = pages.count
+        showPage(at: 0)
     }
 
     func showPage(at index: Int) {
-        //
+        guard index < pages.count else { return }
+        currentIndex = index
+        let page = pages[index]
+
+        // Update UI
+        titleLabel.text = page.title
+        descriptionLabel.text = page.description
+
+        // Lottie animation
+        if let lottieFileName = page.lottieFileName {
+            let animation = LottieAnimation.named(lottieFileName)
+            animationView.animation = animation
+            animationView.loopMode = .loop
+            animationView.play()
+        } else {
+            animationView.stop()
+            animationView.animation = nil
+        }
+
+        pageControl.currentPage = index
+
+        // Show / Hide Buttons
+        let isLastPage = (index == pages.count - 1)
+        nextButton.isHidden = isLastPage
+        getStartedButton.isHidden = !isLastPage
     }
 
     func showError() {
@@ -40,11 +115,80 @@ final class OnboardingView: UIView, OnboardingViewProtocol {
 extension OnboardingView {
     private func setupView() {
         backgroundColor = .primaryBackground
+        getStartedButton.isHidden = true
+
+        addSubviews(
+            titleLabel,
+            descriptionLabel,
+            animationView,
+            pageControl,
+            skipButton,
+            nextButton,
+            getStartedButton
+        )
+    }
+}
+
+// MARK: - Action Methods
+extension OnboardingView {
+    @objc
+    private func didTapSkip() {
+        delegate?.didTapSkip()
+    }
+
+    @objc
+    private func didTapNext() {
+        delegate?.didTapNext()
+    }
+
+    @objc
+    private func didTapGetStarted() {
+        delegate?.didTapGetStarted()
     }
 }
 
 // MARK: - Constraints
 extension OnboardingView {
     private func setupConstraints() {
+        skipButton.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).offset(8)
+            make.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(44)
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(skipButton.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+
+        animationView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(300)
+        }
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(animationView.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+
+        pageControl.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
+        }
+
+        nextButton.snp.makeConstraints { make in
+            make.top.equalTo(pageControl.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(120)
+            make.height.equalTo(44)
+        }
+
+        getStartedButton.snp.makeConstraints { make in
+            make.top.equalTo(pageControl.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(120)
+            make.height.equalTo(44)
+        }
     }
 }

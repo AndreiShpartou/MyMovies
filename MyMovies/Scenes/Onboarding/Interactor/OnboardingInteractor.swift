@@ -9,14 +9,20 @@ import Foundation
 
 final class OnboardingInteractor: OnboardingInteractorProtocol {
     weak var presenter: OnboardingInteractorOutputProtocol?
+
+    private let userDefaults = UserDefaults.standard
+    private let onboardingKey = "HasSeenOnboarding"
+
     // MARK: - Init
     init(presenter: OnboardingInteractorOutputProtocol? = nil) {
         self.presenter = presenter
     }
     // MARK: - Public
-    func markOnboardingAsCompleted() {
-        //
+    func fetchOnboardingData() {
+        presenter?.didFetchOnboardingData()
     }
 
-    // MARK: - Private
+    func markOnboardingAsCompleted() {
+        userDefaults.set(true, forKey: onboardingKey)
+    }
 }
