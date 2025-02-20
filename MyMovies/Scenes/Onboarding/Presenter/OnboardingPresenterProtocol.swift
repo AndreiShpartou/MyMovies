@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+protocol OnboardingPresenterProtocol: AnyObject {
+    var view: OnboardingViewProtocol? { get set }
+    var interactor: OnboardingInteractorProtocol { get set }
+    var router: OnboardingRouterProtocol { get set }
+
+    func viewDidLoad()
+    func didTapSkip()
+    func didTapNext()
+    func didTapGetStarted()
+}

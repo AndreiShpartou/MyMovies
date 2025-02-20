@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+protocol OnboardingRouterProtocol: AnyObject {
+    var viewController: OnboardingViewController? { get set }
+
+    func navigateToMainFlow()
+}

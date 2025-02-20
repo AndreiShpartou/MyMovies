@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+final class OnboardingRouter: OnboardingRouterProtocol {
+    weak var viewController: OnboardingViewController?
+
+    func navigateToMainFlow() {
+        //
+    }
+}

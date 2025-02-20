@@ -128,12 +128,14 @@
 		6C9B29BF2D672403000A5EF8 /* OnboardingViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29BE2D672403000A5EF8 /* OnboardingViewProtocol.swift */; };
 		6C9B29C22D672412000A5EF8 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29C12D672412000A5EF8 /* OnboardingView.swift */; };
 		6C9B29C42D67241C000A5EF8 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29C32D67241C000A5EF8 /* OnboardingViewController.swift */; };
-		6C9B29C62D672443000A5EF8 /* OnboardingInteracotrProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29C52D672443000A5EF8 /* OnboardingInteracotrProtocol.swift */; };
+		6C9B29C62D672443000A5EF8 /* OnboardingInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29C52D672443000A5EF8 /* OnboardingInteractorProtocol.swift */; };
 		6C9B29C82D67244B000A5EF8 /* OnboardingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29C72D67244B000A5EF8 /* OnboardingInteractor.swift */; };
 		6C9B29CA2D672460000A5EF8 /* OnboardingPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29C92D672460000A5EF8 /* OnboardingPresenterProtocol.swift */; };
 		6C9B29CC2D672466000A5EF8 /* OnboardingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29CB2D672466000A5EF8 /* OnboardingPresenter.swift */; };
 		6C9B29CE2D672474000A5EF8 /* OnboardingRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29CD2D672474000A5EF8 /* OnboardingRouterProtocol.swift */; };
 		6C9B29D02D672480000A5EF8 /* OnboardingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29CF2D672480000A5EF8 /* OnboardingRouter.swift */; };
+		6C9B29D32D673C96000A5EF8 /* OnboardingPageViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29D22D673C96000A5EF8 /* OnboardingPageViewModelProtocol.swift */; };
+		6C9B29D52D673CF8000A5EF8 /* OnboardingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B29D42D673CF8000A5EF8 /* OnboardingPageViewModel.swift */; };
 		6C9B45E62CB518040053B8D7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B45E52CB518040053B8D7 /* UserProfile.swift */; };
 		6C9B45E82CB5185E0053B8D7 /* UserProfileProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B45E72CB5185E0053B8D7 /* UserProfileProtocol.swift */; };
 		6C9B45EB2CB519BB0053B8D7 /* UserProfileViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B45EA2CB519BB0053B8D7 /* UserProfileViewModelProtocol.swift */; };
@@ -334,12 +336,14 @@
 		6C9B29BE2D672403000A5EF8 /* OnboardingViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewProtocol.swift; sourceTree = "<group>"; };
 		6C9B29C12D672412000A5EF8 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		6C9B29C32D67241C000A5EF8 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		6C9B29C52D672443000A5EF8 /* OnboardingInteracotrProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInteracotrProtocol.swift; sourceTree = "<group>"; };
+		6C9B29C52D672443000A5EF8 /* OnboardingInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInteractorProtocol.swift; sourceTree = "<group>"; };
 		6C9B29C72D67244B000A5EF8 /* OnboardingInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInteractor.swift; sourceTree = "<group>"; };
 		6C9B29C92D672460000A5EF8 /* OnboardingPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPresenterProtocol.swift; sourceTree = "<group>"; };
 		6C9B29CB2D672466000A5EF8 /* OnboardingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPresenter.swift; sourceTree = "<group>"; };
 		6C9B29CD2D672474000A5EF8 /* OnboardingRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRouterProtocol.swift; sourceTree = "<group>"; };
 		6C9B29CF2D672480000A5EF8 /* OnboardingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRouter.swift; sourceTree = "<group>"; };
+		6C9B29D22D673C96000A5EF8 /* OnboardingPageViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewModelProtocol.swift; sourceTree = "<group>"; };
+		6C9B29D42D673CF8000A5EF8 /* OnboardingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewModel.swift; sourceTree = "<group>"; };
 		6C9B45E52CB518040053B8D7 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		6C9B45E72CB5185E0053B8D7 /* UserProfileProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileProtocol.swift; sourceTree = "<group>"; };
 		6C9B45EA2CB519BB0053B8D7 /* UserProfileViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -1277,6 +1281,7 @@
 			children = (
 				6C9B29C92D672460000A5EF8 /* OnboardingPresenterProtocol.swift */,
 				6C9B29CB2D672466000A5EF8 /* OnboardingPresenter.swift */,
+				6C9B29D12D673C84000A5EF8 /* ViewModels */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -1284,7 +1289,7 @@
 		6C9B29BC2D6723D5000A5EF8 /* Interactor */ = {
 			isa = PBXGroup;
 			children = (
-				6C9B29C52D672443000A5EF8 /* OnboardingInteracotrProtocol.swift */,
+				6C9B29C52D672443000A5EF8 /* OnboardingInteractorProtocol.swift */,
 				6C9B29C72D67244B000A5EF8 /* OnboardingInteractor.swift */,
 			);
 			path = Interactor;
@@ -1298,6 +1303,15 @@
 				6C9B29C32D67241C000A5EF8 /* OnboardingViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		6C9B29D12D673C84000A5EF8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6C9B29D22D673C96000A5EF8 /* OnboardingPageViewModelProtocol.swift */,
+				6C9B29D42D673CF8000A5EF8 /* OnboardingPageViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		6C9B45E92CB519A80053B8D7 /* ViewModels */ = {
@@ -1718,6 +1732,7 @@
 				6C87B0532D5B505B003F44FC /* PersonDetailsRouterProtocol.swift in Sources */,
 				6C83385E2C5CE5B7000D0399 /* SearchRouterProtocol.swift in Sources */,
 				6C83385C2C5CE5A3000D0399 /* SearchPresenterProtocol.swift in Sources */,
+				6C9B29D32D673C96000A5EF8 /* OnboardingPageViewModelProtocol.swift in Sources */,
 				6CF693C42D11589E00026B11 /* TMDBPersonsPagedResponse.swift in Sources */,
 				6CFCEB132CBAA36200126B38 /* EditProfileView.swift in Sources */,
 				6CEB59442CBBF9F0005062DC /* InsetLabel.swift in Sources */,
@@ -1738,8 +1753,9 @@
 				6C8338842C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift in Sources */,
 				6CA2D87E2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift in Sources */,
 				6C7737352C5639E600E5F2CC /* RootRouter.swift in Sources */,
+				6C9B29D52D673CF8000A5EF8 /* OnboardingPageViewModel.swift in Sources */,
 				6C98345A2C76064200C6D368 /* TMDBMovieResponseProtocol.swift in Sources */,
-				6C9B29C62D672443000A5EF8 /* OnboardingInteracotrProtocol.swift in Sources */,
+				6C9B29C62D672443000A5EF8 /* OnboardingInteractorProtocol.swift in Sources */,
 				6CC604C32C557C2500241EF2 /* MovieDetailsViewController.swift in Sources */,
 				6C7CD0E72C5F742600C71AA1 /* CustomTabBarController.swift in Sources */,
 				6C8338762C5D075C000D0399 /* MovieDetailsRouterProtocol.swift in Sources */,

@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+final class OnboardingInteractor: OnboardingInteractorProtocol {
+    weak var presenter: OnboardingInteractorOutputProtocol?
+    // MARK: - Init
+    init(presenter: OnboardingInteractorOutputProtocol? = nil) {
+        self.presenter = presenter
+    }
+    // MARK: - Public
+    func markOnboardingAsCompleted() {
+        //
+    }
+
+    // MARK: - Private
+}
