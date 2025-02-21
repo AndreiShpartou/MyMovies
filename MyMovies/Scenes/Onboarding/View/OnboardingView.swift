@@ -12,7 +12,11 @@ final class OnboardingView: UIView, OnboardingViewProtocol {
     weak var delegate: OnboardingViewDelegate?
 
     // MARK: - Data
-    private var pages: [OnboardingPageViewModelProtocol] = []
+    private var pages: [OnboardingPageViewModelProtocol] = [] {
+        didSet {
+            preloadLottieAnimations()
+        }
+    }
     private var currentIndex: Int = 0
 
     // MARK: - UI Components
@@ -22,7 +26,7 @@ final class OnboardingView: UIView, OnboardingViewProtocol {
         textColor: .textColorWhite
     )
     private let descriptionLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.title,
         numberOfLines: 0,
         textAlignment: .center,
         textColor: .textColorWhiteGrey
@@ -116,6 +120,7 @@ extension OnboardingView {
     private func setupView() {
         backgroundColor = .primaryBackground
         getStartedButton.isHidden = true
+        pageControl.isUserInteractionEnabled = false
 
         addSubviews(
             titleLabel,
@@ -126,6 +131,14 @@ extension OnboardingView {
             nextButton,
             getStartedButton
         )
+    }
+    
+    private func preloadLottieAnimations() {
+        pages.forEach { page in
+            if let lottieFileName = page.lottieFileName {
+                _ = LottieAnimation.named(lottieFileName)
+            }
+        }
     }
 }
 
@@ -151,43 +164,42 @@ extension OnboardingView {
 extension OnboardingView {
     private func setupConstraints() {
         skipButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(8)
             make.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(safeAreaLayoutGuide).offset(8)
             make.height.equalTo(44)
         }
 
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(skipButton.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(16)
+        animationView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(skipButton.snp.bottom)
+            make.bottom.equalTo(self.snp.centerY).multipliedBy(1.2)
         }
 
-        animationView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+        titleLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(300)
+            make.top.equalTo(animationView.snp.bottom).offset(8)
         }
 
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(animationView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
         }
 
         pageControl.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
         }
 
         nextButton.snp.makeConstraints { make in
-            make.top.equalTo(pageControl.snp.bottom).offset(16)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(120)
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(64)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-32)
             make.height.equalTo(44)
         }
 
         getStartedButton.snp.makeConstraints { make in
-            make.top.equalTo(pageControl.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(64)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-32)
             make.centerX.equalToSuperview()
-            make.width.equalTo(120)
             make.height.equalTo(44)
         }
     }

@@ -58,18 +58,18 @@ extension OnboardingPresenter: OnboardingInteractorOutputProtocol {
         pages = [
             OnboardingPageViewModel(
                 title: "Welcome!",
-                description: "Discover amazing movies and series from around the world.",
-                lottieFileName: "onboardingAnimation1"
+                description: "Discover amazing movies from around the world.",
+                lottieFileName: Asset.Animations.onboardingAnimation1.name
             ),
             OnboardingPageViewModel(
                 title: "Track Favorites",
                 description: "Easily keep track of your favorite titles.",
-                lottieFileName: "onboardingAnimation2"
+                lottieFileName: Asset.Animations.onboardingAnimation2.name
             ),
             OnboardingPageViewModel(
                 title: "Stay Updated",
                 description: "Get the latest upcoming releases and never miss out.",
-                lottieFileName: "onboardingAnimation3"
+                lottieFileName: Asset.Animations.onboardingAnimation3.name
             )
         ]
 
