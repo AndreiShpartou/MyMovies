@@ -24,8 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         AppConfigurationManager.shared.setupConfiguration()
 
         // Check UserDefaults to see if the user has seen onboarding
-        let hasSeenOnboarding = false
-        // hasSeenOnboarding = UserDefaults.standard.bool(forKey: hasSeenOnboardingKey)
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: hasSeenOnboardingKey)
 
         // Decide which initial view controller to show
         if hasSeenOnboarding {
