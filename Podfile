@@ -5,4 +5,5 @@ target 'MyMovies' do
   pod 'SnapKit'
   pod 'Kingfisher'
   pod 'Alamofire'
+  pod 'lottie-ios'
 end

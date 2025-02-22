@@ -25,6 +25,11 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal static let accentColor = ColorAsset(name: "AccentColor")
+  internal enum Animations {
+    internal static let onboardingAnimation1 = DataAsset(name: "onboardingAnimation1")
+    internal static let onboardingAnimation2 = DataAsset(name: "onboardingAnimation2")
+    internal static let onboardingAnimation3 = DataAsset(name: "onboardingAnimation3")
+  }
   internal enum Avatars {
     internal static let avatarDefault = ImageAsset(name: "avatar-default")
     internal static let avatarMock = ImageAsset(name: "avatar-mock")
@@ -134,6 +139,30 @@ internal extension SwiftUI.Color {
 }
 #endif
 
+internal struct DataAsset {
+  internal fileprivate(set) var name: String
+
+  @available(iOS 9.0, tvOS 9.0, watchOS 6.0, macOS 10.11, *)
+  internal var data: NSDataAsset {
+    guard let data = NSDataAsset(asset: self) else {
+      fatalError("Unable to load data asset named \(name).")
+    }
+    return data
+  }
+}
+
+@available(iOS 9.0, tvOS 9.0, watchOS 6.0, macOS 10.11, *)
+internal extension NSDataAsset {
+  convenience init?(asset: DataAsset) {
+    let bundle = BundleToken.bundle
+    #if os(iOS) || os(tvOS) || os(watchOS)
+    self.init(name: asset.name, bundle: bundle)
+    #elseif os(macOS)
+    self.init(name: NSDataAsset.Name(asset.name), bundle: bundle)
+    #endif
+  }
+}
+
 internal struct ImageAsset {
   internal fileprivate(set) var name: String
 
@@ -225,4 +254,4 @@ private final class BundleToken {
     #endif
   }()
 }
-// swiftlint:enable all
+// swiftlint:enable convenience_type

@@ -10,11 +10,13 @@ import UIKit
 protocol SceneBuilderProtocol: AnyObject {
     static func buildHomeScene() -> UIViewController
     static func buildMovieListScene(listType: MovieListType) -> UIViewController
+    static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController
     static func buildSearchScene() -> UIViewController
     static func buildProfileScene() -> UIViewController
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController
     static func buildEditProfileScene() -> UIViewController
     static func buildPersonDetailsScene(for personID: Int) -> UIViewController
+    static func buildOnboardingScene() -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -117,6 +119,19 @@ final class SceneBuilder: SceneBuilderProtocol {
         let view = EditProfileView()
         let presenter = EditProfilePresenter(view: view, interactor: interactor, router: router)
         let viewController = EditProfileViewController(editProfileView: view, presenter: presenter)
+
+        router.viewController = viewController
+        interactor.presenter = presenter
+
+        return viewController
+    }
+
+    static func buildOnboardingScene() -> UIViewController {
+        let interactor = OnboardingInteractor()
+        let router = OnboardingRouter()
+        let view = OnboardingView()
+        let presenter = OnboardingPresenter(view: view, interactor: interactor, router: router)
+        let viewController = OnboardingViewController(view: view, presenter: presenter)
 
         router.viewController = viewController
         interactor.presenter = presenter
