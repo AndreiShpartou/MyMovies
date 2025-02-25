@@ -93,7 +93,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             // Disabled for the TMDB API. It returns the same movie collection without requests
             self.fetchMoviesDetails(for: movies.map { $0.id }, defaultValue: movies)
         default:
-            fetchMoviesDetails(for: movies)
+            self.fetchMoviesDetails(for: movies)
         }
     }
 

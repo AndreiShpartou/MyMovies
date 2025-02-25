@@ -132,7 +132,7 @@ extension OnboardingView {
             getStartedButton
         )
     }
-    
+
     private func preloadLottieAnimations() {
         pages.forEach { page in
             if let lottieFileName = page.lottieFileName {

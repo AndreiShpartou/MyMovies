@@ -143,8 +143,10 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.kinopoisk, .movieDetails(_, type: .topRatedMovies)),
             (.kinopoisk, .movieDetails(_, type: .theHighestGrossingMovies)),
             (.kinopoisk, .movieDetails(_, type: .searchedMovies)),
+            (.kinopoisk, .movieDetails(_, type: .similarMovies)),
             (.kinopoisk, .movieDetails(_, type: .personRelatedMovies)),
-            (.kinopoisk, .movieDetails(_, type: nil)):
+            (.kinopoisk, .movieDetails(_, type: nil)),
+            (.kinopoisk, .movieList(type: .similarMovies)):
             return false
         case (.tmdb, .moviesDetails):
             return false
@@ -163,7 +165,7 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.tmdb, .movieList(type: .popularMovies)),
             (.tmdb, .movieList(type: .topRatedMovies)),
             (.tmdb, .movieList(type: .theHighestGrossingMovies)),
-            (.tmdb, .movieList(type: .similarMovies)),
+            // (.tmdb, .movieList(type: .similarMovies)),
             (.tmdb, .movieList(type: .searchedMovies)),
             (.tmdb, .movieList(type: .personRelatedMovies)),
             (.tmdb, .searchMovies),
@@ -175,6 +177,7 @@ struct APIConfiguration: APIConfigurationProtocol {
             (.kinopoisk, .movieList(type: .theHighestGrossingMovies)),
             (.kinopoisk, .movieList(type: .searchedMovies)),
              (.kinopoisk, .movieList(type: .personRelatedMovies)),
+            (.kinopoisk, .movieList(type: .similarMovies)),
             (.kinopoisk, .searchMovies),
             (.kinopoisk, .movieDetails),
             (.kinopoisk, .moviesDetails),
