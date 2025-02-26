@@ -92,6 +92,16 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             // Kinopoisk API supports multiple movie details request
             // Disabled for the TMDB API. It returns the same movie collection without requests
             self.fetchMoviesDetails(for: movies.map { $0.id }, defaultValue: movies)
+        case .similarMovies:
+            guard let similarMovies = movies.first?.similarMovies else {
+                DispatchQueue.main.async {
+                    self.fetchMoviesDetails(for: movies)
+                }
+
+                return
+            }
+
+            self.fetchMoviesDetails(for: similarMovies.map { $0.id }, defaultValue: similarMovies)
         default:
             self.fetchMoviesDetails(for: movies)
         }

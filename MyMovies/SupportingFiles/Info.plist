@@ -31,6 +31,8 @@
 			<string>/v1.4/movie?selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies</string>
 			<key>movieDetails_Disabled</key>
 			<string>/v1.4/movie/</string>
+			<key>similarMovies</key>
+			<string>/v1.4/movie?selectFields=id&amp;selectFields=name&amp;selectFields=enName&amp;selectFields=alternativeName&amp;selectFields=description&amp;selectFields=shortDescription&amp;selectFields=slogan&amp;selectFields=status&amp;selectFields=year&amp;selectFields=type&amp;selectFields=rating&amp;selectFields=movieLength&amp;selectFields=genres&amp;selectFields=countries&amp;selectFields=poster&amp;selectFields=backdrop&amp;selectFields=persons&amp;selectFields=similarMovies</string>
 			<key>personDetails</key>
 			<string>/v1.4/person/</string>
 			<key>personRelatedMovies</key>

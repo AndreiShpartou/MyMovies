@@ -66,6 +66,11 @@ class NetworkManager: NetworkManagerProtocol {
     // Get movie details by array of id (single request for all movies)
     // For now, only Kinopoisk API supported
     func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        guard !ids.isEmpty else {
+            completion(.success(defaultValue))
+            return
+        }
+
         let encoding = URLEncoding(arrayEncoding: .noBrackets)
         performRequest(for: .moviesDetails(ids: ids), defaultValue: defaultValue as? [Movie], encoding: encoding) { (result: Result<[Movie], Error>) in
             switch result {

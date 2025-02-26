@@ -48,13 +48,6 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
             // Use the previously loaded similar movies id for onward fetching details (Kinopoisk API)
             // let result: Result<[MovieProtocol], Error> = .success(similarMovies)
             // handleMovieFetchResult(result, fetchType: type)
-            guard !similarMovies.isEmpty else {
-                let result: Result<[MovieProtocol], Error> = .success(similarMovies)
-                handleMovieFetchResult(result, fetchType: type)
-
-                return
-            }
-
             self.fetchMoviesDetails(
                 for: similarMovies.map { $0.id },
                 defaultValue: similarMovies,
