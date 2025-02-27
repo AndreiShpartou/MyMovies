@@ -41,7 +41,7 @@ class NetworkManager: NetworkManagerProtocol {
 
     // Get movie details for each movie in the array (separate requests for each movie)
     func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void) {
-        var detailedMovies = [MovieProtocol]()
+        var detailedMoviesDict: [Int: MovieProtocol] = [:]
         let dispatchGroup = DispatchGroup()
 
         movies.forEach { movie in
@@ -49,16 +49,20 @@ class NetworkManager: NetworkManagerProtocol {
             fetchMovieDetails(for: movie, type: type) { result in
                 switch result {
                 case .success(let detailedMovie):
-                    detailedMovies.append(detailedMovie)
+                    // Store by ID
+                    detailedMoviesDict[detailedMovie.id] = detailedMovie
                 case .failure:
                     // TODO: Error handling
-                    detailedMovies.append(movie)
+                    // Error handling: Store the original movie if fetch failed
+                    detailedMoviesDict[movie.id] = movie
                 }
                 dispatchGroup.leave()
             }
         }
 
         dispatchGroup.notify(queue: .main) {
+            // Sort movies by the original order
+            let detailedMovies = movies.compactMap { detailedMoviesDict[$0.id] }
             completion(detailedMovies)
         }
     }
