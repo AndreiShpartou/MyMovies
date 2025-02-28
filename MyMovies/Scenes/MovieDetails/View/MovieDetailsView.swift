@@ -241,7 +241,8 @@ extension MovieDetailsView {
 // MARK: - Private
 extension MovieDetailsView {
     private func setFullStoryTextHeight() {
-        guard fullTextHeight == 0, storyTextView.frame.size.width != 0 else {
+        guard fullTextHeight == 0,
+              !storyTextView.text.isEmpty else {
             return
         }
 
