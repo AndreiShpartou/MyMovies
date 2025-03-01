@@ -44,11 +44,15 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
 
     func fetchSimilarMovies() {
         let type = MovieListType.similarMovies(id: movie.id)
-        // Use the previously loaded similar movies id for onward fetching details (Kinopoisk API)
-        if let similarMovies = movie.similarMovies,
-           !similarMovies.isEmpty {
-            let result: Result<[MovieProtocol], Error> = .success(similarMovies)
-            handleMovieFetchResult(result, fetchType: type)
+        if let similarMovies = movie.similarMovies {
+            // Use the previously loaded similar movies id for onward fetching details (Kinopoisk API)
+            // let result: Result<[MovieProtocol], Error> = .success(similarMovies)
+            // handleMovieFetchResult(result, fetchType: type)
+            self.fetchMoviesDetails(
+                for: similarMovies.map { $0.id },
+                defaultValue: similarMovies,
+                fetchType: type
+            )
         } else {
             // Use a distinct endpoint for the TMDB API
             networkManager.fetchMovies(type: type) { [weak self] result in
@@ -58,6 +62,13 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     }
 
     // MARK: - Private
+    private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], fetchType: MovieListType) {
+        networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
+            guard let self = self else { return }
+            self.handleMovieFetchResult(result, fetchType: fetchType)
+        }
+    }
+
     // Centralized handling of movie fetch results
     private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {

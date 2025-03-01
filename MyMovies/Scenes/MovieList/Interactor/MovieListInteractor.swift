@@ -21,8 +21,8 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     // Fetch genres
     func fetchMovieGenres(type: MovieListType) {
         switch type {
-        case .searchedMovies:
-            // APIs don't support genre filtering for searched movies
+        case .searchedMovies, .similarMovies:
+            // APIs don't support genre filtering
             DispatchQueue.main.async {
                 self.presenter?.didFetchMovieGenres([])
             }
@@ -92,8 +92,18 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             // Kinopoisk API supports multiple movie details request
             // Disabled for the TMDB API. It returns the same movie collection without requests
             self.fetchMoviesDetails(for: movies.map { $0.id }, defaultValue: movies)
+        case .similarMovies:
+            guard let similarMovies = movies.first?.similarMovies else {
+                DispatchQueue.main.async {
+                    self.fetchMoviesDetails(for: movies)
+                }
+
+                return
+            }
+
+            self.fetchMoviesDetails(for: similarMovies.map { $0.id }, defaultValue: similarMovies)
         default:
-            fetchMoviesDetails(for: movies)
+            self.fetchMoviesDetails(for: movies)
         }
     }
 

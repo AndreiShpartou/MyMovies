@@ -76,7 +76,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                 persons: [],
                 poster: poster,
                 backdrop: backdrop,
-                similarMovies: []
+                similarMovies: nil
             )
         }
     }
@@ -107,7 +107,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             persons: map(persons),
             poster: poster,
             backdrop: backdrop,
-            similarMovies: []
+            similarMovies: nil
         )
     }
 
@@ -137,7 +137,7 @@ final class ResponseMapper: ResponseMapperProtocol {
                     url: $0.backdrop?.url,
                     previewUrl: $0.backdrop?.previewUrl
                 ),
-                similarMovies: similarMovies
+                similarMovies: similarMovies ?? []
             )
         }
     }
