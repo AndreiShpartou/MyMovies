@@ -11,16 +11,13 @@ class SearchInteractor: SearchInteractorProtocol {
     weak var presenter: SearchInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
-    private let dataPersistenceManager: DataPersistenceProtocol
     // Token to track the current search request
     private var currentSearchToken: UUID?
 
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        dataPersistenceManager: DataPersistenceProtocol = DataPersistenceManager.shared
+        networkManager: NetworkManagerProtocol = NetworkManager.shared
     ) {
         self.networkManager = networkManager
-        self.dataPersistenceManager = dataPersistenceManager
     }
 
     // MARK: - Public
@@ -194,8 +191,8 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     private func fetchRecentlySearchedMovies() {
-        let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
-        presenter?.didFetchRecentlySearchedMovies(recentlySearched)
+//        let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
+//        presenter?.didFetchRecentlySearchedMovies(recentlySearched)
     }
 
 //    // Fetch related movies for the found person
@@ -230,9 +227,4 @@ class SearchInteractor: SearchInteractorProtocol {
 //            self.saveSearchQuery(persons.map { $0.name }.joined(separator: ", ") )
 //        }
 //    }
-
-    private func saveSearchQuery(_ query: String) {
-        // Save search query
-        dataPersistenceManager.saveSearchQuery(query)
-    }
 }

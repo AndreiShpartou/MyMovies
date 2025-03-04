@@ -11,10 +11,15 @@ final class MainInteractor: MainInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
+    private let genreRepository: GenreRepositoryProtocol
 
     // MARK: - Init
-    init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+    init(
+        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        genreRepository: GenreRepositoryProtocol = GenreRepository()
+    ) {
         self.networkManager = networkManager
+        self.genreRepository = genreRepository
     }
 
     // MARK: - UpcomingMovies
@@ -62,11 +67,29 @@ final class MainInteractor: MainInteractorProtocol {
     // MARK: - Genres
     // Fetch genres
     func fetchMovieGenres() {
+        guard let provider = networkManager.getProvider() else {
+//            presenter?.didFailToFetchData(with: SomeError.missingProvider)
+            return
+        }
+
+        // 1. Try local
+        let localGenres = genreRepository.fetchGenres(provider: provider)
+        if !localGenres.isEmpty {
+            // Immediately present to the user
+            presenter?.didFetchMovieGenres(localGenres)
+
+            return
+        }
+
         networkManager.fetchGenres { [weak self] result in
             switch result {
             case .success(let genres):
                 DispatchQueue.main.async {
                     self?.presenter?.didFetchMovieGenres(genres)
+                }
+                // Save to CoreData
+                if let movieGenres = genres as? [Movie.Genre] {
+                    self?.genreRepository.saveGenres(movieGenres, provider: provider)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {

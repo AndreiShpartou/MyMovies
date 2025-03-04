@@ -175,6 +175,12 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 
+    // MARK: - Provider
+    func getProvider() -> Provider? {
+        return apiConfig?.getProvider()
+    }
+
+    // MARK: - Private
     // MARK: - PerformRequest
     //  Versatile request performer
     private func performRequest<T: Codable>(
