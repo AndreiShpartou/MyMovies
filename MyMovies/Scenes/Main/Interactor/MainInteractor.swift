@@ -72,7 +72,6 @@ final class MainInteractor: MainInteractorProtocol {
             return
         }
 
-        // 1. Try local
         let localGenres = genreRepository.fetchGenres(provider: provider)
         if !localGenres.isEmpty {
             // Immediately present to the user

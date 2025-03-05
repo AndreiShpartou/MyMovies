@@ -11,10 +11,15 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     weak var presenter: MovieListInteractorOutputProtocol?
     private var listType: MovieListType?
     private let networkManager: NetworkManagerProtocol
+    private let genreRepository: GenreRepositoryProtocol
 
     // MARK: - Init
-    init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+    init(
+        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        genreRepository: GenreRepositoryProtocol = GenreRepository()
+    ) {
         self.networkManager = networkManager
+        self.genreRepository = genreRepository
     }
 
     // MARK: - Genres
@@ -52,6 +57,18 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // MARK: - Private
     private func fetchGenres() {
+        guard let provider = networkManager.getProvider() else {
+            return
+        }
+
+        let localGenres = genreRepository.fetchGenres(provider: provider)
+        if !localGenres.isEmpty {
+            // Immediately present to the user
+            presenter?.didFetchMovieGenres(localGenres)
+
+            return
+        }
+
         networkManager.fetchGenres { [weak self] result in
             switch result {
             case .success(let genres):
