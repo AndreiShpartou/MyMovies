@@ -2,7 +2,7 @@
 //  GenreEntity+CoreDataClass.swift
 //  MyMovies
 //
-//  Created by Andrei Shpartou on 04/03/2025.
+//  Created by Andrei Shpartou on 05/03/2025.
 //
 //
 

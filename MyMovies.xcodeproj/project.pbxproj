@@ -28,8 +28,6 @@
 		6C424F112C94181E0003F487 /* MovieListCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C424F102C94181E0003F487 /* MovieListCollectionViewHandler.swift */; };
 		6C424F142C942A440003F487 /* RatingGeneralStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C424F132C942A440003F487 /* RatingGeneralStackView.swift */; };
 		6C499C142D7745B00049D6F7 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C499C132D7745B00049D6F7 /* CoreDataManager.swift */; };
-		6C499C202D77475F0049D6F7 /* GenreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C499C1E2D77475F0049D6F7 /* GenreEntity+CoreDataClass.swift */; };
-		6C499C212D77475F0049D6F7 /* GenreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C499C1F2D77475F0049D6F7 /* GenreEntity+CoreDataProperties.swift */; };
 		6C49F3A02C9AD0F0005F182F /* MovieListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C49F39F2C9AD0F0005F182F /* MovieListItemViewModel.swift */; };
 		6C49F3A22C9AD117005F182F /* MovieListItemViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C49F3A12C9AD117005F182F /* MovieListItemViewModelProtocol.swift */; };
 		6C49F3A52C9AD174005F182F /* GenreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C49F3A42C9AD174005F182F /* GenreViewModel.swift */; };
@@ -112,6 +110,8 @@
 		6C87B06D2D5BBA35003F44FC /* PersonDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C87B06C2D5BBA35003F44FC /* PersonDetailsView.swift */; };
 		6C8D05EB2D774DC300FFC162 /* GenreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D05EA2D774DC300FFC162 /* GenreRepository.swift */; };
 		6C8D05EC2D7752BB00FFC162 /* MyMovies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6C499C182D77466F0049D6F7 /* MyMovies.xcdatamodeld */; };
+		6C8D05EF2D78399000FFC162 /* GenreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D05ED2D78399000FFC162 /* GenreEntity+CoreDataClass.swift */; };
+		6C8D05F02D78399000FFC162 /* GenreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8D05EE2D78399000FFC162 /* GenreEntity+CoreDataProperties.swift */; };
 		6C8F861D2CA9497700E43E1A /* PersonCollectionViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */; };
 		6C90536D2C5906260068E2BC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C90536C2C5906260068E2BC /* Constants.swift */; };
 		6C90536E2C5913710068E2BC /* Montserrat-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6C9053692C5904B10068E2BC /* Montserrat-Regular.otf */; };
@@ -238,8 +238,6 @@
 		6C424F132C942A440003F487 /* RatingGeneralStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingGeneralStackView.swift; sourceTree = "<group>"; };
 		6C499C132D7745B00049D6F7 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		6C499C192D77466F0049D6F7 /* MyMovies.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyMovies.xcdatamodel; sourceTree = "<group>"; };
-		6C499C1E2D77475F0049D6F7 /* GenreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GenreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		6C499C1F2D77475F0049D6F7 /* GenreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GenreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6C49F39F2C9AD0F0005F182F /* MovieListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListItemViewModel.swift; sourceTree = "<group>"; };
 		6C49F3A12C9AD117005F182F /* MovieListItemViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListItemViewModelProtocol.swift; sourceTree = "<group>"; };
 		6C49F3A42C9AD174005F182F /* GenreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreViewModel.swift; sourceTree = "<group>"; };
@@ -323,6 +321,8 @@
 		6C87B06A2D5BB30B003F44FC /* PersonDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsViewController.swift; sourceTree = "<group>"; };
 		6C87B06C2D5BBA35003F44FC /* PersonDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailsView.swift; sourceTree = "<group>"; };
 		6C8D05EA2D774DC300FFC162 /* GenreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreRepository.swift; sourceTree = "<group>"; };
+		6C8D05ED2D78399000FFC162 /* GenreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GenreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6C8D05EE2D78399000FFC162 /* GenreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GenreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6C8F861C2CA9497700E43E1A /* PersonCollectionViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCollectionViewHandler.swift; sourceTree = "<group>"; };
 		6C9053672C5904B10068E2BC /* Montserrat-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.otf"; sourceTree = "<group>"; };
 		6C9053682C5904B10068E2BC /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
@@ -521,8 +521,8 @@
 		6C499C1C2D77470C0049D6F7 /* GenreRepository */ = {
 			isa = PBXGroup;
 			children = (
-				6C499C1E2D77475F0049D6F7 /* GenreEntity+CoreDataClass.swift */,
-				6C499C1F2D77475F0049D6F7 /* GenreEntity+CoreDataProperties.swift */,
+				6C8D05ED2D78399000FFC162 /* GenreEntity+CoreDataClass.swift */,
+				6C8D05EE2D78399000FFC162 /* GenreEntity+CoreDataProperties.swift */,
 				6C8D05EA2D774DC300FFC162 /* GenreRepository.swift */,
 			);
 			path = GenreRepository;
@@ -1682,6 +1682,7 @@
 				6CFCEB1F2CBAC44000126B38 /* EditProfileRouter.swift in Sources */,
 				6CFCEB1B2CBAC42A00126B38 /* EditProfilePresenter.swift in Sources */,
 				6C424F0F2C9417D00003F487 /* MovieListCollectionViewCell.swift in Sources */,
+				6C8D05F02D78399000FFC162 /* GenreEntity+CoreDataProperties.swift in Sources */,
 				6C9C75932C6DFED0003E98FE /* GlobalFunctions.swift in Sources */,
 				6CC604D92C55805400241EF2 /* ProfileSettingsInteractor.swift in Sources */,
 				6C9B29C82D67244B000A5EF8 /* OnboardingInteractor.swift in Sources */,
@@ -1708,7 +1709,6 @@
 				6C70EB272C6CB3CA004DA1A9 /* NetworkHelper.swift in Sources */,
 				6C7737372C563B6600E5F2CC /* SceneBuilder.swift in Sources */,
 				6CAFCADB2D5C9CCE003CBE7B /* PersonDetailed.swift in Sources */,
-				6C499C212D77475F0049D6F7 /* GenreEntity+CoreDataProperties.swift in Sources */,
 				6C2B03352C64DE180057E518 /* UpcomingMoviesCollectionViewHandler.swift in Sources */,
 				6CAFCAE12D5C9F7D003CBE7B /* KinopoiskPersonDetailedResponseProtocol.swift in Sources */,
 				6C83387A2C5D078B000D0399 /* WishlistInteractorProtocol.swift in Sources */,
@@ -1727,6 +1727,7 @@
 				6C74C9222C73920A0035BD14 /* PlistConfigurationLoaderProtocol.swift in Sources */,
 				6CC604C52C557C3800241EF2 /* MovieDetailsView.swift in Sources */,
 				6C49F3AC2C9ADD0C005F182F /* DomainModelMapperProtocol.swift in Sources */,
+				6C8D05EF2D78399000FFC162 /* GenreEntity+CoreDataClass.swift in Sources */,
 				6CC604CD2C557E8800241EF2 /* WishlistInteractor.swift in Sources */,
 				6CAFCAE72D5CA827003CBE7B /* CommonValue.swift in Sources */,
 				6C41483A2C7471D7004D55BA /* ResponseMapper.swift in Sources */,
@@ -1737,7 +1738,6 @@
 				6CAFCADD2D5C9F61003CBE7B /* TMDBPersonDetailedResponseProtocol.swift in Sources */,
 				6C424F112C94181E0003F487 /* MovieListCollectionViewHandler.swift in Sources */,
 				6C00637C2CB9439F00D53DEC /* GeneralDetails.swift in Sources */,
-				6C499C202D77475F0049D6F7 /* GenreEntity+CoreDataClass.swift in Sources */,
 				6CC604C92C557DCC00241EF2 /* WishlistRouter.swift in Sources */,
 				6CC604D72C55802800241EF2 /* ProfileSettingsPresenter.swift in Sources */,
 				6CAFCADF2D5C9F70003CBE7B /* TMDBPersonDetailedResponse.swift in Sources */,

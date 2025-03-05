@@ -2,7 +2,7 @@
 //  GenreEntity+CoreDataProperties.swift
 //  MyMovies
 //
-//  Created by Andrei Shpartou on 04/03/2025.
+//  Created by Andrei Shpartou on 05/03/2025.
 //
 //
 
@@ -18,6 +18,7 @@ extension GenreEntity {
     @NSManaged public var id: Int16
     @NSManaged public var name: String?
     @NSManaged public var provider: String?
+    @NSManaged public var orderIndex: Int16
 }
 
 extension GenreEntity: Identifiable {

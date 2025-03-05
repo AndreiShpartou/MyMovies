@@ -25,6 +25,8 @@ final class GenreRepository: GenreRepositoryProtocol {
         let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
         // Filter by provider to store separate sets (tmdb or kinopoisk)
         request.predicate = NSPredicate(format: "provider == %@", provider.rawValue)
+        request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
+
         do {
             let result = try context.fetch(request)
             // Convert to domain model
@@ -41,11 +43,12 @@ final class GenreRepository: GenreRepositoryProtocol {
     }
 
     func saveGenres(_ genres: [Movie.Genre], provider: Provider) {
-        for genre in genres {
+        for (index, genre) in genres.enumerated() {
             let entity = GenreEntity(context: context)
             entity.id = Int16(genre.id ?? 0)
             entity.name = genre.name
             entity.provider = provider.rawValue
+            entity.orderIndex = Int16(index) // Store the original API order
         }
 
         CoreDataManager.shared.saveContext()

@@ -13,7 +13,7 @@ final class CoreDataManager {
 
     // The container that holds the data model
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "MyMovies") // matches MyMovies.xcdatamodeld
+        let container = NSPersistentContainer(name: "MyMovies")
         container.loadPersistentStores { _, error in
             if let error = error {
                 fatalError("Core Data stack failed: \(error)")
