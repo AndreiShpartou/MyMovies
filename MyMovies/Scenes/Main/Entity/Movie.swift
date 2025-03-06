@@ -24,7 +24,7 @@ struct Movie: MovieProtocol {
         return productionCountries
     }
     var persons: [PersonProtocol] {
-        return moviePersonsI don
+        return moviePersons
     }
     var poster: CoverProtocol? {
         return moviePoster
