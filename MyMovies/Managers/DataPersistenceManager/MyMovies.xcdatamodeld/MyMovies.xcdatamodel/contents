@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="CountryEntity" representedClassName="CountryEntity" syncable="YES" codeGenerationType="class">
+    <entity name="CountryEntity" representedClassName="CountryEntity" syncable="YES">
         <attribute name="fullName" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="movieCountries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieCountryEntity" inverseName="country" inverseEntity="MovieCountryEntity"/>
@@ -12,16 +12,16 @@
         <attribute name="provider" optional="YES" attributeType="String"/>
         <relationship name="movieGenres" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieGenreEntity" inverseName="genre" inverseEntity="MovieGenreEntity"/>
     </entity>
-    <entity name="ListTypeEntity" representedClassName="ListTypeEntity" syncable="YES" codeGenerationType="class">
+    <entity name="ListTypeEntity" representedClassName="ListTypeEntity" syncable="YES">
         <attribute name="name" attributeType="String"/>
         <relationship name="movieLists" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieListMembershipEntity" inverseName="listType" inverseEntity="MovieListMembershipEntity"/>
     </entity>
-    <entity name="MovieCountryEntity" representedClassName="MovieCountryEntity" syncable="YES" codeGenerationType="class">
+    <entity name="MovieCountryEntity" representedClassName="MovieCountryEntity" syncable="YES">
         <attribute name="orderIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="country" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CountryEntity" inverseName="movieCountries" inverseEntity="CountryEntity"/>
-        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MovieEntity" inverseName="movieCountries" inverseEntity="MovieEntity"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieEntity" inverseName="movieCountries" inverseEntity="MovieEntity"/>
     </entity>
-    <entity name="MovieEntity" representedClassName="MovieEntity" syncable="YES" codeGenerationType="class">
+    <entity name="MovieEntity" representedClassName="MovieEntity" syncable="YES">
         <attribute name="alternativeTitle" optional="YES" attributeType="String"/>
         <attribute name="backdropUrl" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -42,36 +42,32 @@
         <relationship name="moviePersons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MoviePersonEntity" inverseName="movie" inverseEntity="MoviePersonEntity"/>
         <relationship name="movieSimilars" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieSimilarEntity" inverseName="movie" inverseEntity="MovieSimilarEntity"/>
     </entity>
-    <entity name="MovieGenreEntity" representedClassName="MovieGenreEntity" syncable="YES" codeGenerationType="class">
+    <entity name="MovieGenreEntity" representedClassName="MovieGenreEntity" syncable="YES">
         <attribute name="orderIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="genre" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GenreEntity" inverseName="movieGenres" inverseEntity="GenreEntity"/>
         <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieEntity" inverseName="movieGenres" inverseEntity="MovieEntity"/>
     </entity>
-    <entity name="MovieListMembershipEntity" representedClassName="MovieListMembershipEntity" syncable="YES" codeGenerationType="class">
+    <entity name="MovieListMembershipEntity" representedClassName="MovieListMembershipEntity" syncable="YES">
         <attribute name="orderIndex" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="listType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ListTypeEntity" inverseName="movieLists" inverseEntity="ListTypeEntity"/>
         <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieEntity" inverseName="movieListsMembership" inverseEntity="MovieEntity"/>
     </entity>
-    <entity name="MoviePersonEntity" representedClassName="MoviePersonEntity" syncable="YES" codeGenerationType="class">
+    <entity name="MoviePersonEntity" representedClassName="MoviePersonEntity" syncable="YES">
         <attribute name="orderIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieEntity" inverseName="moviePersons" inverseEntity="MovieEntity"/>
-        <relationship name="person" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PersonEntity" inverseName="moviePersons" inverseEntity="PersonEntity"/>
+        <relationship name="person" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersonEntity" inverseName="moviePersons" inverseEntity="PersonEntity"/>
     </entity>
-    <entity name="MovieSimilarEntity" representedClassName="MovieSimilarEntity" syncable="YES" codeGenerationType="class">
+    <entity name="MovieSimilarEntity" representedClassName="MovieSimilarEntity" syncable="YES">
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="orderIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieEntity" inverseName="movieSimilars" inverseEntity="MovieEntity"/>
-        <relationship name="similarMovie" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SimilarMovieEntity" inverseName="movieSimilars" inverseEntity="SimilarMovieEntity"/>
     </entity>
-    <entity name="PersonEntity" representedClassName="PersonEntity" syncable="YES" codeGenerationType="class">
+    <entity name="PersonEntity" representedClassName="PersonEntity" syncable="YES">
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="photo" optional="YES" attributeType="String"/>
         <attribute name="popularity" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="profession" optional="YES" attributeType="String"/>
         <relationship name="moviePersons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MoviePersonEntity" inverseName="person" inverseEntity="MoviePersonEntity"/>
-    </entity>
-    <entity name="SimilarMovieEntity" representedClassName="SimilarMovieEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="movieSimilars" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieSimilarEntity" inverseName="similarMovie" inverseEntity="MovieSimilarEntity"/>
     </entity>
 </model>

@@ -19,6 +19,7 @@ final class CoreDataManager {
                 fatalError("Core Data stack failed: \(error)")
             }
         }
+
         return container
     }()
 

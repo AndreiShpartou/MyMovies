@@ -1,5 +1,5 @@
 //
-//  GenreEntity+CoreDataClass.swift
+//  MovieEntity+CoreDataClass.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 06/03/2025.
@@ -9,6 +9,6 @@
 import Foundation
 import CoreData
 
-@objc(GenreEntity)
-public class GenreEntity: NSManagedObject {
+@objc(MovieEntity)
+public class MovieEntity: NSManagedObject {
 }
