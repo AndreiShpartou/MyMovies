@@ -13,7 +13,7 @@ protocol MovieRepositoryProtocol {
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int64)
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String)
     // Fetch
-    func fetchMoviesByGenre(genreID: Int64, provider: String, listType: String?) -> [MovieEntity]
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieEntity]
     // Clear & Update
     func dailyRefreshMovie(_ movie: MovieProtocol, provider: String)
 }
@@ -56,16 +56,47 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String) {
-        //
+        for (index, movie) in movies.enumerated() {
+            storeMovieForList(movie, provider: provider, listType: listType, orderIndex: Int64(index))
+        }
     }
 
-    func fetchMoviesByGenre(genreID: Int64, provider: String, listType: String?) -> [MovieEntity] {
-        //
-        return []
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieEntity] {
+        // Fetch bridging for genre
+        let request: NSFetchRequest<MovieGenreEntity> = MovieGenreEntity.fetchRequest()
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "genre.id == %d", genre.id ?? 0),
+            NSPredicate(format: "genre.rawName == %d", genre.rawName ?? ""),
+            NSPredicate(format: "genre.provider == %@", provider),
+            NSPredicate(format: "movie.provider == %@", provider)
+        ])
+        do {
+            let bridgingGenre = try context.fetch(request)
+            // get all movies by genre
+            let possibleMovies = bridgingGenre.compactMap { $0.movie }
+            // filter those movies by list
+            let finalMovies = possibleMovies.filter { movieEntity in
+                // check if there's a membership bridging with the listName
+                guard let listBridgingSet = movieEntity.movieListsMembership else { return false }
+                for membership in listBridgingSet {
+                    guard let mem = membership as? MovieListMembershipEntity else { continue }
+                    if mem.listType?.name == listType {
+                        return true
+                    }
+                }
+                return false
+            }
+
+            return finalMovies
+        } catch {
+            print("Error fetching bridging by genre: \(error)")
+
+            return []
+        }
     }
 
+    // Full daily refresh: remove bridging for everything
     func dailyRefreshMovie(_ movie: MovieProtocol, provider: String) {
-        //
     }
 
     // MARK: - Bridging clearing
