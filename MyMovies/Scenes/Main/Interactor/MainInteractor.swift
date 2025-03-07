@@ -67,7 +67,7 @@ final class MainInteractor: MainInteractorProtocol {
     // MARK: - Genres
     // Fetch genres
     func fetchMovieGenres() {
-        guard let provider = networkManager.getProvider() else {
+        guard let provider = networkManager.getProvider()?.rawValue else {
 //            presenter?.didFailToFetchData(with: SomeError.missingProvider)
             return
         }

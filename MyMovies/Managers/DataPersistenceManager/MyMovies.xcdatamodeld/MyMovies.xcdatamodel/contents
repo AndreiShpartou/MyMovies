@@ -9,7 +9,8 @@
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="orderIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="provider" optional="YES" attributeType="String"/>
+        <attribute name="provider" attributeType="String"/>
+        <attribute name="rawName" optional="YES" attributeType="String"/>
         <relationship name="movieGenres" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieGenreEntity" inverseName="genre" inverseEntity="MovieGenreEntity"/>
     </entity>
     <entity name="ListTypeEntity" representedClassName="ListTypeEntity" syncable="YES">
@@ -34,7 +35,6 @@
         <attribute name="runtime" optional="YES" attributeType="String"/>
         <attribute name="status" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
-        <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="voteAverage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="movieCountries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieCountryEntity" inverseName="movie" inverseEntity="MovieCountryEntity"/>
         <relationship name="movieGenres" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieGenreEntity" inverseName="movie" inverseEntity="MovieGenreEntity"/>
@@ -68,6 +68,7 @@
         <attribute name="photo" optional="YES" attributeType="String"/>
         <attribute name="popularity" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="profession" optional="YES" attributeType="String"/>
+        <attribute name="provider" attributeType="String"/>
         <relationship name="moviePersons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MoviePersonEntity" inverseName="person" inverseEntity="MoviePersonEntity"/>
     </entity>
 </model>

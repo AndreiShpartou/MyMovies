@@ -18,7 +18,8 @@ extension GenreEntity {
     @NSManaged public var id: Int16
     @NSManaged public var name: String?
     @NSManaged public var orderIndex: Int16
-    @NSManaged public var provider: String?
+    @NSManaged public var provider: String
+    @NSManaged public var rawName: String?
     @NSManaged public var movieGenres: NSSet?
 }
 

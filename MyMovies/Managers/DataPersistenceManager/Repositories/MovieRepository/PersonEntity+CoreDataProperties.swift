@@ -16,10 +16,11 @@ extension PersonEntity {
     }
 
     @NSManaged public var id: Int64
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
     @NSManaged public var photo: String?
     @NSManaged public var popularity: Float
     @NSManaged public var profession: String?
+    @NSManaged public var provider: String
     @NSManaged public var moviePersons: NSSet?
 }
 

@@ -57,7 +57,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // MARK: - Private
     private func fetchGenres() {
-        guard let provider = networkManager.getProvider() else {
+        guard let provider = networkManager.getProvider()?.rawValue else {
             return
         }
 

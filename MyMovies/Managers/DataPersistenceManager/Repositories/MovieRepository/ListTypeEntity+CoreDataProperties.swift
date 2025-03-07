@@ -15,7 +15,7 @@ extension ListTypeEntity {
         return NSFetchRequest<ListTypeEntity>(entityName: "ListTypeEntity")
     }
 
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
     @NSManaged public var movieLists: NSSet?
 }
 

@@ -15,8 +15,8 @@ extension CountryEntity {
         return NSFetchRequest<CountryEntity>(entityName: "CountryEntity")
     }
 
-    @NSManaged public var fullName: String?
-    @NSManaged public var name: String?
+    @NSManaged public var fullName: String
+    @NSManaged public var name: String
     @NSManaged public var movieCountries: NSSet?
 }
 
