@@ -26,7 +26,7 @@ extension MovieEntity {
     @NSManaged public var releaseYear: String?
     @NSManaged public var runtime: String?
     @NSManaged public var status: String?
-    @NSManaged public var title: String?
+    @NSManaged public var title: String
     @NSManaged public var voteAverage: Double
     @NSManaged public var movieCountries: NSSet?
     @NSManaged public var movieGenres: NSSet?

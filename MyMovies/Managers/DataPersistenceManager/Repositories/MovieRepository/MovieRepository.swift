@@ -10,12 +10,14 @@ import CoreData
 
 protocol MovieRepositoryProtocol {
     // Store
-    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int64)
+    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int)
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String)
     // Fetch
-    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieEntity]
+    func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol?
+    func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol]
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol]
     // Clear & Update
-    func dailyRefreshMovie(_ movie: MovieProtocol, provider: String)
+    func clearMoviesForList(provider: String, listName: String)
 }
 
 final class MovieRepository: MovieRepositoryProtocol {
@@ -25,8 +27,8 @@ final class MovieRepository: MovieRepositoryProtocol {
         self.context = context
     }
 
-    // MARK: - MovieRepositoryProtocol
-    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int64) {
+    // MARK: - Saving
+    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int) {
 
         let movieEntity = findOrCreateMovieEntity(Int64(movie.id), provider: provider)
 
@@ -49,7 +51,7 @@ final class MovieRepository: MovieRepositoryProtocol {
             movieEntity: movieEntity,
             provider: provider,
             listType: listType,
-            orderIndex: orderIndex
+            orderIndex: Int64(orderIndex)
         )
 
         saveContext()
@@ -57,11 +59,25 @@ final class MovieRepository: MovieRepositoryProtocol {
 
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String) {
         for (index, movie) in movies.enumerated() {
-            storeMovieForList(movie, provider: provider, listType: listType, orderIndex: Int64(index))
+            storeMovieForList(movie, provider: provider, listType: listType, orderIndex: index)
         }
     }
 
-    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieEntity] {
+    // MARK: - Fetching
+    func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol? {
+        let movieEntity = fetchMovieEntityById(Int64(id), provider: provider)
+        guard let movieEntity = movieEntity else { return nil }
+
+        return mapToMovieProtocol(movieEntity)
+    }
+
+    func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol] {
+        let movieEntities = fetchMovieEntitiesByList(listType: listType, provider: provider)
+
+        return movieEntities.compactMap { mapToMovieProtocol($0) }
+    }
+
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol] {
         // Fetch bridging for genre
         let request: NSFetchRequest<MovieGenreEntity> = MovieGenreEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -87,7 +103,7 @@ final class MovieRepository: MovieRepositoryProtocol {
                 return false
             }
 
-            return finalMovies
+            return []
         } catch {
             print("Error fetching bridging by genre: \(error)")
 
@@ -95,8 +111,58 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    // Full daily refresh: remove bridging for everything
-    func dailyRefreshMovie(_ movie: MovieProtocol, provider: String) {
+    // MARK: - Daily refresh
+    func clearMoviesForList(provider: String, listName: String) {
+        let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "movie.provider == %@", provider),
+            NSPredicate(format: "listType.name == %@", listName)
+        ])
+        do {
+            let bridgingRecords = try context.fetch(request)
+            bridgingRecords.forEach { context.delete($0) }
+            saveContext()
+        } catch {
+            print("Error clearing list membership: \(error)")
+        }
+    }
+
+    // MARK: - Private fetchMovieEntityById
+    private func fetchMovieEntityById(_ id: Int64, provider: String) -> MovieEntity? {
+        let request: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "id == %d", id),
+            NSPredicate(format: "provider == %@", provider)
+        ])
+        request.fetchLimit = 1
+        do {
+            guard let entity = try context.fetch(request).first else { return nil }
+
+            return entity
+        } catch {
+            print("Error fetching movie by ID: \(error)")
+
+            return nil
+        }
+    }
+
+    private func fetchMovieEntitiesByList(listType: String, provider: String) -> [MovieEntity] {
+        let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "listType.name == %@", listType),
+            NSPredicate(format: "movie.provider == %@", provider)
+        ])
+        request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
+
+        do {
+            let bridgingList = try context.fetch(request)
+            let possibleMovies = bridgingList.compactMap { $0.movie }
+            return possibleMovies
+        } catch {
+            print("Error fetching bridging by list: \(error)")
+
+            return []
+        }
     }
 
     // MARK: - Bridging clearing
@@ -130,7 +196,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
     }
 
-    // MARK: - Private Bridging update
+    // MARK: - Bridging update
     private func fillOrUpdateBridging(
         for movie: MovieProtocol,
         movieEntity: MovieEntity,
@@ -331,6 +397,98 @@ final class MovieRepository: MovieRepositoryProtocol {
             } catch {
                 print("Error saving context: \(error)")
             }
+        }
+    }
+}
+
+// MARK: - Mapping
+extension MovieRepository {
+    private func mapToMovieProtocol(_ entity: MovieEntity) -> MovieProtocol {
+        return Movie(
+            id: Int(entity.id),
+            title: entity.title,
+            alternativeTitle: entity.alternativeTitle,
+            description: entity.movieDescription,
+            shortDescription: entity.movieShortDescription,
+            status: entity.status,
+            releaseYear: entity.releaseYear,
+            runtime: entity.runtime,
+            voteAverage: entity.voteAverage,
+            genres: mapGenres(entity),
+            countries: mapCountries(entity),
+            persons: mapPersons(entity),
+            poster: mapPoster(entity.posterUrl),
+            backdrop: mapPoster(entity.backdropUrl),
+            similarMovies: mapSimilars(entity)
+        )
+    }
+
+    private func mapGenres(_ entity: MovieEntity) -> [Movie.Genre] {
+        // bridging: "movieGenres" -> [MovieGenreEntity]
+        guard let bridgingSet = entity.movieGenres as? Set<MovieGenreEntity> else {
+            return []
+        }
+        // sort by orderIndex
+        let sorted = bridgingSet.sorted(by: { $0.orderIndex < $1.orderIndex })
+
+        // map each bridging to domain
+        return sorted.compactMap {
+            guard let gengre = $0.genre else { return nil }
+
+            return Movie.Genre(
+                id: Int(gengre.id),
+                name: gengre.name
+            )
+        }
+    }
+
+    private func mapCountries(_ entity: MovieEntity) -> [Movie.ProductionCountry] {
+        guard let bridgingSet = entity.movieCountries as? Set<MovieCountryEntity> else {
+            return []
+        }
+        let sorted = bridgingSet.sorted(by: { $0.orderIndex < $1.orderIndex })
+
+        return sorted.compactMap {
+            guard let country = $0.country else { return nil }
+
+            return Movie.ProductionCountry(name: country.name, fullName: country.fullName)
+        }
+    }
+
+    private func mapPersons(_ entity: MovieEntity) -> [Movie.Person] {
+        guard let bridgingSet = entity.moviePersons as? Set<MoviePersonEntity> else {
+            return []
+        }
+        let sorted = bridgingSet.sorted(by: { $0.orderIndex < $1.orderIndex })
+
+        return sorted.compactMap {
+            guard let person = $0.person else { return nil }
+            return Movie.Person(
+                id: Int(person.id),
+                photo: person.photo,
+                name: person.name,
+                profession: person.profession,
+                popularity: person.popularity
+            )
+        }
+    }
+
+    private func mapPoster(_ urlString: String?) -> Movie.Cover? {
+        guard let urlString = urlString else { return nil }
+
+        return Movie.Cover(url: urlString, previewUrl: nil)
+    }
+
+    private func mapSimilars(_ entity: MovieEntity) -> [Movie]? {
+        // bridging: "movieSimilars" -> [MovieSimilarEntity]
+        guard let bridgingSet = entity.movieSimilars as? Set<MovieSimilarEntity>, !bridgingSet.isEmpty else {
+            return nil
+        }
+        let sorted = bridgingSet.sorted(by: { $0.orderIndex < $1.orderIndex })
+
+        // Similar Movies
+        return sorted.map {
+            return Movie(id: Int($0.id), title: "")
         }
     }
 }
