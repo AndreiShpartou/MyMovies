@@ -12,14 +12,19 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     private var listType: MovieListType?
     private let networkManager: NetworkManagerProtocol
     private let genreRepository: GenreRepositoryProtocol
+    private let movieRepository: MovieRepositoryProtocol
+    private let provider: Provider
 
     // MARK: - Init
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository()
+        genreRepository: GenreRepositoryProtocol = GenreRepository(),
+        movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {
         self.networkManager = networkManager
         self.genreRepository = genreRepository
+        self.movieRepository = movieRepository
+        provider = networkManager.getProvider()
     }
 
     // MARK: - Genres
@@ -57,11 +62,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // MARK: - Private
     private func fetchGenres() {
-        guard let provider = networkManager.getProvider()?.rawValue else {
-            return
-        }
-
-        let localGenres = genreRepository.fetchGenres(provider: provider)
+        let localGenres = genreRepository.fetchGenres(provider: provider.rawValue)
         if !localGenres.isEmpty {
             // Immediately present to the user
             presenter?.didFetchMovieGenres(localGenres)

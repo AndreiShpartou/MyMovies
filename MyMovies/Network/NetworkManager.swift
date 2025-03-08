@@ -176,8 +176,8 @@ class NetworkManager: NetworkManagerProtocol {
     }
 
     // MARK: - Provider
-    func getProvider() -> Provider? {
-        return apiConfig?.getProvider()
+    func getProvider() -> Provider {
+        return apiConfig?.getProvider() ?? .kinopoisk
     }
 
     // MARK: - Private

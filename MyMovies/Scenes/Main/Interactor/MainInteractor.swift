@@ -12,14 +12,19 @@ final class MainInteractor: MainInteractorProtocol {
 
     private let networkManager: NetworkManagerProtocol
     private let genreRepository: GenreRepositoryProtocol
+    private let movieRepository: MovieRepositoryProtocol
+    private let provider: Provider
 
     // MARK: - Init
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository()
+        genreRepository: GenreRepositoryProtocol = GenreRepository(),
+        movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {
         self.networkManager = networkManager
         self.genreRepository = genreRepository
+        self.movieRepository = movieRepository
+        self.provider = networkManager.getProvider()
     }
 
     // MARK: - UpcomingMovies
@@ -67,32 +72,31 @@ final class MainInteractor: MainInteractorProtocol {
     // MARK: - Genres
     // Fetch genres
     func fetchMovieGenres() {
-        guard let provider = networkManager.getProvider()?.rawValue else {
-//            presenter?.didFailToFetchData(with: SomeError.missingProvider)
-            return
-        }
-
-        let localGenres = genreRepository.fetchGenres(provider: provider)
-        if !localGenres.isEmpty {
+        // Check if there are any cached genres
+        let cachedGenres = genreRepository.fetchGenres(provider: provider.rawValue)
+        if !cachedGenres.isEmpty {
             // Immediately present to the user
-            presenter?.didFetchMovieGenres(localGenres)
+            presenter?.didFetchMovieGenres(cachedGenres)
 
             return
         }
 
+        // If no cached data, fetch from API
         networkManager.fetchGenres { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .success(let genres):
                 DispatchQueue.main.async {
-                    self?.presenter?.didFetchMovieGenres(genres)
+                    self.presenter?.didFetchMovieGenres(genres)
                 }
                 // Save to CoreData
                 if let movieGenres = genres as? [Movie.Genre] {
-                    self?.genreRepository.saveGenres(movieGenres, provider: provider)
+                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.presenter?.didFailToFetchData(with: error)
+                    self.presenter?.didFailToFetchData(with: error)
                 }
             }
         }
@@ -100,6 +104,16 @@ final class MainInteractor: MainInteractorProtocol {
 
     // MARK: - Private
     private func fetchMovies(type: MovieListType) {
+        // Check if there are any cached movies
+        let cachedMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+        if !cachedMovies.isEmpty {
+            // Immediately present to the user
+            presentMovies(cachedMovies, for: type)
+
+            return
+        }
+
+        // If no cached data, fetch from API
         networkManager.fetchMovies(type: type) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
@@ -110,8 +124,19 @@ final class MainInteractor: MainInteractorProtocol {
         switch result {
         case .success(let movies):
             networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
+                guard let self = self else { return }
+
                 DispatchQueue.main.async {
-                    self?.presentMovies(detailedMovies, for: fetchType)
+                    self.presentMovies(detailedMovies, for: fetchType)
+                }
+
+                // Save to CoreData
+                if let movies = detailedMovies as? [Movie] {
+                    self.movieRepository.storeMoviesForList(
+                        movies,
+                        provider: self.provider.rawValue,
+                        listType: fetchType.rawValue
+                    )
                 }
             }
         case .failure(let error):

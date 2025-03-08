@@ -78,37 +78,14 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol] {
-        // Fetch bridging for genre
-        let request: NSFetchRequest<MovieGenreEntity> = MovieGenreEntity.fetchRequest()
-        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "genre.id == %d", genre.id ?? 0),
-            NSPredicate(format: "genre.rawName == %d", genre.rawName ?? ""),
-            NSPredicate(format: "genre.provider == %@", provider),
-            NSPredicate(format: "movie.provider == %@", provider)
-        ])
-        do {
-            let bridgingGenre = try context.fetch(request)
-            // get all movies by genre
-            let possibleMovies = bridgingGenre.compactMap { $0.movie }
-            // filter those movies by list
-            let finalMovies = possibleMovies.filter { movieEntity in
-                // check if there's a membership bridging with the listName
-                guard let listBridgingSet = movieEntity.movieListsMembership else { return false }
-                for membership in listBridgingSet {
-                    guard let mem = membership as? MovieListMembershipEntity else { continue }
-                    if mem.listType?.name == listType {
-                        return true
-                    }
-                }
-                return false
-            }
-
-            return []
-        } catch {
-            print("Error fetching bridging by genre: \(error)")
-
-            return []
+        // Get all movies by list
+        let moviesByList = fetchMoviesByList(provider: provider, listType: listType)
+        // Get all movies by genre
+        let moviesByGenre = moviesByList.filter { movie in
+            movie.genres.contains(where: { ($0.id == genre.id) && ($0.name == genre.name) })
         }
+
+        return moviesByGenre
     }
 
     // MARK: - Daily refresh
@@ -121,7 +98,6 @@ final class MovieRepository: MovieRepositoryProtocol {
         do {
             let bridgingRecords = try context.fetch(request)
             bridgingRecords.forEach { context.delete($0) }
-            saveContext()
         } catch {
             print("Error clearing list membership: \(error)")
         }
@@ -152,11 +128,13 @@ final class MovieRepository: MovieRepositoryProtocol {
             NSPredicate(format: "listType.name == %@", listType),
             NSPredicate(format: "movie.provider == %@", provider)
         ])
+        request.fetchLimit = 10
         request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
 
         do {
             let bridgingList = try context.fetch(request)
             let possibleMovies = bridgingList.compactMap { $0.movie }
+
             return possibleMovies
         } catch {
             print("Error fetching bridging by list: \(error)")
@@ -328,6 +306,7 @@ final class MovieRepository: MovieRepositoryProtocol {
             entity.profession = personDomain.profession
             entity.popularity = personDomain.popularity ?? 0
             entity.photo = personDomain.photo
+            entity.provider = provider
 
             return entity
         }

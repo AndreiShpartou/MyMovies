@@ -284,11 +284,15 @@ final class ResponseMapper: ResponseMapperProtocol {
                 photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
                 name: $0.name,
                 profession: $0.known_for_department,
-                popularity: $0.popularity ?? 0
+                popularity: $0.popularity
             )
         }
+        // Remove duplicates
+        let personsWithoutDuplicates = removeDuplicates(from: persons)
+        // Sort by popularity, take the top 30
+        let sortedPersons = personsWithoutDuplicates.sorted { $0.popularity ?? 0 > $1.popularity ?? 0 }.prefix(30)
 
-        return removeDuplicates(from: persons)
+        return Array(sortedPersons)
     }
 
     private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {

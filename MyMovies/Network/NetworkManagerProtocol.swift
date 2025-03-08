@@ -24,5 +24,5 @@ protocol NetworkManagerProtocol {
     func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
     func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void)
     // Provider
-    func getProvider() -> Provider?
+    func getProvider() -> Provider
 }
