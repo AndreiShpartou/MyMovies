@@ -104,13 +104,22 @@ final class MainInteractor: MainInteractorProtocol {
 
     // MARK: - Private
     private func fetchMovies(type: MovieListType) {
-        // Check if there are any cached movies
-        let cachedMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
-        if !cachedMovies.isEmpty {
-            // Immediately present to the user
-            presentMovies(cachedMovies, for: type)
+        // Check if the data for this list is stale
+        let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
+        let lastUpdated = UserDefaults.standard.double(forKey: lastUpdateKey)
+        let now = Date().timeIntervalSince1970
+        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
+        
 
-            return
+        // Check if there are any cached movies if not stale
+        if !isStale {
+            let cachedMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+            if !cachedMovies.isEmpty {
+                // Immediately present to the user
+                presentMovies(cachedMovies, for: type)
+
+                return
+            }
         }
 
         // If no cached data, fetch from API
@@ -130,14 +139,7 @@ final class MainInteractor: MainInteractorProtocol {
                     self.presentMovies(detailedMovies, for: fetchType)
                 }
 
-                // Save to CoreData
-                if let movies = detailedMovies as? [Movie] {
-                    self.movieRepository.storeMoviesForList(
-                        movies,
-                        provider: self.provider.rawValue,
-                        listType: fetchType.rawValue
-                    )
-                }
+                self.saveMoviesToStorage(detailedMovies, type: fetchType)
             }
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
@@ -159,5 +161,27 @@ final class MainInteractor: MainInteractorProtocol {
         default:
             break
         }
+    }
+
+    private func saveMoviesToStorage(_ movies: [MovieProtocol], type: MovieListType) {
+        // Save to CoreData
+        if let movies = movies as? [Movie] {
+            // Clear bridging movie list connections
+            movieRepository.clearMoviesForList(
+                provider: provider.rawValue,
+                listName: type.rawValue
+            )
+            // Store movies with new list membership
+            movieRepository.storeMoviesForList(
+                movies,
+                provider: provider.rawValue,
+                listType: type.rawValue
+            )
+        }
+
+        // Update lastUpdated for the list type
+        let now = Date().timeIntervalSince1970
+        let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
+        UserDefaults.standard.set(now, forKey: lastUpdateKey)
     }
 }

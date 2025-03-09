@@ -101,6 +101,8 @@ final class MovieRepository: MovieRepositoryProtocol {
         } catch {
             print("Error clearing list membership: \(error)")
         }
+
+        saveContext()
     }
 
     // MARK: - Private fetchMovieEntityById
