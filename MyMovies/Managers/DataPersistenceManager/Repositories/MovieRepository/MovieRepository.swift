@@ -29,38 +29,19 @@ final class MovieRepository: MovieRepositoryProtocol {
 
     // MARK: - Saving
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int) {
-
-        let movieEntity = findOrCreateMovieEntity(Int64(movie.id), provider: provider)
-
-        // Fill / update fields
-        movieEntity.title = movie.title
-        movieEntity.alternativeTitle = movie.alternativeTitle
-        movieEntity.movieDescription = movie.description
-        movieEntity.movieShortDescription = movie.shortDescription
-        movieEntity.runtime = movie.runtime
-        movieEntity.voteAverage = movie.voteAverage ?? 0.0
-        movieEntity.status = movie.status
-        movieEntity.releaseYear = movie.releaseYear
-        movieEntity.posterUrl = movie.poster?.url
-        movieEntity.backdropUrl = movie.backdrop?.url
-        movieEntity.lastUpdated = Date()
-
-        // Fill / update bridging
-        fillOrUpdateBridging(
-            for: movie,
-            movieEntity: movieEntity,
-            provider: provider,
-            listType: listType,
-            orderIndex: Int64(orderIndex)
-        )
-
+        // Create/Update movie
+        storeSingleMovieForListNoSave(movie, provider: provider, listType: listType, orderIndex: orderIndex)
+        // Save
         saveContext()
     }
 
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String) {
         for (index, movie) in movies.enumerated() {
-            storeMovieForList(movie, provider: provider, listType: listType, orderIndex: index)
+            // Create/Update movie
+            storeSingleMovieForListNoSave(movie, provider: provider, listType: listType, orderIndex: index)
         }
+        // Save
+        saveContext()
     }
 
     // MARK: - Fetching
@@ -105,7 +86,34 @@ final class MovieRepository: MovieRepositoryProtocol {
         saveContext()
     }
 
-    // MARK: - Private fetchMovieEntityById
+    // MARK: - Private StoreMovieNoSave
+    private func storeSingleMovieForListNoSave(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int) {
+        let movieEntity = findOrCreateMovieEntity(Int64(movie.id), provider: provider)
+
+        // Fill / update fields
+        movieEntity.title = movie.title
+        movieEntity.alternativeTitle = movie.alternativeTitle
+        movieEntity.movieDescription = movie.description
+        movieEntity.movieShortDescription = movie.shortDescription
+        movieEntity.runtime = movie.runtime
+        movieEntity.voteAverage = movie.voteAverage ?? 0.0
+        movieEntity.status = movie.status
+        movieEntity.releaseYear = movie.releaseYear
+        movieEntity.posterUrl = movie.poster?.url
+        movieEntity.backdropUrl = movie.backdrop?.url
+        movieEntity.lastUpdated = Date()
+
+        // Fill / update bridging
+        fillOrUpdateBridging(
+            for: movie,
+            movieEntity: movieEntity,
+            provider: provider,
+            listType: listType,
+            orderIndex: Int64(orderIndex)
+        )
+    }
+
+    // MARK: - fetchMovieEntityById
     private func fetchMovieEntityById(_ id: Int64, provider: String) -> MovieEntity? {
         let request: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [

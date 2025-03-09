@@ -109,7 +109,6 @@ final class MainInteractor: MainInteractorProtocol {
         let lastUpdated = UserDefaults.standard.double(forKey: lastUpdateKey)
         let now = Date().timeIntervalSince1970
         let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
-        
 
         // Check if there are any cached movies if not stale
         if !isStale {

@@ -46,7 +46,7 @@ final class GenreRepository: GenreRepositoryProtocol {
         for (index, genre) in genres.enumerated() {
             findOrCreateGenreEntity(for: genre, provider: provider, orderIndex: Int16(index))
         }
-        CoreDataManager.shared.saveContext()
+        saveContext()
     }
 
     func clearGenres(provider: String) {
@@ -55,7 +55,7 @@ final class GenreRepository: GenreRepositoryProtocol {
         do {
             let results = try context.fetch(request)
             results.forEach { context.delete($0) }
-            CoreDataManager.shared.saveContext()
+            saveContext()
         } catch {
             print("Error clearing old genres: \(error)")
         }
@@ -80,6 +80,17 @@ final class GenreRepository: GenreRepositoryProtocol {
             entity.rawName = genreDomain.rawName
             entity.provider = provider
             entity.orderIndex = orderIndex
+        }
+    }
+
+    // MARK: - Save
+    func saveContext() {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print("Error saving context: \(error)")
+            }
         }
     }
 }
