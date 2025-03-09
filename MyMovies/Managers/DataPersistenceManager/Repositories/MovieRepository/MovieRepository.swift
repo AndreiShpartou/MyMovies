@@ -128,7 +128,7 @@ final class MovieRepository: MovieRepositoryProtocol {
             NSPredicate(format: "listType.name == %@", listType),
             NSPredicate(format: "movie.provider == %@", provider)
         ])
-        request.fetchLimit = 10
+        request.fetchLimit = 20
         request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
 
         do {

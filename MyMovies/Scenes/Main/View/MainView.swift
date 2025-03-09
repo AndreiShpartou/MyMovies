@@ -124,8 +124,10 @@ final class MainView: UIView, MainViewProtocol {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
         upcomingMoviesCollectionView.reloadData()
 
-        // Set initial page for the upcoming collection
-        setupUpcomingMoviesInitialPage()
+        DispatchQueue.main.async { [weak self] in
+            // Set initial page for the upcoming collection
+            self?.setupUpcomingMoviesInitialPage()
+        }
     }
 
     func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
