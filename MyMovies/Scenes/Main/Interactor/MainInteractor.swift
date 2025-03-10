@@ -108,7 +108,8 @@ final class MainInteractor: MainInteractorProtocol {
         let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
         let lastUpdated = UserDefaults.standard.double(forKey: lastUpdateKey)
         let now = Date().timeIntervalSince1970
-        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
+//        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
+        let isStale = (now - lastUpdated) > (10) // temporaly
 
         // Check if there are any cached movies if not stale
         if !isStale {
@@ -119,6 +120,9 @@ final class MainInteractor: MainInteractorProtocol {
 
                 return
             }
+        } else {
+            // Delete stale movie memberships
+            movieRepository.clearMoviesForList(provider: provider.rawValue, listName: type.rawValue)
         }
 
         // If no cached data, fetch from API
@@ -165,11 +169,6 @@ final class MainInteractor: MainInteractorProtocol {
     private func saveMoviesToStorage(_ movies: [MovieProtocol], type: MovieListType) {
         // Save to CoreData
         if let movies = movies as? [Movie] {
-            // Clear bridging movie list connections
-            movieRepository.clearMoviesForList(
-                provider: provider.rawValue,
-                listName: type.rawValue
-            )
             // Store movies with new list membership
             movieRepository.storeMoviesForList(
                 movies,

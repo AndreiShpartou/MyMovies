@@ -11,16 +11,24 @@ import CoreData
 protocol GenreRepositoryProtocol {
     func fetchGenres(provider: String) -> [GenreProtocol]
     func saveGenres(_ genres: [GenreProtocol], provider: String)
-    func clearGenres(provider: String)
 }
 
 final class GenreRepository: GenreRepositoryProtocol {
-    private let context: NSManagedObjectContext
+    // MARK: - Contexts
+    private let mainContext: NSManagedObjectContext
+    private let backgroundContextMaker: () -> NSManagedObjectContext
 
-    init(context: NSManagedObjectContext = CoreDataManager.shared.mainContext) {
-        self.context = context
+    // MARK: - Init
+    init(
+        mainContext: NSManagedObjectContext = CoreDataManager.shared.mainContext,
+        backgroundContextMaker: @escaping () -> NSManagedObjectContext = { CoreDataManager.shared.newBackgroundContext() }
+    ) {
+        self.mainContext = mainContext
+        self.backgroundContextMaker = backgroundContextMaker
     }
 
+    // MARK: - Fetching
+    // Fetching from the main context
     func fetchGenres(provider: String) -> [GenreProtocol] {
         let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
         // Filter by provider to store separate sets (tmdb or kinopoisk)
@@ -28,7 +36,7 @@ final class GenreRepository: GenreRepositoryProtocol {
         request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
 
         do {
-            let result = try context.fetch(request)
+            let result = try mainContext.fetch(request)
             // Convert to domain model
             return result.map { entity in
                 Movie.Genre(
@@ -42,27 +50,34 @@ final class GenreRepository: GenreRepositoryProtocol {
         }
     }
 
+    // MARK: - Saving
+    // Save news genres in a background context: clear old ones beforehand
     func saveGenres(_ genres: [GenreProtocol], provider: String) {
-        for (index, genre) in genres.enumerated() {
-            findOrCreateGenreEntity(for: genre, provider: provider, orderIndex: Int16(index))
-        }
-        saveContext()
-    }
-
-    func clearGenres(provider: String) {
-        let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "provider == %@", provider)
-        do {
-            let results = try context.fetch(request)
-            results.forEach { context.delete($0) }
-            saveContext()
-        } catch {
-            print("Error clearing old genres: \(error)")
+        let bgContext = backgroundContextMaker()
+        bgContext.perform {
+            // Clear old ones
+            self.clearGenres(provider: provider, context: bgContext)
+            // Insert new
+            for (index, genre) in genres.enumerated() {
+                self.findOrCreateGenreEntity(
+                    for: genre,
+                    provider: provider,
+                    orderIndex: Int16(index),
+                    context: bgContext
+                )
+            }
+            // Save
+            self.saveContext(bgContext)
         }
     }
 
     // MARK: - Private findOrCreateGenreEntity
-    private func findOrCreateGenreEntity(for genreDomain: GenreProtocol, provider: String, orderIndex: Int16) {
+    private func findOrCreateGenreEntity(
+        for genreDomain: GenreProtocol,
+        provider: String,
+        orderIndex: Int16,
+        context: NSManagedObjectContext
+    ) {
         let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "id == %d", genreDomain.id ?? 0),
@@ -83,14 +98,26 @@ final class GenreRepository: GenreRepositoryProtocol {
         }
     }
 
+    private func clearGenres(provider: String, context: NSManagedObjectContext) {
+        let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "provider == %@", provider)
+        do {
+            let results = try context.fetch(request)
+            results.forEach { context.delete($0) }
+
+            saveContext(context)
+        } catch {
+            print("Error clearing old genres: \(error)")
+        }
+    }
+
     // MARK: - Save
-    func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print("Error saving context: \(error)")
-            }
+    func saveContext(_ context: NSManagedObjectContext) {
+        guard context.hasChanges else { return }
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error)")
         }
     }
 }

@@ -16,35 +16,62 @@ protocol MovieRepositoryProtocol {
     func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol?
     func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol]
     func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol]
-    // Clear & Update
+    // Clear
     func clearMoviesForList(provider: String, listName: String)
 }
 
 final class MovieRepository: MovieRepositoryProtocol {
-    private let context: NSManagedObjectContext
+    // MARK: - Contexts
+    private let mainContext: NSManagedObjectContext
+    private let backgroundContextMaker: () -> NSManagedObjectContext
 
-    init(context: NSManagedObjectContext = CoreDataManager.shared.mainContext) {
-        self.context = context
+    // MARK: - Init
+    init(
+        mainContext: NSManagedObjectContext = CoreDataManager.shared.mainContext,
+        backgroundContextMaker: @escaping () -> NSManagedObjectContext = { CoreDataManager.shared.newBackgroundContext() }
+    ) {
+        self.mainContext = mainContext
+        self.backgroundContextMaker = backgroundContextMaker
     }
 
     // MARK: - Saving
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int) {
-        // Create/Update movie
-        storeSingleMovieForListNoSave(movie, provider: provider, listType: listType, orderIndex: orderIndex)
-        // Save
-        saveContext()
+        // Create or update a single movie
+        let bgContext = backgroundContextMaker()
+        bgContext.perform {
+            self.storeSingleMovieForListNoSave(
+                movie,
+                provider: provider,
+                listType: listType,
+                orderIndex: orderIndex,
+                context: bgContext
+            )
+            // Save background context
+            self.saveContext(bgContext)
+        }
     }
 
+    // Store multiple movies
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String) {
-        for (index, movie) in movies.enumerated() {
-            // Create/Update movie
-            storeSingleMovieForListNoSave(movie, provider: provider, listType: listType, orderIndex: index)
+        let bgContext = backgroundContextMaker()
+        bgContext.perform {
+            for (index, movie) in movies.enumerated() {
+                // Create or update each movie
+                self.storeSingleMovieForListNoSave(
+                    movie,
+                    provider: provider,
+                    listType: listType,
+                    orderIndex: index,
+                    context: bgContext
+                )
+            }
+            // Save
+            self.saveContext(bgContext)
         }
-        // Save
-        saveContext()
     }
 
     // MARK: - Fetching
+    // Fetching from the main context
     func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol? {
         let movieEntity = fetchMovieEntityById(Int64(id), provider: provider)
         guard let movieEntity = movieEntity else { return nil }
@@ -69,26 +96,35 @@ final class MovieRepository: MovieRepositoryProtocol {
         return moviesByGenre
     }
 
-    // MARK: - Daily refresh
+    // MARK: - Clearing
     func clearMoviesForList(provider: String, listName: String) {
-        let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
-        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "movie.provider == %@", provider),
-            NSPredicate(format: "listType.name == %@", listName)
-        ])
-        do {
-            let bridgingRecords = try context.fetch(request)
-            bridgingRecords.forEach { context.delete($0) }
-        } catch {
-            print("Error clearing list membership: \(error)")
-        }
+        let bgContext = backgroundContextMaker()
+        bgContext.perform {
+            let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "movie.provider == %@", provider),
+                NSPredicate(format: "listType.name == %@", listName)
+            ])
+            do {
+                let bridgingRecords = try bgContext.fetch(request)
+                bridgingRecords.forEach { bgContext.delete($0) }
 
-        saveContext()
+                self.saveContext(bgContext)
+            } catch {
+                print("Error clearing list membership: \(error)")
+            }
+        }
     }
 
     // MARK: - Private StoreMovieNoSave
-    private func storeSingleMovieForListNoSave(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int) {
-        let movieEntity = findOrCreateMovieEntity(Int64(movie.id), provider: provider)
+    private func storeSingleMovieForListNoSave(
+        _ movie: MovieProtocol,
+        provider: String,
+        listType: String,
+        orderIndex: Int,
+        context: NSManagedObjectContext
+    ) {
+        let movieEntity = findOrCreateMovieEntity(Int64(movie.id), provider: provider, context: context)
 
         // Fill / update fields
         movieEntity.title = movie.title
@@ -109,7 +145,8 @@ final class MovieRepository: MovieRepositoryProtocol {
             movieEntity: movieEntity,
             provider: provider,
             listType: listType,
-            orderIndex: Int64(orderIndex)
+            orderIndex: Int64(orderIndex),
+            context: context
         )
     }
 
@@ -122,7 +159,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         ])
         request.fetchLimit = 1
         do {
-            guard let entity = try context.fetch(request).first else { return nil }
+            guard let entity = try mainContext.fetch(request).first else { return nil }
 
             return entity
         } catch {
@@ -142,7 +179,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
 
         do {
-            let bridgingList = try context.fetch(request)
+            let bridgingList = try mainContext.fetch(request)
             let possibleMovies = bridgingList.compactMap { $0.movie }
 
             return possibleMovies
@@ -154,31 +191,31 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // MARK: - Bridging clearing
-    private func clearMovieGenres(_ movie: MovieEntity) {
+    private func clearMovieGenres(_ movie: MovieEntity, context: NSManagedObjectContext) {
         let request: NSFetchRequest<MovieGenreEntity> = MovieGenreEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
         do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
     }
 
-    private func clearMoviePersons(_ movie: MovieEntity) {
+    private func clearMoviePersons(_ movie: MovieEntity, context: NSManagedObjectContext) {
         let request: NSFetchRequest<MoviePersonEntity> = MoviePersonEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
         do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
     }
 
-    private func clearMovieCountries(_ movie: MovieEntity) {
+    private func clearMovieCountries(_ movie: MovieEntity, context: NSManagedObjectContext) {
         let request: NSFetchRequest<MovieCountryEntity> = MovieCountryEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
         do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
     }
 
-    private func clearMovieLists(_ movie: MovieEntity) {
+    private func clearMovieLists(_ movie: MovieEntity, context: NSManagedObjectContext) {
         let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
         do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
     }
 
-    private func clearMovieSimilars(_ movie: MovieEntity) {
+    private func clearMovieSimilars(_ movie: MovieEntity, context: NSManagedObjectContext) {
         let request: NSFetchRequest<MovieSimilarEntity> = MovieSimilarEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
         do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
@@ -190,13 +227,14 @@ final class MovieRepository: MovieRepositoryProtocol {
         movieEntity: MovieEntity,
         provider: String,
         listType: String,
-        orderIndex: Int64
+        orderIndex: Int64,
+        context: NSManagedObjectContext
     ) {
         // Clear bridging entities
-        clearMovieGenres(movieEntity)
-        clearMoviePersons(movieEntity)
-        clearMovieCountries(movieEntity)
-        clearMovieSimilars(movieEntity)
+        clearMovieGenres(movieEntity, context: context)
+        clearMoviePersons(movieEntity, context: context)
+        clearMovieCountries(movieEntity, context: context)
+        clearMovieSimilars(movieEntity, context: context)
 
         // Re-insert bridging
         // Genres
@@ -204,7 +242,8 @@ final class MovieRepository: MovieRepositoryProtocol {
             // find or create the genre entity
             let genreEntity = findOrCreateGenreEntity(
                 for: genreDomain,
-                provider: provider
+                provider: provider,
+                context: context
             )
             // bridging
             let bridging = MovieGenreEntity(context: context)
@@ -216,7 +255,11 @@ final class MovieRepository: MovieRepositoryProtocol {
         // Persons
         for (index, personDomain) in movie.persons.enumerated() {
             // find or create a PersonEntity
-            let personEntity = findOrCreatePersonEntity(for: personDomain, provider: provider)
+            let personEntity = findOrCreatePersonEntity(
+                for: personDomain,
+                provider: provider,
+                context: context
+            )
             // bridging
             let bridging = MoviePersonEntity(context: context)
             bridging.movie = movieEntity
@@ -227,7 +270,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         // Countries
         for (index, countryDomain) in movie.countries.enumerated() {
             // find or create a CountryEntity
-            let countryEntity = findOrCreateCountryEntity(for: countryDomain)
+            let countryEntity = findOrCreateCountryEntity(for: countryDomain, context: context)
             // bridging
             let bridging = MovieCountryEntity(context: context)
             bridging.movie = movieEntity
@@ -248,17 +291,18 @@ final class MovieRepository: MovieRepositoryProtocol {
         // Lists
         // Just update current list with a new value
         // clearMovieLists(movieEntity)
-        let listType = findOrCreateListTypeEntity(listType)
+        let listType = findOrCreateListTypeEntity(listType, context: context)
         // update bridging
         findOrCreateListMembershipEntity(
             for: movieEntity,
             and: listType,
-            with: orderIndex
+            with: orderIndex,
+            context: context
         )
     }
 
     // MARK: - findOrCreate
-    private func findOrCreateMovieEntity(_ id: Int64, provider: String) -> MovieEntity {
+    private func findOrCreateMovieEntity(_ id: Int64, provider: String, context: NSManagedObjectContext) -> MovieEntity {
         let request: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "id == %d", id),
@@ -277,7 +321,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    private func findOrCreateGenreEntity(for genreDomain: GenreProtocol, provider: String) -> GenreEntity {
+    private func findOrCreateGenreEntity(for genreDomain: GenreProtocol, provider: String, context: NSManagedObjectContext) -> GenreEntity {
         let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "id == %d", genreDomain.id ?? 0),
@@ -299,7 +343,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    private func findOrCreatePersonEntity(for personDomain: PersonProtocol, provider: String) -> PersonEntity {
+    private func findOrCreatePersonEntity(for personDomain: PersonProtocol, provider: String, context: NSManagedObjectContext) -> PersonEntity {
         let request: NSFetchRequest<PersonEntity> = PersonEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "id == %d", Int64(personDomain.id)),
@@ -322,7 +366,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    private func findOrCreateCountryEntity(for countryDomain: CountryProtocol) -> CountryEntity {
+    private func findOrCreateCountryEntity(for countryDomain: CountryProtocol, context: NSManagedObjectContext) -> CountryEntity {
         // Possibly identify by name if you want to unify countries
         let request: NSFetchRequest<CountryEntity> = CountryEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -342,7 +386,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    private func findOrCreateListTypeEntity(_ listName: String) -> ListTypeEntity {
+    private func findOrCreateListTypeEntity(_ listName: String, context: NSManagedObjectContext) -> ListTypeEntity {
         let request: NSFetchRequest<ListTypeEntity> = ListTypeEntity.fetchRequest()
         request.predicate = NSPredicate(format: "name == %@", listName)
         request.fetchLimit = 1
@@ -360,7 +404,8 @@ final class MovieRepository: MovieRepositoryProtocol {
     private func findOrCreateListMembershipEntity(
         for movie: MovieEntity,
         and listType: ListTypeEntity,
-        with orderIndex: Int64
+        with orderIndex: Int64,
+        context: NSManagedObjectContext
     ) {
         let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -379,13 +424,13 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    private func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print("Error saving context: \(error)")
-            }
+    private func saveContext(_ context: NSManagedObjectContext) {
+        guard context.hasChanges else { return }
+
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error)")
         }
     }
 }

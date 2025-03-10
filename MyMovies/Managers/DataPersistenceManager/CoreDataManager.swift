@@ -23,9 +23,17 @@ final class CoreDataManager {
         return container
     }()
 
-    // The main context for reading/writing on main thread
+    // The main context for reading on main thread
     var mainContext: NSManagedObjectContext {
         return persistentContainer.viewContext
+    }
+
+    // Get the background context for writing
+    func newBackgroundContext() -> NSManagedObjectContext {
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+        return context
     }
 
     // Helper function to save data
