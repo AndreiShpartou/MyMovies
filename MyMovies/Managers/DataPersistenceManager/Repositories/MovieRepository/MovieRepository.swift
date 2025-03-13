@@ -222,6 +222,7 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // MARK: - Bridging update
+    // swiftlint:disable:next function_parameter_count
     private func fillOrUpdateBridging(
         for movie: MovieProtocol,
         movieEntity: MovieEntity,

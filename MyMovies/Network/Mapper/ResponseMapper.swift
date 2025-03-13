@@ -312,7 +312,12 @@ final class ResponseMapper: ResponseMapperProtocol {
             )
         }
 
-        return removeDuplicates(from: persons)
+        // Remove duplicates
+        let personsWithoutDuplicates = removeDuplicates(from: persons)
+        // Take the top 30
+        let first30Persons = Array(personsWithoutDuplicates.prefix(30))
+
+        return first30Persons
     }
 
     // MARK: - Person Detailed

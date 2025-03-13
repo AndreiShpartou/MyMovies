@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MainInteractor: MainInteractorProtocol {
+final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
@@ -69,6 +69,15 @@ final class MainInteractor: MainInteractorProtocol {
         }
     }
 
+    // Prefetch
+    func prefetchData() {
+        fetchMovieGenres()
+        fetchUpcomingMovies()
+        fetchPopularMovies()
+        fetchTopRatedMovies()
+        fetchTheHighestGrossingMovies()
+    }
+
     // MARK: - Genres
     // Fetch genres
     func fetchMovieGenres() {
@@ -104,12 +113,11 @@ final class MainInteractor: MainInteractorProtocol {
 
     // MARK: - Private
     private func fetchMovies(type: MovieListType) {
-        // Check if the data for this list is stale
+        // Check if the data for this list is stale.
         let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
         let lastUpdated = UserDefaults.standard.double(forKey: lastUpdateKey)
         let now = Date().timeIntervalSince1970
-//        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
-        let isStale = (now - lastUpdated) > (10) // temporaly
+        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
 
         // Check if there are any cached movies if not stale
         if !isStale {

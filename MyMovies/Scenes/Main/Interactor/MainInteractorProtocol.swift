@@ -28,3 +28,7 @@ protocol MainInteractorOutputProtocol: AnyObject {
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol])
     func didFailToFetchData(with error: Error)
 }
+
+protocol PrefetchInteractorProtocol: AnyObject {
+    func prefetchData()
+}
