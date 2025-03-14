@@ -25,7 +25,8 @@ final class RootRouter: RootRouterProtocol {
             networkHelper: NetworkHelper.shared,
             plistLoader: PlistConfigurationLoader()
         )
-        AppConfigurationManager.shared.setupConfiguration()
+        AppConfigurationManager.shared.setupMainConfiguration()
+        AppConfigurationManager.shared.setupCacheConfiguration()
 
         // Check if user has seen onboarding
         let hasSeenOnboardingKey = "hasSeenOnboarding"

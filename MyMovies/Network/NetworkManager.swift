@@ -223,8 +223,6 @@ class NetworkManager: NetworkManagerProtocol {
 
         // Apply auth
         let headers = HTTPHeaders(apiConfig.authorizationHeader())
-        // Apply additional headers
-        // headers.headers.append(//)
 
         AF.request(url, parameters: parameters, encoding: encoding, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)

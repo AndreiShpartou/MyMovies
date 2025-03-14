@@ -10,5 +10,6 @@ import Foundation
 protocol AppConfigurationManagerProtocol {
     var appConfig: AppConfigurationProtocol? { get }
     func configure(networkHelper: NetworkHelperProtocol, plistLoader: PlistConfigurationLoaderProtocol)
-    func setupConfiguration()
+    func setupCacheConfiguration()
+    func setupMainConfiguration()
 }
