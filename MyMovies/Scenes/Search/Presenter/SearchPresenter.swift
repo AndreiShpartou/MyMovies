@@ -13,7 +13,6 @@ class SearchPresenter: SearchPresenterProtocol {
     var router: SearchRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    // Temporary entities persistance switch to CoreData
     private var movies: [MovieProtocol] = []
     // A property to hold debouncing work item
     private var searchDebounceWorkItem: DispatchWorkItem?

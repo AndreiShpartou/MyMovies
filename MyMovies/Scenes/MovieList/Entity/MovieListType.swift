@@ -17,7 +17,7 @@ import Foundation
 // top500 - 500 лучших фильмов (category - Фильмы)
 // top250 - 250 лучших фильмов (category - Фильмы)
 
-enum MovieListType {
+enum MovieListType: Hashable {
     // Get a list of movies that are being released soon.
     case upcomingMovies
     // Get a list of movies ordered by popularity

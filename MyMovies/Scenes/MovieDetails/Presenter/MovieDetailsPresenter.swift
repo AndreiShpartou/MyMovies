@@ -13,7 +13,6 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     var router: MovieDetailsRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    // Temporary entities persistance switch to CoreData
     private var similarMovies: [MovieProtocol] = []
 
     // MARK: - Init

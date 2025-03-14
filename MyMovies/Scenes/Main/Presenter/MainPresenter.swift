@@ -13,8 +13,7 @@ final class MainPresenter: MainPresenterProtocol {
     var router: MainRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    // Temporary entities persistance switch to CoreData
-    private var movies: [MovieProtocol] = []
+    private var moviesDict: [MovieListType: [MovieProtocol]] = [:]
 
     // MARK: - Init
     init(
@@ -39,7 +38,8 @@ final class MainPresenter: MainPresenterProtocol {
     }
 
     func didSelectMovie(movieID: Int) {
-        guard let movie = movies.first(where: { $0.id == movieID }) else {
+        let allMoviesArray = moviesDict.flatMap { $0.value }
+        guard let movie = allMoviesArray.first(where: { $0.id == movieID }) else {
             return
         }
 
@@ -70,7 +70,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
         // Update the view with the fetched data
         view?.showUpcomingMovies(upcomingMovieViewModels)
-        self.movies.append(contentsOf: movies)
+        moviesDict[.upcomingMovies] = movies
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
@@ -87,7 +87,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showPopularMovies(popularMovieViewModels)
-        self.movies.append(contentsOf: movies)
+        moviesDict[.popularMovies] = movies
     }
 
     func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
@@ -96,7 +96,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showTopRatedMovies(topRatedMovieViewModels)
-        self.movies.append(contentsOf: movies)
+        moviesDict[.topRatedMovies] = movies
     }
 
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
@@ -105,7 +105,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showTheHighestGrossingMovies(theHighestGrossingMovieViewModels)
-        self.movies.append(contentsOf: movies)
+        moviesDict[.theHighestGrossingMovies] = movies
     }
 
     func didFailToFetchData(with error: Error) {
