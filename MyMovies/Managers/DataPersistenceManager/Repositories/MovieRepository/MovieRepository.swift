@@ -517,7 +517,13 @@ extension MovieRepository {
     private func mapSimilars(_ entity: MovieEntity) -> [Movie]? {
         // bridging: "movieSimilars" -> [MovieSimilarEntity]
         guard let bridgingSet = entity.movieSimilars as? Set<MovieSimilarEntity>, !bridgingSet.isEmpty else {
-            return nil
+            var similars: [Movie]?
+            // Workaround for Kinopoisk to ensure MovieDetails fetchSimilarMovies() logic
+            if entity.provider?.description == Provider.kinopoisk.rawValue {
+                similars = []
+            }
+
+            return similars
         }
         let sorted = bridgingSet.sorted(by: { $0.orderIndex < $1.orderIndex })
 
