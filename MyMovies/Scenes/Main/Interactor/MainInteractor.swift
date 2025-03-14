@@ -51,21 +51,21 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     // Get popular movies filtered by genre
     func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
         networkManager.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .popularMovies)
+            self?.handleMovieFetchResult(result, fetchType: .popularMovies, saveToStorage: false)
         }
     }
 
     // Get top rated movies filtered by genre
     func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol) {
         networkManager.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .topRatedMovies)
+            self?.handleMovieFetchResult(result, fetchType: .topRatedMovies, saveToStorage: false)
         }
     }
 
     // Get the highest grossing movies filtered by genre
     func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol) {
         networkManager.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies)
+            self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies, saveToStorage: false)
         }
     }
 
@@ -140,7 +140,11 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     }
 
     // Centralized handling of movie fetch results
-    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
+    private func handleMovieFetchResult(
+        _ result: Result<[MovieProtocol], Error>,
+        fetchType: MovieListType,
+        saveToStorage: Bool = true
+    ) {
         switch result {
         case .success(let movies):
             networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
@@ -150,7 +154,9 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
                     self.presentMovies(detailedMovies, for: fetchType)
                 }
 
-                self.saveMoviesToStorage(detailedMovies, type: fetchType)
+                if saveToStorage {
+                    self.saveMoviesToStorage(detailedMovies, type: fetchType)
+                }
             }
         case .failure(let error):
             DispatchQueue.main.async { [weak self] in
