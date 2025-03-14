@@ -55,6 +55,13 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             return
         }
 
+        // Show movies from storing for default genre
+        if genre.name == "All" {
+            fetchMovies(type: type)
+
+            return
+        }
+
         networkManager.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
@@ -84,7 +91,17 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
     }
 
+    // Check if there are any cached movies
     private func fetchMovies(type: MovieListType) {
+        let cachedMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+        if !cachedMovies.isEmpty {
+            // Immediately present to the user
+            presenter?.didFetchMovieList(cachedMovies)
+
+            return
+        }
+
+        // If no cached data, fetch from API
         networkManager.fetchMovies(type: type) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }

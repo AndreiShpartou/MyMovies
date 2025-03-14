@@ -50,6 +50,13 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // Get popular movies filtered by genre
     func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
+        // Show movies from storing for default genre
+        if genre.name == "All" {
+            fetchMovies(type: .popularMovies)
+
+            return
+        }
+
         networkManager.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .popularMovies, saveToStorage: false)
         }
@@ -57,6 +64,13 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // Get top rated movies filtered by genre
     func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol) {
+        // Show movies from storing for default genre
+        if genre.name == "All" {
+            fetchMovies(type: .topRatedMovies)
+
+            return
+        }
+
         networkManager.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .topRatedMovies, saveToStorage: false)
         }
@@ -64,6 +78,13 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // Get the highest grossing movies filtered by genre
     func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol) {
+        // Show movies from storing for default genre
+        if genre.name == "All" {
+            fetchMovies(type: .theHighestGrossingMovies)
+
+            return
+        }
+
         networkManager.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies, saveToStorage: false)
         }
