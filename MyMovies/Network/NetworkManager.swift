@@ -180,8 +180,7 @@ class NetworkManager: NetworkManagerProtocol {
         return apiConfig?.getProvider() ?? .kinopoisk
     }
 
-    // MARK: - Private
-    // MARK: - PerformRequest
+    // MARK: - Private PerformRequest
     //  Versatile request performer
     private func performRequest<T: Codable>(
         for endpoint: Endpoint,
@@ -221,11 +220,29 @@ class NetworkManager: NetworkManagerProtocol {
         // Add passed parameters
         parameters.merge(queryParameters) { _, new in new }
 
+        // Check the cache
+        let cacheKey = makeCacheKey(url: url, parameters: parameters)
+        if let cachedData = APICache.shared.retrieve(for: cacheKey) {
+            // parse from cache
+            let afResponse = AFDataResponse(
+                request: nil,
+                response: nil,
+                data: nil,
+                metrics: nil,
+                serializationDuration: TimeInterval(0),
+                result: .success(cachedData)
+            )
+            handleResponse(afResponse, ofType: responseType, completion: completion)
+
+            return
+        }
+
         // Apply auth
         let headers = HTTPHeaders(apiConfig.authorizationHeader())
-
+        // Do network
         AF.request(url, parameters: parameters, encoding: encoding, headers: headers).responseData { [weak self] response in
             self?.handleResponse(response, ofType: responseType, completion: completion)
+            self?.handleCaching(for: response, with: cacheKey)
         }
     }
     // MARK: - HandleResponse
@@ -276,5 +293,27 @@ class NetworkManager: NetworkManagerProtocol {
         completion: @escaping (Result<[T], Error>) -> Void
     ) {
         performRequest(for: endpoint, encoding: encoding, completion: completion)
+    }
+
+    private func makeCacheKey(url: URL, parameters: [String: Any]) -> String {
+        let sortedParams = parameters
+            .map { "\($0.key)=\($0.value)" }
+            .sorted()
+            .joined(separator: "&")
+
+        let base = url.absoluteString
+        let combined = "\(base)?\(sortedParams)"
+
+        return combined
+    }
+
+    private func handleCaching(for response: AFDataResponse<Data>, with key: String) {
+        // TODO: handle the case of expired request limit for kinopoisk
+        switch response.result {
+        case .success(let data):
+            APICache.shared.store(data, for: key)
+        case .failure:
+            break
+        }
     }
 }

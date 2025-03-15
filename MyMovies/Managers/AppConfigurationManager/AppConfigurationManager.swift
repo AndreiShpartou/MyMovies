@@ -52,10 +52,6 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
     }
 
     func setupCacheConfiguration() {
-//        let cacheSizeMemory = 100 * 1024 * 1024 // 100 MB
-//        let cacheSizeDisk = 500 * 1024 * 1024 // 500 MB
-//        let cache = URLCache(memoryCapacity: cacheSizeMemory, diskCapacity: cacheSizeDisk, diskPath: nil)
-//        URLCache.shared = cache
         // setup Kingfisher caching
         let imageCache = ImageCache.default
         imageCache.memoryStorage.config.totalCostLimit = 100 * 1024 * 1024 // 100 MB
