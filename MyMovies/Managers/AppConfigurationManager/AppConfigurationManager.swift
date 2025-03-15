@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Kingfisher
 
 // MARK: - AppConfigurationManager
 final class AppConfigurationManager: AppConfigurationManagerProtocol {
@@ -24,7 +25,7 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         self.plistLoader = plistLoader
     }
 
-    func setupConfiguration() {
+    func setupMainConfiguration() {
         let group = DispatchGroup()
 
         group.enter()
@@ -48,6 +49,14 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
             debugPrint("Timed out while setting up the API")
             setupDefaultConfiguration()
         }
+    }
+
+    func setupCacheConfiguration() {
+        // setup Kingfisher caching
+        let imageCache = ImageCache.default
+        imageCache.memoryStorage.config.totalCostLimit = 100 * 1024 * 1024 // 100 MB
+        imageCache.diskStorage.config.sizeLimit = 500 * 1024 * 1024 // 500 MB
+        imageCache.diskStorage.config.expiration = .days(7)
     }
 
     // MARK: - Private

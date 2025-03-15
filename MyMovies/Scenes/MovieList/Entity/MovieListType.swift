@@ -17,7 +17,7 @@ import Foundation
 // top500 - 500 лучших фильмов (category - Фильмы)
 // top250 - 250 лучших фильмов (category - Фильмы)
 
-enum MovieListType {
+enum MovieListType: Hashable {
     // Get a list of movies that are being released soon.
     case upcomingMovies
     // Get a list of movies ordered by popularity
@@ -32,6 +32,8 @@ enum MovieListType {
     case searchedMovies(query: String)
     // Get a list of person related movies
     case personRelatedMovies(id: Int)
+    // Get a list of recently searched movies
+    case recentlySearchedMovies
 
     var endpoint: Endpoint {
         return .movieList(type: self)
@@ -53,6 +55,8 @@ enum MovieListType {
             return "Discovered Movies"
         case .personRelatedMovies:
             return "Person Related Movies"
+        case .recentlySearchedMovies:
+            return "Recently Searched Movies"
         }
     }
 
@@ -72,6 +76,8 @@ enum MovieListType {
             return "searchMovies"
         case .personRelatedMovies:
             return "personRelatedMovies"
+        case .recentlySearchedMovies:
+            return "recentlySearchedMovies"
         }
     }
 }

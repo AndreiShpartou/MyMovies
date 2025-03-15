@@ -20,7 +20,7 @@ final class PersonCollectionViewHandler: NSObject {
     // MARK: - Public
     func configure(with persons: [PersonViewModelProtocol]) {
         self.persons = persons
-        self.persons.sort { $0.popularity > $1.popularity }
+//        self.persons.sort { $0.popularity > $1.popularity }
     }
 }
 

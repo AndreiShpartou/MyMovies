@@ -46,19 +46,19 @@ struct Movie: MovieProtocol {
     init(
         id: Int,
         title: String,
-        alternativeTitle: String?,
-        description: String?,
-        shortDescription: String?,
-        status: String?,
-        releaseYear: String?,
-        runtime: String?,
-        voteAverage: Double?,
-        genres: [Genre],
-        countries: [ProductionCountry],
-        persons: [Person],
-        poster: Cover?,
-        backdrop: Cover?,
-        similarMovies: [Movie]?
+        alternativeTitle: String? = "",
+        description: String? = "",
+        shortDescription: String? = "",
+        status: String? = "",
+        releaseYear: String? = "",
+        runtime: String? = "",
+        voteAverage: Double? = nil,
+        genres: [Genre] = [],
+        countries: [ProductionCountry] = [],
+        persons: [Person] = [],
+        poster: Cover? = nil,
+        backdrop: Cover? = nil,
+        similarMovies: [Movie]? = nil
     ) {
         self.id = id
         self.title = title

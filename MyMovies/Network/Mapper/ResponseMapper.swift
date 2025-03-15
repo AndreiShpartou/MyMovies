@@ -53,12 +53,12 @@ final class ResponseMapper: ResponseMapperProtocol {
     private func map(_ data: TMDBMoviesPagedResponse) -> [Movie] {
         return data.results.map {
             let poster = Movie.Cover(
-                url: $0.posterURL(size: .original),
-                previewUrl: $0.posterURL(size: .w780)
+                url: $0.posterURL(size: .w780),
+                previewUrl: $0.posterURL(size: .w500)
             )
             let backdrop = Movie.Cover(
-                url: $0.backdropURL(size: .original),
-                previewUrl: $0.backdropURL(size: .w780)
+                url: $0.backdropURL(size: .w780),
+                previewUrl: $0.backdropURL(size: .w300)
             )
 
             return Movie(
@@ -83,12 +83,12 @@ final class ResponseMapper: ResponseMapperProtocol {
 
     private func map(_ data: TMDBMovieResponse) -> Movie {
         let poster = Movie.Cover(
-            url: data.posterURL(size: .original),
-            previewUrl: data.posterURL(size: .w780)
+            url: data.posterURL(size: .w780),
+            previewUrl: data.posterURL(size: .w500)
         )
         let backdrop = Movie.Cover(
-            url: data.backdropURL(size: .original),
-            previewUrl: data.backdropURL(size: .w780)
+            url: data.backdropURL(size: .w780),
+            previewUrl: data.backdropURL(size: .w300)
         )
         let persons: [TMDBPersonResponseProtocol] = (data.credits?.cast ?? []) + (data.credits?.crew ?? [])
 
@@ -284,11 +284,15 @@ final class ResponseMapper: ResponseMapperProtocol {
                 photo: $0.personPhotoURL(path: $0.profile_path, size: .w185),
                 name: $0.name,
                 profession: $0.known_for_department,
-                popularity: $0.popularity ?? 0
+                popularity: $0.popularity
             )
         }
+        // Remove duplicates
+        let personsWithoutDuplicates = removeDuplicates(from: persons)
+        // Sort by popularity, take the top 30
+        let sortedPersons = personsWithoutDuplicates.sorted { $0.popularity ?? 0 > $1.popularity ?? 0 }.prefix(30)
 
-        return removeDuplicates(from: persons)
+        return Array(sortedPersons)
     }
 
     private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
@@ -308,7 +312,12 @@ final class ResponseMapper: ResponseMapperProtocol {
             )
         }
 
-        return removeDuplicates(from: persons)
+        // Remove duplicates
+        let personsWithoutDuplicates = removeDuplicates(from: persons)
+        // Take the top 30
+        let first30Persons = Array(personsWithoutDuplicates.prefix(30))
+
+        return first30Persons
     }
 
     // MARK: - Person Detailed

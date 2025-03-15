@@ -11,9 +11,8 @@ final class OnboardingRouter: OnboardingRouterProtocol {
     weak var viewController: OnboardingViewController?
 
     func navigateToMainFlow() {
-        // E.g., present your main tab bar or root scene
-        let mainTabBar = RootRouter.createRootViewController()
-        mainTabBar.modalPresentationStyle = .fullScreen
-        viewController?.present(mainTabBar, animated: true)
+        let window = viewController?.view.window
+        // Switch to main flow
+        RootRouter.switchToMainFlow(in: window)
     }
 }

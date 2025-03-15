@@ -13,7 +13,6 @@ final class MovieListPresenter: MovieListPresenterProtocol {
     var router: MovieListRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    // Temporary entity persistance
     private var movies: [MovieProtocol] = []
 
     // MARK: - Init

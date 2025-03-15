@@ -60,9 +60,10 @@ extension PlaceHolderCollectionViewCell {
     private func setupConstraints() {
         placeholderImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.top.greaterThanOrEqualTo(safeAreaLayoutGuide.snp.top).offset(16)
             make.bottom.equalTo(safeAreaLayoutGuide.snp.centerY)
             make.width.equalTo(80)
-            make.height.equalTo(80)
+            make.height.lessThanOrEqualTo(80)
         }
 
         messageLabel.snp.makeConstraints { make in

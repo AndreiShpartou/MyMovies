@@ -11,85 +11,77 @@ class SearchInteractor: SearchInteractorProtocol {
     weak var presenter: SearchInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
-    private let dataPersistenceManager: DataPersistenceProtocol
+    private let genreRepository: GenreRepositoryProtocol
+    private let movieRepository: MovieRepositoryProtocol
+    private let provider: Provider
     // Token to track the current search request
     private var currentSearchToken: UUID?
 
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        dataPersistenceManager: DataPersistenceProtocol = DataPersistenceManager.shared
+        genreRepository: GenreRepositoryProtocol = GenreRepository(),
+        movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {
         self.networkManager = networkManager
-        self.dataPersistenceManager = dataPersistenceManager
+        self.genreRepository = genreRepository
+        self.movieRepository = movieRepository
+        self.provider = networkManager.getProvider()
     }
 
-    // MARK: - Public
+    // MARK: - Public fetchInitialData
     func fetchInitialData() {
         // Fetch genres, upcoming movie
-        let group = DispatchGroup()
+        let dispatchGroup = DispatchGroup()
 
         var fetchedGenres: [GenreProtocol] = []
         var fetchedUpcomingMovie: MovieProtocol?
 
         // Fetching genres
-        group.enter()
-        networkManager.fetchGenres { [weak self] result in
-            switch result {
-            case .success(let genres):
+        let cachedGenres = fetchGenresFromStorage()
+        if !cachedGenres.isEmpty {
+            fetchedGenres = cachedGenres
+        } else {
+            dispatchGroup.enter()
+            fetchGenres { genres in
                 fetchedGenres = genres
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.presenter?.didFailToFetchData(with: error)
-                }
+                dispatchGroup.leave()
             }
-            group.leave()
         }
 
         // Fetching upcoming movies
-        group.enter()
-        networkManager.fetchMovies(type: .upcomingMovies) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let movies):
-                guard let movie = movies.first else {
-                    DispatchQueue.main.async {
-                        self.presenter?.didFetchUpcomingMovies([])
-                    }
-
-                    return
-                }
-
-                self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
-                    DispatchQueue.main.async {
-                        fetchedUpcomingMovie = detailedMovies.first
-                        group.leave()
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.presenter?.didFailToFetchData(with: error)
-
-                    group.leave()
-                }
+        let cachedMovies = fetchMoviesFromStorage(for: .upcomingMovies)
+        if !cachedMovies.isEmpty {
+            fetchedUpcomingMovie = cachedMovies.first
+        } else {
+            dispatchGroup.enter()
+            fetchUpcomingMovie { movie in
+                fetchedUpcomingMovie = movie
+                dispatchGroup.leave()
             }
         }
 
-        group.notify(queue: .main) { [weak self] in
+        dispatchGroup.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
+
             DispatchQueue.main.async {
                 self.presenter?.didFetchGenres(fetchedGenres)
-                if let movie = fetchedUpcomingMovie {
-                    self.presenter?.didFetchUpcomingMovies([movie])
-                } else {
-                    self.presenter?.didFetchUpcomingMovies([])
-                }
+                self.presenter?.didFetchUpcomingMovies(fetchedUpcomingMovie.map { [$0] } ?? [])
             }
         }
 }
 
     // Get upcoming movies filtered by genre
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
+        if genre.name == "All" {
+            let cachedMovies = fetchMoviesFromStorage(for: .upcomingMovies)
+            if !cachedMovies.isEmpty {
+                let firstMovie = cachedMovies.first
+                presenter?.didFetchUpcomingMovies(firstMovie.map { [$0] } ?? [])
+
+                return
+            }
+        }
+
         networkManager.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
             guard let self = self else { return }
 
@@ -122,9 +114,11 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
+    // MARK: - performSearch
     func performSearch(with query: String) {
         guard !query.isEmpty else {
             fetchInitialData()
+            fetchRecentlySearchedMovies()
 
             return
         }
@@ -136,6 +130,7 @@ class SearchInteractor: SearchInteractorProtocol {
         // Perform person search
         networkManager.searchPersons(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
+
             switch result {
             case .success(let persons):
                 // Fetch related movies
@@ -151,6 +146,7 @@ class SearchInteractor: SearchInteractorProtocol {
         // Perform movie search
         networkManager.searchMovies(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
+
             switch result {
             case .success(let movies):
                 // Fetch details with a single request for all movies
@@ -167,10 +163,70 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
+    // MARK: - fetchRecentlySearchedMovies
+    func fetchRecentlySearchedMovies() {
+        let recentlySearchedMovies = fetchMoviesFromStorage(for: .recentlySearchedMovies)
+        presenter?.didFetchRecentlySearchedMovies(recentlySearchedMovies)
+    }
+
     // MARK: - Private
+    private func fetchGenresFromStorage() -> [GenreProtocol] {
+        return genreRepository.fetchGenres(provider: provider.rawValue)
+    }
+
+    private func fetchMoviesFromStorage(for listType: MovieListType) -> [MovieProtocol] {
+        return movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listType.rawValue)
+    }
+
+    private func fetchGenres(completion: @escaping ([GenreProtocol]) -> Void) {
+        networkManager.fetchGenres { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let genres):
+                completion(genres)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                    completion([])
+                }
+            }
+        }
+    }
+
+    private func fetchUpcomingMovie(completion: @escaping (MovieProtocol?) -> Void) {
+        networkManager.fetchMovies(type: .upcomingMovies) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let movies):
+                guard let movie = movies.first else {
+                    DispatchQueue.main.async {
+                        self.presenter?.didFetchUpcomingMovies([])
+                        completion(nil)
+                    }
+
+                    return
+                }
+
+                self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
+                    DispatchQueue.main.async {
+                        completion(detailedMovies.first)
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                    completion(nil)
+                }
+            }
+        }
+    }
+
     private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
         networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
+
             switch result {
             case .success(let detailedMovies):
                 // Fetch details with a separate request for each movie
@@ -187,52 +243,24 @@ class SearchInteractor: SearchInteractorProtocol {
 
     private func fetchMoviesDetails(for movies: [MovieProtocol]) {
         networkManager.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
+            guard let self = self else { return }
+
             DispatchQueue.main.async {
-                self?.presenter?.didFetchMoviesSearchResults(detailedMovies)
+                self.presenter?.didFetchMoviesSearchResults(detailedMovies)
+            }
+
+            if let firstMovie = detailedMovies.first {
+                self.storeRecentlySearchedMovie(for: firstMovie)
             }
         }
     }
 
-    private func fetchRecentlySearchedMovies() {
-        let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
-        presenter?.didFetchRecentlySearchedMovies(recentlySearched)
-    }
-
-//    // Fetch related movies for the found person
-//    private func fetchRelatedMovies(for persons: [PersonProtocol], token: UUID) {
-//        // Fetch related movies for each person
-//        var relatedMovies: [MovieProtocol] = []
-//        let group = DispatchGroup()
-//
-//        for person in persons {
-//            group.enter()
-//            networkManager.fetchMovieByPerson(person: person) { [weak self] result in
-//                guard let self = self, self.currentSearchToken == token else {
-//                    group.leave()
-//
-//                    return
-//                }
-//
-//                switch result {
-//                case .success(let movies):
-//                    relatedMovies.append(contentsOf: movies)
-//                case .failure(let error):
-//                    self.presenter?.didFailToFetchData(with: error)
-//                }
-//                group.leave()
-//            }
-//        }
-//
-//        group.notify(queue: .main) { [weak self] in
-//            guard let self = self, self.currentSearchToken == token else { return }
-//
-//            self.presenter?.didFetchPersonsSearchResults(persons)
-//            self.saveSearchQuery(persons.map { $0.name }.joined(separator: ", ") )
-//        }
-//    }
-
-    private func saveSearchQuery(_ query: String) {
-        // Save search query
-        dataPersistenceManager.saveSearchQuery(query)
+    private func storeRecentlySearchedMovie(for movie: MovieProtocol) {
+        movieRepository.storeMovieForList(
+            movie,
+            provider: provider.rawValue,
+            listType: MovieListType.recentlySearchedMovies.rawValue,
+            orderIndex: 0
+        )
     }
 }

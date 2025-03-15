@@ -13,7 +13,6 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
     var router: PersonDetailsRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    // Temporary entities persistance switch to CoreData
     private var person: PersonDetailedProtocol?
     private var personRelatedMovies: [MovieProtocol] = []
 

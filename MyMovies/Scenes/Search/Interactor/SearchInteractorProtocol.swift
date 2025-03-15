@@ -11,6 +11,7 @@ protocol SearchInteractorProtocol: AnyObject {
     var presenter: SearchInteractorOutputProtocol? { get set }
 
     func fetchInitialData()
+    func fetchRecentlySearchedMovies()
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol)
     func performSearch(with query: String)
 }

@@ -20,6 +20,10 @@ protocol MainInteractorProtocol: AnyObject {
     func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol)
 }
 
+protocol PrefetchInteractorProtocol: AnyObject {
+    func prefetchData()
+}
+
 protocol MainInteractorOutputProtocol: AnyObject {
     func didFetchUpcomingMovies(_ movies: [MovieProtocol])
     func didFetchMovieGenres(_ genres: [GenreProtocol])
