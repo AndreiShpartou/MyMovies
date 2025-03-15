@@ -16,7 +16,7 @@ protocol MovieRepositoryProtocol {
     func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol?
     func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol]
     func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol]
-    // Clear
+    // Clear movie memberships
     func clearMoviesForList(provider: String, listName: String)
 }
 
@@ -97,6 +97,7 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // MARK: - Clearing
+    // Clear movie memberships
     func clearMoviesForList(provider: String, listName: String) {
         let bgContext = backgroundContextMaker()
         bgContext.perform {
@@ -176,7 +177,10 @@ final class MovieRepository: MovieRepositoryProtocol {
             NSPredicate(format: "movie.provider == %@", provider)
         ])
         request.fetchLimit = 20
-        request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "orderIndex", ascending: true),
+            NSSortDescriptor(key: "movie.lastUpdated", ascending: false)
+        ]
 
         do {
             let bridgingList = try mainContext.fetch(request)

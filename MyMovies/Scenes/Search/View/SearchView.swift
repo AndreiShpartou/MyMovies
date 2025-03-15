@@ -77,7 +77,10 @@ final class SearchView: UIView, SearchViewProtocol {
 
     private let discoveredPersonsCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 90, height: 110),
-        cellTypesDict: [PersonCircleCollectionViewCell.identifier: PersonCircleCollectionViewCell.self],
+        cellTypesDict: [
+            PersonCircleCollectionViewCell.identifier: PersonCircleCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ],
         scrollDirection: .horizontal,
         minimumLineSpacing: 12
     )
@@ -154,38 +157,24 @@ final class SearchView: UIView, SearchViewProtocol {
     }
 
     func showMoviesSearchResults(_ movies: [MovieListItemViewModelProtocol]) {
-        guard !movies.isEmpty else {
-            discoveredMoviesLabel.isHidden = true
-            discoveredMoviesCollectionView.isHidden = true
-
-            return
-        }
         // Show movies collection
         discoveredMoviesCollectionViewHandler.configure(with: movies)
         discoveredMoviesCollectionView.reloadData()
-        discoveredMoviesLabel.isHidden = false
-        discoveredMoviesCollectionView.isHidden = false
         searchResultsStackView.isHidden = false
         searchResultsStackView.isUserInteractionEnabled = true
         scrollView.isScrollEnabled = false
+        noResultsView.isHidden = true
         layoutIfNeeded()
     }
 
     func showPersonsSearchResults(_ persons: [PersonViewModelProtocol]) {
-        guard !persons.isEmpty else {
-            discoveredPersonsLabel.isHidden = true
-            discoveredPersonsCollectionView.isHidden = true
-
-            return
-        }
         // Show persons collection
         discoveredPersonsCollectionViewHandler.configure(with: persons)
         discoveredPersonsCollectionView.reloadData()
-        discoveredPersonsCollectionView.isHidden = false
-        discoveredPersonsLabel.isHidden = false
         searchResultsStackView.isHidden = false
         searchResultsStackView.isUserInteractionEnabled = true
         scrollView.isScrollEnabled = false
+        noResultsView.isHidden = true
         layoutIfNeeded()
     }
 
@@ -216,8 +205,8 @@ final class SearchView: UIView, SearchViewProtocol {
         recentlySearchedLabel.isHidden = false
         seeAllRecentlySearchedButton.isHidden = false
         recentlySearchedCollectionView.isHidden = false
-        discoveredPersonsLabel.isHidden = true
-        discoveredPersonsCollectionView.isHidden = true
+//        discoveredPersonsLabel.isHidden = true
+//        discoveredPersonsCollectionView.isHidden = true
         noResultsView.isHidden = true
         searchResultsStackView.isHidden = true
         searchResultsStackView.isUserInteractionEnabled = false
@@ -331,7 +320,7 @@ extension SearchView {
 
     @objc
     private func didTapAllRecentlySearchedButton(sender: UIButton) {
-//        delegate?.didTapSeeAllRecentlySearchedButton()
+        delegate?.didTapSeeAllButton(listType: .recentlySearchedMovies)
     }
 
     @objc
@@ -460,7 +449,7 @@ extension SearchView {
         }
 
         recentlySearchedCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(recentlySearchedLabel.snp.bottom).offset(16)
             make.height.equalTo(300)
             make.bottom.equalToSuperview().offset(-16)

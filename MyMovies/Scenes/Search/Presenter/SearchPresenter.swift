@@ -13,7 +13,8 @@ class SearchPresenter: SearchPresenterProtocol {
     var router: SearchRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    private var movies: [MovieProtocol] = []
+    private var moviesDict: [MovieListType: [MovieProtocol]] = [:]
+    private var persons: [PersonProtocol] = []
     // A property to hold debouncing work item
     private var searchDebounceWorkItem: DispatchWorkItem?
 
@@ -34,7 +35,7 @@ class SearchPresenter: SearchPresenterProtocol {
     func viewDidLoad() {
         view?.showLoading()
         interactor.fetchInitialData()
-//        interactor.fetchRecentlySearchedMovies()
+        interactor.fetchRecentlySearchedMovies()
     }
 
     func didSearch(query: String) {
@@ -67,7 +68,8 @@ class SearchPresenter: SearchPresenterProtocol {
 
     func didSelectMovie(movieID: Int) {
         // Handle movie selection
-        guard let movie = movies.first(where: { $0.id == movieID }) else {
+        let allMoviesArray = moviesDict.flatMap { $0.value }
+        guard let movie = allMoviesArray.first(where: { $0.id == movieID }) else {
             return
         }
 
@@ -109,7 +111,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
         view?.showInitialElements()
         view?.showUpcomingMovies(upcomingMoviesViewModel)
-        self.movies.append(contentsOf: movies)
+        self.moviesDict[.upcomingMovies] = movies
     }
 
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol]) {
@@ -122,7 +124,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
         view?.showInitialElements()
         view?.showRecentlySearchedMovies(recentlySearchedMoviesViewModels)
-        self.movies.append(contentsOf: movies)
+        self.moviesDict[.recentlySearchedMovies] = movies
     }
 
     func didFetchMoviesSearchResults(_ movies: [MovieProtocol]) {
@@ -131,12 +133,13 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
-        if searchResultsViewModels.isEmpty {
+        if searchResultsViewModels.isEmpty, persons.isEmpty {
             view?.showNoResults()
         } else {
             view?.showMoviesSearchResults(searchResultsViewModels)
-            self.movies = movies
         }
+
+        self.moviesDict[.searchedMovies(query: "")] = movies
     }
 
     func didFetchPersonsSearchResults(_ persons: [PersonProtocol]) {
@@ -147,7 +150,14 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
             return
         }
 
-        view?.showPersonsSearchResults(personViewModels)
+        let discoveredMovies = moviesDict[.searchedMovies(query: "")] ?? []
+        if personViewModels.isEmpty, discoveredMovies.isEmpty {
+            view?.showNoResults()
+        } else {
+            view?.showPersonsSearchResults(personViewModels)
+        }
+
+        self.persons = persons
     }
 
     func didFailToFetchData(with error: Error) {

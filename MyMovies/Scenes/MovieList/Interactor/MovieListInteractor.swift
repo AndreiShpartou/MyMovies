@@ -31,7 +31,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     // Fetch genres
     func fetchMovieGenres(type: MovieListType) {
         switch type {
-        case .searchedMovies, .similarMovies:
+        case .searchedMovies, .similarMovies, .recentlySearchedMovies:
             // APIs don't support genre filtering
             DispatchQueue.main.async {
                 self.presenter?.didFetchMovieGenres([])

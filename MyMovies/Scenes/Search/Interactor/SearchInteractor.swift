@@ -28,7 +28,7 @@ class SearchInteractor: SearchInteractorProtocol {
         self.provider = networkManager.getProvider()
     }
 
-    // MARK: - Public
+    // MARK: - Public fetchInitialData
     func fetchInitialData() {
         // Fetch genres, upcoming movie
         let dispatchGroup = DispatchGroup()
@@ -114,9 +114,11 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
+    // MARK: - performSearch
     func performSearch(with query: String) {
         guard !query.isEmpty else {
             fetchInitialData()
+            fetchRecentlySearchedMovies()
 
             return
         }
@@ -159,6 +161,12 @@ class SearchInteractor: SearchInteractorProtocol {
                 }
             }
         }
+    }
+
+    // MARK: - fetchRecentlySearchedMovies
+    func fetchRecentlySearchedMovies() {
+        let recentlySearchedMovies = fetchMoviesFromStorage(for: .recentlySearchedMovies)
+        presenter?.didFetchRecentlySearchedMovies(recentlySearchedMovies)
     }
 
     // MARK: - Private
@@ -235,14 +243,24 @@ class SearchInteractor: SearchInteractorProtocol {
 
     private func fetchMoviesDetails(for movies: [MovieProtocol]) {
         networkManager.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
+            guard let self = self else { return }
+
             DispatchQueue.main.async {
-                self?.presenter?.didFetchMoviesSearchResults(detailedMovies)
+                self.presenter?.didFetchMoviesSearchResults(detailedMovies)
+            }
+
+            if let firstMovie = detailedMovies.first {
+                self.storeRecentlySearchedMovie(for: firstMovie)
             }
         }
     }
 
-    private func fetchRecentlySearchedMovies() {
-//        let recentlySearched = dataPersistenceManager.fetchRecentlySearchedMovies()
-//        presenter?.didFetchRecentlySearchedMovies(recentlySearched)
+    private func storeRecentlySearchedMovie(for movie: MovieProtocol) {
+        movieRepository.storeMovieForList(
+            movie,
+            provider: provider.rawValue,
+            listType: MovieListType.recentlySearchedMovies.rawValue,
+            orderIndex: 0
+        )
     }
 }

@@ -32,6 +32,8 @@ enum MovieListType: Hashable {
     case searchedMovies(query: String)
     // Get a list of person related movies
     case personRelatedMovies(id: Int)
+    // Get a list of recently searched movies
+    case recentlySearchedMovies
 
     var endpoint: Endpoint {
         return .movieList(type: self)
@@ -53,6 +55,8 @@ enum MovieListType: Hashable {
             return "Discovered Movies"
         case .personRelatedMovies:
             return "Person Related Movies"
+        case .recentlySearchedMovies:
+            return "Recently Searched Movies"
         }
     }
 
@@ -72,6 +76,8 @@ enum MovieListType: Hashable {
             return "searchMovies"
         case .personRelatedMovies:
             return "personRelatedMovies"
+        case .recentlySearchedMovies:
+            return "recentlySearchedMovies"
         }
     }
 }
