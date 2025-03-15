@@ -53,12 +53,12 @@ final class ResponseMapper: ResponseMapperProtocol {
     private func map(_ data: TMDBMoviesPagedResponse) -> [Movie] {
         return data.results.map {
             let poster = Movie.Cover(
-                url: $0.posterURL(size: .original),
-                previewUrl: $0.posterURL(size: .w780)
+                url: $0.posterURL(size: .w780),
+                previewUrl: $0.posterURL(size: .w500)
             )
             let backdrop = Movie.Cover(
-                url: $0.backdropURL(size: .original),
-                previewUrl: $0.backdropURL(size: .w780)
+                url: $0.backdropURL(size: .w780),
+                previewUrl: $0.backdropURL(size: .w300)
             )
 
             return Movie(
@@ -83,12 +83,12 @@ final class ResponseMapper: ResponseMapperProtocol {
 
     private func map(_ data: TMDBMovieResponse) -> Movie {
         let poster = Movie.Cover(
-            url: data.posterURL(size: .original),
-            previewUrl: data.posterURL(size: .w780)
+            url: data.posterURL(size: .w780),
+            previewUrl: data.posterURL(size: .w500)
         )
         let backdrop = Movie.Cover(
-            url: data.backdropURL(size: .original),
-            previewUrl: data.backdropURL(size: .w780)
+            url: data.backdropURL(size: .w780),
+            previewUrl: data.backdropURL(size: .w300)
         )
         let persons: [TMDBPersonResponseProtocol] = (data.credits?.cast ?? []) + (data.credits?.crew ?? [])
 
