@@ -9,4 +9,15 @@ import UIKit
 
 class WishlistRouter {
     weak var viewController: UIViewController?
+
+    // MARK: - Init
+    init(viewController: UIViewController? = nil) {
+        self.viewController = viewController
+    }
+
+    func navigateToMovieDetails(with movie: MovieProtocol) {
+        let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
+        viewController?.navigationController?.isNavigationBarHidden = false
+        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
+    }
 }

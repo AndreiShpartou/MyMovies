@@ -17,6 +17,7 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildEditProfileScene() -> UIViewController
     static func buildPersonDetailsScene(for personID: Int) -> UIViewController
     static func buildOnboardingScene() -> UIViewController
+    static func buildWishlistScene() -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -137,5 +138,13 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         return viewController
+    }
+
+    static func buildWishlistScene() -> UIViewController {
+//        let interactor = WishlistInteractor()
+//        let router = WishlistRouter()
+//        let view = WishlistView()
+
+        return UIViewController()
     }
 }

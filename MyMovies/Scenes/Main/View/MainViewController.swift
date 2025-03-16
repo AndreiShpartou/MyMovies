@@ -33,18 +33,18 @@ final class MainViewController: UIViewController, MainViewControllerProtocol {
         view = mainView
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        navigationController?.isNavigationBarHidden = true
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewController()
         // The initial data loading
         presenter.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.isNavigationBarHidden = true
     }
 }
 
