@@ -8,5 +8,11 @@
 import UIKit
 
 protocol UserGreetingViewProtocol: UIView {
+    var delegate: UserGreetingViewDelegate? { get set }
+
     func configure(with username: String, avatarImage: UIImage?)
+}
+
+protocol UserGreetingViewDelegate: AnyObject {
+    func didTapFavouriteButton()
 }

@@ -38,7 +38,7 @@ final class WishlistViewController: UIViewController {
 
         setupViewController()
         // The initial data loading
-         presenter.viewDidLoad()
+        presenter.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {

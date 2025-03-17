@@ -141,10 +141,15 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildWishlistScene() -> UIViewController {
-//        let interactor = WishlistInteractor()
-//        let router = WishlistRouter()
-//        let view = WishlistView()
+        let interactor = WishlistInteractor()
+        let router = WishlistRouter()
+        let view = WishlistView()
+        let presenter = WishlistPresenter(view: view, interactor: interactor, router: router)
+        let viewController = WishlistViewController(wishlistView: view, presenter: presenter)
 
-        return UIViewController()
+        router.viewController = viewController
+        interactor.presenter = presenter
+
+        return viewController
     }
 }

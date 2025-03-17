@@ -23,9 +23,10 @@ class CustomTabBarController: UITabBarController {
 
         let homeVC = SceneBuilder.buildHomeScene()
         let searchVC = SceneBuilder.buildSearchScene()
+        let wishlistVC = SceneBuilder.buildWishlistScene()
         let profileVC = SceneBuilder.buildProfileScene()
 
-        viewControllers = [homeVC, searchVC, profileVC]
+        viewControllers = [homeVC, searchVC, wishlistVC, profileVC]
 
         setupCustomTabBarItems()
     }
@@ -33,6 +34,7 @@ class CustomTabBarController: UITabBarController {
     private func setupCustomTabBarItems() {
         let homeItem = CustomTabBarItem(icon: UIImage(systemName: "house"), title: "Home")
         let searchItem = CustomTabBarItem(icon: UIImage(systemName: "magnifyingglass"), title: "Search")
+        let wishlistItem = CustomTabBarItem(icon: UIImage(systemName: "heart"), title: "Wishlist")
         let profileItem = CustomTabBarItem(icon: UIImage(systemName: "person"), title: "Profile")
 
         customTabBar.setCustomItems([homeItem, searchItem, profileItem])
@@ -40,6 +42,7 @@ class CustomTabBarController: UITabBarController {
 
         homeItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
         searchItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
+        wishlistItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
         profileItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
     }
 

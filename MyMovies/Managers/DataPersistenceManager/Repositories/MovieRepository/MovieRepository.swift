@@ -12,12 +12,14 @@ protocol MovieRepositoryProtocol {
     // Store
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int)
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String)
+    func addMovieToFavourites(_ movie: MovieProtocol, provider: String)
     // Fetch
     func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol?
     func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol]
     func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol]
     // Clear movie memberships
     func clearMoviesForList(provider: String, listName: String)
+    func removieMovieFromFavourites(_ movie: MovieProtocol, provider: String)
 }
 
 final class MovieRepository: MovieRepositoryProtocol {
@@ -70,6 +72,25 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
+    // Add movie to favourites with notification
+    func addMovieToFavourites(_ movie: MovieProtocol, provider: String) {
+        let bgContext = backgroundContextMaker()
+        bgContext.perform {
+            // Create or update each movie
+            self.storeSingleMovieForListNoSave(
+                movie,
+                provider: provider,
+                listType: MovieListType.favouriteMovies.rawValue,
+                orderIndex: 0,
+                context: bgContext
+            )
+            // Save
+            self.saveContext(bgContext)
+            // Notify
+            NotificationCenter.default.post(name: .favouritesUpdated, object: nil)
+        }
+    }
+
     // MARK: - Fetching
     // Fetching from the main context
     func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol? {
@@ -111,6 +132,27 @@ final class MovieRepository: MovieRepositoryProtocol {
                 bridgingRecords.forEach { bgContext.delete($0) }
 
                 self.saveContext(bgContext)
+            } catch {
+                print("Error clearing list membership: \(error)")
+            }
+        }
+    }
+
+    func removieMovieFromFavourites(_ movie: MovieProtocol, provider: String) {
+        let bgContext = backgroundContextMaker()
+        bgContext.perform {
+            let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "movie.id == %@", movie.id),
+                NSPredicate(format: "movie.provider == %@", provider),
+                NSPredicate(format: "listType.name == %@", MovieListType.favouriteMovies.rawValue)
+            ])
+            do {
+                let bridgingRecords = try bgContext.fetch(request)
+                bridgingRecords.forEach { bgContext.delete($0) }
+
+                self.saveContext(bgContext)
+                NotificationCenter.default.post(name: .favouritesUpdated, object: nil)
             } catch {
                 print("Error clearing list membership: \(error)")
             }

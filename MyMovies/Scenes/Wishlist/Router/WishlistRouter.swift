@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WishlistRouter {
+class WishlistRouter: WishlistRouterProtocol {
     weak var viewController: UIViewController?
 
     // MARK: - Init

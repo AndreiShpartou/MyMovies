@@ -508,3 +508,8 @@ extension String {
         return prefix(1).uppercased() + dropFirst()
     }
 }
+
+// MARK: - NotificationCenter
+extension Notification.Name {
+    static let favouritesUpdated = Notification.Name("favouritesUpdated")
+}

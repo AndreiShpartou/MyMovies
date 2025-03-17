@@ -74,4 +74,8 @@ extension MainViewController: MainViewDelegate {
     func didScrollUpcomingMoviesItemTo(_ index: Int) {
         mainView.scrollToUpcomingMovieItem(index)
     }
+
+    func didTapFavouriteButton() {
+        presenter.didTapFavouriteButton()
+    }
 }

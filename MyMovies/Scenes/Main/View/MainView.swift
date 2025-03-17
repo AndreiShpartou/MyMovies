@@ -243,6 +243,7 @@ extension MainView {
     }
 
     private func updateDelegates() {
+        userGreetingView.delegate = delegate
         upcomingMoviesCollectionViewHandler.delegate = delegate
         genresCollectionViewHandler.delegate = delegate
         popularMoviesCollectionViewHandler.delegate = delegate

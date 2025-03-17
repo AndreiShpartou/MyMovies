@@ -28,3 +28,11 @@ class WishlistPresenter: WishlistPresenterProtocol {
         //
     }
 }
+
+extension WishlistPresenter: WishlistInteractorOutputProtocol {
+    func didFetchWishlist(_ movies: [MovieProtocol]) {
+    }
+
+    func didFailToFetchData(error: Error) {
+    }
+}
