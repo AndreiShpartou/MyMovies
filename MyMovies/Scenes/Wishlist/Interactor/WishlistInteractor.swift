@@ -10,8 +10,9 @@ import Foundation
 class WishlistInteractor: WishlistInteractorProtocol {
     weak var presenter: WishlistInteractorOutputProtocol?
 
-    private let movieRepository: MovieRepositoryProtocol
+    private let listName = MovieListType.favouriteMovies.rawValue
     private let provider: Provider
+    private let movieRepository: MovieRepositoryProtocol
 
     // MARK: - Init
     init(
@@ -24,6 +25,11 @@ class WishlistInteractor: WishlistInteractorProtocol {
 
     // MARK: - Public
     func fetchWishlist() {
-        presenter?.didFetchWishlist([])
+        let favouriteMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listName)
+        presenter?.didFetchWishlist(favouriteMovies)
+    }
+
+    func removeMovieFromWishlist(movieID: Int) {
+        movieRepository.removeMovieFromList(movieID, provider: provider.rawValue, listName: listName)
     }
 }

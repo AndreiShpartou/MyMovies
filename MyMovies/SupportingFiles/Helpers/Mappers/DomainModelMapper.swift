@@ -17,6 +17,8 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // Popular movies
         case (let data as [MovieProtocol], is [BriefMovieListItemViewModel].Type):
             return mapToBriefList(data) as? Y
+        case (let data as [MovieProtocol], is [WishlistItemViewModel].Type):
+            return mapToBriefList(data) as? Y
         // MovieList
         case (let data as [MovieProtocol], is [MovieListItemViewModel].Type):
             return mapToList(data) as? Y
