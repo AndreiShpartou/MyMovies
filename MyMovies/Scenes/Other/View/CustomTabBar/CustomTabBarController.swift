@@ -16,9 +16,12 @@ class CustomTabBarController: UITabBarController {
 
         setupController()
     }
+}
 
-    // MARK: - Setup
+// MARK: - Private Setup
+extension CustomTabBarController {
     private func setupController() {
+        // Replace the system tabBar with the custom one
         setValue(customTabBar, forKey: "tabBar")
 
         let homeVC = SceneBuilder.buildHomeScene()
@@ -32,28 +35,34 @@ class CustomTabBarController: UITabBarController {
     }
 
     private func setupCustomTabBarItems() {
+        // Setup custom items
         let homeItem = CustomTabBarItem(icon: UIImage(systemName: "house"), title: "Home")
         let searchItem = CustomTabBarItem(icon: UIImage(systemName: "magnifyingglass"), title: "Search")
         let wishlistItem = CustomTabBarItem(icon: UIImage(systemName: "heart"), title: "Wishlist")
         let profileItem = CustomTabBarItem(icon: UIImage(systemName: "person"), title: "Profile")
 
-        customTabBar.setCustomItems([homeItem, searchItem, profileItem])
-        customTabBar.selectItem(at: 0)
-
-        homeItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
-        searchItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
-        wishlistItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
-        profileItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped)))
-    }
-
-    @objc
-    private func tabBarItemTapped(_ gesture: UITapGestureRecognizer) {
-            guard let tappedItem = gesture.view as? CustomTabBarItem,
-              let index = customTabBar.customTabBarItems.firstIndex(of: tappedItem) else {
-            return
+        let items = [homeItem, searchItem, wishlistItem, profileItem]
+        for (index, item) in items.enumerated() {
+            item.tag = index
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tabBarItemTapped(_:)))
+            item.addGestureRecognizer(tapGesture)
         }
 
+        customTabBar.setCustomItems(items)
+        customTabBar.selectItem(at: 0) // default selection
+    }
+}
+
+// MARK: - ActionMethods
+extension CustomTabBarController {
+    @objc
+    private func tabBarItemTapped(_ gesture: UITapGestureRecognizer) {
+        guard let tappedItem = gesture.view as? CustomTabBarItem else { return }
+
+        let index = tappedItem.tag
+        // Switch the system tab bar's selection
         selectedIndex = index
-        customTabBar.selectItem(at: index)
+        // Update custom tab bar appearance
+        self.customTabBar.selectItem(at: index)
     }
 }

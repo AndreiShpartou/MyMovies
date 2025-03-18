@@ -40,16 +40,20 @@ class PlaceHolderCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with image: UIImage?, and message: String?) {
+    func configure(
+        with image: UIImage?,
+        and message: String?,
+        backgroundColor: UIColor? = .primarySoft
+    ) {
         placeholderImageView.image = image
         messageLabel.text = message
+        self.backgroundColor = backgroundColor
     }
 }
 
 // MARK: - Setup
 extension PlaceHolderCollectionViewCell {
     private func setupView() {
-        backgroundColor = .primarySoft
         layer.cornerRadius = 15
         contentView.addSubviews(messageLabel, placeholderImageView)
     }

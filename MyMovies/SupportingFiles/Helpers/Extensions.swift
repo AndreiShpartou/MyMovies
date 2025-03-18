@@ -28,7 +28,8 @@ extension UIView {
         frame: CGRect = .zero,
         borderWidth: CGFloat = 0,
         borderColor: CGColor? = nil,
-        masksToBounds: Bool = false
+        masksToBounds: Bool = false,
+        isHidden: Bool = false
     ) -> UIView {
         let view = UIView(frame: frame)
         view.clipsToBounds = clipsToBounds
@@ -37,6 +38,7 @@ extension UIView {
         view.layer.borderWidth = borderWidth
         view.layer.borderColor = borderColor
         view.layer.masksToBounds = masksToBounds
+        view.isHidden = isHidden
 
         return view
     }
@@ -144,13 +146,16 @@ extension UILabel {
         textColor: UIColor? = nil,
         text: String? = nil,
         borderWidth: CGFloat? = nil,
-        borderColor: CGColor? = nil
+        borderColor: CGColor? = nil,
+        isHidden: Bool = false
     ) -> UILabel {
         let label = UILabel()
         label.font = font
         label.numberOfLines = numberOfLines
         label.textAlignment = textAlignment
         label.text = text
+        label.isHidden = isHidden
+
         if let textColor = textColor {
             label.textColor = textColor
         }

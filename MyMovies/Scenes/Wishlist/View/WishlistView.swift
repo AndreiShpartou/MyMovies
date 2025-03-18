@@ -9,7 +9,11 @@ import UIKit
 import SnapKit
 
 final class WishlistView: UIView, WishlistViewProtocol {
-    weak var delegate: WishlistViewDelegate?
+    weak var delegate: WishlistViewDelegate? {
+        didSet {
+            updateDelegates()
+        }
+    }
 
     // MARK: - UIComponents
     private let collectionView: UICollectionView = .createCommonCollectionView(
@@ -50,11 +54,26 @@ final class WishlistView: UIView, WishlistViewProtocol {
 extension WishlistView {
     private func setupView() {
         backgroundColor = .primaryBackground
+
+        setupHandlers()
+    }
+
+    private func setupHandlers() {
+        collectionView.delegate = collectionViewHandler
+        collectionView.dataSource = collectionViewHandler
+    }
+
+    private func updateDelegates() {
+        collectionViewHandler.delegate = delegate
     }
 }
 
 // MARK: - Constraints
 extension WishlistView {
     private func setupConstraints() {
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
+        }
     }
 }
