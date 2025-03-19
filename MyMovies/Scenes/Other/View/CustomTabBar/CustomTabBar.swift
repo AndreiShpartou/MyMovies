@@ -11,11 +11,8 @@ import SnapKit
 final class CustomTabBar: UITabBar {
     var customTabBarItems = [CustomTabBarItem]()
 
-    private let containerStackView: UIStackView = .createCommonStackView(
-        axis: .horizontal,
-        distribution: .equalCentering,
-        alignment: .fill
-    )
+    private let containerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
+    private var itemWidthConstraints = [Int: Constraint]()
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -56,18 +53,13 @@ final class CustomTabBar: UITabBar {
 extension CustomTabBar {
     private func setupTabBar() {
         setupAppearance()
-        addSubviews(containerStackView)
-        setupContainerStackView()
+        addSubviews(containerView)
     }
 
     private func setupAppearance() {
         backgroundColor = .primaryBackground
         isTranslucent = false
         barTintColor = .primaryBackground
-    }
-    
-    private func setupContainerStackView() {
-        containerStackView.isUserInteractionEnabled = true
     }
 }
 
@@ -83,27 +75,42 @@ extension CustomTabBar {
     // Rearrange tab bar items to force width change
     private func rearrangeTabBarItems() {
         // Clear old
-        containerStackView.arrangedSubviews.forEach {
-            containerStackView.removeArrangedSubview($0)
+        containerView.subviews.forEach {
             $0.removeFromSuperview()
         }
 
-        // Add new
-        customTabBarItems.forEach {
-            containerStackView.addArrangedSubview($0)
+        // Add new and set default constraints
+        for (index, item) in customTabBarItems.enumerated() {
+            containerView.addSubviews(item)
+            let previousItem = customTabBarItems[safe: index - 1]
+            let leadingConstraint = previousItem?.snp.trailing ?? containerView.snp.leading
+
+            item.snp.makeConstraints { make in
+                make.leading.equalTo(leadingConstraint)
+                make.bottom.height.equalToSuperview()
+                // save constraints to onward updating
+                let widthConstraint = make.width.equalToSuperview().multipliedBy(0.1).constraint
+                itemWidthConstraints[index] = widthConstraint
+            }
+            // Set default priority
+            item.setContentHuggingPriority(UILayoutPriority(Float(index)), for: .horizontal)
         }
     }
 
     private func adjustTabBarItemsWidth(selectedIndex: Int) {
-        let selectedItemMultiplier: Float = 0.33
-        let spacingPercent: Float = 0.3
-        let unselectedItemMultiplier: Float = (1 - spacingPercent - selectedItemMultiplier) / Float(customTabBarItems.count - 1)
+        let selectedItemMultiplier: Float = 0.4
+        let unselectedItemMultiplier: Float = (1 - selectedItemMultiplier) / Float(customTabBarItems.count - 1)
 
         for (index, item) in customTabBarItems.enumerated() {
             let multiplier = (index == selectedIndex) ? selectedItemMultiplier : unselectedItemMultiplier
-            item.snp.remakeConstraints { make in
-                make.width.greaterThanOrEqualToSuperview().multipliedBy(multiplier).priority(.required)
+            let priority: UILayoutPriority = (index == selectedIndex) ? .defaultLow : .defaultHigh
+            // Remove old constraint and apply new one
+            itemWidthConstraints[index]?.deactivate()
+            item.snp.makeConstraints { make in
+                let newWidthConstraint = make.width.equalToSuperview().multipliedBy(multiplier)
+                itemWidthConstraints[index] = newWidthConstraint.constraint
             }
+            item.setContentHuggingPriority(priority, for: .horizontal)
         }
 
         UIView.animate(withDuration: 0.3) {
@@ -115,7 +122,7 @@ extension CustomTabBar {
 // MARK: - Constraints
 extension CustomTabBar {
     private func setupConstraints() {
-        containerStackView.snp.makeConstraints { make in
+        containerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(8)
             make.top.equalToSuperview().offset(2)
             make.bottom.equalTo(safeAreaLayoutGuide)

@@ -320,12 +320,14 @@ extension UIButton {
         self.addTarget(target, action: action, for: .touchUpInside)
     }
 
-    static func createFavouriteButton() -> UIButton {
+    static func createFavouriteButton(isSelected: Bool = false) -> UIButton {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.backgroundColor = .primarySoft
+        button.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .selected)
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 10
-        button.tintColor = .secondaryRed
+//        button.tintColor = .secondaryRed
+        button.isSelected = isSelected
 
         return button
     }
@@ -384,6 +386,17 @@ extension UISearchBar {
         textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: placeholderAttributes)
 
         return searchBar
+    }
+}
+
+// MARK: - Array
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        guard index >= 0 && index < count else {
+            return nil
+        }
+
+        return self[index]
     }
 }
 

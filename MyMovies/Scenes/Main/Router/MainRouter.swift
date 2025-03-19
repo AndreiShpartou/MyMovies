@@ -28,8 +28,8 @@ final class MainRouter: MainRouterProtocol {
     }
 
     func navigateToWishlist() {
-        let wishlistVC = SceneBuilder.buildWishlistScene()
-        viewController?.navigationController?.isNavigationBarHidden = false
-        viewController?.navigationController?.pushViewController(wishlistVC, animated: true)
+//        let wishlistVC = SceneBuilder.buildWishlistScene()
+//        viewController?.navigationController?.isNavigationBarHidden = false
+//        viewController?.navigationController?.pushViewController(wishlistVC, animated: true)
     }
 }

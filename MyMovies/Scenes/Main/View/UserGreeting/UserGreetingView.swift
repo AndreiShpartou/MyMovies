@@ -21,7 +21,7 @@ final class UserGreetingView: UIView, UserGreetingViewProtocol {
         textColor: .textColorWhite,
         text: "Hello, Smith"
     )
-    private let favouriteButton: UIButton = .createFavouriteButton()
+    private let favouriteButton: UIButton = .createFavouriteButton(isSelected: true)
 
     // MARK: - Init
     override init(frame: CGRect) {
