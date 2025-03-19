@@ -13,7 +13,7 @@ final class CustomTabBar: UITabBar {
 
     private let containerStackView: UIStackView = .createCommonStackView(
         axis: .horizontal,
-        distribution: .fill,
+        distribution: .equalCentering,
         alignment: .fill
     )
 
@@ -57,14 +57,17 @@ extension CustomTabBar {
     private func setupTabBar() {
         setupAppearance()
         addSubviews(containerStackView)
-        // adjust container view
-        containerStackView.isUserInteractionEnabled = true
+        setupContainerStackView()
     }
 
     private func setupAppearance() {
         backgroundColor = .primaryBackground
         isTranslucent = false
         barTintColor = .primaryBackground
+    }
+    
+    private func setupContainerStackView() {
+        containerStackView.isUserInteractionEnabled = true
     }
 }
 
@@ -86,19 +89,20 @@ extension CustomTabBar {
         }
 
         // Add new
-        customTabBarItems.forEach { containerStackView.addArrangedSubview($0) }
+        customTabBarItems.forEach {
+            containerStackView.addArrangedSubview($0)
+        }
     }
 
     private func adjustTabBarItemsWidth(selectedIndex: Int) {
-        let selectedItemMultiplier: Float = 0.4
-        let unselectedItemMultiplier: Float = (1 - selectedItemMultiplier) / Float(customTabBarItems.count - 1)
+        let selectedItemMultiplier: Float = 0.33
+        let spacingPercent: Float = 0.3
+        let unselectedItemMultiplier: Float = (1 - spacingPercent - selectedItemMultiplier) / Float(customTabBarItems.count - 1)
 
         for (index, item) in customTabBarItems.enumerated() {
             let multiplier = (index == selectedIndex) ? selectedItemMultiplier : unselectedItemMultiplier
             item.snp.remakeConstraints { make in
-                make.width.equalToSuperview().multipliedBy(multiplier).priority(.high)
-                make.leading.trailing.equalToSuperview().priority(.low)
-                make.top.bottom.equalToSuperview().priority(.low)
+                make.width.greaterThanOrEqualToSuperview().multipliedBy(multiplier).priority(.required)
             }
         }
 
@@ -112,7 +116,7 @@ extension CustomTabBar {
 extension CustomTabBar {
     private func setupConstraints() {
         containerStackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(8)
             make.top.equalToSuperview().offset(2)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
