@@ -45,7 +45,7 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
     private let favouriteButton: UIButton = .createFavouriteButton()
 
     // MARK: - Init
-    init() {
+    override init(frame: CGRect) {
         super.init(frame: .zero)
 
         setupView()
@@ -111,31 +111,33 @@ extension WishlistCollectionViewCell {
         }
 
         posterImageView.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview().inset(4)
-            make.width.equalTo(posterImageView.snp.height).multipliedBy(0.675) // 2:3 aspect ratio of movie posters
+            make.leading.top.bottom.equalToSuperview().inset(12)
+            make.width.equalTo(posterImageView.snp.height).multipliedBy(1.3)
         }
 
         genreLabel.snp.makeConstraints { make in
-            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
-            make.top.equalToSuperview().offset(4)
+            make.leading.equalTo(posterImageView.snp.trailing).offset(12)
+            make.top.equalTo(posterImageView)
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-4)
-            make.top.equalTo(genreLabel.snp.bottom).offset(4)
+            make.leading.equalTo(posterImageView.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().offset(-8)
+            make.top.equalTo(genreLabel.snp.bottom).offset(12)
+            make.bottom.lessThanOrEqualTo(ratingStackView.snp.top).offset(-8)
+            make.centerY.equalTo(posterImageView).priority(.medium)
         }
 
         ratingStackView.snp.makeConstraints { make in
-            make.leading.equalTo(posterImageView.snp.trailing).offset(8)
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(posterImageView.snp.trailing).offset(12)
+            make.bottom.equalTo(posterImageView.snp.bottom)
             make.width.equalTo(50)
             make.height.equalTo(20)
         }
 
         favouriteButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-4)
-            make.top.centerY.equalTo(ratingStackView)
+            make.trailing.equalToSuperview().offset(-8)
+            make.centerY.equalTo(ratingStackView)
             make.width.height.equalTo(32)
         }
     }

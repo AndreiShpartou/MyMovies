@@ -26,7 +26,10 @@ class WishlistInteractor: WishlistInteractorProtocol {
     // MARK: - Public
     func fetchWishlist() {
         let favouriteMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listName)
-        presenter?.didFetchWishlist(favouriteMovies)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.presenter?.didFetchWishlist(favouriteMovies)
+        }
     }
 
     func removeMovieFromWishlist(movieID: Int) {

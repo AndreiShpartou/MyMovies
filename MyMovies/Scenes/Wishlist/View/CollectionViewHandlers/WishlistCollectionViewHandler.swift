@@ -68,7 +68,7 @@ extension WishlistCollectionViewHandler: UICollectionViewDelegate {
 extension WishlistCollectionViewHandler: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let itemWidth: CGFloat = collectionView.bounds.width
-        let itemHeight: CGFloat = movies.isEmpty ? collectionView.bounds.height : 200
+        let itemHeight: CGFloat = movies.isEmpty ? collectionView.bounds.height : collectionView.bounds.width * 0.35
 
         return CGSize(width: itemWidth, height: itemHeight)
     }

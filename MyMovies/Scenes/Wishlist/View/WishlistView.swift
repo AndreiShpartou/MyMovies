@@ -18,12 +18,13 @@ final class WishlistView: UIView, WishlistViewProtocol {
     // MARK: - UIComponents
     private let collectionView: UICollectionView = .createCommonCollectionView(
         // Will be redefined in handler
-        itemSize: CGSize(width: 100, height: 200),
+        itemSize: CGSize(width: 100, height: 150),
         cellTypesDict: [
             WishlistCollectionViewCell.identifier: WishlistCollectionViewCell.self,
             PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
         ],
-        minimumLineSpacing: 16
+        scrollDirection: .vertical,
+        minimumLineSpacing: 12
     )
 
     private lazy var collectionViewHandler = WishlistCollectionViewHandler()
@@ -73,7 +74,7 @@ extension WishlistView {
     private func setupConstraints() {
         addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.edges.equalTo(safeAreaLayoutGuide).inset(16)
         }
     }
 }

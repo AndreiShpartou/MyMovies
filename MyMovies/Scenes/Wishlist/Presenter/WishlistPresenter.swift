@@ -68,7 +68,7 @@ extension WishlistPresenter {
 // MARK: - WishlistInteractorOutputProtocol
 extension WishlistPresenter: WishlistInteractorOutputProtocol {
     func didFetchWishlist(_ movies: [MovieProtocol]) {
-        guard let favouriteMoviesViewModels = mapper.map(data: movies, to: [WishlistItemViewModelProtocol].self) else {
+        guard let favouriteMoviesViewModels = mapper.map(data: movies, to: [WishlistItemViewModel].self) else {
             return
         }
 
