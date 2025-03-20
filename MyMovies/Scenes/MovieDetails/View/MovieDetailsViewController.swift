@@ -15,6 +15,7 @@ final class MovieDetailsViewController: UIViewController, MovieDetailsViewContro
     var presenter: MovieDetailsPresenterProtocol
 
     private let movieDetailsView: MovieDetailsViewProtocol
+    private let favouriteButton: UIButton = .createFavouriteButton()
 
     // MARK: - Init
     init(movieDetailsView: MovieDetailsViewProtocol, presenter: MovieDetailsPresenterProtocol) {
@@ -54,9 +55,8 @@ extension MovieDetailsViewController {
         // Custom left button
         navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
         // Custom right button
-        let rightButton: UIButton = .createFavouriteButton()
-        rightButton.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
-        let rightBarButton = UIBarButtonItem(customView: rightButton)
+        favouriteButton.addTarget(self, action: #selector(favouriteButtonTapped), for: .touchUpInside)
+        let rightBarButton = UIBarButtonItem(customView: favouriteButton)
         navigationItem.rightBarButtonItem = rightBarButton
     }
 }
@@ -71,12 +71,13 @@ extension MovieDetailsViewController {
 
     @objc
     private func favouriteButtonTapped(_ sender: UIButton) {
-        // Handle favourite button action
+        presenter.didTapFavouriteButton()
     }
 }
 
 // MARK: - MovieDetailsInteractionDelegate
 extension MovieDetailsViewController: MovieDetailsViewDelegate {
+
     func didFetchTitle(_ title: String?) {
         self.title = title
     }
@@ -95,5 +96,9 @@ extension MovieDetailsViewController: MovieDetailsViewDelegate {
 
     func didSelectPerson(personID: Int) {
         presenter.didSelectPerson(personID: personID)
+    }
+
+    func updateFavouriteButtonState(isSelected: Bool) {
+        favouriteButton.isSelected = isSelected
     }
 }

@@ -30,6 +30,8 @@ class WishlistPresenter: WishlistPresenterProtocol {
     // MARK: - Public
     func viewDidLoad() {
         interactor.fetchWishlist()
+
+        setupObservers()
     }
 
     func didSelectMovie(movieID: Int) {
@@ -40,8 +42,30 @@ class WishlistPresenter: WishlistPresenterProtocol {
     func removeMovie(movieID: Int) {
         interactor.removeMovieFromWishlist(movieID: movieID)
     }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
+// MARK: - Private Setup
+extension WishlistPresenter {
+    private func setupObservers() {
+        // Subscribe to wishlist updates
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavouritesUpdate), name: .favouritesUpdated, object: nil)
+    }
+}
+
+// MARK: - Action Methods
+extension WishlistPresenter {
+    @objc
+    private func handleFavouritesUpdate() {
+        // Reload wishlist when favourites are updated
+        interactor.fetchWishlist()
+    }
+}
+
+// MARK: - WishlistInteractorOutputProtocol
 extension WishlistPresenter: WishlistInteractorOutputProtocol {
     func didFetchWishlist(_ movies: [MovieProtocol]) {
         guard let favouriteMoviesViewModels = mapper.map(data: movies, to: [WishlistItemViewModelProtocol].self) else {

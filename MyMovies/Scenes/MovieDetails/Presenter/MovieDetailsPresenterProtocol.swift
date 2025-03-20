@@ -13,8 +13,9 @@ protocol MovieDetailsPresenterProtocol: AnyObject {
     var router: MovieDetailsRouterProtocol { get set }
 
     func viewDidLoad()
+    func presentReview(with author: String?, and text: String?)
     func didTapSeeAllButton(listType: MovieListType)
     func didSelectMovie(movieID: Int)
     func didSelectPerson(personID: Int)
-    func presentReview(with author: String?, and text: String?)
+    func didTapFavouriteButton()
 }

@@ -325,8 +325,7 @@ extension UIButton {
         button.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .selected)
         button.backgroundColor = .clear
-        button.layer.cornerRadius = 10
-//        button.tintColor = .secondaryRed
+        button.tintColor = .clear
         button.isSelected = isSelected
 
         return button

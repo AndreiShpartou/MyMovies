@@ -21,4 +21,5 @@ protocol MovieDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelega
     func didTapSeeAllButton(listType: MovieListType)
     func didSelectMovie(movieID: Int)
     func didSelectPerson(personID: Int)
+    func updateFavouriteButtonState(isSelected: Bool)
 }

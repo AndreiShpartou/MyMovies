@@ -13,7 +13,7 @@ protocol MovieRepositoryProtocol {
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int)
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String)
     // Fetch
-    func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol?
+    func fetchMovieByID(_ id: Int, provider: String, listType: String) -> MovieProtocol?
     func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol]
     func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol]
     // Clear movie memberships
@@ -47,11 +47,19 @@ final class MovieRepository: MovieRepositoryProtocol {
                 orderIndex: orderIndex,
                 context: bgContext
             )
+
             // Save background context
             self.saveContext(bgContext)
             // Notifications
             if listType == MovieListType.favouriteMovies.rawValue {
-                NotificationCenter.default.post(name: .favouritesUpdated, object: nil)
+                NotificationCenter.default.post(
+                    name: .favouritesUpdated,
+                    object: nil,
+                    userInfo: [
+                        NotificationKeys.movieID: movie.id,
+                        NotificationKeys.isFavourite: true
+                    ]
+                )
             }
         }
     }
@@ -77,8 +85,8 @@ final class MovieRepository: MovieRepositoryProtocol {
 
     // MARK: - Fetching
     // Fetching from the main context
-    func fetchMovieByID(_ id: Int, provider: String) -> MovieProtocol? {
-        let movieEntity = fetchMovieEntityById(Int64(id), provider: provider)
+    func fetchMovieByID(_ id: Int, provider: String, listType: String) -> MovieProtocol? {
+        let movieEntity = fetchMovieEntityById(Int64(id), provider: provider, listType: listType)
         guard let movieEntity = movieEntity else { return nil }
 
         return mapToMovieProtocol(movieEntity)
@@ -127,7 +135,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         bgContext.perform {
             let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
             request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "movie.id == %@", Int64(movieID)),
+                NSPredicate(format: "movie.id == %d", Int64(movieID)),
                 NSPredicate(format: "movie.provider == %@", provider),
                 NSPredicate(format: "listType.name == %@", listName)
             ])
@@ -139,7 +147,14 @@ final class MovieRepository: MovieRepositoryProtocol {
 
                 // Notify
                 if listName == MovieListType.favouriteMovies.rawValue {
-                    NotificationCenter.default.post(name: .favouritesUpdated, object: nil)
+                    NotificationCenter.default.post(
+                        name: .favouritesUpdated,
+                        object: nil,
+                        userInfo: [
+                            NotificationKeys.movieID: movieID,
+                            NotificationKeys.isFavourite: false
+                        ]
+                    )
                 }
             } catch {
                 print("Error clearing list membership: \(error)")
@@ -182,17 +197,18 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // MARK: - fetchMovieEntityById
-    private func fetchMovieEntityById(_ id: Int64, provider: String) -> MovieEntity? {
-        let request: NSFetchRequest<MovieEntity> = MovieEntity.fetchRequest()
+    private func fetchMovieEntityById(_ id: Int64, provider: String, listType: String) -> MovieEntity? {
+        let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "id == %d", id),
-            NSPredicate(format: "provider == %@", provider)
+            NSPredicate(format: "movie.provider == %@", provider),
+            NSPredicate(format: "movie.id == %d", id),
+            NSPredicate(format: "listType.name == %@", listType)
         ])
         request.fetchLimit = 1
         do {
             guard let entity = try mainContext.fetch(request).first else { return nil }
 
-            return entity
+            return entity.movie
         } catch {
             print("Error fetching movie by ID: \(error)")
 
