@@ -8,6 +8,13 @@
 import UIKit
 
 class CustomTabBarController: UITabBarController {
+    override var selectedIndex: Int {
+        didSet {
+            // Update custom tab bar appearance
+            customTabBar.selectItem(at: selectedIndex)
+        }
+    }
+    
     private let customTabBar = CustomTabBar()
 
     // MARK: - LifeCycle
@@ -62,7 +69,5 @@ extension CustomTabBarController {
         let index = tappedItem.tag
         // Switch the system tab bar's selection
         selectedIndex = index
-        // Update custom tab bar appearance
-        self.customTabBar.selectItem(at: index)
     }
 }
