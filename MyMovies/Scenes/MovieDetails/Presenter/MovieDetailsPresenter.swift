@@ -78,7 +78,8 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
 extension MovieDetailsPresenter {
     private func setupObservers() {
         // Subscribe to wishlist updates
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdate), name: .favouritesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdate), name: .favouritesAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdate), name: .favouritesRemoved, object: nil)
     }
 }
 
@@ -94,7 +95,9 @@ extension MovieDetailsPresenter {
 
         // Update the button state if the movie matches
         if movieID == self.movieID, isFavourite != self.isFavourite {
-            self.isFavourite.toggle()
+            DispatchQueue.main.async { [weak self] in
+                self?.isFavourite.toggle()
+            }
         }
     }
 }

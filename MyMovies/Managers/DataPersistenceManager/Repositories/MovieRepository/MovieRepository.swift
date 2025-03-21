@@ -53,7 +53,7 @@ final class MovieRepository: MovieRepositoryProtocol {
             // Notifications
             if listType == MovieListType.favouriteMovies.rawValue {
                 NotificationCenter.default.post(
-                    name: .favouritesUpdated,
+                    name: .favouritesAdded,
                     object: nil,
                     userInfo: [
                         NotificationKeys.movieID: movie.id,
@@ -148,7 +148,7 @@ final class MovieRepository: MovieRepositoryProtocol {
                 // Notify
                 if listName == MovieListType.favouriteMovies.rawValue {
                     NotificationCenter.default.post(
-                        name: .favouritesUpdated,
+                        name: .favouritesRemoved,
                         object: nil,
                         userInfo: [
                             NotificationKeys.movieID: movieID,

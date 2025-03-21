@@ -60,8 +60,10 @@ extension WishlistViewController: WishlistViewDelegate {
     func didSelectMovie(movieID: Int) {
         presenter.didSelectMovie(movieID: movieID)
     }
+}
 
-    func removeMovie(movieID: Int) {
-        presenter.removeMovie(movieID: movieID)
+extension WishlistViewController: WishlistCollectionViewCellDelegate {
+    func didTapRemoveButton(for movieID: Int) {
+        presenter.didTapRemoveButton(for: movieID)
     }
 }

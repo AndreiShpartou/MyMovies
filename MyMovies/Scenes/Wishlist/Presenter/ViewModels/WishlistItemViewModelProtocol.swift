@@ -13,4 +13,5 @@ protocol WishlistItemViewModelProtocol {
     var posterURL: URL? { get }
     var genre: String { get }
     var voteAverage: String { get }
+    var year: String { get }
 }

@@ -11,10 +11,10 @@ protocol WishlistViewProtocol: UIView {
     var delegate: WishlistViewDelegate? { get set }
 
     func showMovies(_ movies: [WishlistItemViewModelProtocol])
+    func removeMovie(at index: Int)
     func showError(error: Error)
 }
 
 protocol WishlistViewDelegate: AnyObject, WishlistCollectionViewHandlerDelegate {
     func didSelectMovie(movieID: Int)
-    func removeMovie(movieID: Int)
 }

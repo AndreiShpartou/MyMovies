@@ -111,6 +111,7 @@ final class SceneBuilder: SceneBuilderProtocol {
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController {
         let viewController = TextInfoGeneralViewController()
         viewController.configure(with: labelText, and: textViewText, title: title)
+
         return viewController
     }
 
@@ -150,6 +151,8 @@ final class SceneBuilder: SceneBuilderProtocol {
         router.viewController = viewController
         interactor.presenter = presenter
 
-        return viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+
+        return navigationController
     }
 }

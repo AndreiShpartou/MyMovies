@@ -47,6 +47,22 @@ final class WishlistView: UIView, WishlistViewProtocol {
         collectionView.reloadData()
     }
 
+    func removeMovie(at index: Int) {
+        collectionViewHandler.removeItem(at: index)
+
+        // Reload data to show placeholder
+        if index == 0, collectionView.numberOfItems(inSection: 0) == 1 {
+            collectionView.reloadData()
+
+            return
+        }
+
+        let indexPath = IndexPath(item: index, section: 0)
+        collectionView.performBatchUpdates({
+            collectionView.deleteItems(at: [indexPath])
+        }, completion: nil)
+    }
+
     func showError(error: Error) {
     }
 }

@@ -14,7 +14,7 @@ class CustomTabBarController: UITabBarController {
             customTabBar.selectItem(at: selectedIndex)
         }
     }
-    
+
     private let customTabBar = CustomTabBar()
 
     // MARK: - LifeCycle

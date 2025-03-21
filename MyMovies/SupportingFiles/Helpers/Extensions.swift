@@ -44,7 +44,7 @@ extension UIView {
     }
 
     static func createBorderedViewWithLabel(
-        labelText: String?,
+        labelText: String? = nil,
         borderWidth: CGFloat = 2,
         borderColor: CGColor = UIColor.primaryBlueAccent.cgColor,
         textColor: UIColor = .primaryBlueAccent
@@ -528,5 +528,6 @@ extension String {
 
 // MARK: - NotificationCenter
 extension Notification.Name {
-    static let favouritesUpdated = Notification.Name("favouritesUpdated")
+    static let favouritesAdded = Notification.Name("favouritesAdded")
+    static let favouritesRemoved = Notification.Name("favouritesRemoved")
 }

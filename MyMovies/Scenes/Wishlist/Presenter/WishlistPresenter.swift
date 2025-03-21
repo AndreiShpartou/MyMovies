@@ -39,7 +39,8 @@ class WishlistPresenter: WishlistPresenterProtocol {
         router.navigateToMovieDetails(with: movie)
     }
 
-    func removeMovie(movieID: Int) {
+    func didTapRemoveButton(for movieID: Int) {
+        didRemoveMovie(movieID: movieID)
         interactor.removeMovieFromWishlist(movieID: movieID)
     }
 
@@ -52,16 +53,43 @@ class WishlistPresenter: WishlistPresenterProtocol {
 extension WishlistPresenter {
     private func setupObservers() {
         // Subscribe to wishlist updates
-        NotificationCenter.default.addObserver(self, selector: #selector(handleFavouritesUpdate), name: .favouritesUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavouritesUpdate), name: .favouritesAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavouritesUpdate), name: .favouritesRemoved, object: nil)
     }
 }
 
 // MARK: - Action Methods
 extension WishlistPresenter {
     @objc
-    private func handleFavouritesUpdate() {
-        // Reload wishlist when favourites are updated
-        interactor.fetchWishlist()
+    private func handleFavouritesUpdate(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let movieID = userInfo[NotificationKeys.movieID] as? Int else {
+            return
+        }
+
+        if notification.name == .favouritesAdded {
+            DispatchQueue.main.async { [weak self] in
+                // Reload wishlist when favourites are updated
+                self?.interactor.fetchWishlist()
+            }
+        }
+
+        if notification.name == .favouritesRemoved {
+            DispatchQueue.main.async { [weak self] in
+                self?.didRemoveMovie(movieID: movieID)
+            }
+        }
+    }
+}
+
+extension WishlistPresenter {
+    func didRemoveMovie(movieID: Int) {
+        // Remove from local `movies` array
+        guard let index = movies.firstIndex(where: { $0.id == movieID }) else { return }
+        movies.remove(at: index)
+
+        // Tell the view to remove that index
+        view?.removeMovie(at: index)
     }
 }
 

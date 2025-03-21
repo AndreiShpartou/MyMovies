@@ -13,4 +13,5 @@ struct WishlistItemViewModel: WishlistItemViewModelProtocol {
     var posterURL: URL?
     let genre: String
     let voteAverage: String
+    let year: String
 }

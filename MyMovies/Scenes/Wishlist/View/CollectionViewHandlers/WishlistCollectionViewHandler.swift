@@ -10,6 +10,7 @@ import UIKit
 
 protocol WishlistCollectionViewHandlerDelegate: AnyObject {
     func didSelectMovie(movieID: Int)
+    func didTapRemoveButton(for movieID: Int)
 }
 
 final class WishlistCollectionViewHandler: NSObject {
@@ -20,6 +21,11 @@ final class WishlistCollectionViewHandler: NSObject {
     // MARK: - Public
     func configure(with movies: [WishlistItemViewModelProtocol]) {
         self.movies = movies
+    }
+
+    func removeItem(at index: Int) {
+        guard index < movies.count else { return }
+        movies.remove(at: index)
     }
 }
 
@@ -43,9 +49,9 @@ extension WishlistCollectionViewHandler: UICollectionViewDataSource {
             return cell
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WishlistCollectionViewCell.identifier, for: indexPath) as? WishlistCollectionViewCell else {
-                fatalError("Failed to dequeue PopularMoviesCollectionViewCell")
+                fatalError("Failed to dequeue WishlistCollectionViewCell")
             }
-            cell.configure(with: movies[indexPath.row])
+            cell.configure(with: movies[indexPath.row], delegate: self)
 
             return cell
         }
@@ -71,5 +77,11 @@ extension WishlistCollectionViewHandler: UICollectionViewDelegateFlowLayout {
         let itemHeight: CGFloat = movies.isEmpty ? collectionView.bounds.height : collectionView.bounds.width * 0.35
 
         return CGSize(width: itemWidth, height: itemHeight)
+    }
+}
+
+extension WishlistCollectionViewHandler: WishlistCollectionViewCellDelegate {
+    func didTapRemoveButton(for movieID: Int) {
+        delegate?.didTapRemoveButton(for: movieID)
     }
 }

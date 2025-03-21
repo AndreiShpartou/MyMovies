@@ -14,5 +14,5 @@ protocol WishlistPresenterProtocol: AnyObject {
 
     func viewDidLoad()
     func didSelectMovie(movieID: Int)
-    func removeMovie(movieID: Int)
+    func didTapRemoveButton(for movieID: Int)
 }

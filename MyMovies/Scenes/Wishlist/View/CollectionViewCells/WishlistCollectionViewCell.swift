@@ -35,6 +35,10 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
         textColor: .textColorWhite
     )
 
+    private let yearStackView = DescriptionGeneralStackView(
+        image: Asset.Icons.calendar.image.withTintColor(.textColorGrey, renderingMode: .alwaysOriginal)
+    )
+
     private let titleLabel: UILabel = .createLabel(
         font: Typography.SemiBold.subhead,
         numberOfLines: 2,
@@ -42,7 +46,7 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
     )
 
     private let ratingStackView = RatingGeneralStackView()
-    private let favouriteButton: UIButton = .createFavouriteButton()
+    private let favouriteButton: UIButton = .createFavouriteButton(isSelected: true)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -66,15 +70,20 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
         titleLabel.text = nil
         genreLabel.text = nil
         ratingStackView.ratingLabel.text = nil
+        yearStackView.label.text = nil
+        favouriteButton.isSelected = true
+        delegate = nil
     }
 
     // MARK: - Public
-    func configure(with movie: WishlistItemViewModelProtocol) {
+    func configure(with movie: WishlistItemViewModelProtocol, delegate: WishlistCollectionViewCellDelegate) {
         self.movieID = movie.id
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         titleLabel.text = movie.title
         genreLabel.text = movie.genre
         ratingStackView.ratingLabel.text = movie.voteAverage
+        yearStackView.label.text = movie.year
+        self.delegate = delegate
     }
 }
 
@@ -85,9 +94,10 @@ extension WishlistCollectionViewCell {
         containerView.addSubviews(
             posterImageView,
             genreLabel,
+            favouriteButton,
             titleLabel,
             ratingStackView,
-            favouriteButton
+            yearStackView
         )
         // Set targets
         favouriteButton.addTarget(self, action: #selector(didTapRemoveButton), for: .touchUpInside)
@@ -97,9 +107,10 @@ extension WishlistCollectionViewCell {
 // MARK: - ActionMethods
 extension WishlistCollectionViewCell {
     @objc
-    private func didTapRemoveButton() {
+    private func didTapRemoveButton(_ sender: UIButton) {
         guard let movieID = movieID else { return }
         delegate?.didTapRemoveButton(for: movieID)
+        sender.isSelected.toggle()
     }
 }
 
@@ -120,6 +131,12 @@ extension WishlistCollectionViewCell {
             make.top.equalTo(posterImageView)
         }
 
+        favouriteButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-8)
+            make.centerY.equalTo(genreLabel)
+            make.width.height.equalTo(32)
+        }
+
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(posterImageView.snp.trailing).offset(12)
             make.trailing.equalToSuperview().offset(-8)
@@ -135,10 +152,10 @@ extension WishlistCollectionViewCell {
             make.height.equalTo(20)
         }
 
-        favouriteButton.snp.makeConstraints { make in
+        yearStackView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-8)
             make.centerY.equalTo(ratingStackView)
-            make.width.height.equalTo(32)
+            make.height.equalTo(20)
         }
     }
 }
