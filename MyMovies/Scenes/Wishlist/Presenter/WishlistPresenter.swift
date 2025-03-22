@@ -82,8 +82,9 @@ extension WishlistPresenter {
     }
 }
 
+// MARK: - Helpers
 extension WishlistPresenter {
-    func didRemoveMovie(movieID: Int) {
+    private func didRemoveMovie(movieID: Int) {
         // Remove from local `movies` array
         guard let index = movies.firstIndex(where: { $0.id == movieID }) else { return }
         movies.remove(at: index)

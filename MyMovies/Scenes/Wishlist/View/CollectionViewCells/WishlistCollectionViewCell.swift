@@ -15,6 +15,7 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
     static let identifier = "WishlistCollectionViewCell"
 
     weak var delegate: WishlistCollectionViewCellDelegate?
+
     private var movieID: Int?
 
     // MARK: - UIComponents
@@ -76,14 +77,13 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: - Public
-    func configure(with movie: WishlistItemViewModelProtocol, delegate: WishlistCollectionViewCellDelegate) {
+    func configure(with movie: WishlistItemViewModelProtocol) {
         self.movieID = movie.id
         posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         titleLabel.text = movie.title
         genreLabel.text = movie.genre
         ratingStackView.ratingLabel.text = movie.voteAverage
         yearStackView.label.text = movie.year
-        self.delegate = delegate
     }
 }
 

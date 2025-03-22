@@ -51,7 +51,8 @@ extension WishlistCollectionViewHandler: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WishlistCollectionViewCell.identifier, for: indexPath) as? WishlistCollectionViewCell else {
                 fatalError("Failed to dequeue WishlistCollectionViewCell")
             }
-            cell.configure(with: movies[indexPath.row], delegate: self)
+            cell.configure(with: movies[indexPath.row])
+            cell.delegate = self
 
             return cell
         }
