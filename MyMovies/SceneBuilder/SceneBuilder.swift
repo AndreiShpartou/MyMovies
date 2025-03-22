@@ -17,6 +17,7 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildEditProfileScene() -> UIViewController
     static func buildPersonDetailsScene(for personID: Int) -> UIViewController
     static func buildOnboardingScene() -> UIViewController
+    static func buildWishlistScene() -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -110,6 +111,7 @@ final class SceneBuilder: SceneBuilderProtocol {
     static func buildGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?) -> UIViewController {
         let viewController = TextInfoGeneralViewController()
         viewController.configure(with: labelText, and: textViewText, title: title)
+
         return viewController
     }
 
@@ -137,5 +139,20 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         return viewController
+    }
+
+    static func buildWishlistScene() -> UIViewController {
+        let interactor = WishlistInteractor()
+        let router = WishlistRouter()
+        let view = WishlistView()
+        let presenter = WishlistPresenter(view: view, interactor: interactor, router: router)
+        let viewController = WishlistViewController(wishlistView: view, presenter: presenter)
+
+        router.viewController = viewController
+        interactor.presenter = presenter
+
+        let navigationController = UINavigationController(rootViewController: viewController)
+
+        return navigationController
     }
 }

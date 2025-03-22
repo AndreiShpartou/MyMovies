@@ -28,7 +28,8 @@ extension UIView {
         frame: CGRect = .zero,
         borderWidth: CGFloat = 0,
         borderColor: CGColor? = nil,
-        masksToBounds: Bool = false
+        masksToBounds: Bool = false,
+        isHidden: Bool = false
     ) -> UIView {
         let view = UIView(frame: frame)
         view.clipsToBounds = clipsToBounds
@@ -37,12 +38,13 @@ extension UIView {
         view.layer.borderWidth = borderWidth
         view.layer.borderColor = borderColor
         view.layer.masksToBounds = masksToBounds
+        view.isHidden = isHidden
 
         return view
     }
 
     static func createBorderedViewWithLabel(
-        labelText: String?,
+        labelText: String? = nil,
         borderWidth: CGFloat = 2,
         borderColor: CGColor = UIColor.primaryBlueAccent.cgColor,
         textColor: UIColor = .primaryBlueAccent
@@ -144,13 +146,16 @@ extension UILabel {
         textColor: UIColor? = nil,
         text: String? = nil,
         borderWidth: CGFloat? = nil,
-        borderColor: CGColor? = nil
+        borderColor: CGColor? = nil,
+        isHidden: Bool = false
     ) -> UILabel {
         let label = UILabel()
         label.font = font
         label.numberOfLines = numberOfLines
         label.textAlignment = textAlignment
         label.text = text
+        label.isHidden = isHidden
+
         if let textColor = textColor {
             label.textColor = textColor
         }
@@ -315,12 +320,13 @@ extension UIButton {
         self.addTarget(target, action: action, for: .touchUpInside)
     }
 
-    static func createFavouriteButton() -> UIButton {
+    static func createFavouriteButton(isSelected: Bool = false) -> UIButton {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.backgroundColor = .primarySoft
-        button.layer.cornerRadius = 10
-        button.tintColor = .secondaryRed
+        button.setImage(UIImage(systemName: "heart")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(systemName: "heart.fill")?.withRenderingMode(.alwaysOriginal), for: .selected)
+        button.backgroundColor = .clear
+        button.tintColor = .clear
+        button.isSelected = isSelected
 
         return button
     }
@@ -379,6 +385,17 @@ extension UISearchBar {
         textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: placeholderAttributes)
 
         return searchBar
+    }
+}
+
+// MARK: - Array
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        guard index >= 0 && index < count else {
+            return nil
+        }
+
+        return self[index]
     }
 }
 
@@ -507,4 +524,10 @@ extension String {
     func capitalizingFirstLetter() -> String {
         return prefix(1).uppercased() + dropFirst()
     }
+}
+
+// MARK: - NotificationCenter
+extension Notification.Name {
+    static let favouritesAdded = Notification.Name("favouritesAdded")
+    static let favouritesRemoved = Notification.Name("favouritesRemoved")
 }

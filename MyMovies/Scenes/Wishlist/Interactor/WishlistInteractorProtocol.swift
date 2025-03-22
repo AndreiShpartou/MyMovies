@@ -7,4 +7,14 @@
 
 import Foundation
 
-protocol WishlistInteractorProtocol: AnyObject {}
+protocol WishlistInteractorProtocol: AnyObject {
+    var presenter: WishlistInteractorOutputProtocol? { get set }
+
+    func fetchWishlist()
+    func removeMovieFromWishlist(movieID: Int)
+}
+
+protocol WishlistInteractorOutputProtocol: AnyObject {
+    func didFetchWishlist(_ movies: [MovieProtocol])
+    func didFailToFetchData(error: Error)
+}

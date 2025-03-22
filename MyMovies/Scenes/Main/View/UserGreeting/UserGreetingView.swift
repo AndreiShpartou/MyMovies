@@ -7,7 +7,9 @@
 
 import UIKit
 
-class UserGreetingView: UIView, UserGreetingViewProtocol {
+final class UserGreetingView: UIView, UserGreetingViewProtocol {
+    weak var delegate: UserGreetingViewDelegate?
+
     private let avatarImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
@@ -19,7 +21,7 @@ class UserGreetingView: UIView, UserGreetingViewProtocol {
         textColor: .textColorWhite,
         text: "Hello, Smith"
     )
-    private let favouriteButton: UIButton = .createFavouriteButton()
+    private let favouriteButton: UIButton = .createFavouriteButton(isSelected: true)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -46,6 +48,16 @@ extension UserGreetingView {
         backgroundColor = .clear
 
         addSubviews(avatarImageView, helloLabel, favouriteButton)
+
+        favouriteButton.addTarget(self, action: #selector(didTapFavouriteButton), for: .touchUpInside)
+    }
+}
+
+// MARK: - ActionMethods
+extension UserGreetingView {
+    @objc
+    private func didTapFavouriteButton() {
+        delegate?.didTapFavouriteButton()
     }
 }
 

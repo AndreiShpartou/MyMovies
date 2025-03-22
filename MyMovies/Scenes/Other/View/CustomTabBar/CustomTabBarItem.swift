@@ -8,14 +8,26 @@
 import UIKit
 
 final class CustomTabBarItem: UIView {
-    private let iconImageView: UIImageView = .createImageView(contentMode: .scaleAspectFit)
-    private let titleLabel: UILabel = .createLabel(font: Typography.Medium.subhead)
-
     var isSelected = false {
         didSet {
             updateAppearance()
         }
     }
+
+    private let selectionBackgroundView: UIView = .createCommonView(
+        cornerRadius: 12,
+        backgroundColor: .primarySoft,
+        isHidden: true
+    )
+    private let itemStackView: UIStackView = .createCommonStackView(
+        axis: .horizontal,
+        spacing: 4,
+        distribution: .fill,
+        alignment: .center
+    )
+
+    private let iconImageView: UIImageView = .createImageView(contentMode: .scaleAspectFit)
+    private let titleLabel: UILabel = .createLabel(font: Typography.Medium.subhead, isHidden: true)
 
     // MARK: - Init
     init(icon: UIImage?, title: String) {
@@ -26,38 +38,50 @@ final class CustomTabBarItem: UIView {
         setupConstraints()
     }
 
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Setup
     private func setupView(icon: UIImage?, title: String) {
         iconImageView.image = icon?.withRenderingMode(.alwaysTemplate)
-        iconImageView.backgroundColor = .primaryBackground
         titleLabel.text = title
-        addSubviews(iconImageView, titleLabel)
+
+        // Setup subviews
+        itemStackView.addArrangedSubview(iconImageView)
+        itemStackView.addArrangedSubview(titleLabel)
+        addSubviews(selectionBackgroundView, itemStackView)
     }
 
     private func updateAppearance() {
-        let tintColor: UIColor = isSelected ? .primaryBlueAccent : .textColorGrey
-        iconImageView.tintColor = tintColor
-        titleLabel.textColor = tintColor
+        if isSelected {
+            iconImageView.tintColor = .primaryBlueAccent
+            titleLabel.textColor = .primaryBlueAccent
+            titleLabel.isHidden = false
+            selectionBackgroundView.isHidden = false
+        } else {
+            iconImageView.tintColor = .textColorGrey
+            titleLabel.textColor = .textColorGrey
+            titleLabel.isHidden = true
+            selectionBackgroundView.isHidden = true
+        }
     }
 }
 
 // MARK: - Constraints
 extension CustomTabBarItem {
     private func setupConstraints() {
-        iconImageView.snp.makeConstraints { make in
-            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(24)
+        selectionBackgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(4)
         }
 
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(iconImageView.snp.trailing).offset(4)
-            make.trailing.equalToSuperview().offset(-4)
-            make.centerY.equalTo(iconImageView)
+        itemStackView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.height.greaterThanOrEqualTo(24)
+        }
+
+        iconImageView.snp.makeConstraints { make in
+            make.width.height.equalTo(24) // Standart icon size
         }
     }
 }

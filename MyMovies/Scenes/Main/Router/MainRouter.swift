@@ -26,4 +26,10 @@ final class MainRouter: MainRouterProtocol {
         viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieListVC, animated: true)
     }
+
+    func navigateToWishlist() {
+        if let tabBarController = viewController?.tabBarController {
+            tabBarController.selectedIndex = 2
+        }
+    }
 }

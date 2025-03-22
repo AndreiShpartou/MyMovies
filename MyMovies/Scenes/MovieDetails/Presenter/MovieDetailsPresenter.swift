@@ -13,7 +13,13 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     var router: MovieDetailsRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
+    private var movieID: Int = 0
     private var similarMovies: [MovieProtocol] = []
+    private var isFavourite = false {
+        didSet {
+            view?.delegate?.updateFavouriteButtonState(isSelected: isFavourite)
+        }
+    }
 
     // MARK: - Init
     init(
@@ -33,6 +39,9 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         interactor.fetchMovie()
         interactor.fetchReviews()
         interactor.fetchSimilarMovies()
+        interactor.fetchIsMovieInList(listType: .favouriteMovies)
+
+        setupObservers()
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
@@ -54,6 +63,43 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     func presentReview(with author: String?, and text: String?) {
         router.navigateToReviewDetails(with: author, and: text, title: "Review")
     }
+
+    func didTapFavouriteButton() {
+        isFavourite.toggle()
+        interactor.toggleFavouriteStatus(isFavourite: isFavourite)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - Private Setup
+extension MovieDetailsPresenter {
+    private func setupObservers() {
+        // Subscribe to wishlist updates
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdate), name: .favouritesAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFavoritesUpdate), name: .favouritesRemoved, object: nil)
+    }
+}
+
+// MARK: - ActionMethods
+extension MovieDetailsPresenter {
+    @objc
+    private func handleFavoritesUpdate(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let movieID = userInfo[NotificationKeys.movieID] as? Int,
+              let isFavourite = userInfo[NotificationKeys.isFavourite] as? Bool else {
+            return
+        }
+
+        // Update the button state if the movie matches
+        if movieID == self.movieID, isFavourite != self.isFavourite {
+            DispatchQueue.main.async { [weak self] in
+                self?.isFavourite.toggle()
+            }
+        }
+    }
 }
 
 // MARK: - MovieDetailsInteractorOutputProtocol
@@ -64,6 +110,7 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
         }
 
         view?.showDetailedMovie(movieDetailsViewModel)
+        self.movieID = movie.id
     }
 
     func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
@@ -81,6 +128,12 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
 
         view?.showSimilarMovies(similarMovies)
         self.similarMovies = movies
+    }
+
+    func didFetchIsMovieInList(_ isInList: Bool, listType: MovieListType) {
+        if listType == .favouriteMovies, isInList != isFavourite {
+            self.isFavourite.toggle()
+        }
     }
 
     func didFailToFetchData(with error: Error) {

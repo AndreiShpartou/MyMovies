@@ -11,20 +11,15 @@ import SnapKit
 final class CustomTabBar: UITabBar {
     var customTabBarItems = [CustomTabBarItem]()
 
-    private let containerView = UIView()
-    private let selectionBackgroundView: UIView = .createCommonView(
-        cornerRadius: 12,
-        backgroundColor: .primarySoft.withAlphaComponent(0.5)
-    )
+    private let containerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
+    private var itemWidthConstraints = [Int: Constraint]()
 
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setupContainerView()
-        setupSelectionBackgroundView()
+        setupTabBar()
         setupConstraints()
-        setupAppearance()
     }
 
     required init?(coder: NSCoder) {
@@ -35,93 +30,102 @@ final class CustomTabBar: UITabBar {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        layoutCustomItems()
+        // Disable default tabBar buttons to ensure the work of GestureRecognizers
         disableDefaultTabBarButtons()
     }
 
     // MARK: - Public
     func setCustomItems(_ items: [CustomTabBarItem]) {
-        customTabBarItems.forEach {
-            $0.removeFromSuperview()
-        }
         customTabBarItems = items
-        customTabBarItems.forEach {
-            containerView.addSubviews($0)
-        }
+        rearrangeTabBarItems()
     }
 
     func selectItem(at index: Int) {
-        customTabBarItems.enumerated().forEach {
-            $0.element.isSelected = ($0.offset == index)
+        for (itemIndex, item) in customTabBarItems.enumerated() {
+            item.isSelected = (itemIndex == index)
         }
-        updateSelectionBackgroundPosition()
-    }
 
-    // MARK: - Setup
-    private func setupContainerView() {
-        containerView.backgroundColor = .primaryBackground
+        adjustTabBarItemsWidth(selectedIndex: index)
+    }
+}
+
+// MARK: - Private Setup
+extension CustomTabBar {
+    private func setupTabBar() {
+        setupAppearance()
         addSubviews(containerView)
     }
 
-    private func setupSelectionBackgroundView() {
-        containerView.insertSubview(selectionBackgroundView, at: 0)
+    private func setupAppearance() {
+        backgroundColor = .primaryBackground
+        isTranslucent = false
+        barTintColor = .primaryBackground
     }
+}
 
-    private func layoutCustomItems() {
-        // Remove old constraints before adding new ones
-        customTabBarItems.forEach { $0.removeFromSuperview() }
-
-        // Add items as subviews again to ensure they are visible
-        customTabBarItems.forEach { containerView.addSubviews($0) }
-
-        // Define constraints for each custom tab bar item
-        let itemWidth = bounds.width / CGFloat(customTabBarItems.count) - 8
-        let widthMultiplier = 1.0 / CGFloat(customTabBarItems.count)
-        for (index, item) in customTabBarItems.enumerated() {
-            item.snp.makeConstraints { make in
-                make.leading.equalTo(containerView).offset(CGFloat(index) * itemWidth)
-                make.top.bottom.equalTo(containerView)
-                make.width.equalTo(containerView).multipliedBy(widthMultiplier)
-            }
-        }
-        updateSelectionBackgroundPosition()
-    }
-
+// MARK: - Update layout
+extension CustomTabBar {
+    // Disable default tabBar buttons
     private func disableDefaultTabBarButtons() {
         for subview in subviews where subview is UIControl && subview.isUserInteractionEnabled {
             subview.isUserInteractionEnabled = false
         }
     }
 
-    private func updateSelectionBackgroundPosition() {
-        guard let selectedIndex = customTabBarItems.firstIndex(
-            where: {
-                $0.isSelected
-            }
-        ) else {
-            return
+    // Rearrange tab bar items to force width change
+    private func rearrangeTabBarItems() {
+        // Clear old
+        containerView.subviews.forEach {
+            $0.removeFromSuperview()
         }
 
-        let itemWidth = bounds.width / CGFloat(customTabBarItems.count)
-        let width = itemWidth - 16
-        let height = bounds.height / 1.5
-        let xPosition = customTabBarItems[selectedIndex].frame.midX - itemWidth / 2
-        let yPosition = customTabBarItems[selectedIndex].bounds.midY - height / 2
+        // Add new and set default constraints
+        for (index, item) in customTabBarItems.enumerated() {
+            containerView.addSubviews(item)
+            let previousItem = customTabBarItems[safe: index - 1]
+            let leadingConstraint = previousItem?.snp.trailing ?? containerView.snp.leading
 
-        selectionBackgroundView.frame = CGRect(x: xPosition + 8, y: yPosition, width: width, height: height)
+            item.snp.makeConstraints { make in
+                make.leading.equalTo(leadingConstraint)
+                make.bottom.height.equalToSuperview()
+                // save constraints to onward updating
+                let widthConstraint = make.width.equalToSuperview().multipliedBy(0.1).constraint
+                itemWidthConstraints[index] = widthConstraint
+            }
+            // Set default priority
+            item.setContentHuggingPriority(UILayoutPriority(Float(index)), for: .horizontal)
+        }
     }
 
-    private func setupAppearance() {
-        backgroundColor = .primaryBackground
-        isTranslucent = false
+    private func adjustTabBarItemsWidth(selectedIndex: Int) {
+        let selectedItemMultiplier: Float = 0.4
+        let unselectedItemMultiplier: Float = (1 - selectedItemMultiplier) / Float(customTabBarItems.count - 1)
+
+        for (index, item) in customTabBarItems.enumerated() {
+            let multiplier = (index == selectedIndex) ? selectedItemMultiplier : unselectedItemMultiplier
+            let priority: UILayoutPriority = (index == selectedIndex) ? .defaultLow : .defaultHigh
+            // Remove old constraint and apply new one
+            itemWidthConstraints[index]?.deactivate()
+            item.snp.makeConstraints { make in
+                let newWidthConstraint = make.width.equalToSuperview().multipliedBy(multiplier)
+                itemWidthConstraints[index] = newWidthConstraint.constraint
+            }
+            item.setContentHuggingPriority(priority, for: .horizontal)
+        }
+
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded() // Update layout
+        }
     }
 }
 
 // MARK: - Constraints
 extension CustomTabBar {
-    func setupConstraints() {
+    private func setupConstraints() {
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.top.equalToSuperview().offset(2)
+            make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }

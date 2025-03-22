@@ -13,6 +13,8 @@ protocol MovieDetailsInteractorProtocol: AnyObject {
     func fetchMovie()
     func fetchReviews()
     func fetchSimilarMovies()
+    func fetchIsMovieInList(listType: MovieListType)
+    func toggleFavouriteStatus(isFavourite: Bool)
 }
 
 protocol MovieDetailsInteractorOutputProtocol: AnyObject {
@@ -20,4 +22,5 @@ protocol MovieDetailsInteractorOutputProtocol: AnyObject {
     func didFetchReviews(_ reviews: [MovieReviewProtocol])
     func didFetchSimilarMovies(_ movies: [MovieProtocol])
     func didFailToFetchData(with error: Error)
+    func didFetchIsMovieInList(_ isInList: Bool, listType: MovieListType)
 }

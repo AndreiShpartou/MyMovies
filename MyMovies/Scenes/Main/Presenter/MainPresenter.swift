@@ -59,6 +59,10 @@ final class MainPresenter: MainPresenterProtocol {
     func didTapSeeAllButton(listType: MovieListType) {
         router.navigateToMovieList(type: listType)
     }
+
+    func didTapFavouriteButton() {
+        router.navigateToWishlist()
+    }
 }
 
 // MARK: - MainInteractorOutputProtocol

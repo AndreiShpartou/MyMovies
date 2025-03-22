@@ -11,12 +11,20 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     weak var presenter: MovieDetailsInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
+    private let movieRepository: MovieRepositoryProtocol
+    private let provider: Provider
     private var movie: MovieProtocol
 
     // MARK: - Init
-    init(movie: MovieProtocol, networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+    init(
+        movie: MovieProtocol,
+        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        movieRepository: MovieRepositoryProtocol = MovieRepository()
+    ) {
         self.movie = movie
         self.networkManager = networkManager
+        self.movieRepository = movieRepository
+        self.provider = networkManager.getProvider()
     }
 
     // MARK: - Public
@@ -58,6 +66,37 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
             networkManager.fetchMovies(type: type) { [weak self] result in
                 self?.handleMovieFetchResult(result, fetchType: type)
             }
+        }
+    }
+
+    func fetchIsMovieInList(listType: MovieListType) {
+        let movieInList = movieRepository.fetchMovieByID(
+            movie.id,
+            provider: provider.rawValue,
+            listType: listType.rawValue
+        )
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            self.presenter?.didFetchIsMovieInList(movieInList != nil, listType: listType)
+        }
+    }
+
+    func toggleFavouriteStatus(isFavourite: Bool) {
+        if isFavourite {
+            movieRepository.storeMovieForList(
+                movie,
+                provider: provider.rawValue,
+                listType: MovieListType.favouriteMovies.rawValue,
+                orderIndex: 0
+            )
+        } else {
+            movieRepository.removeMovieFromList(
+                movie.id,
+                provider: provider.rawValue,
+                listName: MovieListType.favouriteMovies.rawValue
+            )
         }
     }
 

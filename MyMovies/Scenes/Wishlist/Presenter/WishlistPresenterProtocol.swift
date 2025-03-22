@@ -7,4 +7,12 @@
 
 import Foundation
 
-protocol WishlistPresenterProtocol: AnyObject {}
+protocol WishlistPresenterProtocol: AnyObject {
+    var view: WishlistViewProtocol? { get set }
+    var interactor: WishlistInteractorProtocol { get set }
+    var router: WishlistRouterProtocol { get set }
+
+    func viewDidLoad()
+    func didSelectMovie(movieID: Int)
+    func didTapRemoveButton(for movieID: Int)
+}
