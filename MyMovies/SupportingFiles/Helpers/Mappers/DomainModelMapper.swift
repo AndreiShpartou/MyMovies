@@ -90,7 +90,7 @@ extension DomainModelMapper {
                 id: $0.id,
                 title: $0.title,
                 posterURL: URL(string: $0.poster?.url ?? ""),
-                genre: $0.genres.first?.name ?? "Action",
+                genre: $0.genres.first?.name ?? "N/A",
                 voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7))
             )
         }
@@ -106,7 +106,7 @@ extension DomainModelMapper {
                 id: $0.id,
                 title: $0.title,
                 posterURL: URL(string: $0.backdrop?.url ?? $0.poster?.url ?? ""),
-                genre: $0.genres.first?.name ?? "Action",
+                genre: $0.genres.first?.name ?? "N/A",
                 voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7)),
                 year: extractYear(from: $0.releaseYear)
             )
@@ -123,7 +123,7 @@ extension DomainModelMapper {
                 id: $0.id,
                 title: $0.title,
                 voteAverage: String(format: "%.1f", $0.voteAverage ?? Double.random(in: 4.4...7.7)),
-                genre: $0.genres.first?.name ?? "Action",
+                genre: $0.genres.first?.name ?? "N/A",
                 countries: $0.countries.map { $0.name },
                 posterURL: URL(string: $0.poster?.url ?? ""),
                 releaseYear: extractYear(from: $0.releaseYear),
@@ -141,7 +141,7 @@ extension DomainModelMapper {
                 id: data.id,
                 title: data.title,
                 voteAverage: String(format: "%.1f", data.voteAverage ?? Double.random(in: 4.4...7.7)),
-                genre: data.genres.first?.name ?? "Action",
+                genre: data.genres.first?.name ?? "N/A",
                 countries: data.countries.map { $0.name },
                 posterURL: URL(string: data.poster?.url ?? ""),
                 releaseYear: extractYear(from: data.releaseYear),
@@ -158,7 +158,7 @@ extension DomainModelMapper {
             alternativeTitle: data.alternativeTitle,
             description: data.description ?? data.title,
             voteAverage: String(format: "%.1f", data.voteAverage ?? Double.random(in: 4.4...7.7)),
-            genre: data.genres.first?.name ?? "Action",
+            genre: data.genres.first?.name ?? "N/A",
             releaseYear: extractYear(from: data.releaseYear),
             runtime: "\(runtime) Minutes",
             countries: map(data.countries),

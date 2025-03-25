@@ -82,7 +82,7 @@ func extractYear(from dateString: String?) -> String {
         dateFormatter.dateFormat = "yyyy"
         return dateFormatter.string(from: date)
     }
-    
+
     // If that fails, try "yyyy"
     dateFormatter.dateFormat = "yyyy"
     if let date = dateFormatter.date(from: dateString) {

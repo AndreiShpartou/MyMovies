@@ -13,6 +13,7 @@ protocol SearchInteractorProtocol: AnyObject {
     func fetchInitialData()
     func fetchRecentlySearchedMovies()
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol)
+    func fetchRecentlySearchedMoviesWithGenresFiltering(genre: GenreProtocol)
     func performSearch(with query: String)
 }
 

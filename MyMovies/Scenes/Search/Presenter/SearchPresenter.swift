@@ -64,6 +64,7 @@ class SearchPresenter: SearchPresenterProtocol {
         }
 
         interactor.fetchUpcomingMoviesWithGenresFiltering(genre: movieGenre)
+        interactor.fetchRecentlySearchedMoviesWithGenresFiltering(genre: movieGenre)
     }
 
     func didSelectMovie(movieID: Int) {
