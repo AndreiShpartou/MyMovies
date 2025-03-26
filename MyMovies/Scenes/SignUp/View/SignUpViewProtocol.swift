@@ -15,6 +15,6 @@ protocol SignUpViewProtocol: UIView {
     func showError(error: Error)
 }
 
-protocol SignUpViewDelegate: AnyObject {
+protocol SignUpViewDelegate: AnyObject, UITextFieldDelegate {
     func didTapSignUpButton()
 }

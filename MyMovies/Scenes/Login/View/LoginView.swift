@@ -26,7 +26,7 @@ final class LoginView: UIView, LoginViewProtocol {
 
     // MARK: - Body
     private let emailLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.subhead,
         textColor: .textColorWhite,
         text: "Email"
     )
@@ -40,7 +40,7 @@ final class LoginView: UIView, LoginViewProtocol {
     )
 
     private let passwordLabel: UILabel = .createLabel(
-        font: Typography.Medium.body,
+        font: Typography.Medium.subhead,
         textColor: .textColorWhite,
         text: "Password"
     )
