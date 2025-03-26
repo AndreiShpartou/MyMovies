@@ -14,5 +14,5 @@ protocol LoginPresenterProtocol: AnyObject, LoginInteractorOutputProtocol {
 
     func viewDidLoad()
     func didTapLoginButton()
-    func didTapRegisterButton()
+    func didTapSignUpButton()
 }

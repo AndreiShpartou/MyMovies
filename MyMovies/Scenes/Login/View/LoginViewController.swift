@@ -36,13 +36,14 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         setupViewController()
+        presenter.viewDidLoad()
     }
 }
 
 // MARK: - Setup
 extension LoginViewController {
     private func setupViewController() {
-        view.backgroundColor = .primaryBackground
+        loginView.delegate = self
     }
 }
 
@@ -51,38 +52,38 @@ extension LoginViewController: LoginViewDelegate {
     func didTapLoginButton() {
     }
 
-    func didTapRegisterButton() {
+    func didTapSignUpButton() {
     }
 }
 
-import SwiftUI
-
-extension LoginViewController {
-    struct Preview: UIViewControllerRepresentable {
-        let viewController: UIViewController
-
-        func makeUIViewController(context: Context) -> some UIViewController {
-            viewController
-        }
-
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-    }
-
-    func preview() -> some View {
-        Preview(viewController: self).edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct ViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // change to your vc
-            let loginRouter = LoginRouter()
-            let loginInteractor = LoginInteractor()
-            let loginPresenter = LoginPresenter(interactor: loginInteractor, router: loginRouter)
-            let loginView = LoginView(frame: .zero)
-            let loginVC = LoginViewController(presenter: loginPresenter, loginView: loginView)
-            loginVC.preview()
-        }
-    }
-}
+// import SwiftUI
+//
+// extension LoginViewController {
+//    struct Preview: UIViewControllerRepresentable {
+//        let viewController: UIViewController
+//
+//        func makeUIViewController(context: Context) -> some UIViewController {
+//            viewController
+//        }
+//
+//        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
+//    }
+//
+//    func preview() -> some View {
+//        Preview(viewController: self).edgesIgnoringSafeArea(.all)
+//    }
+// }
+//
+// struct ViewControllerProvider: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            // change to your vc
+//            let loginRouter = LoginRouter()
+//            let loginInteractor = LoginInteractor()
+//            let loginPresenter = LoginPresenter(interactor: loginInteractor, router: loginRouter)
+//            let loginView = LoginView(frame: .zero)
+//            let loginVC = LoginViewController(presenter: loginPresenter, loginView: loginView)
+//            loginVC.preview()
+//        }
+//    }
+// }

@@ -26,7 +26,7 @@ final class LoginPresenter: LoginPresenterProtocol {
     func didTapLoginButton() {
     }
 
-    func didTapRegisterButton() {
+    func didTapSignUpButton() {
     }
 }
 
