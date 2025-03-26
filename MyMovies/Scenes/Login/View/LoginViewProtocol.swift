@@ -15,7 +15,7 @@ protocol LoginViewProtocol: UIView {
     func showError(error: Error)
 }
 
-protocol LoginViewDelegate: AnyObject {
+protocol LoginViewDelegate: AnyObject, UITextFieldDelegate {
     func didTapLoginButton()
     func didTapRegisterButton()
 }

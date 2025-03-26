@@ -55,6 +55,9 @@ internal enum Asset {
   internal enum Launch {
     internal static let launch = ImageAsset(name: "launch")
   }
+  internal enum Login {
+    internal static let greeting = ImageAsset(name: "Greeting")
+  }
   internal enum PageControlIndicators {
     internal static let selected = ImageAsset(name: "Selected")
     internal static let unselected = ImageAsset(name: "Unselected")

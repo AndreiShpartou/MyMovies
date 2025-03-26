@@ -225,6 +225,8 @@
 		6CCA04342D94185D00CA0F1C /* LoginInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04332D94185D00CA0F1C /* LoginInteractorProtocol.swift */; };
 		6CCA04362D941B7700CA0F1C /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04352D941B7700CA0F1C /* LoginInteractor.swift */; };
 		6CCA04382D941CC500CA0F1C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04372D941CC500CA0F1C /* LoginView.swift */; };
+		6CCA043A2D94464C00CA0F1C /* UIPasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04392D94464C00CA0F1C /* UIPasswordTextField.swift */; };
+		6CCA043C2D944B4700CA0F1C /* UIBorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA043B2D944B4700CA0F1C /* UIBorderedTextField.swift */; };
 		6CCC4F772C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */; };
 		6CCC4F792C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */; };
 		6CCC4F7B2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */; };
@@ -469,6 +471,8 @@
 		6CCA04332D94185D00CA0F1C /* LoginInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractorProtocol.swift; sourceTree = "<group>"; };
 		6CCA04352D941B7700CA0F1C /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
 		6CCA04372D941CC500CA0F1C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		6CCA04392D94464C00CA0F1C /* UIPasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPasswordTextField.swift; sourceTree = "<group>"; };
+		6CCA043B2D944B4700CA0F1C /* UIBorderedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBorderedTextField.swift; sourceTree = "<group>"; };
 		6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefMovieDescriptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1652,6 +1656,8 @@
 			isa = PBXGroup;
 			children = (
 				6CEB59432CBBF9F0005062DC /* InsetLabel.swift */,
+				6CCA04392D94464C00CA0F1C /* UIPasswordTextField.swift */,
+				6CCA043B2D944B4700CA0F1C /* UIBorderedTextField.swift */,
 			);
 			path = HelperSubclasses;
 			sourceTree = "<group>";
@@ -1944,6 +1950,7 @@
 				6C9B29BF2D672403000A5EF8 /* OnboardingViewProtocol.swift in Sources */,
 				6C25A11D2D79AB5F00877F24 /* MovieGenreEntity+CoreDataClass.swift in Sources */,
 				6C25A12D2D79AB5F00877F24 /* MovieEntity+CoreDataClass.swift in Sources */,
+				6CCA043A2D94464C00CA0F1C /* UIPasswordTextField.swift in Sources */,
 				6C21983E2CB3C56A0013D8D9 /* ProfileSettingsTableViewCell.swift in Sources */,
 				6C25A1342D79B0BE00877F24 /* MovieRepository.swift in Sources */,
 				6C25A1282D79AB5F00877F24 /* CountryEntity+CoreDataProperties.swift in Sources */,
@@ -1994,6 +2001,7 @@
 				6CCA04282D9416D400CA0F1C /* LoginViewController.swift in Sources */,
 				6C49F3A22C9AD117005F182F /* MovieListItemViewModelProtocol.swift in Sources */,
 				6C4246E32CA199E6008E59D7 /* DescriptionGeneralStackView.swift in Sources */,
+				6CCA043C2D944B4700CA0F1C /* UIBorderedTextField.swift in Sources */,
 				6C8062342CAEEEEB00768DC5 /* ReviewCollectionViewCell.swift in Sources */,
 				6CA2D88A2CAD466500CFC297 /* KinopoiskReviewResponse.swift in Sources */,
 				6C87B0532D5B505B003F44FC /* PersonDetailsRouterProtocol.swift in Sources */,

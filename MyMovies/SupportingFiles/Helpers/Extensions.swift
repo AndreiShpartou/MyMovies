@@ -197,13 +197,13 @@ extension UITextField {
         placeholder: String? = nil,
         keyboardType: UIKeyboardType = .default,
         autocapitalizationType: UITextAutocapitalizationType = .none,
-        isSecureTextEntry: Bool = false
+        isSecureTextEntry: Bool = false,
+        cornerRadius: CGFloat = 30
     ) -> UITextField {
         let textField = UITextField()
         textField.backgroundColor = .primaryBackground
         textField.font = Typography.Medium.subhead
         textField.textColor = .textColorGrey
-//        textField.tintColor = 
         textField.keyboardType = keyboardType
         textField.keyboardAppearance = .dark
         textField.autocapitalizationType = autocapitalizationType
@@ -221,9 +221,9 @@ extension UITextField {
         textField.rightView = paddingView
         textField.rightViewMode = .always
         // Adjust border
-        textField.layer.cornerRadius = 30
-        textField.layer.borderColor = UIColor.primarySoft.cgColor
-        textField.layer.borderWidth = 1.5
+        textField.layer.cornerRadius = cornerRadius
+        textField.layer.borderColor = UIColor.unselectedBorder.cgColor
+        textField.layer.borderWidth = 1
         // Add target
         textField.addTarget(target, action: action, for: .editingChanged)
 
@@ -502,6 +502,12 @@ extension UIColor {
     }
     static var textColorLineDark: UIColor {
         return .init(hex: "EAEAEA")
+    }
+    static var selectedBorder: UIColor {
+        UIColor.tintColor
+    }
+    static var unselectedBorder: UIColor {
+        UIColor.primarySoft
     }
 }
 
