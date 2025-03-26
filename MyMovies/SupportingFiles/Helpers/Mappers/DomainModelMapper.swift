@@ -101,7 +101,6 @@ extension DomainModelMapper {
     // MovieProtocol -> WishlistItemViewModelProtocol
     private func mapToWishlistItem(_ data: [MovieProtocol]) -> [WishlistItemViewModelProtocol] {
         let movieViewModels: [WishlistItemViewModel] = data.map {
-            let runtime = ($0.runtime == "0" || $0.runtime == nil) ? String(Int.random(in: 90...120)) : $0.runtime!
             return WishlistItemViewModel(
                 id: $0.id,
                 title: $0.title,
