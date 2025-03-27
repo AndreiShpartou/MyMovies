@@ -98,6 +98,7 @@ final class SignUpView: UIView, SignUpViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.initHideKeyboard()
 
         setupView()
         setupConstraints()
@@ -126,13 +127,7 @@ extension SignUpView {
         scrollView.addSubviews(scrollContentView)
         addSubviews(scrollView)
 
-        setupHandlers()
         setupSubviews()
-    }
-
-    private func setupHandlers() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
-        addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func setupSubviews() {
@@ -175,11 +170,6 @@ extension SignUpView {
             return
         }
     }
-
-    @objc
-    private func viewWasTapped() {
-        endEditing(true)
-    }
 }
 
 // MARK: - Helpers
@@ -196,6 +186,18 @@ extension SignUpView {
         }
 
         return isDataFilled
+    }
+}
+
+// MARK: - UIViewKeyboardScrollHandlingProtocol
+extension SignUpView: UIViewKeyboardScrollHandlingProtocol {
+    func adjustScrollOffset(with offset: CGFloat) {
+        scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+    }
+
+    func adjustScrollInset(with inset: CGFloat) {
+        scrollView.contentInset.bottom = inset
+        setNeedsLayout()
     }
 }
 
@@ -317,7 +319,7 @@ extension SignUpView {
     private func setupFooterConstraints() {
         signUpButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(passwordTextField.snp.bottom).offset(32)
+            make.top.equalTo(passwordWarningLabel.snp.bottom).offset(32)
             make.height.equalTo(70)
             make.bottom.equalToSuperview().inset(16)
         }

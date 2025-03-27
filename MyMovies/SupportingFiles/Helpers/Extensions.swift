@@ -89,6 +89,18 @@ extension UIView {
     private func dismissKeyboard() {
         self.endEditing(true)
     }
+
+    var selectedTextField: UITextField? {
+        return textFieldsInView.first(where: { $0.isFirstResponder })
+    }
+
+    var textFieldsInView: [UITextField] {
+        let filteredSubviews = subviews.filter { !($0 is UITextField) }
+
+        return filteredSubviews.reduce(subviews.compactMap { $0 as? UITextField }, { summ, current in
+            return summ + current.textFieldsInView
+        })
+    }
 }
 
 // MARK: - UICollectionView
@@ -366,6 +378,7 @@ extension UISearchBar {
         let searchBar = UISearchBar()
         searchBar.placeholder = placeholder
         searchBar.searchBarStyle = style
+        searchBar.keyboardAppearance = .dark
 
         guard let textField = searchBar.value(forKey: "searchField") as? UITextField else {
             return searchBar

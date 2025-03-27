@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SignUpViewProtocol: UIView {
+protocol SignUpViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: SignUpViewDelegate? { get set }
 
     func showLoadingIndicator()

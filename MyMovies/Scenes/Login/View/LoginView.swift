@@ -104,6 +104,7 @@ final class LoginView: UIView, LoginViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.initHideKeyboard()
 
         setupView()
         setupConstraints()
@@ -133,13 +134,7 @@ extension LoginView {
         scrollView.addSubviews(scrollContentView)
         addSubviews(scrollView)
 
-        setupHandlers()
         setupSubviews()
-    }
-
-    private func setupHandlers() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
-        addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func setupSubviews() {
@@ -188,11 +183,6 @@ extension LoginView {
     }
 
     @objc
-    private func viewWasTapped() {
-        endEditing(true)
-    }
-
-    @objc
     private func backButtonTapped() {
         delegate?.didTapBackButton()
     }
@@ -212,6 +202,18 @@ extension LoginView {
         }
 
         return isDataFilled
+    }
+}
+
+// MARK: - UIViewKeyboardScrollHandlingProtocol
+extension LoginView: UIViewKeyboardScrollHandlingProtocol {
+    func adjustScrollOffset(with offset: CGFloat) {
+        scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+    }
+
+    func adjustScrollInset(with inset: CGFloat) {
+        scrollView.contentInset.bottom = inset
+        setNeedsLayout()
     }
 }
 
@@ -266,7 +268,7 @@ extension LoginView {
 
         scrollView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(backButton.snp.bottom)
+            make.top.equalTo(backButton.snp.bottom).offset(8)
         }
 
         scrollContentView.snp.makeConstraints { make in
@@ -277,7 +279,7 @@ extension LoginView {
     private func setupHeaderConstraints() {
         welcomeImageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview().inset(32)
-            make.height.equalTo(180)
+            make.height.equalTo(170)
         }
     }
 
@@ -318,7 +320,7 @@ extension LoginView {
     private func setupFooterConstraints() {
         alreadyHaveAccountLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(passwordWarningLabel.snp.bottom).offset(32)
+            make.top.equalTo(passwordWarningLabel.snp.bottom).offset(24)
         }
 
         signInButton.snp.makeConstraints { make in
@@ -329,7 +331,7 @@ extension LoginView {
 
         dontHaveAnAccountLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(signInButton.snp.bottom).offset(32)
+            make.top.equalTo(signInButton.snp.bottom).offset(24)
         }
 
         signUpButton.snp.makeConstraints { make in

@@ -31,11 +31,11 @@ final class UIPasswordTextField: UITextField {
 
         self.backgroundColor = .primaryBackground
         self.isSecureTextEntry = true
+        self.textContentType = .password
         self.autocapitalizationType = .none
         self.returnKeyType = .done
         self.keyboardAppearance = .dark
         self.autocorrectionType = .no
-        self.textContentType = .oneTimeCode
 
         self.attributedPlaceholder = NSAttributedString(
             string: placeholder ?? "",

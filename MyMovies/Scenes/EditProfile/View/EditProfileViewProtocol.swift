@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol EditProfileViewProtocol: UIView {
+protocol EditProfileViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: EditProfileInteractionDelegate? { get set }
     var presenter: EditProfilePresenterProtocol? { get set }
 

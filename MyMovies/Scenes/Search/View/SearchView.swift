@@ -129,6 +129,7 @@ final class SearchView: UIView, SearchViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.initHideKeyboard()
 
         setupView()
         setupConstraints()
@@ -289,10 +290,6 @@ extension SearchView {
         discoveredMoviesCollectionViewHandler.delegate = delegate
         discoveredMoviesCollectionView.delegate = discoveredMoviesCollectionViewHandler
         discoveredMoviesCollectionView.dataSource = discoveredMoviesCollectionViewHandler
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewWasTapped))
-        tapGestureRecognizer.cancelsTouchesInView = false
-        addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func updateDelegates() {
@@ -314,10 +311,6 @@ extension SearchView {
 
 // MARK: - Action Methods
 extension SearchView {
-    @objc private func viewWasTapped() {
-        endEditing(true)
-    }
-
     @objc
     private func didTapAllRecentlySearchedButton(sender: UIButton) {
         delegate?.didTapSeeAllButton(listType: .recentlySearchedMovies)

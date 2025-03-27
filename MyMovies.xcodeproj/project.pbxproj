@@ -236,6 +236,7 @@
 		6CCA044A2D945C9B00CA0F1C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */; };
 		6CCA044C2D945DE700CA0F1C /* SignUpInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA044B2D945DE700CA0F1C /* SignUpInteractor.swift */; };
 		6CCA044E2D945E8A00CA0F1C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA044D2D945E8A00CA0F1C /* SignUpView.swift */; };
+		6CCA04522D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04512D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift */; };
 		6CCC4F772C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */; };
 		6CCC4F792C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */; };
 		6CCC4F7B2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */; };
@@ -491,6 +492,7 @@
 		6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6CCA044B2D945DE700CA0F1C /* SignUpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInteractor.swift; sourceTree = "<group>"; };
 		6CCA044D2D945E8A00CA0F1C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		6CCA04512D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewKeyboardScrollHandlingProtocol.swift; sourceTree = "<group>"; };
 		6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefMovieDescriptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1295,6 +1297,7 @@
 		6C7CD0E12C5F4CE400C71AA1 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				6CCA04502D9577A500CA0F1C /* Protocols */,
 				6C916C412C63D21000A9F091 /* View */,
 				6C9B45EE2CB521B20053B8D7 /* Presenter */,
 				6C916C422C63D22A00A9F091 /* Entity */,
@@ -1601,8 +1604,8 @@
 			isa = PBXGroup;
 			children = (
 				6CCA04452D945AC000CA0F1C /* SignUpViewProtocol.swift */,
-				6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */,
 				6CCA044D2D945E8A00CA0F1C /* SignUpView.swift */,
+				6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1661,6 +1664,14 @@
 				6CCA04272D9416D400CA0F1C /* LoginViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		6CCA04502D9577A500CA0F1C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04512D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		6CCC4F752C5E4EDC00BA7B8D /* CollectionViewCells */ = {
@@ -2061,6 +2072,7 @@
 				6C916C3E2C639E3200A9F091 /* TMDBMoviesPagedResponse.swift in Sources */,
 				6CAFCAD92D5C95EA003CBE7B /* PersonDetailedProtocol.swift in Sources */,
 				6C8338862C5D0804000D0399 /* ProfileRouterProtocol.swift in Sources */,
+				6CCA04522D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift in Sources */,
 				6C8338742C5D0749000D0399 /* MovieDetailsPresenterProtocol.swift in Sources */,
 				6C59AF562C55200D006A7BDB /* SearchInteractor.swift in Sources */,
 				6CCA044C2D945DE700CA0F1C /* SignUpInteractor.swift in Sources */,

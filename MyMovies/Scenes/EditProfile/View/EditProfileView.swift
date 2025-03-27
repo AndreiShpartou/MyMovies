@@ -16,6 +16,9 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     private var textFieldTagsWarningLabelsDict: [Int: UILabel] = [:]
 
     // MARK: - UIComponents
+    private let scrollView = UIScrollView()
+    private let scrollContentView = UIView()
+
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
@@ -127,15 +130,18 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
 extension EditProfileView {
     private func setupView() {
         backgroundColor = .primaryBackground
+
+        scrollView.addSubviews(scrollContentView)
+        addSubviews(scrollView)
         // Header
-        addSubviews(loadingIndicator)
+        scrollContentView.addSubviews(loadingIndicator)
         editBackgroundView.addSubviews(editIconImageView)
-        addSubviews(profileImageView, editBackgroundView, fullNameLabel, emailLabel)
+        scrollContentView.addSubviews(profileImageView, editBackgroundView, fullNameLabel, emailLabel)
         // Body
-        addSubviews(fullNameTextField, fullNameTitleLabel, fullNameWarningLabel)
-        addSubviews(emailTextField, emailTitleLabel, emailWarningLabel)
+        scrollContentView.addSubviews(fullNameTextField, fullNameTitleLabel, fullNameWarningLabel)
+        scrollContentView.addSubviews(emailTextField, emailTitleLabel, emailWarningLabel)
         // Bottom
-        addSubviews(saveChangesButton)
+        scrollContentView.addSubviews(saveChangesButton)
         // Additional subviews setup
         setAdditionalSubviewsPreferences()
 
@@ -143,6 +149,9 @@ extension EditProfileView {
     }
 
     private func setAdditionalSubviewsPreferences() {
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.delaysContentTouches = false
+
         // Setup label insets
         let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         fullNameTitleLabel.textInsets = textInset
@@ -216,6 +225,17 @@ extension EditProfileView {
     }
 }
 
+// MARK: - UIViewKeyboardScrollHandlingProtocol
+extension EditProfileView: UIViewKeyboardScrollHandlingProtocol {
+    func adjustScrollOffset(with offset: CGFloat) {
+        scrollView.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+    }
+
+    func adjustScrollInset(with inset: CGFloat) {
+        scrollView.contentInset.bottom = inset
+    }
+}
+
 // MARK: - UIImagePickerControllerDelegate
 extension EditProfileView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -264,15 +284,26 @@ extension EditProfileView: UITextFieldDelegate {
 // MARK: - Constraints
 extension EditProfileView {
     private func setupConstraints() {
+        setupScrollConstraints()
         setupHeaderConstraints()
         setupBodyConstraints()
         setupBottomConstraints()
     }
 
+    private func setupScrollConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(safeAreaLayoutGuide)
+        }
+
+        scrollContentView.snp.makeConstraints { make in
+            make.edges.width.equalToSuperview()
+        }
+    }
+
     private func setupHeaderConstraints() {
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(safeAreaLayoutGuide).offset(8)
+            make.top.equalToSuperview().offset(8)
             make.width.height.equalTo(100)
         }
 
@@ -339,8 +370,9 @@ extension EditProfileView {
     private func setupBottomConstraints() {
         saveChangesButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.top.equalTo(emailWarningLabel.snp.bottom).offset(32)
             make.height.equalTo(60)
+            make.bottom.equalToSuperview().inset(16)
         }
     }
 }
