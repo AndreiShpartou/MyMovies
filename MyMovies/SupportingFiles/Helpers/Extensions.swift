@@ -192,8 +192,6 @@ extension UITextView {
 // MARK: - UITextField
 extension UITextField {
     static func createBorderedTextField(
-        action: Selector,
-        target: Any?,
         placeholder: String? = nil,
         keyboardType: UIKeyboardType = .default,
         autocapitalizationType: UITextAutocapitalizationType = .none,
@@ -224,8 +222,6 @@ extension UITextField {
         textField.layer.cornerRadius = cornerRadius
         textField.layer.borderColor = UIColor.unselectedBorder.cgColor
         textField.layer.borderWidth = 1
-        // Add target
-        textField.addTarget(target, action: action, for: .editingChanged)
 
         return textField
     }
@@ -331,9 +327,13 @@ extension UIButton {
         return button
     }
 
-    static func createBackNavBarButton(action: Selector, target: Any?) -> UIButton {
+    static func createBackNavBarButton(
+        action: Selector,
+        target: Any?,
+        image: UIImage? = UIImage(systemName: "chevron.left")
+    ) -> UIButton {
         let leftButton = UIButton(type: .custom)
-        leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        leftButton.setImage(image, for: .normal)
         leftButton.tintColor = .white
         leftButton.backgroundColor = .primarySoft
 

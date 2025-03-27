@@ -16,7 +16,7 @@ final class LoginViewController: UIViewController {
     private let loginView: LoginViewProtocol
 
     // MARK: - Init
-    init(presenter: LoginPresenterProtocol, loginView: LoginViewProtocol) {
+    init(loginView: LoginViewProtocol, presenter: LoginPresenterProtocol) {
         self.presenter = presenter
         self.loginView = loginView
 
@@ -38,6 +38,12 @@ final class LoginViewController: UIViewController {
         setupViewController()
         presenter.viewDidLoad()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.isNavigationBarHidden = true
+    }
 }
 
 // MARK: - Setup
@@ -53,37 +59,10 @@ extension LoginViewController: LoginViewDelegate {
     }
 
     func didTapSignUpButton() {
+        presenter.didTapSignUpButton()
+    }
+
+    func didTapBackButton() {
+        presenter.didTapBackButton()
     }
 }
-
-// import SwiftUI
-//
-// extension LoginViewController {
-//    struct Preview: UIViewControllerRepresentable {
-//        let viewController: UIViewController
-//
-//        func makeUIViewController(context: Context) -> some UIViewController {
-//            viewController
-//        }
-//
-//        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-//    }
-//
-//    func preview() -> some View {
-//        Preview(viewController: self).edgesIgnoringSafeArea(.all)
-//    }
-// }
-//
-// struct ViewControllerProvider: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//            // change to your vc
-//            let loginRouter = LoginRouter()
-//            let loginInteractor = LoginInteractor()
-//            let loginPresenter = LoginPresenter(interactor: loginInteractor, router: loginRouter)
-//            let loginView = LoginView(frame: .zero)
-//            let loginVC = LoginViewController(presenter: loginPresenter, loginView: loginView)
-//            loginVC.preview()
-//        }
-//    }
-// }

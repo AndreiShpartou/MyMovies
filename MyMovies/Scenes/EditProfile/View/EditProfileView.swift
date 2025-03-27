@@ -11,6 +11,10 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     weak var delegate: EditProfileInteractionDelegate?
     var presenter: EditProfilePresenterProtocol?
 
+    private var arrayOfTextFields: [UITextField] = []
+    // UITextField.tag: UILabel
+    private var textFieldTagsWarningLabelsDict: [Int: UILabel] = [:]
+
     // MARK: - UIComponents
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
@@ -39,10 +43,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     )
     // Body with text fields
     // FullName
-    private lazy var fullNameTextField: UITextField = .createBorderedTextField(
-        action: #selector(fullNameDidChanged),
-        target: self
-    )
+    private let fullNameTextField: UITextField = .createBorderedTextField(keyboardType: .namePhonePad)
     private let fullNameTitleLabel: InsetLabel = .createInsetLabel(
         font: Typography.Medium.body,
         textColor: .textColorWhiteGrey,
@@ -55,11 +56,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         text: "* Name is empty"
     )
     // Email
-    private lazy var emailTextField: UITextField = .createBorderedTextField(
-        action: #selector(emailDidChanged),
-        target: self,
-        keyboardType: .emailAddress
-    )
+    private let emailTextField: UITextField = .createBorderedTextField(keyboardType: .emailAddress)
     private let emailTitleLabel: InsetLabel = .createInsetLabel(
         font: Typography.Medium.body,
         textColor: .textColorWhiteGrey,
@@ -99,11 +96,11 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
 
     // MARK: - Public
     func showUserProfile(_ profile: UserProfileViewModelProtocol) {
-        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarMock.image)
+        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarDefault.image)
         fullNameLabel.text = profile.name
         emailLabel.text = profile.email
-        fullNameTextField.text = profile.name
-        emailTextField.text = profile.email
+//        fullNameTextField.text = profile.name
+//        emailTextField.text = profile.email
         hideLoadingIndicator()
     }
 
@@ -146,17 +143,20 @@ extension EditProfileView {
     }
 
     private func setAdditionalSubviewsPreferences() {
-        fullNameWarningLabel.isHidden = true
-        emailWarningLabel.isHidden = true
         // Setup label insets
         let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         fullNameTitleLabel.textInsets = textInset
         emailTitleLabel.textInsets = textInset
-        // Setup delegation
-        fullNameTextField.delegate = self
-        fullNameTextField.tag = 0
-        emailTextField.delegate = self
-        emailTextField.tag = 1
+        // Setup warning labels
+        let warningLabels = [fullNameWarningLabel, emailWarningLabel]
+        warningLabels.forEach { $0.isHidden = true }
+        // Setup delegation and tags
+        arrayOfTextFields = [fullNameTextField, emailTextField]
+        arrayOfTextFields.enumerated().forEach { index, textField in
+            textField.tag = index
+            textField.delegate = self
+            textFieldTagsWarningLabelsDict[index] = warningLabels[index]
+        }
     }
 
     private func setupGestureRecognizers() {
@@ -179,6 +179,10 @@ extension EditProfileView {
 extension EditProfileView {
     @objc
     private func didTapSaveChanges() {
+        guard isAllDataFilled() else {
+            return
+        }
+
         delegate?.didTapSaveChanges()
     }
 
@@ -193,28 +197,22 @@ extension EditProfileView {
         imagePickerController.sourceType = .photoLibrary
         viewController.present(imagePickerController, animated: true, completion: nil)
     }
+}
 
-    @objc
-    private func fullNameDidChanged() {
-        if let text = fullNameTextField.text,
-            text.isEmpty {
-            fullNameWarningLabel.isHidden = false
-            fullNameTextField.layer.borderColor = UIColor.secondaryRed.cgColor
-        } else {
-            fullNameWarningLabel.isHidden = true
-            fullNameTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
-        }
-    }
+// MARK: - Helpers
+extension EditProfileView {
+    private func isAllDataFilled() -> Bool {
+        var isDataFilled = true
 
-    @objc private func emailDidChanged() {
-        if let text = emailTextField.text,
-            text.isEmpty {
-            emailWarningLabel.isHidden = false
-            emailTextField.layer.borderColor = UIColor.secondaryRed.cgColor
-        } else {
-            emailWarningLabel.isHidden = true
-            emailTextField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
+        arrayOfTextFields.forEach {
+            if ($0.text ?? "").isEmpty {
+                $0.layer.borderColor = UIColor.secondaryRed.cgColor
+                textFieldTagsWarningLabelsDict[$0.tag]?.isHidden = false
+                isDataFilled = false
+            }
         }
+
+        return isDataFilled
     }
 }
 
@@ -233,12 +231,10 @@ extension EditProfileView: UIImagePickerControllerDelegate, UINavigationControll
 extension EditProfileView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.textColor = .textColorWhite
-        if let text = textField.text,
-           !text.isEmpty {
-            textField.layer.borderColor = UIColor.primaryBlueAccent.cgColor
-        } else {
-            textField.layer.borderColor = UIColor.secondaryRed.cgColor
-        }
+        textField.layer.borderColor = UIColor.selectedBorder.cgColor
+
+        // Update warnings
+        textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -252,15 +248,16 @@ extension EditProfileView: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        let text = textField.text
-        if textField.isEqual(fullNameTextField) {
-//            delegate?.updateFullName(with: text)
-        } else if textField.isEqual(emailTextField) {
-//            delegate?.updateEmail(with: text)
-        }
-
         textField.textColor = .textColorGrey
-        textField.layer.borderColor = UIColor.primarySoft.cgColor
+
+        if let text = textField.text,
+            text.isEmpty {
+            textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = false
+            textField.layer.borderColor = UIColor.secondaryRed.cgColor
+        } else {
+            textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
+            textField.layer.borderColor = UIColor.unselectedBorder.cgColor
+        }
     }
 }
 

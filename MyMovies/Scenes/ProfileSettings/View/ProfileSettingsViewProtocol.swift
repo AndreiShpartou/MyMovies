@@ -12,6 +12,7 @@ protocol ProfileSettingsViewProtocol: UIView {
 
     func showUserProfile(_ profile: UserProfileViewModelProtocol)
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])
+    func signOut()
     func showError(_ message: String)
     func showLoadingIndicator()
     func hideLoadingIndicator()
@@ -19,5 +20,7 @@ protocol ProfileSettingsViewProtocol: UIView {
 
 protocol ProfileSettingsInteractionDelegate: AnyObject {
     func didTapEditProfile()
+    func didTapSignIn()
+    func didTapSignOut()
     func didSelectSetting(at indexPath: IndexPath)
 }

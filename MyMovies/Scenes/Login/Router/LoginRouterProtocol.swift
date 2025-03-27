@@ -12,4 +12,5 @@ protocol LoginRouterProtocol: AnyObject {
 
     func navigateToSignUp()
     func navigateToMainFlow()
+    func dismissScene()
 }

@@ -8,16 +8,22 @@
 import UIKit
 
 final class LoginView: UIView, LoginViewProtocol {
-    weak var delegate: LoginViewDelegate? {
-        didSet {
-            updateDelegates()
-        }
-    }
+    weak var delegate: LoginViewDelegate?
+
+    private var arrayOfTextFields: [UITextField] = []
+    // UITextField.tag: UILabel
+    private var textFieldTagsWarningLabelsDict: [Int: UILabel] = [:]
 
     // MARK: - UIComponents Scroll
     private let scrollView = UIScrollView()
     private let scrollContentView = UIView()
     // MARK: - Header
+    private lazy var backButton: UIButton = .createBackNavBarButton(
+        action: #selector(backButtonTapped),
+        target: self,
+        image: UIImage(systemName: "chevron.down")
+    )
+
     private let welcomeImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFit,
         clipsToBounds: true,
@@ -31,12 +37,16 @@ final class LoginView: UIView, LoginViewProtocol {
         text: "Email"
     )
 
-    private lazy var emailTextField: UITextField = .createBorderedTextField(
-        action: #selector(emailEditingChanged),
-        target: self,
+    private let emailTextField: UITextField = .createBorderedTextField(
         placeholder: "Your Email",
         keyboardType: .emailAddress,
         cornerRadius: 15
+    )
+
+    private let emailWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Email is empty"
     )
 
     private let passwordLabel: UILabel = .createLabel(
@@ -45,11 +55,15 @@ final class LoginView: UIView, LoginViewProtocol {
         text: "Password"
     )
 
-    private lazy var passwordTextField: UITextField = UIPasswordTextField(
-        action: #selector(passwordEditingChanged),
-        target: self,
+    private let passwordTextField: UITextField = UIPasswordTextField(
         placeholder: "Your Password",
         cornerRadius: 15
+    )
+
+    private let passwordWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Passsword is empty"
     )
 
     // MARK: - Footer
@@ -115,6 +129,7 @@ extension LoginView {
     private func setupView() {
         backgroundColor = .primaryBackground
 
+        addSubviews(backButton)
         scrollView.addSubviews(scrollContentView)
         addSubviews(scrollView)
 
@@ -135,42 +150,102 @@ extension LoginView {
             welcomeImageView,
             emailLabel,
             emailTextField,
+            emailWarningLabel,
             passwordLabel,
             passwordTextField,
+            passwordWarningLabel,
             alreadyHaveAccountLabel,
             signInButton,
             dontHaveAnAccountLabel,
             signUpButton
         )
-    }
 
-    private func updateDelegates() {
-        emailTextField.delegate = delegate
-        passwordTextField.delegate = delegate
+        // Setup warning labels
+        let warningLabels = [emailWarningLabel, passwordWarningLabel]
+        warningLabels.forEach { $0.isHidden = true }
+        // Setup delegation and tags
+        arrayOfTextFields = [emailTextField, passwordTextField]
+        arrayOfTextFields.enumerated().forEach { index, textField in
+            textField.tag = index
+            textField.delegate = self
+            textFieldTagsWarningLabelsDict[index] = warningLabels[index]
+        }
     }
 }
 
 // MARK: - ActionMethods
 extension LoginView {
     @objc
-    private func emailEditingChanged() {
-    }
-
-    @objc
-    private func passwordEditingChanged() {
-    }
-
-    @objc
     private func didTapSignInButton() {
+        guard isAllDataFilled() else {
+            return
+        }
     }
 
     @objc
     private func didTapSignUpButton() {
+        delegate?.didTapSignUpButton()
     }
 
     @objc
     private func viewWasTapped() {
         endEditing(true)
+    }
+
+    @objc
+    private func backButtonTapped() {
+        delegate?.didTapBackButton()
+    }
+}
+
+// MARK: - Helpers
+extension LoginView {
+    private func isAllDataFilled() -> Bool {
+        var isDataFilled = true
+
+        arrayOfTextFields.forEach {
+            if ($0.text ?? "").isEmpty {
+                $0.layer.borderColor = UIColor.secondaryRed.cgColor
+                textFieldTagsWarningLabelsDict[$0.tag]?.isHidden = false
+                isDataFilled = false
+            }
+        }
+
+        return isDataFilled
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension LoginView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.textColor = .textColorWhite
+        textField.layer.borderColor = UIColor.selectedBorder.cgColor
+
+        // Update warnings
+        textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = self.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.textColor = .textColorGrey
+
+        if let text = textField.text,
+            text.isEmpty {
+            textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = false
+            textField.layer.borderColor = UIColor.secondaryRed.cgColor
+        } else {
+            textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
+            textField.layer.borderColor = UIColor.unselectedBorder.cgColor
+        }
     }
 }
 
@@ -184,8 +259,14 @@ extension LoginView {
     }
 
     private func setupScrollViewConstraints() {
+        backButton.snp.makeConstraints { make in
+            make.leading.top.equalTo(safeAreaLayoutGuide).inset(12)
+            make.width.height.equalTo(30)
+        }
+
         scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(backButton.snp.bottom)
         }
 
         scrollContentView.snp.makeConstraints { make in
@@ -212,9 +293,14 @@ extension LoginView {
             make.height.equalTo(45)
         }
 
+        emailWarningLabel.snp.makeConstraints { make in
+            make.leading.equalTo(emailTextField).offset(16)
+            make.top.equalTo(emailTextField.snp.bottom).offset(4)
+        }
+
         passwordLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(emailTextField.snp.bottom).offset(16)
+            make.top.equalTo(emailWarningLabel.snp.bottom).offset(8)
         }
 
         passwordTextField.snp.makeConstraints { make in
@@ -222,12 +308,17 @@ extension LoginView {
             make.top.equalTo(passwordLabel.snp.bottom).offset(8)
             make.height.equalTo(45)
         }
+
+        passwordWarningLabel.snp.makeConstraints { make in
+            make.leading.equalTo(passwordTextField).offset(16)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(4)
+        }
     }
 
     private func setupFooterConstraints() {
         alreadyHaveAccountLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(passwordTextField.snp.bottom).offset(32)
+            make.top.equalTo(passwordWarningLabel.snp.bottom).offset(32)
         }
 
         signInButton.snp.makeConstraints { make in

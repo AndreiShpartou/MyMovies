@@ -44,6 +44,7 @@ class EditProfileViewController: UIViewController, EditProfileViewControllerProt
 // MARK: - Setup
 extension EditProfileViewController {
     private func setupViewController() {
+        title = "Edit Profile"
         setupNavigationController()
     }
 

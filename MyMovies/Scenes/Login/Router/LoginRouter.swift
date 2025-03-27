@@ -17,11 +17,17 @@ final class LoginRouter: LoginRouterProtocol {
 
     // MARK: - Public
     func navigateToSignUp() {
+        let signUpVC = SceneBuilder.buildSignUpScene()
+        viewController?.navigationController?.pushViewController(signUpVC, animated: true)
     }
 
     func navigateToMainFlow() {
         let window = viewController?.view.window
         // Switch to main flow
         RootRouter.switchToMainFlow(in: window)
+    }
+
+    func dismissScene() {
+        viewController?.dismiss(animated: true)
     }
 }

@@ -16,9 +16,9 @@ final class SignUpViewController: UIViewController, SignUpViewControllerProtocol
     private let signUpView: SignUpViewProtocol
 
     // MARK: - Init
-    init(presenter: SignUpPresenterProtocol, signUpView: SignUpViewProtocol) {
-        self.presenter = presenter
+    init(signUpView: SignUpViewProtocol, presenter: SignUpPresenterProtocol) {
         self.signUpView = signUpView
+        self.presenter = presenter
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -36,7 +36,14 @@ final class SignUpViewController: UIViewController, SignUpViewControllerProtocol
         super.viewDidLoad()
 
         setupViewController()
+        setupNavigationBar()
         presenter.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.isNavigationBarHidden = false
     }
 }
 
@@ -45,43 +52,27 @@ extension SignUpViewController {
     func setupViewController() {
         signUpView.delegate = self
     }
+
+    private func setupNavigationBar() {
+        // Setting the custom title font
+        navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
+        // Custom left button
+        navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
+    }
+}
+
+// MARK: - ActionMethods
+extension SignUpViewController {
+    @objc
+    private func backButtonTapped(_ sender: UIButton) {
+        // Handle back button action
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - SignUpViewDelegate
 extension SignUpViewController: SignUpViewDelegate {
     func didTapSignUpButton() {
         presenter.didTapSignUpButton()
-    }
-}
-
-import SwiftUI
-
-extension SignUpViewController {
-    struct Preview: UIViewControllerRepresentable {
-        let viewController: UIViewController
-
-        func makeUIViewController(context: Context) -> some UIViewController {
-            viewController
-        }
-
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) { }
-    }
-
-    func preview() -> some View {
-        Preview(viewController: self).edgesIgnoringSafeArea(.all)
-    }
-}
-
-struct ViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        Group {
-            // change to your vc
-            let signUpRouter = SignUpRouter()
-            let signUpInteractor = SignUpInteractor()
-            let signUpPresenter = SignUpPresenter(interactor: signUpInteractor, router: signUpRouter)
-            let signUpView = SignUpView(frame: .zero)
-            let signUpVC = SignUpViewController(presenter: signUpPresenter, signUpView: signUpView)
-            signUpVC.preview()
-        }
     }
 }

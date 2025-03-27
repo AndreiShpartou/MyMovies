@@ -8,11 +8,11 @@
 import UIKit
 
 final class SignUpView: UIView, SignUpViewProtocol {
-    weak var delegate: SignUpViewDelegate? {
-        didSet {
-            updateDelegates()
-        }
-    }
+    weak var delegate: SignUpViewDelegate?
+
+    private var arrayOfTextFields: [UITextField] = []
+    // UITextField.tag: UILabel
+    private var textFieldTagsWarningLabelsDict: [Int: UILabel] = [:]
 
     // MARK: - UIComponents Scroll
     private let scrollView = UIScrollView()
@@ -37,12 +37,16 @@ final class SignUpView: UIView, SignUpViewProtocol {
         text: "Full Name"
     )
 
-    private lazy var fulllNameTextField: UITextField = .createBorderedTextField(
-        action: #selector(fullNameEditingChanged),
-        target: self,
+    private let fulllNameTextField: UITextField = .createBorderedTextField(
         placeholder: "Full Name",
         keyboardType: .namePhonePad,
         cornerRadius: 15
+    )
+
+    private let fullNameWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Full Name is empty"
     )
 
     private let emailLabel: UILabel = .createLabel(
@@ -51,12 +55,16 @@ final class SignUpView: UIView, SignUpViewProtocol {
         text: "Email"
     )
 
-    private lazy var emailTextField: UITextField = .createBorderedTextField(
-        action: #selector(emailEditingChanged),
-        target: self,
+    private let emailTextField: UITextField = .createBorderedTextField(
         placeholder: "Example@mail.com",
         keyboardType: .emailAddress,
         cornerRadius: 15
+    )
+
+    private let emailWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Email is empty"
     )
 
     private let passwordLabel: UILabel = .createLabel(
@@ -65,11 +73,15 @@ final class SignUpView: UIView, SignUpViewProtocol {
         text: "Password"
     )
 
-    private lazy var passwordTextField: UITextField = UIPasswordTextField(
-        action: #selector(passwordEditingChanged),
-        target: self,
+    private let passwordTextField: UITextField = UIPasswordTextField(
         placeholder: "At Least 8 Characters",
         cornerRadius: 15
+    )
+
+    private let passwordWarningLabel: UILabel = .createLabel(
+        font: Typography.Medium.body,
+        textColor: .secondaryRed,
+        text: "* Passsword is empty"
     )
 
     // MARK: - Footer
@@ -132,36 +144,36 @@ extension SignUpView {
             enterDetailsLabel,
             fullNameLabel,
             fulllNameTextField,
+            fullNameWarningLabel,
             emailLabel,
             emailTextField,
+            emailWarningLabel,
             passwordLabel,
             passwordTextField,
+            passwordWarningLabel,
             signUpButton
         )
-    }
 
-    private func updateDelegates() {
-        emailTextField.delegate = delegate
-        passwordTextField.delegate = delegate
+        // Setup warning labels
+        let warningLabels = [fullNameWarningLabel, emailWarningLabel, passwordWarningLabel]
+        warningLabels.forEach { $0.isHidden = true }
+        // Setup delegation and tags
+        arrayOfTextFields = [fulllNameTextField, emailTextField, passwordTextField]
+        arrayOfTextFields.enumerated().forEach { index, textField in
+            textField.tag = index
+            textField.delegate = self
+            textFieldTagsWarningLabelsDict[index] = warningLabels[index]
+        }
     }
 }
 
 // MARK: - ActionMethods
 extension SignUpView {
     @objc
-    private func fullNameEditingChanged() {
-    }
-
-    @objc
-    private func emailEditingChanged() {
-    }
-
-    @objc
-    private func passwordEditingChanged() {
-    }
-
-    @objc
     private func didTapSignUpButton() {
+        guard isAllDataFilled() else {
+            return
+        }
     }
 
     @objc
@@ -170,7 +182,58 @@ extension SignUpView {
     }
 }
 
-// MARK: - Constraits
+// MARK: - Helpers
+extension SignUpView {
+    private func isAllDataFilled() -> Bool {
+        var isDataFilled = true
+
+        arrayOfTextFields.forEach {
+            if ($0.text ?? "").isEmpty {
+                $0.layer.borderColor = UIColor.secondaryRed.cgColor
+                textFieldTagsWarningLabelsDict[$0.tag]?.isHidden = false
+                isDataFilled = false
+            }
+        }
+
+        return isDataFilled
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension SignUpView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.textColor = .textColorWhite
+        textField.layer.borderColor = UIColor.selectedBorder.cgColor
+
+        // Update warnings
+        textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = self.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.textColor = .textColorGrey
+
+        if let text = textField.text,
+            text.isEmpty {
+            textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = false
+            textField.layer.borderColor = UIColor.secondaryRed.cgColor
+        } else {
+            textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
+            textField.layer.borderColor = UIColor.unselectedBorder.cgColor
+        }
+    }
+}
+
+// MARK: - Constraints
 extension SignUpView {
     private func setupConstraints() {
         setupScrollViewConstraints()
@@ -213,9 +276,14 @@ extension SignUpView {
             make.height.equalTo(45)
         }
 
+        fullNameWarningLabel.snp.makeConstraints { make in
+            make.leading.equalTo(fulllNameTextField).offset(16)
+            make.top.equalTo(fulllNameTextField.snp.bottom).offset(4)
+        }
+
         emailLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(fulllNameTextField.snp.bottom).offset(16)
+            make.top.equalTo(fullNameWarningLabel.snp.bottom).offset(8)
         }
 
         emailTextField.snp.makeConstraints { make in
@@ -224,15 +292,25 @@ extension SignUpView {
             make.height.equalTo(45)
         }
 
+        emailWarningLabel.snp.makeConstraints { make in
+            make.leading.equalTo(emailTextField).offset(16)
+            make.top.equalTo(emailTextField.snp.bottom).offset(4)
+        }
+
         passwordLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
-            make.top.equalTo(emailTextField.snp.bottom).offset(16)
+            make.top.equalTo(emailWarningLabel.snp.bottom).offset(16)
         }
 
         passwordTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(32)
             make.top.equalTo(passwordLabel.snp.bottom).offset(8)
             make.height.equalTo(45)
+        }
+
+        passwordWarningLabel.snp.makeConstraints { make in
+            make.leading.equalTo(passwordTextField).offset(16)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(4)
         }
     }
 

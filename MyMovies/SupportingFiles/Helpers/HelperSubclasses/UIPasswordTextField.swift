@@ -20,14 +20,10 @@ final class UIPasswordTextField: UITextField {
     }
 
     convenience init(
-        action: Selector,
-        target: Any?,
         placeholder: String?,
         cornerRadius: CGFloat = Sizes.Large.cornerRadius
     ) {
         self.init()
-
-        self.addTarget(target, action: action, for: .editingChanged)
 
         self.placeholder = placeholder
         self.font = Typography.Medium.subhead

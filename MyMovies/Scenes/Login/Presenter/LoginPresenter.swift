@@ -13,7 +13,7 @@ final class LoginPresenter: LoginPresenterProtocol {
     var router: LoginRouterProtocol
 
     // MARK: - Init
-    init(interactor: LoginInteractorProtocol, router: LoginRouterProtocol, view: LoginViewProtocol? = nil) {
+    init(view: LoginViewProtocol? = nil, interactor: LoginInteractorProtocol, router: LoginRouterProtocol) {
         self.interactor = interactor
         self.router = router
         self.view = view
@@ -27,6 +27,11 @@ final class LoginPresenter: LoginPresenterProtocol {
     }
 
     func didTapSignUpButton() {
+        router.navigateToSignUp()
+    }
+
+    func didTapBackButton() {
+        router.dismissScene()
     }
 }
 

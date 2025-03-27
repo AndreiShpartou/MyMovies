@@ -14,12 +14,12 @@ final class UserGreetingView: UIView, UserGreetingViewProtocol {
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
         cornerRadius: 20,
-        image: Asset.Avatars.avatarMock.image
+        image: Asset.Avatars.avatarDefault.image
     )
     private let helloLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
         textColor: .textColorWhite,
-        text: "Hello, Smith"
+        text: "Hello, Guest!"
     )
     private let favouriteButton: UIButton = .createFavouriteButton(isSelected: true)
 
@@ -38,7 +38,7 @@ final class UserGreetingView: UIView, UserGreetingViewProtocol {
     // MARK: - Public
     func configure(with username: String, avatarImage: UIImage?) {
         helloLabel.text = "Hello, \(username)"
-        avatarImageView.image = avatarImage ?? Asset.Avatars.avatarMock.image
+        avatarImageView.image = avatarImage ?? Asset.Avatars.avatarDefault.image
     }
 }
 

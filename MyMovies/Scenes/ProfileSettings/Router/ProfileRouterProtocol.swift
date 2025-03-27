@@ -11,5 +11,6 @@ protocol ProfileRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
     func navigateToEditProfile()
+    func navigateToSignIn()
     func navigateToGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?)
 }

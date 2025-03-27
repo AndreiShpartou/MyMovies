@@ -23,6 +23,7 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         borderWidth: 2,
         borderColor: UIColor.primarySoft.cgColor
     )
+
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
@@ -40,6 +41,21 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     )
 
     private lazy var editButton: UIButton = createEditButton()
+
+    private let guestUserView: UIView = .createCommonView(
+        backgroundColor: .primaryBackground,
+        isHidden: false
+    )
+
+    private lazy var signInButton = UIButton(
+        title: "Sign In",
+        font: Typography.Medium.title,
+        titleColor: .textColorWhite,
+        backgroundColor: .primarySoft,
+        cornerRadius: Sizes.Medium.cornerRadius,
+        action: #selector(didTapSignInButton),
+        target: self
+    )
 
     // Settings Table
     private lazy var tableView: UITableView = createSettingsTableView()
@@ -80,10 +96,22 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
 
     // MARK: - Presentation logic
     func showUserProfile(_ profile: UserProfileViewModelProtocol) {
-        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarMock.image)
+        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarDefault.image)
         nameLabel.text = profile.name
         emailLabel.text = profile.email
+
+        nameLabel.isHidden = false
+        emailLabel.isHidden = false
+        editButton.isHidden = false
+
         hideLoadingIndicator()
+    }
+
+    func signOut() {
+        delegate?.didTapSignOut()
+
+        guestUserView.isHidden = true
+        signInButton.isHidden = true
     }
 
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol]) {
@@ -100,13 +128,29 @@ extension ProfileSettingsView {
         addSubviews(scrollView)
         scrollView.addSubviews(contentView, loadingIndicator)
         contentView.addSubviews(headerView, tableView)
-        headerView.addSubviews(profileImageView, nameLabel, emailLabel, editButton)
+        headerView.addSubviews(
+            profileImageView,
+            nameLabel,
+            emailLabel,
+            editButton,
+            guestUserView
+        )
+        guestUserView.addSubviews(signInButton)
 
+        setupSubviews()
         setupGestureRecognizers()
     }
 
     private func updateDelegates() {
         tableViewHandler.delegate = delegate
+    }
+
+    private func setupSubviews() {
+        nameLabel.isHidden = true
+        emailLabel.isHidden = true
+        editButton.isHidden = true
+        guestUserView.isHidden = false
+        signInButton.isHidden = false
     }
 
     private func setupGestureRecognizers() {
@@ -121,6 +165,11 @@ extension ProfileSettingsView {
     @objc
     private func headerViewTapped() {
         delegate?.didTapEditProfile()
+    }
+
+    @objc
+    private func didTapSignInButton() {
+        delegate?.didTapSignIn()
     }
 }
 
@@ -202,6 +251,16 @@ extension ProfileSettingsView {
         emailLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(nameLabel)
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
+        }
+
+        guestUserView.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.trailing.equalTo(editButton)
+            make.top.bottom.equalToSuperview().inset(8)
+        }
+
+        signInButton.snp.makeConstraints { make in
+            make.edges.equalTo(guestUserView).inset(12)
         }
     }
 

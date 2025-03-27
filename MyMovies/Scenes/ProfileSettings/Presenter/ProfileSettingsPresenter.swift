@@ -38,6 +38,10 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
         router.navigateToEditProfile()
     }
 
+    func navigateToSignIn() {
+        router.navigateToSignIn()
+    }
+
     func didSelectSetting(at indexPath: IndexPath) {
         handleSettingsItemSelection(at: indexPath)
     }

@@ -52,11 +52,19 @@ extension ProfileSettingsViewController {
 }
 
 extension ProfileSettingsViewController: ProfileSettingsInteractionDelegate {
+    func didTapSignIn() {
+        presenter.navigateToSignIn()
+    }
+
     func didTapEditProfile() {
         presenter.navigateToEditProfile()
     }
 
     func didSelectSetting(at indexPath: IndexPath) {
         presenter.didSelectSetting(at: indexPath)
+    }
+
+    func didTapSignOut() {
+        //
     }
 }

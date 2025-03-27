@@ -18,4 +18,5 @@ protocol LoginViewProtocol: UIView {
 protocol LoginViewDelegate: AnyObject, UITextFieldDelegate {
     func didTapLoginButton()
     func didTapSignUpButton()
+    func didTapBackButton()
 }

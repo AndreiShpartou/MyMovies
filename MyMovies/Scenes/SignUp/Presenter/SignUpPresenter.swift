@@ -13,10 +13,10 @@ final class SignUpPresenter: SignUpPresenterProtocol {
     var router: SignUpRouterProtocol
 
     // MARK: - Init
-    init(interactor: SignUpInteractorProtocol, router: SignUpRouterProtocol, view: SignUpViewProtocol? = nil) {
+    init(view: SignUpViewProtocol? = nil, interactor: SignUpInteractorProtocol, router: SignUpRouterProtocol) {
+        self.view = view
         self.interactor = interactor
         self.router = router
-        self.view = view
     }
 
     // MARK: - Public
