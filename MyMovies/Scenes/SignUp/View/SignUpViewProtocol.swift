@@ -16,5 +16,5 @@ protocol SignUpViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
 }
 
 protocol SignUpViewDelegate: AnyObject, UITextFieldDelegate {
-    func didTapSignUpButton()
+    func didTapSignUpButton(email: String, password: String, fullName: String)
 }

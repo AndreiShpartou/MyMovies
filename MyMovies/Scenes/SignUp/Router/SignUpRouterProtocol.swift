@@ -9,6 +9,4 @@ import UIKit
 
 protocol SignUpRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
-
-    func navigateToMainFlow()
 }

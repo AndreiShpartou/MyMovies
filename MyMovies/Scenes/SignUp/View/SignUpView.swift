@@ -39,7 +39,7 @@ final class SignUpView: UIView, SignUpViewProtocol {
 
     private let fulllNameTextField: UITextField = .createBorderedTextField(
         placeholder: "Full Name",
-        keyboardType: .namePhonePad,
+        keyboardType: .default,
         cornerRadius: 15
     )
 
@@ -95,6 +95,9 @@ final class SignUpView: UIView, SignUpViewProtocol {
         target: self
     )
 
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -110,12 +113,21 @@ final class SignUpView: UIView, SignUpViewProtocol {
 
     // MARK: - Public
     func showLoadingIndicator() {
+        loadingIndicator.startAnimating()
     }
 
     func hideLoadingIndicator() {
+        loadingIndicator.stopAnimating()
     }
 
     func showError(error: Error) {
+        guard let viewController = parentViewController else {
+            return
+        }
+
+        // Present an alert to the user
+        let alert = getGlobalAlertController(for: error.localizedDescription)
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -125,7 +137,7 @@ extension SignUpView {
         backgroundColor = .primaryBackground
 
         scrollView.addSubviews(scrollContentView)
-        addSubviews(scrollView)
+        addSubviews(scrollView, loadingIndicator)
 
         setupSubviews()
     }
@@ -169,6 +181,12 @@ extension SignUpView {
         guard isAllDataFilled() else {
             return
         }
+
+        delegate?.didTapSignUpButton(
+            email: emailTextField.text!,
+            password: passwordTextField.text!,
+            fullName: fulllNameTextField.text!
+        )
     }
 }
 
@@ -251,6 +269,10 @@ extension SignUpView {
 
         scrollContentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+        }
+
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 

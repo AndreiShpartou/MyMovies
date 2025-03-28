@@ -131,7 +131,7 @@ extension SignUpViewController {
 
 // MARK: - SignUpViewDelegate
 extension SignUpViewController: SignUpViewDelegate {
-    func didTapSignUpButton() {
-        presenter.didTapSignUpButton()
+    func didTapSignUpButton(email: String, password: String, fullName: String) {
+        presenter.didTapSignUpButton(email: email, password: password, fullName: fullName)
     }
 }

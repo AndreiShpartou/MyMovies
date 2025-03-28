@@ -13,5 +13,5 @@ protocol SignUpPresenterProtocol: AnyObject, SignUpInteractorOutputProtocol {
     var router: SignUpRouterProtocol { get set }
 
     func viewDidLoad()
-    func didTapSignUpButton()
+    func didTapSignUpButton(email: String, password: String, fullName: String)
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
     weak var view: ProfileSettingsViewProtocol?
@@ -45,22 +46,29 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
     func didSelectSetting(at indexPath: IndexPath) {
         handleSettingsItemSelection(at: indexPath)
     }
+
+    func signOut() {
+        view?.showLoadingIndicator()
+        interactor.signOut()
+    }
 }
 
-extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
+// MARK: - ProfileSettingsInteractorOutputProtocol
+extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            view?.showError(NSLocalizedString("Failed to load profile", comment: "Error message for failed profile load"))
+            view?.showError(AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
             view?.hideLoadingIndicator()
 
             return
         }
         view?.showUserProfile(profileViewModel)
+        router.navigateToRoot()
     }
 
     func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {
         guard let sectionsViewModel = mapper.map(data: sections, to: [ProfileSettingsSectionViewModel].self) else {
-            view?.showError(NSLocalizedString("Failed to load settings", comment: "Error message for failed settings load"))
+            view?.showError(AppError.customError(message: "Failed to load settings", comment: "Error message for failed settings load"))
             view?.hideLoadingIndicator()
 
             return
@@ -74,7 +82,11 @@ extension ProfileSettingsPresenter: ProfileSettingsInteracrotOutputProtocol {
 
     func didFailToFetchData(with error: Error) {
         view?.hideLoadingIndicator()
-        view?.showError(error.localizedDescription)
+        view?.showError(error)
+    }
+
+    func didLogOut() {
+        view?.showSignOutItems()
     }
 }
 

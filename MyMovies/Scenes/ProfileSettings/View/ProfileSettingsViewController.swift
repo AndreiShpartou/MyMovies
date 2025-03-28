@@ -51,6 +51,7 @@ extension ProfileSettingsViewController {
     }
 }
 
+// MARK: - ProfileSettingsInteractionDelegate
 extension ProfileSettingsViewController: ProfileSettingsInteractionDelegate {
     func didTapSignIn() {
         presenter.navigateToSignIn()
@@ -65,6 +66,6 @@ extension ProfileSettingsViewController: ProfileSettingsInteractionDelegate {
     }
 
     func didTapSignOut() {
-        //
+        presenter.signOut()
     }
 }

@@ -16,6 +16,10 @@ class ProfileRouter: ProfileRouterProtocol {
     }
 
     // MARK: - ProfileRouterProtocol
+    func navigateToRoot() {
+        viewController?.view.window?.rootViewController?.dismiss(animated: true)
+    }
+
     func navigateToEditProfile() {
         let editProfileVC = SceneBuilder.buildEditProfileScene()
         viewController?.navigationController?.pushViewController(editProfileVC, animated: true)

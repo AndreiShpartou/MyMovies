@@ -12,4 +12,5 @@ protocol ProfileSettingsPresenterProtocol: AnyObject {
     func navigateToEditProfile()
     func navigateToSignIn()
     func didSelectSetting(at indexPath: IndexPath)
+    func signOut()
 }

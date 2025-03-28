@@ -12,8 +12,8 @@ protocol ProfileSettingsViewProtocol: UIView {
 
     func showUserProfile(_ profile: UserProfileViewModelProtocol)
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])
-    func signOut()
-    func showError(_ message: String)
+    func showSignOutItems()
+    func showError(_ error: Error)
     func showLoadingIndicator()
     func hideLoadingIndicator()
 }

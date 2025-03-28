@@ -31,7 +31,7 @@ final class UIPasswordTextField: UITextField {
 
         self.backgroundColor = .primaryBackground
         self.isSecureTextEntry = true
-        self.textContentType = .password
+        self.textContentType = .oneTimeCode
         self.autocapitalizationType = .none
         self.returnKeyType = .done
         self.keyboardAppearance = .dark
@@ -43,6 +43,12 @@ final class UIPasswordTextField: UITextField {
         )
 
         setupPaddings()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        self.backgroundColor = .primaryBackground
     }
 }
 

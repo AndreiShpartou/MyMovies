@@ -23,12 +23,21 @@ final class SignUpPresenter: SignUpPresenterProtocol {
     func viewDidLoad() {
     }
 
-    func didTapSignUpButton() {
+    func didTapSignUpButton(email: String, password: String, fullName: String) {
+        view?.showLoadingIndicator()
+
+        interactor.signUp(email: email, password: password, fullName: fullName)
     }
 }
 
 // MARK: - LoginInteractorOutputProtocol
 extension SignUpPresenter: SignUpInteractorOutputProtocol {
     func didSignUpSuccessfully() {
+        view?.hideLoadingIndicator()
+    }
+
+    func didFailToSignUp(error: Error) {
+        view?.showError(error: error)
+        view?.hideLoadingIndicator()
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserProfile: UserProfileProtocol {
-    let id: Int
+    let id: String
     let name: String
     let email: String
     let profileImageURL: URL?

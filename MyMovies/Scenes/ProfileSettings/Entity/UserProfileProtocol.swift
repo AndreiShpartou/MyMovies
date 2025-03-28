@@ -8,7 +8,7 @@
 import Foundation
 
 protocol UserProfileProtocol: Codable {
-    var id: Int { get }
+    var id: String { get }
     var name: String { get }
     var email: String { get }
     var profileImageURL: URL? { get }
