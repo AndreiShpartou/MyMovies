@@ -31,9 +31,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     func viewDidLoad() {
         view?.showLoadingIndicator()
 
-        // User profile will be fetched when signed in
-        // By setting up the auth observer and Firebase listener in the interactor
-        // interactor.fetchUserProfile()
+        interactor.fetchUserProfile()
     }
 }
 

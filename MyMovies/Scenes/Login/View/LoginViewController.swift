@@ -117,7 +117,8 @@ extension LoginViewController {
 
 // MARK: - LoginViewDelegate
 extension LoginViewController: LoginViewDelegate {
-    func didTapLoginButton() {
+    func didTapSignInButton(email: String, password: String) {
+        presenter.didTapSignInButton(email: email, password: password)
     }
 
     func didTapSignUpButton() {

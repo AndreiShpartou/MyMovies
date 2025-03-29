@@ -10,9 +10,10 @@ import Foundation
 protocol LoginInteractorProtocol: AnyObject {
     var presenter: LoginInteractorOutputProtocol? { get set }
 
-    func login(email: String, password: String)
+    func signIn(withEmail: String, password: String)
 }
 
 protocol LoginInteractorOutputProtocol: AnyObject {
-    func didLoginSuccessfully()
+    func didSignInSuccessfully()
+    func didFailToSignIn(with error: Error)
 }

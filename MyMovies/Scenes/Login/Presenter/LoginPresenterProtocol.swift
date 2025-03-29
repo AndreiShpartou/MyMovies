@@ -13,7 +13,7 @@ protocol LoginPresenterProtocol: AnyObject, LoginInteractorOutputProtocol {
     var router: LoginRouterProtocol { get set }
 
     func viewDidLoad()
-    func didTapLoginButton()
+    func didTapSignInButton(email: String, password: String)
     func didTapSignUpButton()
     func didTapBackButton()
 }

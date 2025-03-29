@@ -31,8 +31,13 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
     // MARK: - ProfileSettingsPresenterProtocol
     func viewDidLoad() {
         view?.showLoadingIndicator()
-        interactor.fetchUserProfile()
+
         interactor.fetchSettingsItems()
+
+        // User profile will be fetched when signed in
+        // By setting up the auth observer and Firebase listener in the interactor
+        // The listener also will be triggered after it is setup (automatically)
+        // interactor.fetchUserProfile()
     }
 
     func navigateToEditProfile() {
@@ -86,6 +91,7 @@ extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     }
 
     func didLogOut() {
+        view?.hideLoadingIndicator()
         view?.showSignOutItems()
     }
 }

@@ -16,7 +16,7 @@ protocol LoginViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
 }
 
 protocol LoginViewDelegate: AnyObject, UITextFieldDelegate {
-    func didTapLoginButton()
+    func didTapSignInButton(email: String, password: String)
     func didTapSignUpButton()
     func didTapBackButton()
 }

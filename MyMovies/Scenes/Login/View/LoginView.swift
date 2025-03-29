@@ -101,6 +101,9 @@ final class LoginView: UIView, LoginViewProtocol {
         target: self
     )
 
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -116,12 +119,21 @@ final class LoginView: UIView, LoginViewProtocol {
 
     // MARK: - Public
     func showLoadingIndicator() {
+        loadingIndicator.startAnimating()
     }
 
     func hideLoadingIndicator() {
+        loadingIndicator.stopAnimating()
     }
 
     func showError(error: Error) {
+        guard let viewController = parentViewController else {
+            return
+        }
+
+        // Present an alert to the user
+        let alert = getGlobalAlertController(for: error.localizedDescription)
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -132,7 +144,7 @@ extension LoginView {
 
         addSubviews(backButton)
         scrollView.addSubviews(scrollContentView)
-        addSubviews(scrollView)
+        addSubviews(scrollView, loadingIndicator)
 
         setupSubviews()
     }
@@ -175,6 +187,11 @@ extension LoginView {
         guard isAllDataFilled() else {
             return
         }
+
+        delegate?.didTapSignInButton(
+            email: emailTextField.text!,
+            password: passwordTextField.text!
+        )
     }
 
     @objc
@@ -273,6 +290,10 @@ extension LoginView {
 
         scrollContentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 

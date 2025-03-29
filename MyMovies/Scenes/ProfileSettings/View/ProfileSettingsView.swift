@@ -112,7 +112,6 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
 
     func showSignOutItems() {
         showLoggedOutViews()
-        hideLoadingIndicator()
     }
 
     func showError(_ error: Error) {

@@ -74,7 +74,7 @@ final class SignUpView: UIView, SignUpViewProtocol {
     )
 
     private let passwordTextField: UITextField = UIPasswordTextField(
-        placeholder: "At Least 8 Characters",
+        placeholder: "At Least 6 Characters",
         cornerRadius: 15
     )
 
