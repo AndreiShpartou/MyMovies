@@ -45,6 +45,7 @@ extension EditProfilePresenter: EditProfileInteractorOutputProtocol {
             return
         }
         view?.showUserProfile(profileViewModel)
+        view?.hideLoadingIndicator()
     }
 
     func didFailToFetchData(with error: Error) {

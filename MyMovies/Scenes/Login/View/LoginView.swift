@@ -291,7 +291,7 @@ extension LoginView {
         scrollContentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
         }
-        
+
         loadingIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }

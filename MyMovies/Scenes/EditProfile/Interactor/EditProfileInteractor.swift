@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 final class EditProfileInteractor: EditProfileInteractorProtocol {
     weak var presenter: EditProfileInteractorOutputProtocol?
 
     private let networkManager: NetworkManagerProtocol
+    private let firestoreDB = Firestore.firestore()
 
     // MARK: - Init
     init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
@@ -19,16 +22,52 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
 
     // MARK: - EditProfileInteractorProtocol
     func fetchUserProfile() {
-        networkManager.fetchUserProfile { [weak self] result in
-            switch result {
-            case .success(let profile):
+        guard let user = Auth.auth().currentUser,
+              let email = user.email else {
+            return
+        }
+
+        // Fetch full data and update UI if user is signed in
+        fetchAdditionalUserData(uid: user.uid, email: email)
+    }
+}
+
+// MARK: - Private
+extension EditProfileInteractor {
+    private func fetchAdditionalUserData(uid: String, email: String) {
+        firestoreDB.collection("users").document(uid).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+
+            if let error = error {
                 DispatchQueue.main.async {
-                    self?.presenter?.didFetchUserProfile(profile)
+                    self.presenter?.didFailToFetchData(with: error)
                 }
-            case .failure(let error):
+
+                return
+            }
+
+            guard let userData = snapshot?.data() else {
                 DispatchQueue.main.async {
-                    self?.presenter?.didFailToFetchData(with: error)
+                    self.presenter?.didFailToFetchData(with: AppError.customError(message: "Failed to fetch user data", comment: "Error message for failed user data fetch"))
                 }
+
+                return
+            }
+
+            // Return if data wasn't stored -> Wait until it'll be stored and fetching be triggered by the listener
+            guard let name = userData["name"] as? String else {
+                return
+            }
+
+            let userProfile = UserProfile(
+                id: uid,
+                name: name,
+                email: email,
+                profileImageURL: userData["profileImageURL"] as? URL
+            )
+
+            DispatchQueue.main.async {
+                self.presenter?.didFetchUserProfile(userProfile)
             }
         }
     }

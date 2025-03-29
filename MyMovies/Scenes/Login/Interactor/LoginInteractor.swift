@@ -17,7 +17,7 @@ final class LoginInteractor: LoginInteractorProtocol {
 
     // MARK: - Public
     func signIn(withEmail: String, password: String) {
-        Auth.auth().signIn(withEmail: withEmail, password: password) { [weak self] result, error in
+        Auth.auth().signIn(withEmail: withEmail, password: password) { [weak self] _, error in
             guard let self = self else { return }
 
             if let error = error {

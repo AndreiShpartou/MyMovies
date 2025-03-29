@@ -42,7 +42,7 @@ extension LoginPresenter {
     func didSignInSuccessfully() {
         view?.hideLoadingIndicator()
     }
-    
+
     func didFailToSignIn(with error: Error) {
         view?.hideLoadingIndicator()
         view?.showError(error: error)

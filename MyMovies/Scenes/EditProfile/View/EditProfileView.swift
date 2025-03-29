@@ -82,7 +82,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         target: self
     )
     // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -99,12 +99,11 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
 
     // MARK: - Public
     func showUserProfile(_ profile: UserProfileViewModelProtocol) {
-        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarDefault.image)
+        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.signedUser.image)
         fullNameLabel.text = profile.name
         emailLabel.text = profile.email
-//        fullNameTextField.text = profile.name
-//        emailTextField.text = profile.email
-        hideLoadingIndicator()
+        fullNameTextField.text = profile.name
+        emailTextField.text = profile.email
     }
 
     func showError(_ message: String) {
@@ -252,7 +251,6 @@ extension EditProfileView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.textColor = .textColorWhite
         textField.layer.borderColor = UIColor.selectedBorder.cgColor
-
         // Update warnings
         textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
     }
