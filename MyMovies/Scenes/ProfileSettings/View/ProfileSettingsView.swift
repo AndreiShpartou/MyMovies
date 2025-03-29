@@ -72,7 +72,7 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     private lazy var tableView: UITableView = createSettingsTableView()
     private let tableViewHandler = ProfileSettingsTableViewHandler()
     // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
 
     // MARK: - Init
     override init(frame: CGRect) {

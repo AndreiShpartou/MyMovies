@@ -19,7 +19,7 @@ final class MainView: UIView, MainViewProtocol {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     // User greeting
-    private let userGreetingView = UserGreetingView()
+    private(set) var userGreetingView: UserGreetingViewProtocol = UserGreetingView()
     // Search section
     private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
@@ -155,6 +155,14 @@ final class MainView: UIView, MainViewProtocol {
     func scrollToUpcomingMovieItem(_ index: Int) {
         upComingMoviesPageControl.currentPage = index
         updatePageControlImages(index: index)
+    }
+
+    func showUserProfile(_ user: UserProfileViewModelProtocol) {
+        userGreetingView.configure(user)
+    }
+
+    func didLogOut() {
+        userGreetingView.didLogOut()
     }
 
     func showError(error: Error) {

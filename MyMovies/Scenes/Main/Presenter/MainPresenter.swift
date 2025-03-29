@@ -112,6 +112,20 @@ extension MainPresenter: MainInteractorOutputProtocol {
         moviesDict[.theHighestGrossingMovies] = movies
     }
 
+    func didFetchUserProfile(_ profile: UserProfileProtocol) {
+        guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
+            view?.showError(error: AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
+
+            return
+        }
+
+        view?.showUserProfile(profileViewModel)
+    }
+
+    func didLogOut() {
+        view?.didLogOut()
+    }
+
     func didFailToFetchData(with error: Error) {
         // Handle error
         view?.showError(error: error)

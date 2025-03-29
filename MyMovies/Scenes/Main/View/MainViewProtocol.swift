@@ -16,6 +16,8 @@ protocol MainViewProtocol: UIView {
     func showTopRatedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showTheHighestGrossingMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func showMovieGenres(_ genres: [GenreViewModelProtocol])
+    func showUserProfile(_ user: UserProfileViewModelProtocol)
+    func didLogOut()
     func showError(error: Error)
 }
 

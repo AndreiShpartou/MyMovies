@@ -78,6 +78,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
         }
     }
 
+    // MARK: - Deinit
     deinit {
         if let authObserver = authObserver {
             Auth.auth().removeStateDidChangeListener(authObserver)
