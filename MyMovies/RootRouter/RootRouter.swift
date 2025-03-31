@@ -27,6 +27,7 @@ final class RootRouter: RootRouterProtocol {
         )
         AppConfigurationManager.shared.setupMainConfiguration()
         AppConfigurationManager.shared.setupCacheConfiguration()
+        AppConfigurationManager.shared.setupFirebaseConfiguration()
 
         // Check if user has seen onboarding
         let hasSeenOnboardingKey = "hasSeenOnboarding"

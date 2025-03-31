@@ -15,6 +15,8 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
     private let networkManager: NetworkManagerProtocol
     private let firestoreDB = Firestore.firestore()
 
+    private var currentUser: UserProfileProtocol?
+
     // MARK: - Init
     init(networkManager: NetworkManagerProtocol = NetworkManager.shared) {
         self.networkManager = networkManager
@@ -29,6 +31,9 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
 
         // Fetch full data and update UI if user is signed in
         fetchAdditionalUserData(uid: user.uid, email: email)
+    }
+
+    func updateUserProfile(name: String, email: String, image: UIImage?) {
     }
 }
 
@@ -59,7 +64,7 @@ extension EditProfileInteractor {
                 return
             }
 
-            let userProfile = UserProfile(
+            currentUser = UserProfile(
                 id: uid,
                 name: name,
                 email: email,
@@ -67,7 +72,7 @@ extension EditProfileInteractor {
             )
 
             DispatchQueue.main.async {
-                self.presenter?.didFetchUserProfile(userProfile)
+                self.presenter?.didFetchUserProfile(self.currentUser!)
             }
         }
     }

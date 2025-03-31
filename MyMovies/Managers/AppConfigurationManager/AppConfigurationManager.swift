@@ -7,6 +7,9 @@
 
 import Foundation
 import Kingfisher
+import FirebaseCore
+import FirebaseFirestore
+import FirebaseAuth
 
 // MARK: - AppConfigurationManager
 final class AppConfigurationManager: AppConfigurationManagerProtocol {
@@ -57,6 +60,10 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         imageCache.memoryStorage.config.totalCostLimit = 100 * 1024 * 1024 // 100 MB
         imageCache.diskStorage.config.sizeLimit = 500 * 1024 * 1024 // 500 MB
         imageCache.diskStorage.config.expiration = .days(7)
+    }
+
+    func setupFirebaseConfiguration() {
+        FirebaseApp.configure()
     }
 
     // MARK: - Private

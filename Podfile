@@ -9,4 +9,5 @@ target 'MyMovies' do
   pod 'lottie-ios'
   pod 'FirebaseAuth', :inhibit_warnings => true
   pod 'FirebaseFirestore', :inhibit_warnings => true
+  pod 'Cloudinary', :inhibit_warnings => true
 end

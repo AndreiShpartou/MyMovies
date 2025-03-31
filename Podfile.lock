@@ -1195,6 +1195,9 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.37):
     - BoringSSL-GRPC/Interface (= 0.0.37)
   - BoringSSL-GRPC/Interface (0.0.37)
+  - Cloudinary (5.1.0):
+    - Cloudinary/ios (= 5.1.0)
+  - Cloudinary/ios (5.1.0)
   - FirebaseAppCheckInterop (11.10.0)
   - FirebaseAuth (11.10.0):
     - FirebaseAppCheckInterop (~> 11.0)
@@ -1362,6 +1365,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - Cloudinary
   - FirebaseAuth
   - FirebaseFirestore
   - Kingfisher
@@ -1373,6 +1377,7 @@ SPEC REPOS:
     - abseil
     - Alamofire
     - BoringSSL-GRPC
+    - Cloudinary
     - FirebaseAppCheckInterop
     - FirebaseAuth
     - FirebaseAuthInterop
@@ -1397,6 +1402,7 @@ SPEC CHECKSUMS:
   abseil: a05cc83bf02079535e17169a73c5be5ba47f714b
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
+  Cloudinary: bab47d625e409936fb5c61d53f17719c80c258ad
   FirebaseAppCheckInterop: 9664c858489710f682766ef54e2b6741d3b62070
   FirebaseAuth: c4146bdfdc87329f9962babd24dae89373f49a32
   FirebaseAuthInterop: 01a804fb074424fd58b92dd50dd0272277199356
@@ -1417,6 +1423,6 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
 
-PODFILE CHECKSUM: 59c6fcadf17ee7544912811062872d6577594b29
+PODFILE CHECKSUM: 32f9db41f87bfc5e6f8c42d3b8591b40590365a1
 
 COCOAPODS: 1.15.2
