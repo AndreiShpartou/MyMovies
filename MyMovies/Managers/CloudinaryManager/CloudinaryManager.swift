@@ -7,11 +7,15 @@
 
 import Cloudinary
 
-class CloudinaryManager {
+protocol CloudinaryManagerProtocol: AnyObject {
+    var cloudinary: CLDCloudinary { get }
+}
+
+class CloudinaryManager: CloudinaryManagerProtocol {
     static let shared = CloudinaryManager()
-    
+
     let cloudinary: CLDCloudinary
-    
+
     private init() {
         let config = CLDConfiguration(cloudName: "dfe1lkbwt", apiKey: "445626447662862", apiSecret: "eUa65FGYdWeil5iwYk6shtcENso")
         self.cloudinary = CLDCloudinary(configuration: config)
