@@ -25,7 +25,7 @@ protocol PrefetchInteractorProtocol: AnyObject {
     func prefetchData()
 }
 
-protocol MainInteractorOutputProtocol: AnyObject {
+protocol MainInteractorOutputProtocol: AnyObject, UserProfileObserverDelegate {
     func didFetchUpcomingMovies(_ movies: [MovieProtocol])
     func didFetchMovieGenres(_ genres: [GenreProtocol])
     func didFetchPopularMovies(_ movies: [MovieProtocol])

@@ -10,29 +10,31 @@ import FirebaseAuth
 import FirebaseFirestore
 
 final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
-    weak var presenter: MainInteractorOutputProtocol?
+    weak var presenter: MainInteractorOutputProtocol? {
+        didSet {
+            userProfileObserver.delegate = presenter
+            userProfileObserver.startObserving()
+        }
+    }
 
     private let networkManager: NetworkManagerProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
+    private let userProfileObserver: UserProfileObserverProtocol
     private let provider: Provider
-    private let firestoreDB = Firestore.firestore()
-
-    private var authObserver: NSObjectProtocol?
-    private var firestoreObserver: ListenerRegistration?
 
     // MARK: - Init
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        movieRepository: MovieRepositoryProtocol = MovieRepository(),
+        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
     ) {
         self.networkManager = networkManager
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
+        self.userProfileObserver = userProfileObserver
         self.provider = networkManager.getProvider()
-
-        setupAuthObserver()
     }
 
     // MARK: - UpcomingMovies
@@ -143,26 +145,12 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // MARK: - UserProfile
     func fetchUserProfile() {
-        guard let user = Auth.auth().currentUser,
-              let email = user.email else {
-            return
-        }
-
-        // Fetch full data and update UI if user is signed in
-        fetchAdditionalUserData(uid: user.uid, email: email)
-
-        // Add a listener to fetch user data if still not added
-        setupFireStoreListener(uid: user.uid, email: email)
+        userProfileObserver.fetchUserProfile()
     }
 
     // MARK: - Deinit
     deinit {
-        if let authObserver = authObserver {
-            Auth.auth().removeStateDidChangeListener(authObserver)
-        }
-
-        firestoreObserver?.remove()
-        firestoreObserver = nil
+        userProfileObserver.stopObserving()
     }
 }
 
@@ -252,88 +240,5 @@ extension MainInteractor {
         let now = Date().timeIntervalSince1970
         let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
         UserDefaults.standard.set(now, forKey: lastUpdateKey)
-    }
-}
-
-// MARK: - Observers
-extension MainInteractor {
-    private func setupAuthObserver() {
-        authObserver = Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            guard let self = self else { return }
-
-            guard let user = user,
-            let email = user.email else {
-                // User is signed out or does not exist
-                self.firestoreObserver?.remove()
-                firestoreObserver = nil
-
-                DispatchQueue.main.async {
-                    self.presenter?.didLogOut()
-                }
-
-                return
-            }
-
-            // Add a listener to fetch additional user data via Firestore
-            self.setupFireStoreListener(uid: user.uid, email: email)
-        }
-    }
-
-    private func setupFireStoreListener(uid: String, email: String) {
-        guard firestoreObserver == nil else { return }
-
-        firestoreObserver = firestoreDB.collection("users").document(uid).addSnapshotListener { [weak self] _, error in
-            guard let self = self else { return }
-
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.presenter?.didFailToFetchData(with: error)
-                }
-            }
-
-            fetchAdditionalUserData(uid: uid, email: email)
-        }
-    }
-}
-
-// MARK: - FireBaseFireStoreAuth
-extension MainInteractor {
-    // Fetch additional data from the Firestore
-    private func fetchAdditionalUserData(uid: String, email: String) {
-        firestoreDB.collection("users").document(uid).getDocument { [weak self] snapshot, error in
-            guard let self = self else { return }
-
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.presenter?.didFailToFetchData(with: error)
-                }
-
-                return
-            }
-
-            guard let userData = snapshot?.data() else {
-                DispatchQueue.main.async {
-                    self.presenter?.didFailToFetchData(with: AppError.customError(message: "Failed to fetch user data", comment: "Error message for failed user data fetch"))
-                }
-
-                return
-            }
-
-            // Return if data wasn't stored -> Wait until it'll be stored and fetching be triggered by the listener
-            guard let name = userData["name"] as? String else {
-                return
-            }
-
-            let userProfile = UserProfile(
-                id: uid,
-                name: name,
-                email: email,
-                profileImageURL: URL(string: (userData["profileImageURL"] as? String ?? ""))
-            )
-
-            DispatchQueue.main.async {
-                self.presenter?.didFetchUserProfile(userProfile)
-            }
-        }
     }
 }

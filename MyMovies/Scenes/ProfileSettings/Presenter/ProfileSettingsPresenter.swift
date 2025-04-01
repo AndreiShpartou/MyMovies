@@ -34,9 +34,9 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
 
         interactor.fetchSettingsItems()
 
-        // User profile will be fetched when signed in
+        // User profile will be fetched automatically
         // By setting up the auth observer and Firebase listener in the interactor
-        // The listener also will be triggered after it is setup (automatically)
+        // The listener is triggered for the first time during setup, even without an actual event happening.
         // interactor.fetchUserProfile()
     }
 
