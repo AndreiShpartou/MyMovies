@@ -11,9 +11,11 @@ protocol EditProfileInteractorProtocol {
     var presenter: EditProfileInteractorOutputProtocol? { get set }
 
     func fetchUserProfile()
+    func updateUserProfile(name: String, profileImage: Data?)
 }
 
 protocol EditProfileInteractorOutputProtocol: AnyObject {
     func didFetchUserProfile(_ profile: UserProfileProtocol)
     func didFailToFetchData(with error: Error)
+    func didCloseWithNoChanges()
 }

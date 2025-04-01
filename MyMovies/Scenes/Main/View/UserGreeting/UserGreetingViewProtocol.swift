@@ -10,7 +10,10 @@ import UIKit
 protocol UserGreetingViewProtocol: UIView {
     var delegate: UserGreetingViewDelegate? { get set }
 
-    func configure(with username: String, avatarImage: UIImage?)
+    func configure(_ profile: UserProfileViewModelProtocol)
+    func didLogOut()
+    func showloadingIndicator()
+    func hideLoadingIndicator()
 }
 
 protocol UserGreetingViewDelegate: AnyObject {

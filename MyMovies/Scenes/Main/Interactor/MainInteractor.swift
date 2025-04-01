@@ -6,24 +6,34 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
-    weak var presenter: MainInteractorOutputProtocol?
+    weak var presenter: MainInteractorOutputProtocol? {
+        didSet {
+            userProfileObserver.delegate = presenter
+            userProfileObserver.startObserving()
+        }
+    }
 
     private let networkManager: NetworkManagerProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
+    private let userProfileObserver: UserProfileObserverProtocol
     private let provider: Provider
 
     // MARK: - Init
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        movieRepository: MovieRepositoryProtocol = MovieRepository(),
+        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
     ) {
         self.networkManager = networkManager
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
+        self.userProfileObserver = userProfileObserver
         self.provider = networkManager.getProvider()
     }
 
@@ -92,6 +102,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // Prefetch
     func prefetchData() {
+        fetchUserProfile()
         fetchMovieGenres()
         fetchUpcomingMovies()
         fetchPopularMovies()
@@ -132,7 +143,20 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
     }
 
-    // MARK: - Private
+    // MARK: - UserProfile
+    func fetchUserProfile() {
+        userProfileObserver.fetchUserProfile()
+    }
+
+    // MARK: - Deinit
+    deinit {
+        userProfileObserver.stopObserving()
+    }
+}
+
+// MARK: - Private
+extension MainInteractor {
+    // MARK: - FetchMovies
     private func fetchMovies(type: MovieListType) {
         // Check if the data for this list is stale.
         let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"

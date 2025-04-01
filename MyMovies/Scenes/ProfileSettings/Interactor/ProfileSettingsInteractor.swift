@@ -6,11 +6,18 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
-    weak var presenter: ProfileSettingsInteracrotOutputProtocol?
+    weak var presenter: ProfileSettingsInteractorOutputProtocol? {
+        didSet {
+            userProfileObserver.delegate = presenter
+            userProfileObserver.startObserving()
+        }
+    }
 
     private let networkManager: NetworkManagerProtocol
+    private let userProfileObserver: UserProfileObserverProtocol
 
     private var settingsSections: [ProfileSettingsSection] = []
     private var plistLoader: PlistConfigurationLoaderProtocol?
@@ -18,27 +25,17 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     // MARK: - Init
     init(
         networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader()
+        plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader(),
+        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
     ) {
         self.networkManager = networkManager
         self.plistLoader = plistLoader
-//        self.userRepository = userRepository
+        self.userProfileObserver = userProfileObserver
     }
 
     // MARK: - ProfileSettingsInteractorProtocol
     func fetchUserProfile() {
-        networkManager.fetchUserProfile { [weak self] result in
-            switch result {
-            case .success(let profile):
-                DispatchQueue.main.async {
-                    self?.presenter?.didFetchUserProfile(profile)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.presenter?.didFailToFetchData(with: error)
-                }
-            }
-        }
+        userProfileObserver.fetchUserProfile()
     }
 
     func fetchSettingsItems() {
@@ -64,5 +61,18 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
 
     func getSettingsSectionItem(at indexPath: IndexPath) -> ProfileSettingsItem {
         return settingsSections[indexPath.section].items[indexPath.row]
+    }
+
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            presenter?.didFailToFetchData(with: signOutError)
+        }
+    }
+
+    // MARK: - Deinit
+    deinit {
+        userProfileObserver.stopObserving()
     }
 }

@@ -89,6 +89,18 @@ extension UIView {
     private func dismissKeyboard() {
         self.endEditing(true)
     }
+
+    var selectedTextField: UITextField? {
+        return textFieldsInView.first(where: { $0.isFirstResponder })
+    }
+
+    var textFieldsInView: [UITextField] {
+        let filteredSubviews = subviews.filter { !($0 is UITextField) }
+
+        return filteredSubviews.reduce(subviews.compactMap { $0 as? UITextField }, { summ, current in
+            return summ + current.textFieldsInView
+        })
+    }
 }
 
 // MARK: - UICollectionView
@@ -192,18 +204,16 @@ extension UITextView {
 // MARK: - UITextField
 extension UITextField {
     static func createBorderedTextField(
-        action: Selector,
-        target: Any?,
         placeholder: String? = nil,
         keyboardType: UIKeyboardType = .default,
         autocapitalizationType: UITextAutocapitalizationType = .none,
-        isSecureTextEntry: Bool = false
+        isSecureTextEntry: Bool = false,
+        cornerRadius: CGFloat = 30
     ) -> UITextField {
         let textField = UITextField()
         textField.backgroundColor = .primaryBackground
         textField.font = Typography.Medium.subhead
         textField.textColor = .textColorGrey
-//        textField.tintColor = 
         textField.keyboardType = keyboardType
         textField.keyboardAppearance = .dark
         textField.autocapitalizationType = autocapitalizationType
@@ -221,11 +231,9 @@ extension UITextField {
         textField.rightView = paddingView
         textField.rightViewMode = .always
         // Adjust border
-        textField.layer.cornerRadius = 30
-        textField.layer.borderColor = UIColor.primarySoft.cgColor
-        textField.layer.borderWidth = 1.5
-        // Add target
-        textField.addTarget(target, action: action, for: .editingChanged)
+        textField.layer.cornerRadius = cornerRadius
+        textField.layer.borderColor = UIColor.unselectedBorder.cgColor
+        textField.layer.borderWidth = 1
 
         return textField
     }
@@ -331,9 +339,13 @@ extension UIButton {
         return button
     }
 
-    static func createBackNavBarButton(action: Selector, target: Any?) -> UIButton {
+    static func createBackNavBarButton(
+        action: Selector,
+        target: Any?,
+        image: UIImage? = UIImage(systemName: "chevron.left")
+    ) -> UIButton {
         let leftButton = UIButton(type: .custom)
-        leftButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        leftButton.setImage(image, for: .normal)
         leftButton.tintColor = .white
         leftButton.backgroundColor = .primarySoft
 
@@ -366,6 +378,7 @@ extension UISearchBar {
         let searchBar = UISearchBar()
         searchBar.placeholder = placeholder
         searchBar.searchBarStyle = style
+        searchBar.keyboardAppearance = .dark
 
         guard let textField = searchBar.value(forKey: "searchField") as? UITextField else {
             return searchBar
@@ -502,6 +515,12 @@ extension UIColor {
     }
     static var textColorLineDark: UIColor {
         return .init(hex: "EAEAEA")
+    }
+    static var selectedBorder: UIColor {
+        UIColor.tintColor
+    }
+    static var unselectedBorder: UIColor {
+        UIColor.primarySoft
     }
 }
 

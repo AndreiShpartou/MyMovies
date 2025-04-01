@@ -10,5 +10,7 @@ import Foundation
 protocol ProfileSettingsPresenterProtocol: AnyObject {
     func viewDidLoad()
     func navigateToEditProfile()
+    func navigateToSignIn()
     func didSelectSetting(at indexPath: IndexPath)
+    func signOut()
 }

@@ -14,14 +14,15 @@ final class UserGreetingView: UIView, UserGreetingViewProtocol {
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
         cornerRadius: 20,
-        image: Asset.Avatars.avatarMock.image
+        image: Asset.Avatars.avatarDefault.image
     )
     private let helloLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
         textColor: .textColorWhite,
-        text: "Hello, Smith"
+        text: "Hello, Guest!"
     )
     private let favouriteButton: UIButton = .createFavouriteButton(isSelected: true)
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -36,9 +37,21 @@ final class UserGreetingView: UIView, UserGreetingViewProtocol {
     }
 
     // MARK: - Public
-    func configure(with username: String, avatarImage: UIImage?) {
-        helloLabel.text = "Hello, \(username)"
-        avatarImageView.image = avatarImage ?? Asset.Avatars.avatarMock.image
+    func configure(_ profile: UserProfileViewModelProtocol) {
+        helloLabel.text = "Hello, \(profile.name)"
+        avatarImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.signedUser.image)
+    }
+
+    func didLogOut() {
+        showLoggedOutState()
+    }
+
+    func showloadingIndicator() {
+        loadingIndicator.startAnimating()
+    }
+
+    func hideLoadingIndicator() {
+        loadingIndicator.stopAnimating()
     }
 }
 
@@ -47,9 +60,14 @@ extension UserGreetingView {
     private func setupView() {
         backgroundColor = .clear
 
-        addSubviews(avatarImageView, helloLabel, favouriteButton)
+        addSubviews(avatarImageView, helloLabel, favouriteButton, loadingIndicator)
 
         favouriteButton.addTarget(self, action: #selector(didTapFavouriteButton), for: .touchUpInside)
+    }
+
+    private func showLoggedOutState() {
+        helloLabel.text = "Hello, Guest!"
+        avatarImageView.image = Asset.Avatars.avatarDefault.image
     }
 }
 
@@ -80,6 +98,10 @@ extension UserGreetingView {
             make.trailing.equalToSuperview()
             make.width.height.equalTo(32)
             make.centerY.equalTo(avatarImageView)
+        }
+
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }

@@ -18,6 +18,8 @@ protocol SceneBuilderProtocol: AnyObject {
     static func buildPersonDetailsScene(for personID: Int) -> UIViewController
     static func buildOnboardingScene() -> UIViewController
     static func buildWishlistScene() -> UIViewController
+    static func buildSignInScene() -> UIViewController
+    static func buildSignUpScene() -> UIViewController
 }
 
 final class SceneBuilder: SceneBuilderProtocol {
@@ -154,5 +156,34 @@ final class SceneBuilder: SceneBuilderProtocol {
         let navigationController = UINavigationController(rootViewController: viewController)
 
         return navigationController
+    }
+
+    static func buildSignInScene() -> UIViewController {
+        let interactor = LoginInteractor()
+        let router = LoginRouter()
+        let view = LoginView()
+        let presenter = LoginPresenter(view: view, interactor: interactor, router: router)
+        let viewController = LoginViewController(loginView: view, presenter: presenter)
+
+        router.viewController = viewController
+        interactor.presenter = presenter
+
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isNavigationBarHidden = true
+
+        return navigationController
+    }
+
+    static func buildSignUpScene() -> UIViewController {
+        let interactor = SignUpInteractor()
+        let router = SignUpRouter()
+        let view = SignUpView()
+        let presenter = SignUpPresenter(view: view, interactor: interactor, router: router)
+        let viewController = SignUpViewController(signUpView: view, presenter: presenter)
+
+        router.viewController = viewController
+        interactor.presenter = presenter
+
+        return viewController
     }
 }

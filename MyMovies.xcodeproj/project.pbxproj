@@ -194,6 +194,8 @@
 		6CAFCAE32D5C9F8C003CBE7B /* KinopoiskPersonDetailedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAFCAE22D5C9F8C003CBE7B /* KinopoiskPersonDetailedResponse.swift */; };
 		6CAFCAE52D5CA73E003CBE7B /* CommonValueProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAFCAE42D5CA73E003CBE7B /* CommonValueProtocol.swift */; };
 		6CAFCAE72D5CA827003CBE7B /* CommonValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAFCAE62D5CA827003CBE7B /* CommonValue.swift */; };
+		6CBB02862D9ACC8500CD4714 /* CloudinaryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBB02852D9ACC8500CD4714 /* CloudinaryManager.swift */; };
+		6CBB028B2D9C1C1300CD4714 /* UserProfileObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBB028A2D9C1C1300CD4714 /* UserProfileObserver.swift */; };
 		6CBCD4AD2C578E7E00609EDF /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCD4AC2C578E7E00609EDF /* Movie.swift */; };
 		6CBCD4B22C578F8E00609EDF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBCD4B12C578F8E00609EDF /* Extensions.swift */; };
 		6CBEE8DB2C60E8090053BFD9 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBEE8DA2C60E8090053BFD9 /* NetworkManager.swift */; };
@@ -215,6 +217,28 @@
 		6CC604D92C55805400241EF2 /* ProfileSettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604D82C55805400241EF2 /* ProfileSettingsInteractor.swift */; };
 		6CC604DB2C55807E00241EF2 /* ProfileSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DA2C55807E00241EF2 /* ProfileSettingsViewController.swift */; };
 		6CC604DD2C55808C00241EF2 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */; };
+		6CCA02DF2D8EC8F400CA0F1C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6CCA02DE2D8EC8F400CA0F1C /* GoogleService-Info.plist */; };
+		6CCA04262D94169100CA0F1C /* LoginRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04252D94169100CA0F1C /* LoginRouterProtocol.swift */; };
+		6CCA04282D9416D400CA0F1C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04272D9416D400CA0F1C /* LoginViewController.swift */; };
+		6CCA042C2D94171C00CA0F1C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA042B2D94171C00CA0F1C /* LoginRouter.swift */; };
+		6CCA042E2D9417AB00CA0F1C /* LoginPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA042D2D9417AB00CA0F1C /* LoginPresenterProtocol.swift */; };
+		6CCA04302D9417B600CA0F1C /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA042F2D9417B600CA0F1C /* LoginPresenter.swift */; };
+		6CCA04322D9417EE00CA0F1C /* LoginViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04312D9417EE00CA0F1C /* LoginViewProtocol.swift */; };
+		6CCA04342D94185D00CA0F1C /* LoginInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04332D94185D00CA0F1C /* LoginInteractorProtocol.swift */; };
+		6CCA04362D941B7700CA0F1C /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04352D941B7700CA0F1C /* LoginInteractor.swift */; };
+		6CCA04382D941CC500CA0F1C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04372D941CC500CA0F1C /* LoginView.swift */; };
+		6CCA043A2D94464C00CA0F1C /* UIPasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04392D94464C00CA0F1C /* UIPasswordTextField.swift */; };
+		6CCA043C2D944B4700CA0F1C /* UIBorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA043B2D944B4700CA0F1C /* UIBorderedTextField.swift */; };
+		6CCA043E2D94597100CA0F1C /* SignUpRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA043D2D94597100CA0F1C /* SignUpRouterProtocol.swift */; };
+		6CCA04402D9459F400CA0F1C /* SignUpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA043F2D9459F400CA0F1C /* SignUpRouter.swift */; };
+		6CCA04422D945A5300CA0F1C /* SignUpPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04412D945A5300CA0F1C /* SignUpPresenterProtocol.swift */; };
+		6CCA04442D945A8E00CA0F1C /* SignUpInteractorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04432D945A8E00CA0F1C /* SignUpInteractorProtocol.swift */; };
+		6CCA04462D945AC000CA0F1C /* SignUpViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04452D945AC000CA0F1C /* SignUpViewProtocol.swift */; };
+		6CCA04482D945B1100CA0F1C /* SignUpPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04472D945B1100CA0F1C /* SignUpPresenter.swift */; };
+		6CCA044A2D945C9B00CA0F1C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */; };
+		6CCA044C2D945DE700CA0F1C /* SignUpInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA044B2D945DE700CA0F1C /* SignUpInteractor.swift */; };
+		6CCA044E2D945E8A00CA0F1C /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA044D2D945E8A00CA0F1C /* SignUpView.swift */; };
+		6CCA04522D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCA04512D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift */; };
 		6CCC4F772C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */; };
 		6CCC4F792C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */; };
 		6CCC4F7B2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */; };
@@ -234,7 +258,7 @@
 		6CFCEB1B2CBAC42A00126B38 /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFCEB1A2CBAC42A00126B38 /* EditProfilePresenter.swift */; };
 		6CFCEB1D2CBAC43700126B38 /* EditProfileRouterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFCEB1C2CBAC43700126B38 /* EditProfileRouterProtocol.swift */; };
 		6CFCEB1F2CBAC44000126B38 /* EditProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFCEB1E2CBAC44000126B38 /* EditProfileRouter.swift */; };
-		C50FF99185CA33EE74381B6E /* libPods-MyMovies.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C0F415A28FC706FA49109D5 /* libPods-MyMovies.a */; };
+		D5C145D0947B2597480C2207 /* Pods_MyMovies.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2DCEDDE293DE8878D9A078 /* Pods_MyMovies.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -428,6 +452,8 @@
 		6CAFCAE22D5C9F8C003CBE7B /* KinopoiskPersonDetailedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KinopoiskPersonDetailedResponse.swift; sourceTree = "<group>"; };
 		6CAFCAE42D5CA73E003CBE7B /* CommonValueProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonValueProtocol.swift; sourceTree = "<group>"; };
 		6CAFCAE62D5CA827003CBE7B /* CommonValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonValue.swift; sourceTree = "<group>"; };
+		6CBB02852D9ACC8500CD4714 /* CloudinaryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudinaryManager.swift; sourceTree = "<group>"; };
+		6CBB028A2D9C1C1300CD4714 /* UserProfileObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileObserver.swift; sourceTree = "<group>"; };
 		6CBCD4AC2C578E7E00609EDF /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		6CBCD4B12C578F8E00609EDF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6CBEE8DA2C60E8090053BFD9 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -449,6 +475,28 @@
 		6CC604D82C55805400241EF2 /* ProfileSettingsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsInteractor.swift; sourceTree = "<group>"; };
 		6CC604DA2C55807E00241EF2 /* ProfileSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewController.swift; sourceTree = "<group>"; };
 		6CC604DC2C55808C00241EF2 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
+		6CCA02DE2D8EC8F400CA0F1C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6CCA04252D94169100CA0F1C /* LoginRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouterProtocol.swift; sourceTree = "<group>"; };
+		6CCA04272D9416D400CA0F1C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6CCA042B2D94171C00CA0F1C /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
+		6CCA042D2D9417AB00CA0F1C /* LoginPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenterProtocol.swift; sourceTree = "<group>"; };
+		6CCA042F2D9417B600CA0F1C /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
+		6CCA04312D9417EE00CA0F1C /* LoginViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewProtocol.swift; sourceTree = "<group>"; };
+		6CCA04332D94185D00CA0F1C /* LoginInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractorProtocol.swift; sourceTree = "<group>"; };
+		6CCA04352D941B7700CA0F1C /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
+		6CCA04372D941CC500CA0F1C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		6CCA04392D94464C00CA0F1C /* UIPasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPasswordTextField.swift; sourceTree = "<group>"; };
+		6CCA043B2D944B4700CA0F1C /* UIBorderedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBorderedTextField.swift; sourceTree = "<group>"; };
+		6CCA043D2D94597100CA0F1C /* SignUpRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRouterProtocol.swift; sourceTree = "<group>"; };
+		6CCA043F2D9459F400CA0F1C /* SignUpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRouter.swift; sourceTree = "<group>"; };
+		6CCA04412D945A5300CA0F1C /* SignUpPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenterProtocol.swift; sourceTree = "<group>"; };
+		6CCA04432D945A8E00CA0F1C /* SignUpInteractorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInteractorProtocol.swift; sourceTree = "<group>"; };
+		6CCA04452D945AC000CA0F1C /* SignUpViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewProtocol.swift; sourceTree = "<group>"; };
+		6CCA04472D945B1100CA0F1C /* SignUpPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenter.swift; sourceTree = "<group>"; };
+		6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		6CCA044B2D945DE700CA0F1C /* SignUpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInteractor.swift; sourceTree = "<group>"; };
+		6CCA044D2D945E8A00CA0F1C /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		6CCA04512D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewKeyboardScrollHandlingProtocol.swift; sourceTree = "<group>"; };
 		6CCC4F762C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F782C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BriefMovieDescriptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CCC4F7A2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingMoviesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -468,8 +516,8 @@
 		6CFCEB1A2CBAC42A00126B38 /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
 		6CFCEB1C2CBAC43700126B38 /* EditProfileRouterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRouterProtocol.swift; sourceTree = "<group>"; };
 		6CFCEB1E2CBAC44000126B38 /* EditProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRouter.swift; sourceTree = "<group>"; };
-		9C0F415A28FC706FA49109D5 /* libPods-MyMovies.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyMovies.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCAF3C27BA8771421C410786 /* Pods-MyMovies.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyMovies.release.xcconfig"; path = "Target Support Files/Pods-MyMovies/Pods-MyMovies.release.xcconfig"; sourceTree = "<group>"; };
+		FC2DCEDDE293DE8878D9A078 /* Pods_MyMovies.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyMovies.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -477,7 +525,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C50FF99185CA33EE74381B6E /* libPods-MyMovies.a in Frameworks */,
+				D5C145D0947B2597480C2207 /* Pods_MyMovies.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +535,7 @@
 		1DD43784897744EA005D85C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9C0F415A28FC706FA49109D5 /* libPods-MyMovies.a */,
+				FC2DCEDDE293DE8878D9A078 /* Pods_MyMovies.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -702,6 +750,7 @@
 			children = (
 				6CBCD4B02C578F8300609EDF /* Helpers */,
 				6C59AF0F2C54F10E006A7BDB /* Info.plist */,
+				6CCA02DE2D8EC8F400CA0F1C /* GoogleService-Info.plist */,
 				6C59AF0C2C54F10E006A7BDB /* LaunchScreen.storyboard */,
 				6C59AF0A2C54F10E006A7BDB /* Assets.xcassets */,
 				6C9053712C5920080068E2BC /* XCAssets+Generated.swift */,
@@ -957,6 +1006,8 @@
 			isa = PBXGroup;
 			children = (
 				6C59AF372C550714006A7BDB /* Onboarding */,
+				6CCA041E2D94158200CA0F1C /* Login */,
+				6CCA04182D94151F00CA0F1C /* SignUp */,
 				6C59AF362C54FCDB006A7BDB /* Main */,
 				6C59AF352C54FCD3006A7BDB /* Search */,
 				6C59AF2E2C54FC7C006A7BDB /* MovieList */,
@@ -1121,6 +1172,8 @@
 			children = (
 				6C74C91C2C738D590035BD14 /* AppConfigurationManager */,
 				6CADCC512CE7582C003C06A3 /* DataPersistenceManager */,
+				6CBB02842D9ACC4800CD4714 /* CloudinaryManager */,
+				6CBB02892D9C1BCF00CD4714 /* UserProfileObserver */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1250,6 +1303,7 @@
 		6C7CD0E12C5F4CE400C71AA1 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				6CCA04502D9577A500CA0F1C /* Protocols */,
 				6C916C412C63D21000A9F091 /* View */,
 				6C9B45EE2CB521B20053B8D7 /* Presenter */,
 				6C916C422C63D22A00A9F091 /* Entity */,
@@ -1491,6 +1545,22 @@
 			path = CollectionViewHandlers;
 			sourceTree = "<group>";
 		};
+		6CBB02842D9ACC4800CD4714 /* CloudinaryManager */ = {
+			isa = PBXGroup;
+			children = (
+				6CBB02852D9ACC8500CD4714 /* CloudinaryManager.swift */,
+			);
+			path = CloudinaryManager;
+			sourceTree = "<group>";
+		};
+		6CBB02892D9C1BCF00CD4714 /* UserProfileObserver */ = {
+			isa = PBXGroup;
+			children = (
+				6CBB028A2D9C1C1300CD4714 /* UserProfileObserver.swift */,
+			);
+			path = UserProfileObserver;
+			sourceTree = "<group>";
+		};
 		6CBCD4B02C578F8300609EDF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1504,6 +1574,126 @@
 				6C74C9192C738D030035BD14 /* NetworkHelper */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6CCA04182D94151F00CA0F1C /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA041D2D94155200CA0F1C /* View */,
+				6CCA041C2D94154C00CA0F1C /* Interactor */,
+				6CCA041B2D94154800CA0F1C /* Presenter */,
+				6CCA041A2D94154300CA0F1C /* Entity */,
+				6CCA04192D94152E00CA0F1C /* Router */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		6CCA04192D94152E00CA0F1C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA043D2D94597100CA0F1C /* SignUpRouterProtocol.swift */,
+				6CCA043F2D9459F400CA0F1C /* SignUpRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		6CCA041A2D94154300CA0F1C /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		6CCA041B2D94154800CA0F1C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04412D945A5300CA0F1C /* SignUpPresenterProtocol.swift */,
+				6CCA04472D945B1100CA0F1C /* SignUpPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		6CCA041C2D94154C00CA0F1C /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04432D945A8E00CA0F1C /* SignUpInteractorProtocol.swift */,
+				6CCA044B2D945DE700CA0F1C /* SignUpInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		6CCA041D2D94155200CA0F1C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04452D945AC000CA0F1C /* SignUpViewProtocol.swift */,
+				6CCA044D2D945E8A00CA0F1C /* SignUpView.swift */,
+				6CCA04492D945C9B00CA0F1C /* SignUpViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6CCA041E2D94158200CA0F1C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04232D94159C00CA0F1C /* View */,
+				6CCA04222D94159900CA0F1C /* Interactor */,
+				6CCA04212D94159200CA0F1C /* Presenter */,
+				6CCA04202D94158F00CA0F1C /* Entity */,
+				6CCA041F2D94158B00CA0F1C /* Router */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		6CCA041F2D94158B00CA0F1C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04252D94169100CA0F1C /* LoginRouterProtocol.swift */,
+				6CCA042B2D94171C00CA0F1C /* LoginRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		6CCA04202D94158F00CA0F1C /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		6CCA04212D94159200CA0F1C /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA042D2D9417AB00CA0F1C /* LoginPresenterProtocol.swift */,
+				6CCA042F2D9417B600CA0F1C /* LoginPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		6CCA04222D94159900CA0F1C /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04332D94185D00CA0F1C /* LoginInteractorProtocol.swift */,
+				6CCA04352D941B7700CA0F1C /* LoginInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		6CCA04232D94159C00CA0F1C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04312D9417EE00CA0F1C /* LoginViewProtocol.swift */,
+				6CCA04372D941CC500CA0F1C /* LoginView.swift */,
+				6CCA04272D9416D400CA0F1C /* LoginViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6CCA04502D9577A500CA0F1C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				6CCA04512D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		6CCC4F752C5E4EDC00BA7B8D /* CollectionViewCells */ = {
@@ -1526,6 +1716,8 @@
 			isa = PBXGroup;
 			children = (
 				6CEB59432CBBF9F0005062DC /* InsetLabel.swift */,
+				6CCA04392D94464C00CA0F1C /* UIPasswordTextField.swift */,
+				6CCA043B2D944B4700CA0F1C /* UIBorderedTextField.swift */,
 			);
 			path = HelperSubclasses;
 			sourceTree = "<group>";
@@ -1598,15 +1790,13 @@
 				6C59AEFA2C54F10D006A7BDB /* Sources */,
 				6C59AEFB2C54F10D006A7BDB /* Frameworks */,
 				6C59AEFC2C54F10D006A7BDB /* Resources */,
-				7822E195C8827E45AB436DE4 /* [CP] Copy Pods Resources */,
+				F4FCD47E449F58B39425CC25 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = MyMovies;
-			packageProductDependencies = (
-			);
 			productName = MyMovies;
 			productReference = 6C59AEFE2C54F10D006A7BDB /* MyMovies.app */;
 			productType = "com.apple.product-type.application";
@@ -1635,8 +1825,6 @@
 				Base,
 			);
 			mainGroup = 6C59AEF52C54F10D006A7BDB;
-			packageReferences = (
-			);
 			productRefGroup = 6C59AEFF2C54F10D006A7BDB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1656,6 +1844,7 @@
 				6C90536F2C5913740068E2BC /* Montserrat-SemiBold.otf in Resources */,
 				6C59AF0B2C54F10E006A7BDB /* Assets.xcassets in Resources */,
 				6C90536E2C5913710068E2BC /* Montserrat-Regular.otf in Resources */,
+				6CCA02DF2D8EC8F400CA0F1C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1681,23 +1870,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$CONFIGURATION\" = \"Debug\" ]; then\n    if which swiftlint >/dev/null; then\n      swiftlint\n    else\n      echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n      exit 1\n    fi\nfi\n";
 		};
-		7822E195C8827E45AB436DE4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		8881B0051E86809C303DCCF1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1720,6 +1892,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F4FCD47E449F58B39425CC25 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1738,10 +1927,12 @@
 				6C20826F2D8817C90054DCFF /* WishlistItemViewModel.swift in Sources */,
 				6CA2D87A2CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift in Sources */,
 				6CA8F69A2C6668900090BC8C /* ImageURLBuilder.swift in Sources */,
+				6CCA04262D94169100CA0F1C /* LoginRouterProtocol.swift in Sources */,
 				6C74C9262C73946C0035BD14 /* AppConfigurationManagerProtocol.swift in Sources */,
 				6CAFCAE52D5CA73E003CBE7B /* CommonValueProtocol.swift in Sources */,
 				6C8338582C5CE578000D0399 /* SearchViewProtocol.swift in Sources */,
 				6C87B0632D5BA68B003F44FC /* PersonDetailsInteractorProtocol.swift in Sources */,
+				6CCA044E2D945E8A00CA0F1C /* SignUpView.swift in Sources */,
 				6C59AF4E2C551ADE006A7BDB /* MainRouter.swift in Sources */,
 				6C59AF542C551FDE006A7BDB /* SearchPresenter.swift in Sources */,
 				6C87B05F2D5BA4CB003F44FC /* PersonDetailsPresenterProtocol.swift in Sources */,
@@ -1754,6 +1945,7 @@
 				6C49F3A02C9AD0F0005F182F /* MovieListItemViewModel.swift in Sources */,
 				6C87B05C2D5B9AB6003F44FC /* PersonDetailedViewModel.swift in Sources */,
 				6C9B45F12CB5220B0053B8D7 /* ProfileSettingsItem.swift in Sources */,
+				6CCA04362D941B7700CA0F1C /* LoginInteractor.swift in Sources */,
 				6C8338662C5D06A2000D0399 /* MovieListRouterProtocol.swift in Sources */,
 				6C59AF582C55204A006A7BDB /* SearchView.swift in Sources */,
 				6C939A052C9C3B4D00699F49 /* BriefMovieListItemViewModelProtocol.swift in Sources */,
@@ -1763,6 +1955,7 @@
 				6CCC4F7B2C5E7DDE00BA7B8D /* UpcomingMoviesCollectionViewCell.swift in Sources */,
 				6C87B0612D5BA4DC003F44FC /* PersonDetailsPresenter.swift in Sources */,
 				6C9B29C22D672412000A5EF8 /* OnboardingView.swift in Sources */,
+				6CCA04442D945A8E00CA0F1C /* SignUpInteractorProtocol.swift in Sources */,
 				6C25A1272D79AB5F00877F24 /* CountryEntity+CoreDataClass.swift in Sources */,
 				6C9B45EB2CB519BB0053B8D7 /* UserProfileViewModelProtocol.swift in Sources */,
 				6C424F142C942A440003F487 /* RatingGeneralStackView.swift in Sources */,
@@ -1788,6 +1981,7 @@
 				6C74C9282C7395D40035BD14 /* AppConfiguration.swift in Sources */,
 				6C87B06B2D5BB30B003F44FC /* PersonDetailsViewController.swift in Sources */,
 				6C916C3C2C639B4A00A9F091 /* TMDBPagedResponseProtocol.swift in Sources */,
+				6CCA04462D945AC000CA0F1C /* SignUpViewProtocol.swift in Sources */,
 				6C9C75952C6E1DF1003E98FE /* AppConfigurationManager.swift in Sources */,
 				6C3A5FA32C92E53400A1BFF2 /* NetworkManagerProtocol.swift in Sources */,
 				6C20826D2D8817BE0054DCFF /* WishlistItemViewModelProtocol.swift in Sources */,
@@ -1799,6 +1993,7 @@
 				6C25A12E2D79AB5F00877F24 /* MovieEntity+CoreDataProperties.swift in Sources */,
 				6C0294532C830A36000BE8B3 /* UserGreetingView.swift in Sources */,
 				6C80623A2CAF198300768DC5 /* TextInfoGeneralViewController.swift in Sources */,
+				6CCA043E2D94597100CA0F1C /* SignUpRouterProtocol.swift in Sources */,
 				6CC604D12C557EDD00241EF2 /* WishlistViewController.swift in Sources */,
 				6C8062382CAF15B800768DC5 /* TextInfoGeneralView.swift in Sources */,
 				6CBEE8DB2C60E8090053BFD9 /* NetworkManager.swift in Sources */,
@@ -1813,12 +2008,14 @@
 				6CAFCAE12D5C9F7D003CBE7B /* KinopoiskPersonDetailedResponseProtocol.swift in Sources */,
 				6C83387A2C5D078B000D0399 /* WishlistInteractorProtocol.swift in Sources */,
 				6C87B0672D5BA9FB003F44FC /* PersonDetailsInteractor.swift in Sources */,
+				6CCA04482D945B1100CA0F1C /* SignUpPresenter.swift in Sources */,
 				6C939A032C9C246000699F49 /* UpcomingMovieViewModel.swift in Sources */,
 				6C25A1212D79AB5F00877F24 /* MovieListMembershipEntity+CoreDataClass.swift in Sources */,
 				6C4CF7902CA4230600144866 /* MovieDetailsViewModelProtocol.swift in Sources */,
 				6C9B29BF2D672403000A5EF8 /* OnboardingViewProtocol.swift in Sources */,
 				6C25A11D2D79AB5F00877F24 /* MovieGenreEntity+CoreDataClass.swift in Sources */,
 				6C25A12D2D79AB5F00877F24 /* MovieEntity+CoreDataClass.swift in Sources */,
+				6CCA043A2D94464C00CA0F1C /* UIPasswordTextField.swift in Sources */,
 				6C21983E2CB3C56A0013D8D9 /* ProfileSettingsTableViewCell.swift in Sources */,
 				6C25A1342D79B0BE00877F24 /* MovieRepository.swift in Sources */,
 				6C25A1282D79AB5F00877F24 /* CountryEntity+CoreDataProperties.swift in Sources */,
@@ -1826,6 +2023,7 @@
 				6CCC4F792C5E528200BA7B8D /* BriefMovieDescriptionCollectionViewCell.swift in Sources */,
 				6C8338822C5D07DF000D0399 /* ProfileSettingsInteractorProtocol.swift in Sources */,
 				6C25A12C2D79AB5F00877F24 /* MoviePersonEntity+CoreDataProperties.swift in Sources */,
+				6CBB02862D9ACC8500CD4714 /* CloudinaryManager.swift in Sources */,
 				6C8338602C5D0660000D0399 /* MovieListViewProtocol.swift in Sources */,
 				6C939A072C9C3BD200699F49 /* BriefMovieListItemViewModel.swift in Sources */,
 				6CADCC592CE89758003C06A3 /* PersonCircleCollectionViewCell.swift in Sources */,
@@ -1866,15 +2064,19 @@
 				6C9B29CE2D672474000A5EF8 /* OnboardingRouterProtocol.swift in Sources */,
 				6C8338562C5CE552000D0399 /* MainRouterProtocol.swift in Sources */,
 				6C59AF5A2C552066006A7BDB /* SearchViewController.swift in Sources */,
+				6CCA04282D9416D400CA0F1C /* LoginViewController.swift in Sources */,
 				6C49F3A22C9AD117005F182F /* MovieListItemViewModelProtocol.swift in Sources */,
 				6C4246E32CA199E6008E59D7 /* DescriptionGeneralStackView.swift in Sources */,
+				6CCA043C2D944B4700CA0F1C /* UIBorderedTextField.swift in Sources */,
 				6C8062342CAEEEEB00768DC5 /* ReviewCollectionViewCell.swift in Sources */,
 				6CA2D88A2CAD466500CFC297 /* KinopoiskReviewResponse.swift in Sources */,
 				6C87B0532D5B505B003F44FC /* PersonDetailsRouterProtocol.swift in Sources */,
+				6CCA04402D9459F400CA0F1C /* SignUpRouter.swift in Sources */,
 				6C25A1202D79AB5F00877F24 /* MovieSimilarEntity+CoreDataProperties.swift in Sources */,
 				6C83385E2C5CE5B7000D0399 /* SearchRouterProtocol.swift in Sources */,
 				6C83385C2C5CE5A3000D0399 /* SearchPresenterProtocol.swift in Sources */,
 				6C25A12B2D79AB5F00877F24 /* MoviePersonEntity+CoreDataClass.swift in Sources */,
+				6CCA04342D94185D00CA0F1C /* LoginInteractorProtocol.swift in Sources */,
 				6C9B29D32D673C96000A5EF8 /* OnboardingPageViewModelProtocol.swift in Sources */,
 				6CF693C42D11589E00026B11 /* TMDBPersonsPagedResponse.swift in Sources */,
 				6CFCEB132CBAA36200126B38 /* EditProfileView.swift in Sources */,
@@ -1885,6 +2087,7 @@
 				6C9053722C5920080068E2BC /* XCAssets+Generated.swift in Sources */,
 				6CA2D8802CAD1D4D00CFC297 /* TMDBReviewResponse.swift in Sources */,
 				6CA2D8862CAD45D600CFC297 /* KinopoiskReviewsPagedResponse.swift in Sources */,
+				6CCA04382D941CC500CA0F1C /* LoginView.swift in Sources */,
 				6CFCEB172CBAC41500126B38 /* EditProfileInteractorProtocol.swift in Sources */,
 				6C25A1292D79AB5F00877F24 /* PersonEntity+CoreDataClass.swift in Sources */,
 				6C25A1232D79AB5F00877F24 /* MovieCountryEntity+CoreDataClass.swift in Sources */,
@@ -1892,8 +2095,10 @@
 				6C916C3E2C639E3200A9F091 /* TMDBMoviesPagedResponse.swift in Sources */,
 				6CAFCAD92D5C95EA003CBE7B /* PersonDetailedProtocol.swift in Sources */,
 				6C8338862C5D0804000D0399 /* ProfileRouterProtocol.swift in Sources */,
+				6CCA04522D9577CB00CA0F1C /* UIViewKeyboardScrollHandlingProtocol.swift in Sources */,
 				6C8338742C5D0749000D0399 /* MovieDetailsPresenterProtocol.swift in Sources */,
 				6C59AF562C55200D006A7BDB /* SearchInteractor.swift in Sources */,
+				6CCA044C2D945DE700CA0F1C /* SignUpInteractor.swift in Sources */,
 				6C59AF042C54F10D006A7BDB /* SceneDelegate.swift in Sources */,
 				6C25A1312D79AB8300877F24 /* GenreEntity+CoreDataClass.swift in Sources */,
 				6C8338842C5D07F1000D0399 /* ProfileSettingsPresenterProtocol.swift in Sources */,
@@ -1909,6 +2114,7 @@
 				6CF58DB52CA6CD8C00543FA4 /* PersonCollectionViewCell.swift in Sources */,
 				6C939A012C9C245400699F49 /* UpcomingMovieViewModelProtocol.swift in Sources */,
 				6CFCEB1D2CBAC43700126B38 /* EditProfileRouterProtocol.swift in Sources */,
+				6CCA04322D9417EE00CA0F1C /* LoginViewProtocol.swift in Sources */,
 				6CC604D52C557FE900241EF2 /* ProfileRouter.swift in Sources */,
 				6C7AE7462CAE959A003728CE /* ReviewViewModel.swift in Sources */,
 				6C74C9242C7392440035BD14 /* PlistConfigurationLoader.swift in Sources */,
@@ -1928,8 +2134,10 @@
 				6C2082752D8825DD0054DCFF /* WishlistCollectionViewHandler.swift in Sources */,
 				6C87B05A2D5B9AA9003F44FC /* PersonDetailedViewModelProtocol.swift in Sources */,
 				6CC604AB2C5575A800241EF2 /* MovieListViewController.swift in Sources */,
+				6CCA042C2D94171C00CA0F1C /* LoginRouter.swift in Sources */,
 				6C9F5F4B2D4BFD0100C722F1 /* AppError.swift in Sources */,
 				6C499C142D7745B00049D6F7 /* CoreDataManager.swift in Sources */,
+				6CCA04302D9417B600CA0F1C /* LoginPresenter.swift in Sources */,
 				6C83387C2C5D079F000D0399 /* WishlistPresenterProtocol.swift in Sources */,
 				6C4CF78E2CA422FD00144866 /* MovieDetailsViewModel.swift in Sources */,
 				6C83385A2C5CE58E000D0399 /* SearchInteractorProtocol.swift in Sources */,
@@ -1938,12 +2146,16 @@
 				6C2B03332C64BC4F0057E518 /* GenresCollectionViewHandler.swift in Sources */,
 				6C9B29CA2D672460000A5EF8 /* OnboardingPresenterProtocol.swift in Sources */,
 				6CC604C12C557BFA00241EF2 /* MovieDetailsInteractor.swift in Sources */,
+				6CBB028B2D9C1C1300CD4714 /* UserProfileObserver.swift in Sources */,
+				6CCA042E2D9417AB00CA0F1C /* LoginPresenterProtocol.swift in Sources */,
 				6C4148382C74715E004D55BA /* ResponseMapperProtocol.swift in Sources */,
 				6C59AF5F2C553ACF006A7BDB /* MovieListRouter.swift in Sources */,
 				6C9B29C42D67241C000A5EF8 /* OnboardingViewController.swift in Sources */,
 				6C25A12A2D79AB5F00877F24 /* PersonEntity+CoreDataProperties.swift in Sources */,
+				6CCA04422D945A5300CA0F1C /* SignUpPresenterProtocol.swift in Sources */,
 				6CC604CF2C557EB100241EF2 /* WishlistView.swift in Sources */,
 				6CA2D8882CAD462600CFC297 /* KinopoiskReviewResponseProtocol.swift in Sources */,
+				6CCA044A2D945C9B00CA0F1C /* SignUpViewController.swift in Sources */,
 				6C59AF462C551737006A7BDB /* MainViewController.swift in Sources */,
 				6C8338502C5CE430000D0399 /* MainViewProtocol.swift in Sources */,
 				6C87B06D2D5BBA35003F44FC /* PersonDetailsView.swift in Sources */,
@@ -2089,8 +2301,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 09D18B6979170A2D91E36F57 /* Pods-MyMovies.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyMovies/MyMovies.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HJL63YJZJ7;
@@ -2107,6 +2321,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.AndreiShpartou.MyMovies;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -2122,8 +2337,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BCAF3C27BA8771421C410786 /* Pods-MyMovies.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyMovies/MyMovies.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HJL63YJZJ7;
@@ -2141,6 +2358,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.AndreiShpartou.MyMovies;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -31,7 +31,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     // Fetch genres
     func fetchMovieGenres(type: MovieListType) {
         switch type {
-        case .searchedMovies, .similarMovies, .recentlySearchedMovies:
+        case .searchedMovies, .similarMovies:
             // APIs don't support genre filtering
             DispatchQueue.main.async {
                 self.presenter?.didFetchMovieGenres([])
@@ -62,6 +62,19 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             return
         }
 
+        if type == .recentlySearchedMovies {
+            // Custom filtering from the local storage
+            let movies = movieRepository.fetchMoviesByGenre(
+                genre: genre,
+                provider: provider.rawValue,
+                listType: type.rawValue
+            )
+            presenter?.didFetchMovieList(movies)
+
+            return
+        }
+
+        // Default API filtering
         networkManager.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }

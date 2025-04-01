@@ -23,10 +23,12 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         borderWidth: 2,
         borderColor: UIColor.primarySoft.cgColor
     )
+
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
-        cornerRadius: 30
+        cornerRadius: 30,
+        image: Asset.Avatars.avatarDefault.image
     )
 
     private let nameLabel: UILabel = .createLabel(
@@ -41,11 +43,36 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
 
     private lazy var editButton: UIButton = createEditButton()
 
+    private let guestUserView: UIView = .createCommonView(
+        backgroundColor: .primaryBackground,
+        isHidden: false
+    )
+
+    private lazy var signInButton = UIButton(
+        title: "Sign In",
+        font: Typography.Medium.title,
+        titleColor: .textColorWhite,
+        backgroundColor: .primarySoft,
+        cornerRadius: Sizes.Medium.cornerRadius,
+        action: #selector(didTapSignInButton),
+        target: self
+    )
+
+    private lazy var signOutButton = UIButton(
+        title: "Sign Out",
+        font: Typography.Medium.title,
+        titleColor: .secondaryRed,
+        backgroundColor: .primarySoft,
+        cornerRadius: Sizes.Medium.cornerRadius,
+        action: #selector(didTapSignOutButton),
+        target: self
+    )
+
     // Settings Table
     private lazy var tableView: UITableView = createSettingsTableView()
     private let tableViewHandler = ProfileSettingsTableViewHandler()
     // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -60,16 +87,6 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     }
 
     // MARK: - Public
-    func showError(_ message: String) {
-        guard let viewController = parentViewController else {
-            return
-        }
-
-        // Present an alert to the user
-        let alert = getGlobalAlertController(for: message)
-        viewController.present(alert, animated: true, completion: nil)
-    }
-
     func showLoadingIndicator() {
         loadingIndicator.startAnimating()
     }
@@ -80,9 +97,10 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
 
     // MARK: - Presentation logic
     func showUserProfile(_ profile: UserProfileViewModelProtocol) {
-        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.avatarMock.image)
+        profileImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.signedUser.image)
         nameLabel.text = profile.name
         emailLabel.text = profile.email
+        showLoggedInViews()
         hideLoadingIndicator()
     }
 
@@ -90,6 +108,20 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         tableViewHandler.configure(with: items)
         tableView.reloadData()
         hideLoadingIndicator()
+    }
+
+    func showSignOutItems() {
+        showLoggedOutViews()
+    }
+
+    func showError(_ error: Error) {
+        guard let viewController = parentViewController else {
+            return
+        }
+
+        // Present an alert to the user
+        let alert = getGlobalAlertController(for: error.localizedDescription)
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -99,9 +131,17 @@ extension ProfileSettingsView {
         backgroundColor = .primaryBackground
         addSubviews(scrollView)
         scrollView.addSubviews(contentView, loadingIndicator)
-        contentView.addSubviews(headerView, tableView)
-        headerView.addSubviews(profileImageView, nameLabel, emailLabel, editButton)
+        contentView.addSubviews(headerView, tableView, signOutButton)
+        headerView.addSubviews(
+            profileImageView,
+            nameLabel,
+            emailLabel,
+            editButton,
+            guestUserView
+        )
+        guestUserView.addSubviews(signInButton)
 
+        setupSubviews()
         setupGestureRecognizers()
     }
 
@@ -109,10 +149,35 @@ extension ProfileSettingsView {
         tableViewHandler.delegate = delegate
     }
 
+    private func setupSubviews() {
+        showLoggedOutViews()
+    }
+
     private func setupGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(headerViewTapped))
         headerView.addGestureRecognizer(tapGesture)
         headerView.isUserInteractionEnabled = true
+    }
+
+    private func showLoggedOutViews() {
+        nameLabel.isHidden = true
+        emailLabel.isHidden = true
+        editButton.isHidden = true
+        signOutButton.isHidden = true
+        guestUserView.isHidden = false
+        signInButton.isHidden = false
+        profileImageView.image = Asset.Avatars.avatarDefault.image
+        nameLabel.text = nil
+        emailLabel.text = nil
+    }
+
+    private func showLoggedInViews() {
+        nameLabel.isHidden = false
+        emailLabel.isHidden = false
+        editButton.isHidden = false
+        signOutButton.isHidden = false
+        guestUserView.isHidden = true
+        signInButton.isHidden = true
     }
 }
 
@@ -120,7 +185,21 @@ extension ProfileSettingsView {
 extension ProfileSettingsView {
     @objc
     private func headerViewTapped() {
+        guard !signOutButton.isHidden else {
+            return
+        }
+
         delegate?.didTapEditProfile()
+    }
+
+    @objc
+    private func didTapSignInButton() {
+        delegate?.didTapSignIn()
+    }
+
+    @objc
+    private func didTapSignOutButton() {
+        delegate?.didTapSignOut()
     }
 }
 
@@ -129,6 +208,7 @@ extension ProfileSettingsView {
     private func createEditButton() -> UIButton {
         let button = UIButton(type: .system)
         let editImage = Asset.Icons.edit.image.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal)
+        button.addTarget(self, action: #selector(headerViewTapped), for: .touchUpInside)
         button.setImage(editImage, for: .normal)
 
         return button
@@ -158,6 +238,7 @@ extension ProfileSettingsView {
         setupScrollConstraints()
         setupHeaderConstraints()
         setupTableViewConstraints()
+        setupFooterConstraints()
     }
 
     private func setupScrollConstraints() {
@@ -194,7 +275,7 @@ extension ProfileSettingsView {
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileImageView.snp.trailing).offset(8)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             make.trailing.equalTo(editButton.snp.leading).offset(-8)
             make.top.equalTo(profileImageView).offset(8)
         }
@@ -203,14 +284,32 @@ extension ProfileSettingsView {
             make.leading.trailing.equalTo(nameLabel)
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
         }
+
+        guestUserView.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.trailing.equalTo(editButton)
+            make.top.bottom.equalToSuperview().inset(12)
+        }
+
+        signInButton.snp.makeConstraints { make in
+            make.edges.equalTo(guestUserView).inset(12)
+        }
     }
 
     private func setupTableViewConstraints() {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(headerView.snp.bottom).offset(8)
-            make.height.equalTo(500)
-            make.bottom.equalToSuperview()
+            make.height.equalTo(450)
+        }
+    }
+
+    private func setupFooterConstraints() {
+        signOutButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(tableView.snp.bottom).offset(24)
+            make.height.equalTo(50)
+            make.bottom.equalToSuperview().inset(16)
         }
     }
 }

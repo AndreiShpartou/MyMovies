@@ -70,15 +70,26 @@ func unifiedDateString(from input: String?) -> String? {
 }
 
 func extractYear(from dateString: String?) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy"
-
-    guard let dateString = dateString,
-          let date = dateFormatter.date(from: dateString) else {
-        return dateFormatter.string(from: Date())
+    guard let dateString = dateString else {
+        return "N/A"
     }
 
-    return dateFormatter.string(from: date)
+    let dateFormatter = DateFormatter()
+
+    // Try "yyyy-MM-dd"
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    if let date = dateFormatter.date(from: dateString) {
+        dateFormatter.dateFormat = "yyyy"
+        return dateFormatter.string(from: date)
+    }
+
+    // If that fails, try "yyyy"
+    dateFormatter.dateFormat = "yyyy"
+    if let date = dateFormatter.date(from: dateString) {
+        return dateFormatter.string(from: date)
+    }
+
+    return "N/A"
 }
 
 // MARK: - TextFormatting

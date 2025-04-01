@@ -14,4 +14,8 @@ final class EditProfileRouter: EditProfileRouterProtocol {
     init(viewController: UIViewController? = nil) {
         self.viewController = viewController
     }
+
+    func navigateToRoot() {
+        viewController?.navigationController?.popToRootViewController(animated: true)
+    }
 }

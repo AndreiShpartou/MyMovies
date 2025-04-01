@@ -169,6 +169,24 @@ class SearchInteractor: SearchInteractorProtocol {
         presenter?.didFetchRecentlySearchedMovies(recentlySearchedMovies)
     }
 
+    func fetchRecentlySearchedMoviesWithGenresFiltering(genre: GenreProtocol) {
+        if genre.name == "All" {
+            let cachedMovies = fetchMoviesFromStorage(for: .recentlySearchedMovies)
+            if !cachedMovies.isEmpty {
+                presenter?.didFetchRecentlySearchedMovies(cachedMovies)
+
+                return
+            }
+        }
+
+        let movies = movieRepository.fetchMoviesByGenre(
+            genre: genre,
+            provider: provider.rawValue,
+            listType: MovieListType.recentlySearchedMovies.rawValue
+        )
+        presenter?.didFetchRecentlySearchedMovies(movies)
+    }
+
     // MARK: - Private
     private func fetchGenresFromStorage() -> [GenreProtocol] {
         return genreRepository.fetchGenres(provider: provider.rawValue)

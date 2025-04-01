@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol EditProfileViewProtocol: UIView {
+protocol EditProfileViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: EditProfileInteractionDelegate? { get set }
     var presenter: EditProfilePresenterProtocol? { get set }
 
@@ -18,6 +18,5 @@ protocol EditProfileViewProtocol: UIView {
 }
 
 protocol EditProfileInteractionDelegate: AnyObject {
-    func didTapSaveChanges()
-    func didTapChangeProfileImage()
+    func didTapSaveChanges(name: String, profileImage: UIImage?)
 }

@@ -32,7 +32,7 @@ internal enum Asset {
   }
   internal enum Avatars {
     internal static let avatarDefault = ImageAsset(name: "avatar-default")
-    internal static let avatarMock = ImageAsset(name: "avatar-mock")
+    internal static let signedUser = ImageAsset(name: "signedUser")
   }
   internal enum DefaultCovers {
     internal static let defaultBackdrop = ImageAsset(name: "DefaultBackdrop")
@@ -54,6 +54,9 @@ internal enum Asset {
   }
   internal enum Launch {
     internal static let launch = ImageAsset(name: "launch")
+  }
+  internal enum Login {
+    internal static let greeting = ImageAsset(name: "Greeting")
   }
   internal enum PageControlIndicators {
     internal static let selected = ImageAsset(name: "Selected")

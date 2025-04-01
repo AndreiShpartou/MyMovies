@@ -12,12 +12,15 @@ protocol ProfileSettingsViewProtocol: UIView {
 
     func showUserProfile(_ profile: UserProfileViewModelProtocol)
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])
-    func showError(_ message: String)
+    func showSignOutItems()
+    func showError(_ error: Error)
     func showLoadingIndicator()
     func hideLoadingIndicator()
 }
 
 protocol ProfileSettingsInteractionDelegate: AnyObject {
     func didTapEditProfile()
+    func didTapSignIn()
+    func didTapSignOut()
     func didSelectSetting(at indexPath: IndexPath)
 }

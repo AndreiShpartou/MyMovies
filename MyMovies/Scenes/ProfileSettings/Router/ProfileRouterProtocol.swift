@@ -10,6 +10,8 @@ import UIKit
 protocol ProfileRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
+    func navigateToRoot()
     func navigateToEditProfile()
+    func navigateToSignIn()
     func navigateToGeneralTextInfoScene(labelText: String?, textViewText: String?, title: String?)
 }

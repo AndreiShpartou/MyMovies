@@ -10,6 +10,7 @@ import Foundation
 protocol MainInteractorProtocol: AnyObject {
     var presenter: MainInteractorOutputProtocol? { get set }
 
+    func fetchUserProfile()
     func fetchUpcomingMovies()
     func fetchMovieGenres()
     func fetchPopularMovies()
@@ -24,11 +25,13 @@ protocol PrefetchInteractorProtocol: AnyObject {
     func prefetchData()
 }
 
-protocol MainInteractorOutputProtocol: AnyObject {
+protocol MainInteractorOutputProtocol: AnyObject, UserProfileObserverDelegate {
     func didFetchUpcomingMovies(_ movies: [MovieProtocol])
     func didFetchMovieGenres(_ genres: [GenreProtocol])
     func didFetchPopularMovies(_ movies: [MovieProtocol])
     func didFetchTopRatedMovies(_ movies: [MovieProtocol])
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol])
+    func didFetchUserProfile(_ profile: UserProfileProtocol)
+    func didLogOut()
     func didFailToFetchData(with error: Error)
 }
