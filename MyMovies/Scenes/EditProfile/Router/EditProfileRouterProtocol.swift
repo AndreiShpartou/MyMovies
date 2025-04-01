@@ -9,4 +9,6 @@ import UIKit
 
 protocol EditProfileRouterProtocol {
     var viewController: UIViewController? { get set }
+
+    func navigateToRoot()
 }

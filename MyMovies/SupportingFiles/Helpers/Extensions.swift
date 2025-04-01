@@ -274,12 +274,6 @@ extension UIImageView {
     }
 }
 
-extension UIImage {
-    func isEqualToImage(_ image: UIImage) -> Bool {
-        return self.pngData() == image.pngData()
-    }
-}
-
 // MARK: - UIBarButtonItem
 extension UIBarButtonItem {
     static func createCustomBackBarButtonItem(action: Selector, target: Any?) -> UIBarButtonItem {

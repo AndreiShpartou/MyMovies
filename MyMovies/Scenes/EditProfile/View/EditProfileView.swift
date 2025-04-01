@@ -14,6 +14,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     private var arrayOfTextFields: [UITextField] = []
     // UITextField.tag: UILabel
     private var textFieldTagsWarningLabelsDict: [Int: UILabel] = [:]
+    private var isProfileImageChanged = false
 
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
@@ -131,9 +132,8 @@ extension EditProfileView {
         backgroundColor = .primaryBackground
 
         scrollView.addSubviews(scrollContentView)
-        addSubviews(scrollView)
+        addSubviews(scrollView, loadingIndicator)
         // Header
-        scrollContentView.addSubviews(loadingIndicator)
         editBackgroundView.addSubviews(editIconImageView)
         scrollContentView.addSubviews(profileImageView, editBackgroundView, fullNameLabel, emailLabel)
         // Body
@@ -150,6 +150,7 @@ extension EditProfileView {
     private func setAdditionalSubviewsPreferences() {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.delaysContentTouches = false
+        emailTextField.isEnabled = false
 
         // Setup label insets
         let textInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
@@ -159,7 +160,8 @@ extension EditProfileView {
         let warningLabels = [fullNameWarningLabel, emailWarningLabel]
         warningLabels.forEach { $0.isHidden = true }
         // Setup delegation and tags
-        arrayOfTextFields = [fullNameTextField, emailTextField]
+        // arrayOfTextFields = [fullNameTextField, emailTextField] // Temporary disable email editing
+        arrayOfTextFields = [fullNameTextField]
         arrayOfTextFields.enumerated().forEach { index, textField in
             textField.tag = index
             textField.delegate = self
@@ -191,7 +193,8 @@ extension EditProfileView {
             return
         }
 
-        delegate?.didTapSaveChanges()
+        let userProfileImage = isProfileImageChanged ? profileImageView.image : nil
+        delegate?.didTapSaveChanges(name: fullNameTextField.text!, profileImage: userProfileImage)
     }
 
     @objc
@@ -240,7 +243,7 @@ extension EditProfileView: UIImagePickerControllerDelegate, UINavigationControll
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             profileImageView.image = selectedImage
-//            saveAvatarToUserDefaults()
+            isProfileImageChanged = true
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -295,6 +298,10 @@ extension EditProfileView {
 
         scrollContentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+        }
+
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 

@@ -81,6 +81,7 @@ class EditProfileViewController: UIViewController, EditProfileViewControllerProt
 extension EditProfileViewController {
     private func setupViewController() {
         title = "Edit Profile"
+        editProfileView.delegate = self
         setupNavigationController()
     }
 
@@ -122,5 +123,14 @@ extension EditProfileViewController {
     @objc
     private func keyboardWillHide(notification: Notification) {
         editProfileView.adjustScrollInset(with: 0)
+    }
+}
+
+// MARK: - EditProfileViewDelegate
+extension EditProfileViewController: EditProfileInteractionDelegate {
+    func didTapSaveChanges(name: String, profileImage: UIImage?) {
+        let imageData: Data? = profileImage?.jpegData(compressionQuality: 0.7)
+
+        presenter.didTapSaveChanges(name: name, profileImage: imageData)
     }
 }

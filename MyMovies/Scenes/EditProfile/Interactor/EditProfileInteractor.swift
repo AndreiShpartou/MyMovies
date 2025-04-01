@@ -8,24 +8,18 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
-import Kingfisher
 
 final class EditProfileInteractor: EditProfileInteractorProtocol {
     weak var presenter: EditProfileInteractorOutputProtocol?
 
-    private let networkManager: NetworkManagerProtocol
     private let cloudinaryManager: CloudinaryManagerProtocol
     private let firestoreDB = Firestore.firestore()
 
+    // Store the fetched user profile
     private var currentUser: UserProfileProtocol?
-    private var currentUserProfileImage: UIImage?
 
     // MARK: - Init
-    init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        cloudinaryManager: CloudinaryManagerProtocol = CloudinaryManager.shared
-    ) {
-        self.networkManager = networkManager
+    init(cloudinaryManager: CloudinaryManagerProtocol = CloudinaryManager.shared) {
         self.cloudinaryManager = cloudinaryManager
     }
 
@@ -33,6 +27,10 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
     func fetchUserProfile() {
         guard let user = Auth.auth().currentUser,
               let email = user.email else {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: AppError.customError(message: "User is not signed in", comment: ""))
+            }
+
             return
         }
 
@@ -40,8 +38,9 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
         fetchAdditionalUserData(uid: user.uid, email: email)
     }
 
-    func updateUserProfile(name: String, image: UIImage?) {
-        completeGroupUpdate(name: name, image: image)
+    // Update the user's profile in the Firestore (and upload a new image if provided)
+    func updateUserProfile(name: String, profileImage: Data?) {
+        completeGroupUpdate(name: name, image: profileImage)
     }
 }
 
@@ -68,21 +67,17 @@ extension EditProfileInteractor {
                 return
             }
 
-            // Return if data wasn't stored -> Wait until it'll be stored and fetching be triggered by the listener
+            // Return if data wasn't stored
             guard let name = userData["name"] as? String else {
                 return
             }
 
-            let profileImageURL = userData["profileImageURL"] as? URL
             currentUser = UserProfile(
                 id: uid,
                 name: name,
                 email: email,
-                profileImageURL: profileImageURL
+                profileImageURL: URL(string: (userData["profileImageURL"] as? String ?? ""))
             )
-
-            // Fetch profile image
-            self.fetchProfileImageFromCache(url: profileImageURL)
 
             // Update UI
             DispatchQueue.main.async {
@@ -94,59 +89,36 @@ extension EditProfileInteractor {
 
 // MARK: - GroupUpdate
 extension EditProfileInteractor {
-    // Update FirebaseFirestore fullName + imageURL + email + upload an image (Cloudinary)
-    private func completeGroupUpdate(name: String, image: UIImage?) {
+    // Update FirebaseFirestore fullName + imageURL + upload an image (Cloudinary)
+    private func completeGroupUpdate(name: String, image: Data?) {
         guard let user = currentUser,
               let authUser = Auth.auth().currentUser else {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: AppError.customError(message: "User is not authenticated", comment: ""))
+            }
+
             return
         }
 
-        let dispatchGroup = DispatchGroup()
-        // Update fullName
-        if name != user.name {
-            dispatchGroup.enter()
-            updateUserName(uid: authUser.uid, name: name) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.presenter?.didFailToFetchData(with: error)
-                    }
-                }
-                dispatchGroup.leave()
-            }
-        }
-        // Update an image
-        if let currentImage = currentUserProfileImage,
-           let newImage = image,
-           let newImageData = newImage.pngData(),
-           !currentImage.isEqualToImage(newImage) {
-            dispatchGroup.enter()
+        // Uploade an image and update Firestore data
+        if let newImageData = image {
             uploadProfileImage(imageData: newImageData) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let url):
-                    dispatchGroup.enter()
-                    self.updateUserProfileImage(uid: authUser.uid, profileImageUrl: url.absoluteString) { result in
-                        switch result {
-                        case .success:
-                            break
-                        case .failure(let error):
-                            DispatchQueue.main.async {
-                                self.presenter?.didFailToFetchData(with: error)
-                            }
-                        }
-                        dispatchGroup.leave()
-                    }
+                    self.updateFirestoreData(uid: authUser.uid, name: name, profileImageUrl: url.absoluteString)
                 case .failure(let error):
                     DispatchQueue.main.async {
                         self.presenter?.didFailToFetchData(with: error)
                     }
                 }
-                dispatchGroup.leave()
             }
+        } else if name != user.name {
+            // Update name
+            let profileImageString = user.profileImageURL?.absoluteString ?? ""
+            self.updateFirestoreData(uid: authUser.uid, name: name, profileImageUrl: profileImageString)
+        } else {
+            presenter?.didCloseWithNoChanges()
         }
     }
 }
@@ -161,7 +133,9 @@ extension EditProfileInteractor {
         uploader.upload(data: imageData, uploadPreset: "profile_images", completionHandler: { result, error in
             if let error = error {
                 completion(.failure(error))
-            } else if let result = result, let secureUrlString = result.secureUrl, let secureUrl = URL(string: secureUrlString) {
+            } else if let result = result,
+                      let secureUrlString = result.secureUrl,
+                      let secureUrl = URL(string: secureUrlString) {
                 completion(.success(secureUrl))
             } else {
                 completion(.failure(NSError(domain: "UploadError", code: 0, userInfo: nil)))
@@ -172,44 +146,14 @@ extension EditProfileInteractor {
 
 // MARK: - UploadToFirestore
 extension EditProfileInteractor {
-    // Update the Firestore document with the new name
-    private func updateUserName(uid: String, name: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        firestoreDB.collection("users").document(uid).updateData(["name": name]) { error in
+    // Update the Firestore document with the new name and the profile image URL
+    private func updateFirestoreData(uid: String, name: String, profileImageUrl: String) {
+        firestoreDB.collection("users").document(uid).updateData(["name": name, "profileImageURL": profileImageUrl]) { [weak self] error in
+            guard let self = self else { return }
             if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(()))
-            }
-        }
-    }
-
-    // Update the Firestore document with the new profile image URL
-    private func updateUserProfileImage(uid: String, profileImageUrl: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        firestoreDB.collection("users").document(uid).updateData(["profileImageUrl": profileImageUrl]) { error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(()))
-            }
-        }
-    }
-}
-
-// MARK: - Helpers
-extension EditProfileInteractor {
-    private func fetchProfileImageFromCache(url: URL?) {
-        guard let absoluteString = url?.absoluteString else {
-            self.currentUserProfileImage = Asset.Avatars.signedUser.image
-
-            return
-        }
-
-        ImageCache.default.retrieveImage(forKey: absoluteString) { result in
-            switch result {
-            case.success(let value):
-                self.currentUserProfileImage = value.image
-            case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
             }
         }
     }

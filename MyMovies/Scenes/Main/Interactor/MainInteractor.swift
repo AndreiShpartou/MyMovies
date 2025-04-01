@@ -328,7 +328,7 @@ extension MainInteractor {
                 id: uid,
                 name: name,
                 email: email,
-                profileImageURL: userData["profileImageURL"] as? URL
+                profileImageURL: URL(string: (userData["profileImageURL"] as? String ?? ""))
             )
 
             DispatchQueue.main.async {

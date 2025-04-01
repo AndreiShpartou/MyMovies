@@ -18,6 +18,5 @@ protocol EditProfileViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
 }
 
 protocol EditProfileInteractionDelegate: AnyObject {
-    func didTapSaveChanges()
-    func didTapChangeProfileImage()
+    func didTapSaveChanges(name: String, profileImage: UIImage?)
 }

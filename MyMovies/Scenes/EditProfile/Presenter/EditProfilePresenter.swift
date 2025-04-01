@@ -33,6 +33,14 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
 
         interactor.fetchUserProfile()
     }
+
+    func didTapSaveChanges(name: String, profileImage: Data?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.view?.showLoadingIndicator()
+        }
+
+        interactor.updateUserProfile(name: name, profileImage: profileImage)
+    }
 }
 
 // MARK: - Section Heading
@@ -51,5 +59,9 @@ extension EditProfilePresenter: EditProfileInteractorOutputProtocol {
     func didFailToFetchData(with error: Error) {
         view?.hideLoadingIndicator()
         view?.showError(error.localizedDescription)
+    }
+
+    func didCloseWithNoChanges() {
+        router.navigateToRoot()
     }
 }

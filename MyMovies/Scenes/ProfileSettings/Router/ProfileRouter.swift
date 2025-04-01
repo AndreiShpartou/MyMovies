@@ -18,6 +18,7 @@ class ProfileRouter: ProfileRouterProtocol {
     // MARK: - ProfileRouterProtocol
     func navigateToRoot() {
         viewController?.view.window?.rootViewController?.dismiss(animated: true)
+        viewController?.navigationController?.popToRootViewController(animated: true)
     }
 
     func navigateToEditProfile() {

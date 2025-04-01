@@ -13,4 +13,5 @@ protocol EditProfilePresenterProtocol {
     var router: EditProfileRouterProtocol { get set }
 
     func viewDidLoad()
+    func didTapSaveChanges(name: String, profileImage: Data?)
 }

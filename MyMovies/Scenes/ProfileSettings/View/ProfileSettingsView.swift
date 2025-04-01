@@ -208,6 +208,7 @@ extension ProfileSettingsView {
     private func createEditButton() -> UIButton {
         let button = UIButton(type: .system)
         let editImage = Asset.Icons.edit.image.withTintColor(.primaryBlueAccent, renderingMode: .alwaysOriginal)
+        button.addTarget(self, action: #selector(headerViewTapped), for: .touchUpInside)
         button.setImage(editImage, for: .normal)
 
         return button
