@@ -154,6 +154,10 @@ extension EditProfileInteractor {
                 DispatchQueue.main.async {
                     self.presenter?.didFailToFetchData(with: error)
                 }
+            } else {
+                DispatchQueue.main.async {
+                    self.presenter?.didFinishProfileUpdate()
+                }
             }
         }
     }

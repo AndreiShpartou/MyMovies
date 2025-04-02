@@ -24,7 +24,7 @@ final class LoginPresenter: LoginPresenterProtocol {
     }
 
     func didTapSignInButton(email: String, password: String) {
-        view?.showLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: true)
         interactor.signIn(withEmail: email, password: password)
     }
 
@@ -40,11 +40,11 @@ final class LoginPresenter: LoginPresenterProtocol {
 // MARK: - LoginInteractorOutputProtocol
 extension LoginPresenter {
     func didSignInSuccessfully() {
-        view?.hideLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didFailToSignIn(with error: Error) {
-        view?.hideLoadingIndicator()
         view?.showError(error: error)
+        view?.setLoadingIndicator(isVisible: false)
     }
 }

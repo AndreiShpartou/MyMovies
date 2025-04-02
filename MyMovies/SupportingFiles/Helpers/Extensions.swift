@@ -80,9 +80,13 @@ extension UIView {
         }
     }
 
-    func initHideKeyboard() {
+    func initHideKeyboard(with gestureDelegate: Any? = nil) {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         gesture.cancelsTouchesInView = false
+        if let gestureDelegate = gestureDelegate {
+            gesture.delegate = gestureDelegate as? UIGestureRecognizerDelegate
+        }
+
         self.addGestureRecognizer(gesture)
     }
 

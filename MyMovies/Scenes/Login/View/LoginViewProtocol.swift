@@ -10,8 +10,7 @@ import UIKit
 protocol LoginViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: LoginViewDelegate? { get set }
 
-    func showLoadingIndicator()
-    func hideLoadingIndicator()
+    func setLoadingIndicator(isVisible: Bool)
     func showError(error: Error)
 }
 
