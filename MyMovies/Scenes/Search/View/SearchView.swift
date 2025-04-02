@@ -18,6 +18,15 @@ final class SearchView: UIView, SearchViewProtocol {
     // MARK: - UI Components
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+
+    // Loading indicators
+    private let genresLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let discoveredPersonsLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let upcomingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let recentlySearchedLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let discoveredMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let noResultsLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large, color: .primarySoft)
+
     private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(
         placeholder: "Type title, categories, years, etc.",
@@ -117,7 +126,6 @@ final class SearchView: UIView, SearchViewProtocol {
     )
 
     private lazy var noResultsView: UIView = createNoResultsView()
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
 
     // MARK: - CollectionViewHandlers
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
@@ -198,28 +206,35 @@ final class SearchView: UIView, SearchViewProtocol {
         scrollView.isScrollEnabled = false
     }
 
-    func showInitialElements() {
-        genresLabel.isHidden = false
-        genresCollectionView.isHidden = false
-        upcomingMovieLabel.isHidden = false
-        upcomingMovieCollectionView.isHidden = false
-        recentlySearchedLabel.isHidden = false
-        seeAllRecentlySearchedButton.isHidden = false
-        recentlySearchedCollectionView.isHidden = false
-//        discoveredPersonsLabel.isHidden = true
-//        discoveredPersonsCollectionView.isHidden = true
-        noResultsView.isHidden = true
-        searchResultsStackView.isHidden = true
-        searchResultsStackView.isUserInteractionEnabled = false
-        scrollView.isScrollEnabled = true
+    func setInitialElements(isHidden: Bool) {
+        genresLabel.isHidden = isHidden
+        genresCollectionView.isHidden = isHidden
+        upcomingMovieLabel.isHidden = isHidden
+        upcomingMovieCollectionView.isHidden = isHidden
+        recentlySearchedLabel.isHidden = isHidden
+        seeAllRecentlySearchedButton.isHidden = isHidden
+        recentlySearchedCollectionView.isHidden = isHidden
+        searchResultsStackView.isUserInteractionEnabled = isHidden
+        scrollView.isScrollEnabled = !isHidden
     }
 
-    func showLoading() {
-        loadingIndicator.startAnimating()
-    }
-
-    func hideLoading() {
-        loadingIndicator.stopAnimating()
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool) {
+        switch section {
+        case .genres:
+            toggleLoader(genresLoadingIndicator, isVisible: isVisible)
+        case .upcomingMovies:
+            toggleLoader(upcomingMoviesLoadingIndicator, isVisible: isVisible)
+        case .recentlySearched:
+            toggleLoader(recentlySearchedLoadingIndicator, isVisible: isVisible)
+        case .discoveredPersons:
+            toggleLoader(discoveredPersonsLoadingIndicator, isVisible: isVisible)
+        case .discoveredMovies:
+            toggleLoader(discoveredMoviesLoadingIndicator, isVisible: isVisible)
+        case .noResults:
+            toggleLoader(noResultsLoadingIndicator, isVisible: isVisible)
+        default:
+            break
+        }
     }
 
     func showError(_ error: Error) {
@@ -243,6 +258,7 @@ extension SearchView {
         addSubviews(searchResultsStackView)
         scrollView.addSubviews(contentView)
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.delaysContentTouches = false
 
         contentView.addSubviews(
             genresLabel,
@@ -252,7 +268,6 @@ extension SearchView {
             recentlySearchedLabel,
             seeAllRecentlySearchedButton,
             recentlySearchedCollectionView,
-            loadingIndicator,
             searchBarContainerView
         )
         searchBarContainerView.addSubviews(searchBar)
@@ -263,12 +278,21 @@ extension SearchView {
         commonLabelsView.addSubviews(discoveredMoviesLabel, seeAllDiscoveredMoviesButton)
         searchResultsStackView.addArrangedSubview(discoveredMoviesCollectionView)
 
+        // Loading indicators
+        genresCollectionView.addSubviews(genresLoadingIndicator)
+        upcomingMovieCollectionView.addSubviews(upcomingMoviesLoadingIndicator)
+        recentlySearchedCollectionView.addSubviews(recentlySearchedLoadingIndicator)
+        discoveredPersonsCollectionView.addSubviews(discoveredPersonsLoadingIndicator)
+        discoveredMoviesCollectionView.addSubviews(discoveredMoviesLoadingIndicator)
+        noResultsView.addSubviews(noResultsLoadingIndicator)
+
         setupHandlers()
-        showInitialElements()
+        setInitialElements(isHidden: false)
+        searchResultsStackView.isHidden = true
+        noResultsView.isHidden = true
     }
 
     private func setupHandlers() {
-        searchBar.delegate = delegate
         scrollView.delegate = self
 
         genresCollectionViewHandler.delegate = delegate
@@ -351,7 +375,17 @@ extension SearchView {
             make.leading.trailing.equalToSuperview()
         }
 
+        view.isUserInteractionEnabled = false
+
         return view
+    }
+
+    private func toggleLoader(_ loader: UIActivityIndicatorView, isVisible: Bool) {
+        if isVisible {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
     }
 }
 
@@ -388,6 +422,31 @@ extension SearchView {
 
         contentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+        }
+
+        // Loading indicators
+        genresLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        upcomingMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        recentlySearchedLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        discoveredPersonsLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        discoveredMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        noResultsLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 
@@ -458,10 +517,6 @@ extension SearchView {
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
             make.top.equalTo(safeAreaLayoutGuide).offset(76)
             make.bottom.equalTo(safeAreaLayoutGuide).offset(-16)
-        }
-
-        loadingIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
         }
 
         searchResultsStackView.snp.makeConstraints { make in

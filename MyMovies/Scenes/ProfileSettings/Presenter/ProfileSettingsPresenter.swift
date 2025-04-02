@@ -84,7 +84,7 @@ extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     func didFetchDataForGenerelTextScene(labelText: String?, textViewText: String?, title: String?) {
         router.navigateToGeneralTextInfoScene(labelText: labelText, textViewText: textViewText, title: title)
     }
-    
+
     func didBeginProfileUpdate() {
     }
 

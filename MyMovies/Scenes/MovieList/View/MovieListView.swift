@@ -69,7 +69,7 @@ final class MovieListView: UIView, MovieListViewProtocol {
         moviesCollectionViewHandler.configure(with: movies)
         movieListCollection.reloadData()
     }
-    
+
     func setLoadingIndicator(isVisible: Bool) {
         if isVisible {
             loadingIndicator.startAnimating()
@@ -135,7 +135,7 @@ extension MovieListView {
             make.top.equalTo(genresCollection.snp.bottom).offset(16)
             make.bottom.equalTo(safeAreaLayoutGuide)
         }
-        
+
         loadingIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }

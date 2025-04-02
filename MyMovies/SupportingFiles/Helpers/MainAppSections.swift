@@ -15,4 +15,8 @@ enum MainAppSection: CaseIterable {
     case popularMovies
     case topRatedMovies
     case theHighestGrossingMovies
+    case recentlySearched
+    case discoveredPersons
+    case discoveredMovies
+    case noResults
 }

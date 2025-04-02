@@ -21,10 +21,10 @@ final class MainView: UIView, MainViewProtocol {
     // Loading indicators
     private let userProfileLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
     private let genresLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
-    private let upcomingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
-    private let popularMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
-    private let topRatedMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
-    private let theHighestGrossingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let upcomingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let popularMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let topRatedMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let theHighestGrossingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
     // User greeting
     private(set) var userGreetingView: UserGreetingViewProtocol = UserGreetingView()
     // Search section
@@ -186,6 +186,8 @@ final class MainView: UIView, MainViewProtocol {
             toggleLoader(topRatedMoviesLoadingIndicator, isVisible: isVisible)
         case .theHighestGrossingMovies:
             toggleLoader(theHighestGrossingMoviesLoadingIndicator, isVisible: isVisible)
+        default:
+            break
         }
     }
 
@@ -291,14 +293,6 @@ extension MainView {
         topRatedMoviesCollectionViewHandler.delegate = delegate
         theHighestGrossingCollectionViewHandler.delegate = delegate
     }
-
-    private func toggleLoader(_ loader: UIActivityIndicatorView, isVisible: Bool) {
-        if isVisible {
-            loader.startAnimating()
-        } else {
-            loader.stopAnimating()
-        }
-    }
 }
 
 // MARK: - ActionMethods
@@ -344,6 +338,14 @@ extension MainView {
             upComingMoviesPageControl.setIndicatorImage(unselected, forPage: pageIndex)
         }
         upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
+    }
+
+    private func toggleLoader(_ loader: UIActivityIndicatorView, isVisible: Bool) {
+        if isVisible {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
     }
 }
 

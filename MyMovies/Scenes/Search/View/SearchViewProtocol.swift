@@ -17,9 +17,8 @@ protocol SearchViewProtocol: UIView {
     func showPersonsSearchResults(_ persons: [PersonViewModelProtocol])
     func showNoResults()
     func hideAllElements()
-    func showInitialElements()
-    func showLoading()
-    func hideLoading()
+    func setInitialElements(isHidden: Bool)
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
     func showError(_ error: Error)
 }
 
