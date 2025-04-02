@@ -9,6 +9,7 @@ import Foundation
 
 // Sections for loading indicators
 enum MainAppSection: CaseIterable {
+    case rootView
     case userProfile
     case genres
     case upcomingMovies
@@ -18,5 +19,6 @@ enum MainAppSection: CaseIterable {
     case recentlySearched
     case discoveredPersons
     case discoveredMovies
+    case relatedMovies
     case noResults
 }

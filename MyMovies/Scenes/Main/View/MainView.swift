@@ -18,6 +18,7 @@ final class MainView: UIView, MainViewProtocol {
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+
     // Loading indicators
     private let userProfileLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
     private let genresLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
@@ -25,21 +26,26 @@ final class MainView: UIView, MainViewProtocol {
     private let popularMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
     private let topRatedMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
     private let theHighestGrossingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+
     // User greeting
     private(set) var userGreetingView: UserGreetingViewProtocol = UserGreetingView()
+
     // Search section
     private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
+
     // Upcoming movie list
     private let upcomingMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Upcoming"
     )
+
     private lazy var seeAllUpcomingMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllUpcomingMoviesButton),
         target: self
     )
+
     private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
@@ -54,21 +60,26 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Genres"
     )
+
     private let genresCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
         cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
+
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
+
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Most popular"
     )
+
     private lazy var seeAllPopularMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllPopularMoviesButton),
         target: self
     )
+
     private let popularMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -77,16 +88,19 @@ final class MainView: UIView, MainViewProtocol {
         ]
     )
     private lazy var popularMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
+
     // Top rated section
     private let topRatedMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Top rated"
     )
+
     private lazy var seeAllTopRatedMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllTopRatedMoviesButton),
         target: self
     )
+
     private let topRatedMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -95,16 +109,19 @@ final class MainView: UIView, MainViewProtocol {
             ]
     )
     private lazy var topRatedMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
+
     // The highest grossing section
     private let theHighestGrossingMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "The highest grossing"
     )
+
     private lazy var seeAllTheHighestGrossingMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeTheHighestGrossingMoviesButton),
         target: self
     )
+
     private let theHighestGrossingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [

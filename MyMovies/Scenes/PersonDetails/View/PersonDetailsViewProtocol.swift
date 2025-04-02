@@ -13,8 +13,7 @@ protocol PersonDetailsViewProtocol: UIView {
     func showPersonDetails(_ person: PersonDetailedViewModelProtocol)
     func showMovieGenres(_ genres: [GenreViewModelProtocol])
     func showPersonRelatedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
-    func showLoading()
-    func hideLoading()
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
     func showError(_ error: Error)
 }
 
