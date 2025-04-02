@@ -29,6 +29,7 @@ class WishlistPresenter: WishlistPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
+        view?.setLoadingIndicator(isVisible: true)
         interactor.fetchWishlist()
 
         setupObservers()
@@ -103,10 +104,12 @@ extension WishlistPresenter: WishlistInteractorOutputProtocol {
 
         view?.showMovies(favouriteMoviesViewModels)
         self.movies = movies
+        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didFailToFetchData(error: Error) {
         // Handle error
         view?.showError(error: error)
+        view?.setLoadingIndicator(isVisible: false)
     }
 }

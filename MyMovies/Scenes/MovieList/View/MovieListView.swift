@@ -17,6 +17,7 @@ final class MovieListView: UIView, MovieListViewProtocol {
     // MARK: - UIComponents
     // Indicators
     private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+
     // Genres collection
     private let genresCollection: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),

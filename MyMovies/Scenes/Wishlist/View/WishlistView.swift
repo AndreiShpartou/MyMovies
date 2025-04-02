@@ -16,6 +16,10 @@ final class WishlistView: UIView, WishlistViewProtocol {
     }
 
     // MARK: - UIComponents
+
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+
     private let collectionView: UICollectionView = .createCommonCollectionView(
         // Will be redefined in handler
         itemSize: CGSize(width: 100, height: 150),
@@ -63,6 +67,14 @@ final class WishlistView: UIView, WishlistViewProtocol {
         }, completion: nil)
     }
 
+    func setLoadingIndicator(isVisible: Bool) {
+        if isVisible {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+
     func showError(error: Error) {
     }
 }
@@ -71,6 +83,7 @@ final class WishlistView: UIView, WishlistViewProtocol {
 extension WishlistView {
     private func setupView() {
         backgroundColor = .primaryBackground
+        addSubviews(collectionView, loadingIndicator)
 
         setupHandlers()
     }
@@ -88,9 +101,12 @@ extension WishlistView {
 // MARK: - Constraints
 extension WishlistView {
     private func setupConstraints() {
-        addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide).inset(16)
+        }
+
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }
