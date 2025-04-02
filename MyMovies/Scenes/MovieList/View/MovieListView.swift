@@ -15,6 +15,8 @@ final class MovieListView: UIView, MovieListViewProtocol {
     }
 
     // MARK: - UIComponents
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
     // Genres collection
     private let genresCollection: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
@@ -67,6 +69,24 @@ final class MovieListView: UIView, MovieListViewProtocol {
         moviesCollectionViewHandler.configure(with: movies)
         movieListCollection.reloadData()
     }
+    
+    func setLoadingIndicator(isVisible: Bool) {
+        if isVisible {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+
+    func showError(_ error: Error) {
+        guard let viewController = parentViewController else {
+            return
+        }
+
+        // Present an alert to the user
+        let alert = getGlobalAlertController(for: error.localizedDescription)
+        viewController.present(alert, animated: true, completion: nil)
+    }
 }
 
 // MARK: - Setup
@@ -74,6 +94,7 @@ extension MovieListView {
     private func setupView() {
         backgroundColor = .primaryBackground
         addSubviews(genresCollection, movieListCollection)
+        movieListCollection.addSubviews(loadingIndicator)
 
         setupHandlers()
     }
@@ -113,6 +134,10 @@ extension MovieListView {
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(genresCollection.snp.bottom).offset(16)
             make.bottom.equalTo(safeAreaLayoutGuide)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 }

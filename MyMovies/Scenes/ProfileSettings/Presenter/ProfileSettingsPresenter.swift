@@ -84,15 +84,18 @@ extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     func didFetchDataForGenerelTextScene(labelText: String?, textViewText: String?, title: String?) {
         router.navigateToGeneralTextInfoScene(labelText: labelText, textViewText: textViewText, title: title)
     }
-
-    func didFailToFetchData(with error: Error) {
-        view?.hideLoadingIndicator()
-        view?.showError(error)
+    
+    func didBeginProfileUpdate() {
     }
 
     func didLogOut() {
         view?.hideLoadingIndicator()
         view?.showSignOutItems()
+    }
+
+    func didFailToFetchData(with error: Error) {
+        view?.hideLoadingIndicator()
+        view?.showError(error)
     }
 }
 

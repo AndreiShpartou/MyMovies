@@ -30,6 +30,8 @@ final class MovieListPresenter: MovieListPresenterProtocol {
 
     func viewDidLoad(listType: MovieListType) {
         interactor.fetchMovieGenres(type: listType)
+        
+        view?.setLoadingIndicator(isVisible: true)
         interactor.fetchMovieList(type: listType)
     }
 
@@ -38,6 +40,7 @@ final class MovieListPresenter: MovieListPresenterProtocol {
             return
         }
 
+        view?.setLoadingIndicator(isVisible: true)
         interactor.fetchMovieListWithGenresFiltering(genre: movieGenre)
     }
 
@@ -69,9 +72,10 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
 
         view?.showMovieList(movieViewModels)
         self.movies = movies
+        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didFailToFetchData(with error: Error) {
-        //
+        view?.setLoadingIndicator(isVisible: false)
     }
 }

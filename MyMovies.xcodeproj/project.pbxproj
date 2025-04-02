@@ -174,6 +174,7 @@
 		6C9B45F52CB59A930053B8D7 /* ProfileSettingsTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B45F42CB59A930053B8D7 /* ProfileSettingsTableViewHandler.swift */; };
 		6C9C75932C6DFED0003E98FE /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9C75922C6DFED0003E98FE /* GlobalFunctions.swift */; };
 		6C9C75952C6E1DF1003E98FE /* AppConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9C75942C6E1DF1003E98FE /* AppConfigurationManager.swift */; };
+		6C9CF9092D9C612E0043CEFE /* MainAppSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9082D9C612E0043CEFE /* MainAppSections.swift */; };
 		6C9F5F4B2D4BFD0100C722F1 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */; };
 		6CA2D87A2CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA2D8792CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift */; };
 		6CA2D87E2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA2D87D2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift */; };
@@ -432,6 +433,7 @@
 		6C9B45F42CB59A930053B8D7 /* ProfileSettingsTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsTableViewHandler.swift; sourceTree = "<group>"; };
 		6C9C75922C6DFED0003E98FE /* GlobalFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		6C9C75942C6E1DF1003E98FE /* AppConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationManager.swift; sourceTree = "<group>"; };
+		6C9CF9082D9C612E0043CEFE /* MainAppSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppSections.swift; sourceTree = "<group>"; };
 		6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		6CA2D8792CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBReviewsPagedResponse.swift; sourceTree = "<group>"; };
 		6CA2D87D2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBReviewResponseProtocol.swift; sourceTree = "<group>"; };
@@ -1568,6 +1570,7 @@
 				6C90536C2C5906260068E2BC /* Constants.swift */,
 				6CA8F6992C6668900090BC8C /* ImageURLBuilder.swift */,
 				6C9C75922C6DFED0003E98FE /* GlobalFunctions.swift */,
+				6C9CF9082D9C612E0043CEFE /* MainAppSections.swift */,
 				6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */,
 				6CEB59422CBBF9D1005062DC /* HelperSubclasses */,
 				6C49F3AA2C9ADBCE005F182F /* Mappers */,
@@ -1918,6 +1921,7 @@
 			files = (
 				6CF693C62D115D8400026B11 /* KinopoiskPersonResponseProtocol.swift in Sources */,
 				6C98345C2C7606D300C6D368 /* TMDBMovieResponse.swift in Sources */,
+				6C9CF9092D9C612E0043CEFE /* MainAppSections.swift in Sources */,
 				6C59AF022C54F10D006A7BDB /* AppDelegate.swift in Sources */,
 				6C9B45E62CB518040053B8D7 /* UserProfile.swift in Sources */,
 				6C8338522C5CE504000D0399 /* MainInteractorProtocol.swift in Sources */,

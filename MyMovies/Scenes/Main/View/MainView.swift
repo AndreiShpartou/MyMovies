@@ -18,6 +18,13 @@ final class MainView: UIView, MainViewProtocol {
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    // Loading indicators
+    private let userProfileLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let genresLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let upcomingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let popularMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let topRatedMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let theHighestGrossingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
     // User greeting
     private(set) var userGreetingView: UserGreetingViewProtocol = UserGreetingView()
     // Search section
@@ -165,6 +172,23 @@ final class MainView: UIView, MainViewProtocol {
         userGreetingView.didLogOut()
     }
 
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool) {
+        switch section {
+        case .userProfile:
+            toggleLoader(userProfileLoadingIndicator, isVisible: isVisible)
+        case .genres:
+            toggleLoader(genresLoadingIndicator, isVisible: isVisible)
+        case .upcomingMovies:
+            toggleLoader(upcomingMoviesLoadingIndicator, isVisible: isVisible)
+        case .popularMovies:
+            toggleLoader(popularMoviesLoadingIndicator, isVisible: isVisible)
+        case .topRatedMovies:
+            toggleLoader(topRatedMoviesLoadingIndicator, isVisible: isVisible)
+        case .theHighestGrossingMovies:
+            toggleLoader(theHighestGrossingMoviesLoadingIndicator, isVisible: isVisible)
+        }
+    }
+
     func showError(error: Error) {
         //
     }
@@ -200,6 +224,15 @@ extension MainView {
         )
         searchBarContainerView.addSubviews(searchBar)
 
+        // Loading indicators
+        userGreetingView.addSubviews(userProfileLoadingIndicator)
+        genresCollectionView.addSubviews(genresLoadingIndicator)
+        upcomingMoviesCollectionView.addSubviews(upcomingMoviesLoadingIndicator)
+        popularMoviesCollectionView.addSubviews(popularMoviesLoadingIndicator)
+        topRatedMoviesCollectionView.addSubviews(topRatedMoviesLoadingIndicator)
+        theHighestGrossingMoviesCollectionView.addSubviews(theHighestGrossingMoviesLoadingIndicator)
+
+        // Handlers
         setupHandlers()
     }
 
@@ -257,6 +290,14 @@ extension MainView {
         popularMoviesCollectionViewHandler.delegate = delegate
         topRatedMoviesCollectionViewHandler.delegate = delegate
         theHighestGrossingCollectionViewHandler.delegate = delegate
+    }
+
+    private func toggleLoader(_ loader: UIActivityIndicatorView, isVisible: Bool) {
+        if isVisible {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
     }
 }
 
@@ -355,6 +396,27 @@ extension MainView {
 
         contentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+        }
+
+        // Loading indicators
+        userProfileLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        upcomingMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        popularMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        topRatedMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        theHighestGrossingMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 

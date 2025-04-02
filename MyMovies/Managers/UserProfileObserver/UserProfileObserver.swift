@@ -20,6 +20,7 @@ protocol UserProfileObserverProtocol: AnyObject {
 protocol UserProfileObserverDelegate: AnyObject {
     func didFetchUserProfile(_ user: UserProfileProtocol)
     func didFailToFetchData(with error: Error)
+    func didBeginProfileUpdate()
     func didLogOut()
 }
 
@@ -89,6 +90,10 @@ extension UserProfileObserver {
     }
 
     private func getUserData(uid: String, email: String) {
+        DispatchQueue.main.async {
+            self.delegate?.didBeginProfileUpdate()
+        }
+
         firestoreDB.collection("users").document(uid).getDocument { [weak self] snapshot, error in
             guard let self = self else { return }
 

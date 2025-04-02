@@ -17,6 +17,9 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView: UIView = .createCommonView()
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+
     // Header section
     private let headerView: UIView = .createCommonView(
         cornerRadius: 20,
@@ -71,8 +74,6 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     // Settings Table
     private lazy var tableView: UITableView = createSettingsTableView()
     private let tableViewHandler = ProfileSettingsTableViewHandler()
-    // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
 
     // MARK: - Init
     override init(frame: CGRect) {

@@ -149,10 +149,10 @@ class NetworkManager: NetworkManagerProtocol {
     }
 
     // MARK: - ProfileSettings
-    func fetchUserProfile(completion: @escaping (Result<UserProfileProtocol, Error>) -> Void) {
-        let userProfile = UserProfile(id: "1", name: "Smith", email: "SmithAgent@matrix.com", profileImageURL: nil)
-        completion(.success(userProfile))
-    }
+//    func fetchUserProfile(completion: @escaping (Result<UserProfileProtocol, Error>) -> Void) {
+//        let userProfile = UserProfile(id: "1", name: "Smith", email: "SmithAgent@matrix.com", profileImageURL: nil)
+//        completion(.success(userProfile))
+//    }
 
     func fetchSettingsSections(completion: @escaping (Result<[ProfileSettingsSection], Error>) -> Void) {
         let settingsSection: [ProfileSettingsSection] = [

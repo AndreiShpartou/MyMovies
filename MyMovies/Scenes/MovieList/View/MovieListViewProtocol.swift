@@ -12,6 +12,8 @@ protocol MovieListViewProtocol: UIView {
 
     func showMovieGenres(_ genres: [GenreViewModelProtocol])
     func showMovieList(_ movies: [MovieListItemViewModelProtocol])
+    func setLoadingIndicator(isVisible: Bool)
+    func showError(_ error: Error)
 }
 
 protocol MovieListViewInteractionDelegate: AnyObject, GenresCollectionViewDelegate, MovieListCollectionViewDelegate {
