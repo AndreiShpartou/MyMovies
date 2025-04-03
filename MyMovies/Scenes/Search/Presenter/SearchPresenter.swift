@@ -17,6 +17,14 @@ class SearchPresenter: SearchPresenterProtocol {
     private var persons: [PersonProtocol] = []
     // A property to hold debouncing work item
     private var searchDebounceWorkItem: DispatchWorkItem?
+    // Loading indicators
+    private var loadingStates: [MainAppSection: Bool] = [
+        .genres: false,
+        .upcomingMovies: false,
+        .recentlySearched: false,
+        .discoveredPersons: false,
+        .discoveredMovies: false
+    ]
 
     // MARK: - Init
     init(
@@ -33,8 +41,11 @@ class SearchPresenter: SearchPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-        view?.showLoading()
+        setLoading(for: .genres, isLoading: true)
+        setLoading(for: .upcomingMovies, isLoading: true)
         interactor.fetchInitialData()
+
+        setLoading(for: .recentlySearched, isLoading: true)
         interactor.fetchRecentlySearchedMovies()
     }
 
@@ -45,8 +56,20 @@ class SearchPresenter: SearchPresenterProtocol {
         // Wrap search query in a DispatchWorkItem
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            view?.hideAllElements()
-            view?.showLoading()
+
+            if query.isEmpty {
+                self.view?.hideAllElements()
+                self.view?.setInitialElements(isHidden: false)
+                setLoading(for: .genres, isLoading: true)
+                setLoading(for: .upcomingMovies, isLoading: true)
+                setLoading(for: .recentlySearched, isLoading: true)
+            } else {
+                self.view?.setInitialElements(isHidden: true)
+                setLoading(for: .discoveredPersons, isLoading: true)
+                setLoading(for: .discoveredMovies, isLoading: true)
+                setLoading(for: .noResults, isLoading: true)
+            }
+
             self.interactor.performSearch(with: query)
         }
         searchDebounceWorkItem = workItem
@@ -63,7 +86,10 @@ class SearchPresenter: SearchPresenterProtocol {
             return
         }
 
+        setLoading(for: .upcomingMovies, isLoading: true)
         interactor.fetchUpcomingMoviesWithGenresFiltering(genre: movieGenre)
+
+        setLoading(for: .recentlySearched, isLoading: true)
         interactor.fetchRecentlySearchedMoviesWithGenresFiltering(genre: movieGenre)
     }
 
@@ -90,46 +116,44 @@ class SearchPresenter: SearchPresenterProtocol {
 // MARK: - SearchInteractorOutputProtocol
 extension SearchPresenter: SearchInteractorOutputProtocol {
     func didFetchGenres(_ genres: [GenreProtocol]) {
-        view?.hideLoading()
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
 
-        view?.showInitialElements()
         view?.showGenres(genreViewModels)
+        setLoading(for: .genres, isLoading: false)
     }
 
     func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
         guard let upcomingMoviesViewModel = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Upcoming Movies", comment: "Error message for failed movies loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
 
-        view?.showInitialElements()
         view?.showUpcomingMovies(upcomingMoviesViewModel)
         self.moviesDict[.upcomingMovies] = movies
+        setLoading(for: .upcomingMovies, isLoading: false)
     }
 
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol]) {
         guard let recentlySearchedMoviesViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Recently Searched Movies", comment: "Error message for failed movies loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
 
-        view?.showInitialElements()
         view?.showRecentlySearchedMovies(recentlySearchedMoviesViewModels)
         self.moviesDict[.recentlySearchedMovies] = movies
+        setLoading(for: .recentlySearched, isLoading: false)
     }
 
     func didFetchMoviesSearchResults(_ movies: [MovieProtocol]) {
-        view?.hideLoading()
         guard let searchResultsViewModels = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
             return
         }
@@ -141,12 +165,15 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         }
 
         self.moviesDict[.searchedMovies(query: "")] = movies
+
+        setLoading(for: .noResults, isLoading: false)
+        setLoading(for: .discoveredMovies, isLoading: false)
     }
 
     func didFetchPersonsSearchResults(_ persons: [PersonProtocol]) {
         guard let personViewModels = mapper.map(data: persons, to: [PersonViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Persons", comment: "Error message for failed persons loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
@@ -159,10 +186,22 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
         }
 
         self.persons = persons
+
+        setLoading(for: .noResults, isLoading: false)
+        setLoading(for: .discoveredPersons, isLoading: false)
     }
 
     func didFailToFetchData(with error: Error) {
-        view?.hideLoading()
         view?.showError(error)
+        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
+    }
+}
+
+// MARK: - Private
+extension SearchPresenter {
+    private func setLoading(for section: MainAppSection, isLoading: Bool) {
+        loadingStates[section] = isLoading
+        // Notify the view
+        view?.setLoadingIndicator(for: section, isVisible: isLoading)
     }
 }

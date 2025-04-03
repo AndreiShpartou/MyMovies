@@ -17,6 +17,9 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView: UIView = .createCommonView()
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+
     // Header section
     private let headerView: UIView = .createCommonView(
         cornerRadius: 20,
@@ -71,8 +74,6 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     // Settings Table
     private lazy var tableView: UITableView = createSettingsTableView()
     private let tableViewHandler = ProfileSettingsTableViewHandler()
-    // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
 
     // MARK: - Init
     override init(frame: CGRect) {
@@ -87,12 +88,12 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
     }
 
     // MARK: - Public
-    func showLoadingIndicator() {
-        loadingIndicator.startAnimating()
-    }
-
-    func hideLoadingIndicator() {
-        loadingIndicator.stopAnimating()
+    func setLoadingIndicator(isVisible: Bool) {
+        if isVisible {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
     }
 
     // MARK: - Presentation logic
@@ -101,13 +102,11 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         nameLabel.text = profile.name
         emailLabel.text = profile.email
         showLoggedInViews()
-        hideLoadingIndicator()
     }
 
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol]) {
         tableViewHandler.configure(with: items)
         tableView.reloadData()
-        hideLoadingIndicator()
     }
 
     func showSignOutItems() {
@@ -130,14 +129,15 @@ extension ProfileSettingsView {
     private func setupView() {
         backgroundColor = .primaryBackground
         addSubviews(scrollView)
-        scrollView.addSubviews(contentView, loadingIndicator)
+        scrollView.addSubviews(contentView)
         contentView.addSubviews(headerView, tableView, signOutButton)
         headerView.addSubviews(
             profileImageView,
             nameLabel,
             emailLabel,
             editButton,
-            guestUserView
+            guestUserView,
+            loadingIndicator
         )
         guestUserView.addSubviews(signInButton)
 

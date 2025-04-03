@@ -101,7 +101,7 @@ final class SignUpView: UIView, SignUpViewProtocol {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.initHideKeyboard()
+        self.initHideKeyboard(with: self)
 
         setupView()
         setupConstraints()
@@ -112,12 +112,12 @@ final class SignUpView: UIView, SignUpViewProtocol {
     }
 
     // MARK: - Public
-    func showLoadingIndicator() {
-        loadingIndicator.startAnimating()
-    }
-
-    func hideLoadingIndicator() {
-        loadingIndicator.stopAnimating()
+    func setLoadingIndicator(isVisible: Bool) {
+        if isVisible {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
     }
 
     func showError(error: Error) {
@@ -250,6 +250,17 @@ extension SignUpView: UITextFieldDelegate {
             textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
             textField.layer.borderColor = UIColor.unselectedBorder.cgColor
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension SignUpView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIControl {
+            return false
+        }
+
+        return true
     }
 }
 

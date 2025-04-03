@@ -14,6 +14,13 @@ final class MainPresenter: MainPresenterProtocol {
 
     private let mapper: DomainModelMapperProtocol
     private var moviesDict: [MovieListType: [MovieProtocol]] = [:]
+    private var loadingStates: [MainAppSection: Bool] = [
+        .userProfile: false,
+        .upcomingMovies: false,
+        .popularMovies: false,
+        .topRatedMovies: false,
+        .theHighestGrossingMovies: false
+    ]
 
     // MARK: - Init
     init(
@@ -30,10 +37,19 @@ final class MainPresenter: MainPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
+        setLoading(for: .genres, isLoading: true)
         interactor.fetchMovieGenres()
+
+        setLoading(for: .upcomingMovies, isLoading: true)
         interactor.fetchUpcomingMovies()
+
+        setLoading(for: .popularMovies, isLoading: true)
         interactor.fetchPopularMovies()
+
+        setLoading(for: .topRatedMovies, isLoading: true)
         interactor.fetchTopRatedMovies()
+
+        setLoading(for: .theHighestGrossingMovies, isLoading: true)
         interactor.fetchTheHighestGrossingMovies()
     }
 
@@ -51,8 +67,13 @@ final class MainPresenter: MainPresenterProtocol {
             return
         }
 
+        setLoading(for: .popularMovies, isLoading: true)
         interactor.fetchPopularMoviesWithGenresFiltering(genre: movieGenre)
+
+        setLoading(for: .topRatedMovies, isLoading: true)
         interactor.fetchTopRatedMoviesWithGenresFiltering(genre: movieGenre)
+
+        setLoading(for: .theHighestGrossingMovies, isLoading: true)
         interactor.fetchTheHighestGrossingMoviesWithGenresFiltering(genre: movieGenre)
     }
 
@@ -75,6 +96,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         // Update the view with the fetched data
         view?.showUpcomingMovies(upcomingMovieViewModels)
         moviesDict[.upcomingMovies] = movies
+        setLoading(for: .upcomingMovies, isLoading: false)
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
@@ -83,6 +105,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showMovieGenres(genreViewModels)
+        setLoading(for: .genres, isLoading: false)
     }
 
     func didFetchPopularMovies(_ movies: [MovieProtocol]) {
@@ -92,6 +115,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
         view?.showPopularMovies(popularMovieViewModels)
         moviesDict[.popularMovies] = movies
+        setLoading(for: .popularMovies, isLoading: false)
     }
 
     func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
@@ -101,6 +125,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
         view?.showTopRatedMovies(topRatedMovieViewModels)
         moviesDict[.topRatedMovies] = movies
+        setLoading(for: .topRatedMovies, isLoading: false)
     }
 
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
@@ -110,6 +135,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
         view?.showTheHighestGrossingMovies(theHighestGrossingMovieViewModels)
         moviesDict[.theHighestGrossingMovies] = movies
+        setLoading(for: .theHighestGrossingMovies, isLoading: false)
     }
 
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
@@ -120,14 +146,30 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
 
         view?.showUserProfile(profileViewModel)
+        setLoading(for: .userProfile, isLoading: false)
+    }
+
+    func didBeginProfileUpdate() {
+        setLoading(for: .userProfile, isLoading: true)
     }
 
     func didLogOut() {
         view?.didLogOut()
+        setLoading(for: .userProfile, isLoading: false)
     }
 
     func didFailToFetchData(with error: Error) {
         // Handle error
         view?.showError(error: error)
+        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
+    }
+}
+
+// MARK: - Private
+extension MainPresenter {
+    private func setLoading(for section: MainAppSection, isLoading: Bool) {
+        loadingStates[section] = isLoading
+        // Notify the view
+        view?.setLoadingIndicator(for: section, isVisible: isLoading)
     }
 }

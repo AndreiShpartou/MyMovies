@@ -20,6 +20,9 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
     private let scrollView = UIScrollView()
     private let scrollContentView = UIView()
 
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+
     private let profileImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
@@ -82,13 +85,11 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         action: #selector(didTapSaveChanges),
         target: self
     )
-    // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
 
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.initHideKeyboard()
+        self.initHideKeyboard(with: self)
 
         setupView()
         setupConstraints()
@@ -107,6 +108,14 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         emailTextField.text = profile.email
     }
 
+    func setLoadingIndicator(isVisible: Bool) {
+        if isVisible {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+
     func showError(_ message: String) {
         guard let viewController = parentViewController else {
             return
@@ -115,14 +124,6 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         // Present an alert to the user
         let alert = getGlobalAlertController(for: message)
         viewController.present(alert, animated: true, completion: nil)
-    }
-
-    func showLoadingIndicator() {
-        loadingIndicator.startAnimating()
-    }
-
-    func hideLoadingIndicator() {
-        loadingIndicator.stopAnimating()
     }
 }
 
@@ -282,6 +283,17 @@ extension EditProfileView: UITextFieldDelegate {
     }
 }
 
+// MARK: - UIGestureRecognizerDelegate
+extension EditProfileView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIControl {
+            return false
+        }
+
+        return true
+    }
+}
+
 // MARK: - Constraints
 extension EditProfileView {
     private func setupConstraints() {
@@ -335,10 +347,6 @@ extension EditProfileView {
     }
 
     private func setupBodyConstraints() {
-        loadingIndicator.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-
         fullNameTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(emailLabel.snp.bottom).offset(32)

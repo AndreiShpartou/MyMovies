@@ -17,6 +17,10 @@ final class LoginView: UIView, LoginViewProtocol {
     // MARK: - UIComponents Scroll
     private let scrollView = UIScrollView()
     private let scrollContentView = UIView()
+
+    // Indicators
+    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+
     // MARK: - Header
     private lazy var backButton: UIButton = .createBackNavBarButton(
         action: #selector(backButtonTapped),
@@ -101,13 +105,10 @@ final class LoginView: UIView, LoginViewProtocol {
         target: self
     )
 
-    // Indicators
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
-
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.initHideKeyboard()
+        self.initHideKeyboard(with: self)
 
         setupView()
         setupConstraints()
@@ -118,12 +119,12 @@ final class LoginView: UIView, LoginViewProtocol {
     }
 
     // MARK: - Public
-    func showLoadingIndicator() {
-        loadingIndicator.startAnimating()
-    }
-
-    func hideLoadingIndicator() {
-        loadingIndicator.stopAnimating()
+    func setLoadingIndicator(isVisible: Bool) {
+        if isVisible {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
     }
 
     func showError(error: Error) {
@@ -265,6 +266,17 @@ extension LoginView: UITextFieldDelegate {
             textFieldTagsWarningLabelsDict[textField.tag]?.isHidden = true
             textField.layer.borderColor = UIColor.unselectedBorder.cgColor
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension LoginView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is UIControl {
+            return false
+        }
+
+        return true
     }
 }
 

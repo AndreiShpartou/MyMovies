@@ -24,7 +24,7 @@ final class SignUpPresenter: SignUpPresenterProtocol {
     }
 
     func didTapSignUpButton(email: String, password: String, fullName: String) {
-        view?.showLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: true)
 
         interactor.signUp(email: email, password: password, fullName: fullName)
     }
@@ -33,11 +33,11 @@ final class SignUpPresenter: SignUpPresenterProtocol {
 // MARK: - LoginInteractorOutputProtocol
 extension SignUpPresenter: SignUpInteractorOutputProtocol {
     func didSignUpSuccessfully() {
-        view?.hideLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didFailToSignUp(error: Error) {
         view?.showError(error: error)
-        view?.hideLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: false)
     }
 }

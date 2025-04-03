@@ -10,8 +10,7 @@ import UIKit
 protocol SignUpViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: SignUpViewDelegate? { get set }
 
-    func showLoadingIndicator()
-    func hideLoadingIndicator()
+    func setLoadingIndicator(isVisible: Bool)
     func showError(error: Error)
 }
 

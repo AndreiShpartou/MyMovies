@@ -18,21 +18,34 @@ final class MainView: UIView, MainViewProtocol {
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+
+    // Loading indicators
+    private let userProfileLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let genresLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let upcomingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let popularMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let topRatedMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let theHighestGrossingMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+
     // User greeting
     private(set) var userGreetingView: UserGreetingViewProtocol = UserGreetingView()
+
     // Search section
     private let searchBarContainerView: UIView = .createCommonView(backgroundColor: .primaryBackground)
     private let searchBar: UISearchBar = .createSearchBar(placeholder: "Search a title")
+
     // Upcoming movie list
     private let upcomingMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Upcoming"
     )
+
     private lazy var seeAllUpcomingMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllUpcomingMoviesButton),
         target: self
     )
+
     private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
@@ -47,21 +60,26 @@ final class MainView: UIView, MainViewProtocol {
         textColor: .textColorWhite,
         text: "Genres"
     )
+
     private let genresCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
         cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
+
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
+
     // Popular movies section
     private let popularMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Most popular"
     )
+
     private lazy var seeAllPopularMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllPopularMoviesButton),
         target: self
     )
+
     private let popularMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -70,16 +88,19 @@ final class MainView: UIView, MainViewProtocol {
         ]
     )
     private lazy var popularMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
+
     // Top rated section
     private let topRatedMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Top rated"
     )
+
     private lazy var seeAllTopRatedMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllTopRatedMoviesButton),
         target: self
     )
+
     private let topRatedMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -88,16 +109,19 @@ final class MainView: UIView, MainViewProtocol {
             ]
     )
     private lazy var topRatedMoviesCollectionViewHandler = BriefMovieDescriptionHandler()
+
     // The highest grossing section
     private let theHighestGrossingMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "The highest grossing"
     )
+
     private lazy var seeAllTheHighestGrossingMoviesButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeTheHighestGrossingMoviesButton),
         target: self
     )
+
     private let theHighestGrossingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -165,6 +189,25 @@ final class MainView: UIView, MainViewProtocol {
         userGreetingView.didLogOut()
     }
 
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool) {
+        switch section {
+        case .userProfile:
+            toggleLoader(userProfileLoadingIndicator, isVisible: isVisible)
+        case .genres:
+            toggleLoader(genresLoadingIndicator, isVisible: isVisible)
+        case .upcomingMovies:
+            toggleLoader(upcomingMoviesLoadingIndicator, isVisible: isVisible)
+        case .popularMovies:
+            toggleLoader(popularMoviesLoadingIndicator, isVisible: isVisible)
+        case .topRatedMovies:
+            toggleLoader(topRatedMoviesLoadingIndicator, isVisible: isVisible)
+        case .theHighestGrossingMovies:
+            toggleLoader(theHighestGrossingMoviesLoadingIndicator, isVisible: isVisible)
+        default:
+            break
+        }
+    }
+
     func showError(error: Error) {
         //
     }
@@ -200,6 +243,15 @@ extension MainView {
         )
         searchBarContainerView.addSubviews(searchBar)
 
+        // Loading indicators
+        userGreetingView.addSubviews(userProfileLoadingIndicator)
+        genresCollectionView.addSubviews(genresLoadingIndicator)
+        upcomingMoviesCollectionView.addSubviews(upcomingMoviesLoadingIndicator)
+        popularMoviesCollectionView.addSubviews(popularMoviesLoadingIndicator)
+        topRatedMoviesCollectionView.addSubviews(topRatedMoviesLoadingIndicator)
+        theHighestGrossingMoviesCollectionView.addSubviews(theHighestGrossingMoviesLoadingIndicator)
+
+        // Handlers
         setupHandlers()
     }
 
@@ -304,6 +356,14 @@ extension MainView {
         }
         upComingMoviesPageControl.setIndicatorImage(selected, forPage: index)
     }
+
+    private func toggleLoader(_ loader: UIActivityIndicatorView, isVisible: Bool) {
+        if isVisible {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
+    }
 }
 
 // MARK: - UIScrollViewDelegate
@@ -355,6 +415,27 @@ extension MainView {
 
         contentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
+        }
+
+        // Loading indicators
+        userProfileLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        upcomingMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        popularMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        topRatedMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        theHighestGrossingMoviesLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 

@@ -80,8 +80,13 @@ extension UIView {
         }
     }
 
-    func initHideKeyboard() {
+    func initHideKeyboard(with gestureDelegate: Any? = nil) {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        gesture.cancelsTouchesInView = false
+        if let gestureDelegate = gestureDelegate {
+            gesture.delegate = gestureDelegate as? UIGestureRecognizerDelegate
+        }
+
         self.addGestureRecognizer(gesture)
     }
 
@@ -296,9 +301,12 @@ extension UIBarButtonItem {
 
 // MARK: - UIActivityIndicatorView
 extension UIActivityIndicatorView {
-    static func createSpinner(style: Style) -> UIActivityIndicatorView {
+    static func createSpinner(
+        style: Style,
+        color: UIColor = .primaryBlueAccent
+    ) -> UIActivityIndicatorView {
         let spinner = UIActivityIndicatorView(style: style)
-        spinner.color = .primaryBlueAccent
+        spinner.color = color
         spinner.hidesWhenStopped = true
 
         return spinner
@@ -387,6 +395,7 @@ extension UISearchBar {
         textField.backgroundColor = .primarySoft
         textField.layer.cornerRadius = textFieldCornedRadius
         textField.layer.borderWidth = textFieldBorderWidth
+        textField.textColor = .textColorWhite
         textField.snp.makeConstraints { make in
             make.leading.trailing.top.bottom.equalTo(searchBar)
         }

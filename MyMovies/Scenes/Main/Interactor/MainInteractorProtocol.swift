@@ -32,6 +32,7 @@ protocol MainInteractorOutputProtocol: AnyObject, UserProfileObserverDelegate {
     func didFetchTopRatedMovies(_ movies: [MovieProtocol])
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol])
     func didFetchUserProfile(_ profile: UserProfileProtocol)
+    func didBeginProfileUpdate()
     func didLogOut()
     func didFailToFetchData(with error: Error)
 }

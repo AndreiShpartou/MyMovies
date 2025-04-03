@@ -18,6 +18,7 @@ protocol MainViewProtocol: UIView {
     func showMovieGenres(_ genres: [GenreViewModelProtocol])
     func showUserProfile(_ user: UserProfileViewModelProtocol)
     func didLogOut()
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
     func showError(error: Error)
 }
 

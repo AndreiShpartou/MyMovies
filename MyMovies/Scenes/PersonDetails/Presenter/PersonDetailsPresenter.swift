@@ -15,6 +15,11 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
     private let mapper: DomainModelMapperProtocol
     private var person: PersonDetailedProtocol?
     private var personRelatedMovies: [MovieProtocol] = []
+    private var loadingStates: [MainAppSection: Bool] = [
+        .rootView: false,
+        .genres: false,
+        .relatedMovies: false
+    ]
 
     // MARK: - Init
     init(
@@ -31,9 +36,13 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-        view?.showLoading()
+        setLoading(for: .rootView, isLoading: true)
         interactor.fetchPersonDetails()
+
+        setLoading(for: .genres, isLoading: true)
         interactor.fetchMovieGenres()
+
+        setLoading(for: .relatedMovies, isLoading: true)
         interactor.fetchPersonRelatedMovies()
     }
 
@@ -43,6 +52,7 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
         }
 
         interactor.fetchPersonRelatedMoviesWithGenresFiltering(for: movieGenre)
+        setLoading(for: .relatedMovies, isLoading: true)
     }
 
     func didSelectMovie(movieID: Int) {
@@ -66,42 +76,53 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     func didFetchPersonDetails(_ person: PersonDetailedProtocol) {
         guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
             let error = AppError.customError(message: "Failed to map Detailed person", comment: "Error message for failed detailed person loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
 
         view?.showPersonDetails(personViewModel)
         self.person = person
+        setLoading(for: .rootView, isLoading: false)
     }
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         // Map to ViewModel
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
 
         view?.showMovieGenres(genreViewModels)
+        setLoading(for: .genres, isLoading: false)
     }
 
     func didFetchPersonRelatedMovies(_ movies: [MovieProtocol]) {
-        view?.hideLoading()
         guard let movieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
             let error = AppError.customError(message: "Failed to map Related movies", comment: "Error message for failed related movies loading")
-            view?.showError(error)
+            didFailToFetchData(with: error)
 
             return
         }
 
         view?.showPersonRelatedMovies(movieViewModels)
         personRelatedMovies = movies
+        setLoading(for: .relatedMovies, isLoading: false)
     }
 
     func didFailToFetchData(with error: Error) {
-        //        view?.showError(error)
-        //        view?.hideLoading()
+        view?.showError(error)
+        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
+    }
+}
+
+// MARK: - Private
+private extension PersonDetailsPresenter {
+    private func setLoading(for section: MainAppSection, isLoading: Bool) {
+        loadingStates[section] = isLoading
+        // Notify the view
+        view?.setLoadingIndicator(for: section, isVisible: isLoading)
     }
 }

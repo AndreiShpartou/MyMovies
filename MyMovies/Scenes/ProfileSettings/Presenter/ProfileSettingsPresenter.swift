@@ -30,8 +30,6 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
 
     // MARK: - ProfileSettingsPresenterProtocol
     func viewDidLoad() {
-        view?.showLoadingIndicator()
-
         interactor.fetchSettingsItems()
 
         // User profile will be fetched automatically
@@ -53,7 +51,7 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
     }
 
     func signOut() {
-        view?.showLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: true)
         interactor.signOut()
     }
 }
@@ -62,22 +60,26 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
 extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            view?.showError(AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
-            view?.hideLoadingIndicator()
+            didFailToFetchData(with: AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
 
             return
         }
         view?.showUserProfile(profileViewModel)
+        view?.setLoadingIndicator(isVisible: false)
         router.navigateToRoot()
+    }
+
+    func didBeginProfileUpdate() {
+        view?.setLoadingIndicator(isVisible: true)
     }
 
     func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {
         guard let sectionsViewModel = mapper.map(data: sections, to: [ProfileSettingsSectionViewModel].self) else {
-            view?.showError(AppError.customError(message: "Failed to load settings", comment: "Error message for failed settings load"))
-            view?.hideLoadingIndicator()
+            didFailToFetchData(with: AppError.customError(message: "Failed to load settings", comment: "Error message for failed settings load"))
 
             return
         }
+
         view?.showSettingsItems(sectionsViewModel)
     }
 
@@ -85,14 +87,14 @@ extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
         router.navigateToGeneralTextInfoScene(labelText: labelText, textViewText: textViewText, title: title)
     }
 
-    func didFailToFetchData(with error: Error) {
-        view?.hideLoadingIndicator()
-        view?.showError(error)
+    func didLogOut() {
+        view?.showSignOutItems()
+        view?.setLoadingIndicator(isVisible: false)
     }
 
-    func didLogOut() {
-        view?.hideLoadingIndicator()
-        view?.showSignOutItems()
+    func didFailToFetchData(with error: Error) {
+        view?.showError(error)
+        view?.setLoadingIndicator(isVisible: false)
     }
 }
 

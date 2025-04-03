@@ -29,15 +29,13 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-        view?.showLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: true)
 
         interactor.fetchUserProfile()
     }
 
     func didTapSaveChanges(name: String, profileImage: Data?) {
-        DispatchQueue.main.async { [weak self] in
-            self?.view?.showLoadingIndicator()
-        }
+        view?.setLoadingIndicator(isVisible: true)
 
         interactor.updateUserProfile(name: name, profileImage: profileImage)
     }
@@ -47,21 +45,26 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
 extension EditProfilePresenter: EditProfileInteractorOutputProtocol {
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            view?.showError(NSLocalizedString("Failed to load profile", comment: "Error message for failed profile load"))
-            view?.hideLoadingIndicator()
+            didFailToFetchData(with: AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
 
             return
         }
+
         view?.showUserProfile(profileViewModel)
-        view?.hideLoadingIndicator()
+        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didFailToFetchData(with error: Error) {
-        view?.hideLoadingIndicator()
         view?.showError(error.localizedDescription)
+        view?.setLoadingIndicator(isVisible: false)
+    }
+
+    func didFinishProfileUpdate() {
+        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didCloseWithNoChanges() {
+        view?.setLoadingIndicator(isVisible: false)
         router.navigateToRoot()
     }
 }

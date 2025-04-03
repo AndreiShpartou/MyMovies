@@ -18,49 +18,62 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
     // MARK: - UIComponents
     private let scrollView = UIScrollView()
     private let contentView = UIView()
-    private let loadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+
+    // Loading indicators
+    private let mainViewLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+    private let genresLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .medium)
+    private let relatedMoviesLoadingIndicator: UIActivityIndicatorView = .createSpinner(style: .large)
+
     // Header section
     private let personImageView: UIImageView = .createImageView(
         contentMode: .scaleAspectFill,
         clipsToBounds: true,
         cornerRadius: 12
     )
+
     private let nameLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         numberOfLines: 0,
         textColor: .textColorWhite
     )
+
     private let birthInfoLabel: UILabel = .createLabel(
         font: Typography.Medium.subhead,
         numberOfLines: 0,
         textColor: .textColorGrey
     )
+
     private let departmentLabel: UILabel = .createLabel(
         font: Typography.Medium.subhead,
         numberOfLines: 0,
         textColor: .textColorGrey
     )
+
     // Genres collection
     private let genresLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Genres"
     )
+
     private let genresCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 100, height: 40),
         cellTypesDict: [GenreCollectionViewCell.identifier: GenreCollectionViewCell.self]
     )
     private lazy var genresCollectionViewHandler = GenresCollectionViewHandler()
+
     // Related movies section
     private let relatedMoviesLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
         text: "Related Movies"
     )
+
     private lazy var seeAllButton: UIButton = .createSeeAllButton(
         action: #selector(didTapSeeAllButton),
         target: self
     )
+
     private let relatedMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         itemSize: CGSize(width: 150, height: 300),
         cellTypesDict: [
@@ -115,14 +128,17 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         relatedMoviesCollectionView.reloadData()
     }
 
-    func showLoading() {
-        loadingIndicator.startAnimating()
-        isUserInteractionEnabled = false
-    }
-
-    func hideLoading() {
-        loadingIndicator.stopAnimating()
-        isUserInteractionEnabled = true
+    func setLoadingIndicator(for section: MainAppSection, isVisible: Bool) {
+        switch section {
+        case .rootView:
+            toggleLoader(mainViewLoadingIndicator, isVisible: isVisible)
+        case .genres:
+            toggleLoader(genresLoadingIndicator, isVisible: isVisible)
+        case .relatedMovies:
+            toggleLoader(relatedMoviesLoadingIndicator, isVisible: isVisible)
+        default:
+            break
+        }
     }
 
     func showError(_ error: Error) {
@@ -141,7 +157,7 @@ extension PersonDetailsView {
     private func setupView() {
         backgroundColor = .primaryBackground
 
-        addSubviews(scrollView, loadingIndicator)
+        addSubviews(scrollView, mainViewLoadingIndicator)
         scrollView.addSubviews(contentView)
         scrollView.showsVerticalScrollIndicator = false
 
@@ -156,6 +172,10 @@ extension PersonDetailsView {
             seeAllButton,
             relatedMoviesCollectionView
         )
+
+        // Loading indicators
+        genresCollectionView.addSubviews(genresLoadingIndicator)
+        relatedMoviesCollectionView.addSubviews(relatedMoviesLoadingIndicator)
 
         // Handlers
         setupHandlers()
@@ -188,6 +208,17 @@ extension PersonDetailsView {
     @objc
     private func didTapSeeAllButton() {
         delegate?.didTapSeeAllButton()
+    }
+}
+
+// MARK: - Helpers
+extension PersonDetailsView {
+    private func toggleLoader(_ loader: UIActivityIndicatorView, isVisible: Bool) {
+        if isVisible {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
     }
 }
 
@@ -265,7 +296,16 @@ extension PersonDetailsView {
     }
 
     private func setupOtherConstraints() {
-        loadingIndicator.snp.makeConstraints { make in
+        // Loading indicators
+        mainViewLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        genresLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        relatedMoviesLoadingIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }
