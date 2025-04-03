@@ -113,13 +113,21 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     // MARK: - Genres
     // Fetch genres
     func fetchMovieGenres() {
-        // Check if there are any cached genres
-        let cachedGenres = genreRepository.fetchGenres(provider: provider.rawValue)
-        if !cachedGenres.isEmpty {
-            // Immediately present to the user
-            presenter?.didFetchMovieGenres(cachedGenres)
+        do {
+            // Check if there are any cached genres
+            let cachedGenres = try genreRepository.fetchGenres(provider: provider.rawValue)
+            if !cachedGenres.isEmpty {
+                DispatchQueue.main.async {
+                    // Immediately present to the user
+                    self.presenter?.didFetchMovieGenres(cachedGenres)
+                }
 
-            return
+                return
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
         }
 
         // If no cached data, fetch from API
@@ -133,7 +141,16 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
                 }
                 // Save to CoreData
                 if let movieGenres = genres as? [Movie.Genre] {
-                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue)
+                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue) { result in
+                        switch result {
+                        case .success:
+                            break
+                        case .failure(let error):
+                            DispatchQueue.main.async {
+                                self.presenter?.didFailToFetchData(with: error)
+                            }
+                        }
+                    }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {

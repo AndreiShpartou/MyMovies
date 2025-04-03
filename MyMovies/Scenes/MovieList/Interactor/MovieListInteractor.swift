@@ -90,12 +90,20 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // MARK: - Private
     private func fetchGenres() {
-        let localGenres = genreRepository.fetchGenres(provider: provider.rawValue)
-        if !localGenres.isEmpty {
-            // Immediately present to the user
-            presenter?.didFetchMovieGenres(localGenres)
+        do {
+            let localGenres = try genreRepository.fetchGenres(provider: provider.rawValue)
+            if !localGenres.isEmpty {
+                DispatchQueue.main.async {
+                    // Immediately present to the user
+                    self.presenter?.didFetchMovieGenres(localGenres)
+                }
 
-            return
+                return
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
         }
 
         networkManager.fetchGenres { [weak self] result in

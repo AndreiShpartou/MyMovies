@@ -20,13 +20,4 @@ enum AppError: Error {
     case coreDataError(message: String, underlying: Error?)
     // Custom domain mapping or other
     case mappingError(message: String, underlying: Error?)
-
-//    var errorLocalizedDescription: String {
-//        switch self {
-//        case .unknownError(let message):
-//            return NSLocalizedString("An unknown error occurred: \(message)", comment: "Unknown error")
-//        case .customError(let message, let comment):
-//            return NSLocalizedString(message, comment: comment)
-//        }
-//    }
 }

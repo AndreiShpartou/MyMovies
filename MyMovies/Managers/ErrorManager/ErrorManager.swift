@@ -68,7 +68,7 @@ enum ErrorManager {
         case .mappingError(let message, _):
             return NSLocalizedString("Mapping Error: \(message)", comment: "")
         case .customError(let message, _):
-            return NSLocalizedString(message, comment: "Custom error")
+            return NSLocalizedString(message, comment: "")
         }
     }
 }
