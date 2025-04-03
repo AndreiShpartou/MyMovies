@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import FirebaseAuth
+import FirebaseFirestore
 
 enum ErrorManager {
     static func toAppError(_ error: Error) -> AppError {
@@ -13,10 +15,32 @@ enum ErrorManager {
             return appError
         }
 
-        // Firestore, Cloudinary (NSError)
+        // FirebaseAuth
+        if let nsError = error as NSError?, nsError.domain == "FIRAuthErrorDomain" {
+            switch nsError.code {
+            case AuthErrorCode.invalidCredential.rawValue:
+                return .firestoreError(message: "Invalid credential", underlying: nsError)
+            case AuthErrorCode.emailAlreadyInUse.rawValue:
+                return .firestoreError(message: "Email already in use", underlying: nsError)
+            case AuthErrorCode.wrongPassword.rawValue:
+                return .firestoreError(message: "Wrong password", underlying: nsError)
+            case AuthErrorCode.userNotFound.rawValue:
+                return .firestoreError(message: "User not found", underlying: nsError)
+            case AuthErrorCode.invalidEmail.rawValue:
+                return .firestoreError(message: "Invalid email", underlying: nsError)
+            case AuthErrorCode.weakPassword.rawValue:
+                return .firestoreError(message: "Weak password", underlying: nsError)
+            case AuthErrorCode.internalError.rawValue:
+                return .firestoreError(message: "Password must contain at least 6 characters", underlying: nsError)
+            default:
+                return .firestoreError(message: nsError.localizedDescription, underlying: nsError)
+            }
+        }
+
+        // Firestore and Cloudinary (NSError)
         if let nsError = error as NSError?,
-           nsError.domain == "FirebaseErrorDomain" ||
-            nsError.domain == "CLDCloudinaryErrorDomain" {
+           nsError.domain == "com.cloudinary.error" ||
+            nsError.domain == "FIRFirestoreErrorDomain" {
             if let message = nsError.userInfo["message"] as? String {
                 return .firestoreError(message: message, underlying: nsError)
             } else {
@@ -49,7 +73,7 @@ enum ErrorManager {
     }
 
     // Convert an error to user message
-    static func toUseMessage(from appError: AppError) -> String {
+    static func toUserMessage(from appError: AppError) -> String {
         switch appError {
         case .unknownError(let message):
             return NSLocalizedString("Something went wrong. Please try again. \(message)", comment: "Unknown error")

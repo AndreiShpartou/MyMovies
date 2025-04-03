@@ -45,7 +45,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
 extension EditProfilePresenter: EditProfileInteractorOutputProtocol {
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            didFailToFetchData(with: AppError.customError(message: "Failed to load profile", comment: ""))
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to load profile", underlying: nil))
 
             return
         }
@@ -55,7 +55,9 @@ extension EditProfilePresenter: EditProfileInteractorOutputProtocol {
     }
 
     func didFailToFetchData(with error: Error) {
-        view?.showError(error.localizedDescription)
+        let appError = ErrorManager.toAppError(error)
+        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+
         view?.setLoadingIndicator(isVisible: false)
     }
 
