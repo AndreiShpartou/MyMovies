@@ -29,7 +29,7 @@ final class SignUpInteractor: SignUpInteractorProtocol {
             }
 
             guard let user = result?.user else {
-                self.presenter?.didFailToSignUp(error: AppError.unknownError(message: "Unable to create user"))
+                self.presenter?.didFailToSignUp(error: AppError.unknownError("Unable to create user"))
 
                 return
             }

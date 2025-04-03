@@ -107,7 +107,7 @@ extension WishlistPresenter: WishlistInteractorOutputProtocol {
         view?.setLoadingIndicator(isVisible: false)
     }
 
-    func didFailToFetchData(error: Error) {
+    func didFailToFetchData(with error: Error) {
         // Handle error
         view?.showError(error: error)
         view?.setLoadingIndicator(isVisible: false)

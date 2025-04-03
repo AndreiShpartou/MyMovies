@@ -63,15 +63,23 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
 
         if type == .recentlySearchedMovies {
-            // Custom filtering from the local storage
-            let movies = movieRepository.fetchMoviesByGenre(
-                genre: genre,
-                provider: provider.rawValue,
-                listType: type.rawValue
-            )
-            presenter?.didFetchMovieList(movies)
+            do {
+                // Custom filtering from the local storage
+                let movies = try movieRepository.fetchMoviesByGenre(
+                    genre: genre,
+                    provider: provider.rawValue,
+                    listType: type.rawValue
+                )
+                DispatchQueue.main.async {
+                    self.presenter?.didFetchMovieList(movies)
+                }
 
-            return
+                return
+            } catch {
+                DispatchQueue.main.async {
+                    self.presenter?.didFailToFetchData(with: error)
+                }
+            }
         }
 
         // Default API filtering
@@ -106,12 +114,20 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // Check if there are any cached movies
     private func fetchMovies(type: MovieListType) {
-        let cachedMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
-        if !cachedMovies.isEmpty {
-            // Immediately present to the user
-            presenter?.didFetchMovieList(cachedMovies)
+        do {
+            let cachedMovies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+            if !cachedMovies.isEmpty {
+                // Immediately present to the user
+                DispatchQueue.main.async {
+                    self.presenter?.didFetchMovieList(cachedMovies)
+                }
 
-            return
+                return
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
         }
 
         // If no cached data, fetch from API
@@ -126,8 +142,8 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         case .success(let movies):
             self.fetchDetails(for: movies, fetchType: fetchType)
         case .failure(let error):
-            DispatchQueue.main.async { [weak self] in
-                self?.presenter?.didFailToFetchData(with: error)
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
             }
         }
     }

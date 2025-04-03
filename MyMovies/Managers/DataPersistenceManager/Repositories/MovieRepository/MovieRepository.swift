@@ -10,15 +10,15 @@ import CoreData
 
 protocol MovieRepositoryProtocol {
     // Store
-    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int)
-    func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String)
+    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void)
+    func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String, completion: @escaping (Result<Void, Error>) -> Void)
     // Fetch
-    func fetchMovieByID(_ id: Int, provider: String, listType: String) -> MovieProtocol?
-    func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol]
-    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol]
+    func fetchMovieByID(_ id: Int, provider: String, listType: String) throws -> MovieProtocol?
+    func fetchMoviesByList(provider: String, listType: String) throws -> [MovieProtocol]
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) throws -> [MovieProtocol]
     // Clear movie memberships
-    func clearMoviesForList(provider: String, listName: String)
-    func removeMovieFromList(_ movieID: Int, provider: String, listName: String)
+    func clearMoviesForList(provider: String, listName: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func removeMovieFromList(_ movieID: Int, provider: String, listName: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class MovieRepository: MovieRepositoryProtocol {
@@ -36,71 +36,94 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // MARK: - Saving
-    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int) {
+    func storeMovieForList(
+        _ movie: MovieProtocol,
+        provider: String,
+        listType: String,
+        orderIndex: Int,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         // Create or update a single movie
         let bgContext = backgroundContextMaker()
         bgContext.perform {
-            self.storeSingleMovieForListNoSave(
-                movie,
-                provider: provider,
-                listType: listType,
-                orderIndex: orderIndex,
-                context: bgContext
-            )
-
-            // Save background context
-            self.saveContext(bgContext)
-            // Notifications
-            if listType == MovieListType.favouriteMovies.rawValue {
-                NotificationCenter.default.post(
-                    name: .favouritesAdded,
-                    object: nil,
-                    userInfo: [
-                        NotificationKeys.movieID: movie.id,
-                        NotificationKeys.isFavourite: true
-                    ]
+            do {
+                // Create or update a single movie
+                try self.storeSingleMovieForListNoSave(
+                    movie,
+                    provider: provider,
+                    listType: listType,
+                    orderIndex: orderIndex,
+                    context: bgContext
                 )
+
+                // Save background context
+                try self.saveContext(bgContext)
+                completion(.success(()))
+
+                // Notifications
+                if listType == MovieListType.favouriteMovies.rawValue {
+                    NotificationCenter.default.post(
+                        name: .favouritesAdded,
+                        object: nil,
+                        userInfo: [
+                            NotificationKeys.movieID: movie.id,
+                            NotificationKeys.isFavourite: true
+                        ]
+                    )
+                }
+            } catch {
+                completion(.failure(error))
             }
         }
     }
 
     // Store multiple movies
-    func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String) {
+    func storeMoviesForList(
+        _ movies: [MovieProtocol],
+        provider: String,
+        listType: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         let bgContext = backgroundContextMaker()
         bgContext.perform {
-            for (index, movie) in movies.enumerated() {
-                // Create or update each movie
-                self.storeSingleMovieForListNoSave(
-                    movie,
-                    provider: provider,
-                    listType: listType,
-                    orderIndex: index,
-                    context: bgContext
-                )
+            do {
+                for (index, movie) in movies.enumerated() {
+                    // Create or update each movie
+                    try self.storeSingleMovieForListNoSave(
+                        movie,
+                        provider: provider,
+                        listType: listType,
+                        orderIndex: index,
+                        context: bgContext
+                    )
+                }
+                // Save
+                try self.saveContext(bgContext)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
             }
-            // Save
-            self.saveContext(bgContext)
         }
     }
 
     // MARK: - Fetching
-    // Fetching from the main context
-    func fetchMovieByID(_ id: Int, provider: String, listType: String) -> MovieProtocol? {
-        let movieEntity = fetchMovieEntityById(Int64(id), provider: provider, listType: listType)
+    // Fetching from the main context (sync)
+    func fetchMovieByID(_ id: Int, provider: String, listType: String) throws -> MovieProtocol? {
+        let movieEntity = try fetchMovieEntityById(Int64(id), provider: provider, listType: listType)
         guard let movieEntity = movieEntity else { return nil }
 
         return mapToMovieProtocol(movieEntity)
     }
 
-    func fetchMoviesByList(provider: String, listType: String) -> [MovieProtocol] {
-        let movieEntities = fetchMovieEntitiesByList(listType: listType, provider: provider)
+    func fetchMoviesByList(provider: String, listType: String) throws -> [MovieProtocol] {
+        let movieEntities = try fetchMovieEntitiesByList(listType: listType, provider: provider)
 
         return movieEntities.compactMap { mapToMovieProtocol($0) }
     }
 
-    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) -> [MovieProtocol] {
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) throws -> [MovieProtocol] {
         // Get all movies by list
-        let moviesByList = fetchMoviesByList(provider: provider, listType: listType)
+        let moviesByList = try fetchMoviesByList(provider: provider, listType: listType)
         // Get all movies by genre
         let moviesByGenre = moviesByList.filter { movie in
             movie.genres.contains(where: { ($0.id == genre.id) && ($0.name == genre.name) })
@@ -111,7 +134,11 @@ final class MovieRepository: MovieRepositoryProtocol {
 
     // MARK: - Clearing
     // Clear movie memberships
-    func clearMoviesForList(provider: String, listName: String) {
+    func clearMoviesForList(
+        provider: String,
+        listName: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         let bgContext = backgroundContextMaker()
         bgContext.perform {
             let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
@@ -123,14 +150,20 @@ final class MovieRepository: MovieRepositoryProtocol {
                 let bridgingRecords = try bgContext.fetch(request)
                 bridgingRecords.forEach { bgContext.delete($0) }
 
-                self.saveContext(bgContext)
+                try self.saveContext(bgContext)
+                completion(.success(()))
             } catch {
-                print("Error clearing list membership: \(error)")
+                completion(.failure(error))
             }
         }
     }
 
-    func removeMovieFromList(_ movieID: Int, provider: String, listName: String) {
+    func removeMovieFromList(
+        _ movieID: Int,
+        provider: String,
+        listName: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         let bgContext = backgroundContextMaker()
         bgContext.perform {
             let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
@@ -143,7 +176,8 @@ final class MovieRepository: MovieRepositoryProtocol {
                 let bridgingRecords = try bgContext.fetch(request)
                 bridgingRecords.forEach { bgContext.delete($0) }
 
-                self.saveContext(bgContext)
+                try self.saveContext(bgContext)
+                completion(.success(()))
 
                 // Notify
                 if listName == MovieListType.favouriteMovies.rawValue {
@@ -157,19 +191,22 @@ final class MovieRepository: MovieRepositoryProtocol {
                     )
                 }
             } catch {
-                print("Error clearing list membership: \(error)")
+                completion(.failure(error))
             }
         }
     }
+}
 
-    // MARK: - Private StoreMovieNoSave
+// MARK: - Private
+extension MovieRepository {
+    // MARK: - StoreMovieNoSave
     private func storeSingleMovieForListNoSave(
         _ movie: MovieProtocol,
         provider: String,
         listType: String,
         orderIndex: Int,
         context: NSManagedObjectContext
-    ) {
+    ) throws {
         let movieEntity = findOrCreateMovieEntity(Int64(movie.id), provider: provider, context: context)
 
         // Fill / update fields
@@ -186,7 +223,7 @@ final class MovieRepository: MovieRepositoryProtocol {
         movieEntity.lastUpdated = Date()
 
         // Fill / update bridging
-        fillOrUpdateBridging(
+        try fillOrUpdateBridging(
             for: movie,
             movieEntity: movieEntity,
             provider: provider,
@@ -195,9 +232,8 @@ final class MovieRepository: MovieRepositoryProtocol {
             context: context
         )
     }
-
     // MARK: - fetchMovieEntityById
-    private func fetchMovieEntityById(_ id: Int64, provider: String, listType: String) -> MovieEntity? {
+    private func fetchMovieEntityById(_ id: Int64, provider: String, listType: String) throws -> MovieEntity? {
         let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "movie.provider == %@", provider),
@@ -205,18 +241,12 @@ final class MovieRepository: MovieRepositoryProtocol {
             NSPredicate(format: "listType.name == %@", listType)
         ])
         request.fetchLimit = 1
-        do {
-            guard let entity = try mainContext.fetch(request).first else { return nil }
+        let membership = try mainContext.fetch(request).first
 
-            return entity.movie
-        } catch {
-            print("Error fetching movie by ID: \(error)")
-
-            return nil
-        }
+        return membership?.movie
     }
 
-    private func fetchMovieEntitiesByList(listType: String, provider: String) -> [MovieEntity] {
+    private func fetchMovieEntitiesByList(listType: String, provider: String) throws -> [MovieEntity] {
         let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "listType.name == %@", listType),
@@ -228,47 +258,41 @@ final class MovieRepository: MovieRepositoryProtocol {
             NSSortDescriptor(key: "movie.lastUpdated", ascending: false)
         ]
 
-        do {
-            let bridgingList = try mainContext.fetch(request)
-            let possibleMovies = bridgingList.compactMap { $0.movie }
+        let bridgingList = try mainContext.fetch(request)
+        let possibleMovies = bridgingList.compactMap { $0.movie }
 
-            return possibleMovies
-        } catch {
-            print("Error fetching bridging by list: \(error)")
-
-            return []
-        }
+        return possibleMovies
     }
 
     // MARK: - Bridging clearing
-    private func clearMovieGenres(_ movie: MovieEntity, context: NSManagedObjectContext) {
+    private func clearMovieGenres(_ movie: MovieEntity, context: NSManagedObjectContext) throws {
         let request: NSFetchRequest<MovieGenreEntity> = MovieGenreEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
-        do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
+        try context.fetch(request).forEach { context.delete($0) }
     }
 
-    private func clearMoviePersons(_ movie: MovieEntity, context: NSManagedObjectContext) {
+    private func clearMoviePersons(_ movie: MovieEntity, context: NSManagedObjectContext) throws {
         let request: NSFetchRequest<MoviePersonEntity> = MoviePersonEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
-        do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
+        try context.fetch(request).forEach { context.delete($0) }
     }
 
-    private func clearMovieCountries(_ movie: MovieEntity, context: NSManagedObjectContext) {
+    private func clearMovieCountries(_ movie: MovieEntity, context: NSManagedObjectContext) throws {
         let request: NSFetchRequest<MovieCountryEntity> = MovieCountryEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
-        do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
+        try context.fetch(request).forEach { context.delete($0) }
     }
 
-    private func clearMovieLists(_ movie: MovieEntity, context: NSManagedObjectContext) {
+    private func clearMovieLists(_ movie: MovieEntity, context: NSManagedObjectContext) throws {
         let request: NSFetchRequest<MovieListMembershipEntity> = MovieListMembershipEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
-        do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
+        try context.fetch(request).forEach { context.delete($0) }
     }
 
-    private func clearMovieSimilars(_ movie: MovieEntity, context: NSManagedObjectContext) {
+    private func clearMovieSimilars(_ movie: MovieEntity, context: NSManagedObjectContext) throws {
         let request: NSFetchRequest<MovieSimilarEntity> = MovieSimilarEntity.fetchRequest()
         request.predicate = NSPredicate(format: "movie == %@", movie)
-        do { try context.fetch(request).forEach { context.delete($0) } } catch { print(error) }
+        try context.fetch(request).forEach { context.delete($0) }
     }
 
     // MARK: - Bridging update
@@ -280,12 +304,12 @@ final class MovieRepository: MovieRepositoryProtocol {
         listType: String,
         orderIndex: Int64,
         context: NSManagedObjectContext
-    ) {
+    ) throws {
         // Clear bridging entities
-        clearMovieGenres(movieEntity, context: context)
-        clearMoviePersons(movieEntity, context: context)
-        clearMovieCountries(movieEntity, context: context)
-        clearMovieSimilars(movieEntity, context: context)
+        try clearMovieGenres(movieEntity, context: context)
+        try clearMoviePersons(movieEntity, context: context)
+        try clearMovieCountries(movieEntity, context: context)
+        try clearMovieSimilars(movieEntity, context: context)
 
         // Re-insert bridging
         // Genres
@@ -475,14 +499,11 @@ final class MovieRepository: MovieRepositoryProtocol {
         }
     }
 
-    private func saveContext(_ context: NSManagedObjectContext) {
+    // MARK: - SaveCOntext
+    private func saveContext(_ context: NSManagedObjectContext) throws {
         guard context.hasChanges else { return }
 
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
+        try context.save()
     }
 }
 

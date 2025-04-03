@@ -16,5 +16,5 @@ protocol WishlistInteractorProtocol: AnyObject {
 
 protocol WishlistInteractorOutputProtocol: AnyObject {
     func didFetchWishlist(_ movies: [MovieProtocol])
-    func didFailToFetchData(error: Error)
+    func didFailToFetchData(with error: Error)
 }

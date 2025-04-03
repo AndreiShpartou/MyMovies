@@ -148,9 +148,9 @@ final class MainView: UIView, MainViewProtocol {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
         upcomingMoviesCollectionView.reloadData()
 
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             // Set initial page for the upcoming collection
-            self?.setupUpcomingMoviesInitialPage()
+            self.setupUpcomingMoviesInitialPage()
         }
     }
 
