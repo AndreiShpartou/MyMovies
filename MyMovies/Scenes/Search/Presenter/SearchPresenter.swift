@@ -80,8 +80,7 @@ class SearchPresenter: SearchPresenterProtocol {
 
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
-            let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
-            view?.showError(error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map Genre", underlying: nil))
 
             return
         }
@@ -117,8 +116,7 @@ class SearchPresenter: SearchPresenterProtocol {
 extension SearchPresenter: SearchInteractorOutputProtocol {
     func didFetchGenres(_ genres: [GenreProtocol]) {
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map genres", underlying: nil))
 
             return
         }
@@ -129,8 +127,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
     func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
         guard let upcomingMoviesViewModel = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Upcoming Movies", comment: "Error message for failed movies loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map upcoming movies", underlying: nil))
 
             return
         }
@@ -142,8 +139,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
     func didFetchRecentlySearchedMovies(_ movies: [MovieProtocol]) {
         guard let recentlySearchedMoviesViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Recently Searched Movies", comment: "Error message for failed movies loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map recently searched movies", underlying: nil))
 
             return
         }
@@ -155,6 +151,8 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
     func didFetchMoviesSearchResults(_ movies: [MovieProtocol]) {
         guard let searchResultsViewModels = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map movies search results", underlying: nil))
+
             return
         }
 
@@ -172,8 +170,7 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
 
     func didFetchPersonsSearchResults(_ persons: [PersonProtocol]) {
         guard let personViewModels = mapper.map(data: persons, to: [PersonViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Persons", comment: "Error message for failed persons loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map persons search results", underlying: nil))
 
             return
         }
@@ -192,7 +189,9 @@ extension SearchPresenter: SearchInteractorOutputProtocol {
     }
 
     func didFailToFetchData(with error: Error) {
-        view?.showError(error)
+        let appError = ErrorManager.toAppError(error)
+        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+
         loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
     }
 }

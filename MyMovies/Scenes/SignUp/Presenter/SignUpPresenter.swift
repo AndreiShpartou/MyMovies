@@ -36,8 +36,10 @@ extension SignUpPresenter: SignUpInteractorOutputProtocol {
         view?.setLoadingIndicator(isVisible: false)
     }
 
-    func didFailToSignUp(error: Error) {
-        view?.showError(error: error)
+    func didFailToSignUp(with error: Error) {
+        let appError = ErrorManager.toAppError(error)
+        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+
         view?.setLoadingIndicator(isVisible: false)
     }
 }

@@ -103,12 +103,12 @@ func getNavigationBarTitleAttributes() -> [NSAttributedString.Key: Any]? {
 // MARK: - Alerts
 func getGlobalAlertController(for message: String) -> UIAlertController {
     let alert = UIAlertController(
-        title: NSLocalizedString("Error", comment: "Error alert title"),
+        title: NSLocalizedString("Error", comment: ""),
         message: message,
         preferredStyle: .alert
     )
     let action = UIAlertAction(
-        title: NSLocalizedString("OK", comment: "OK button title"),
+        title: NSLocalizedString("OK", comment: ""),
         style: .default
     )
     alert.addAction(action)

@@ -15,5 +15,5 @@ protocol SignUpInteractorProtocol: AnyObject {
 
 protocol SignUpInteractorOutputProtocol: AnyObject {
     func didSignUpSuccessfully()
-    func didFailToSignUp(error: Error)
+    func didFailToSignUp(with error: Error)
 }

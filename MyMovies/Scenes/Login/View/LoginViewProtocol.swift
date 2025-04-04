@@ -11,7 +11,7 @@ protocol LoginViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: LoginViewDelegate? { get set }
 
     func setLoadingIndicator(isVisible: Bool)
-    func showError(error: Error)
+    func showError(with message: String)
 }
 
 protocol LoginViewDelegate: AnyObject, UITextFieldDelegate {
