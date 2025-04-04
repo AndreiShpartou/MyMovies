@@ -51,9 +51,9 @@ class NetworkManager: NetworkManagerProtocol {
                 case .success(let detailedMovie):
                     // Store by ID
                     detailedMoviesDict[detailedMovie.id] = detailedMovie
-                case .failure:
-                    // TODO: Error handling
-                    // Error handling: Store the original movie if fetch failed
+                case .failure(let error):
+                    debugPrint(error)
+                    // Store the original movie if fetch failed
                     detailedMoviesDict[movie.id] = movie
                 }
                 dispatchGroup.leave()
@@ -191,28 +191,33 @@ class NetworkManager: NetworkManagerProtocol {
         completion: @escaping (Result<T, Error>) -> Void
     ) {
         guard let apiConfig = apiConfig else {
-            completion(.failure(NetworkError.invalidAPIConfig))
+            completion(.failure(CustomNetworkError.invalidAPIConfig))
+
             return
         }
 
         guard apiConfig.isActive(endpoint: endpoint) else {
             guard let defaultValue = defaultValue else {
-                completion(.failure(NetworkError.invalidAPIConfig))
+                completion(.failure(CustomNetworkError.invalidAPIConfig))
+
                 return
             }
 
             // Return initial value without endpoint request performing
             completion(.success(defaultValue))
+
             return
         }
 
         guard let url = apiConfig.url(for: endpoint) else {
-            completion(.failure(NetworkError.invalidURL))
+            completion(.failure(CustomNetworkError.invalidURL))
+
             return
         }
 
         guard let responseType = apiConfig.responseType(for: endpoint) else {
-            completion(.failure(NetworkError.invalidResponseType))
+            completion(.failure(CustomNetworkError.invalidResponseType))
+
             return
         }
         // Get default endpoint query parameters
@@ -258,8 +263,8 @@ class NetworkManager: NetworkManagerProtocol {
                 let mappedData = try mapper.map(data: decodedResponse, from: responseType, to: T.self)
                 completion(.success(mappedData))
             } catch let decodingError as DecodingError {
-                print(decodingError)
-                completion(.failure(NetworkError.invalidJSON))
+                debugPrint(decodingError)
+                completion(.failure(decodingError))
             } catch {
                 completion(.failure(error))
             }

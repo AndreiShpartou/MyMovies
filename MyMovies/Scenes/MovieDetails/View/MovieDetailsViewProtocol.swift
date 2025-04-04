@@ -13,6 +13,7 @@ protocol MovieDetailsViewProtocol: UIView {
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol)
     func showMovieReviews(_ reviews: [ReviewViewModelProtocol])
     func showSimilarMovies(_ movies: [BriefMovieListItemViewModelProtocol])
+    func showError(with message: String)
 }
 
 protocol MovieDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelegate, PersonCollectionViewHandlerDelegate {

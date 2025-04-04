@@ -19,7 +19,7 @@ protocol MainViewProtocol: UIView {
     func showUserProfile(_ user: UserProfileViewModelProtocol)
     func didLogOut()
     func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
-    func showError(error: Error)
+    func showError(with messsage: String)
 }
 
 protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, UpcomingMoviesCollectionViewDelegate, UserGreetingViewDelegate {

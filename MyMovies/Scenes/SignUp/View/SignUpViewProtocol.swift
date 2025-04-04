@@ -11,7 +11,7 @@ protocol SignUpViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var delegate: SignUpViewDelegate? { get set }
 
     func setLoadingIndicator(isVisible: Bool)
-    func showError(error: Error)
+    func showError(with message: String)
 }
 
 protocol SignUpViewDelegate: AnyObject, UITextFieldDelegate {

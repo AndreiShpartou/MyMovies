@@ -48,6 +48,8 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map Genre", underlying: nil))
+
             return
         }
 
@@ -75,8 +77,7 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     func didFetchPersonDetails(_ person: PersonDetailedProtocol) {
         guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
-            let error = AppError.customError(message: "Failed to map Detailed person", comment: "Error message for failed detailed person loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map Person", underlying: nil))
 
             return
         }
@@ -89,8 +90,7 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         // Map to ViewModel
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Genres", comment: "Error message for failed genres loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map Genre", underlying: nil))
 
             return
         }
@@ -101,8 +101,7 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
 
     func didFetchPersonRelatedMovies(_ movies: [MovieProtocol]) {
         guard let movieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            let error = AppError.customError(message: "Failed to map Related movies", comment: "Error message for failed related movies loading")
-            didFailToFetchData(with: error)
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map related movies", underlying: nil))
 
             return
         }
@@ -113,7 +112,9 @@ extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
     }
 
     func didFailToFetchData(with error: Error) {
-        view?.showError(error)
+        let appError = ErrorManager.toAppError(error)
+        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+
         loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
     }
 }
