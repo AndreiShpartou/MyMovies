@@ -91,8 +91,6 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
         guard let upcomingMovieViewModels = mapper.map(data: movies, to: [UpcomingMovieViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map upcoming movies", underlying: nil))
-
             return
         }
         // Update the view with the fetched data
@@ -103,8 +101,6 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map genres", underlying: nil))
-
             return
         }
 
@@ -114,8 +110,6 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchPopularMovies(_ movies: [MovieProtocol]) {
         guard let popularMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map popular movies", underlying: nil))
-
             return
         }
 
@@ -126,8 +120,6 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
         guard let topRatedMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map top rated movies", underlying: nil))
-
             return
         }
 
@@ -138,8 +130,6 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
         guard let theHighestGrossingMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map the highest grossing movies", underlying: nil))
-
             return
         }
 
@@ -150,7 +140,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to load profile", underlying: nil))
+            view?.showError(error: AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
 
             return
         }
@@ -170,9 +160,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
 
     func didFailToFetchData(with error: Error) {
         // Handle error
-        let appError = ErrorManager.toAppError(error)
-        view?.showError(with: ErrorManager.toUserMessage(from: appError))
-
+        view?.showError(error: error)
         loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
     }
 }

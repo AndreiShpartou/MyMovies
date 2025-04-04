@@ -12,6 +12,7 @@ protocol OnboardingViewProtocol: UIView {
 
     func configurePages(_ pages: [OnboardingPageViewModelProtocol])
     func showPage(at index: Int)
+    func showError()
 }
 
 protocol OnboardingViewDelegate: AnyObject {

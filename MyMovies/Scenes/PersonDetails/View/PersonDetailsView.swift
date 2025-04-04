@@ -141,13 +141,13 @@ final class PersonDetailsView: UIView, PersonDetailsViewProtocol {
         }
     }
 
-    func showError(with message: String) {
+    func showError(_ error: Error) {
         guard let viewController = parentViewController else {
             return
         }
 
         // Present an alert to the user
-        let alert = getGlobalAlertController(for: message)
+        let alert = getGlobalAlertController(for: error.localizedDescription)
         viewController.present(alert, animated: true, completion: nil)
     }
 }

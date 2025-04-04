@@ -44,9 +44,7 @@ extension LoginPresenter {
     }
 
     func didFailToSignIn(with error: Error) {
-        let appError = ErrorManager.toAppError(error)
-        view?.showError(with: ErrorManager.toUserMessage(from: appError))
-
+        view?.showError(error: error)
         view?.setLoadingIndicator(isVisible: false)
     }
 }

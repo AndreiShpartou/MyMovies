@@ -109,6 +109,10 @@ final class OnboardingView: UIView, OnboardingViewProtocol {
         nextButton.isHidden = isLastPage
         getStartedButton.isHidden = !isLastPage
     }
+
+    func showError() {
+        //
+    }
 }
 
 // MARK: - SetupView

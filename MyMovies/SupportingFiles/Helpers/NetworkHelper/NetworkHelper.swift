@@ -26,10 +26,10 @@ final class NetworkHelper: NetworkHelperProtocol {
                        let ip = json["ip"] as? String {
                         completion(.success(ip))
                     } else {
-                        completion(.failure(CustomNetworkError.failedToGetData))
+                        completion(.failure(NetworkError.failedToGetData))
                     }
                 } catch {
-                    completion(.failure(error))
+                    completion(.failure(NetworkError.invalidJSON))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -52,35 +52,38 @@ final class NetworkHelper: NetworkHelperProtocol {
             case .failure(let error):
                 completion(.failure(error))
             default:
-                completion(.failure(CustomNetworkError.failedToGetData))
+                completion(.failure(NetworkError.failedToGetData))
             }
         }
     }
 }
 
 // MARK: - Default Network Errors
-enum CustomNetworkError: Error, LocalizedError {
+enum NetworkError: Error, LocalizedError {
     case failedToCreateRequest
     case failedToGetData
     case invalidURL
     case invalidJSON
     case invalidAPIConfig
     case invalidResponseType
+    case unsupportedMappingTypes
 
     var errorDescription: String? {
         switch self {
         case .failedToCreateRequest:
-            return NSLocalizedString("Failed to create request", comment: "")
+            return NSLocalizedString("Failed to create request", comment: "Network")
         case .failedToGetData:
-            return NSLocalizedString("Failed to get data", comment: "")
+            return NSLocalizedString("Failed to get data", comment: "Network")
         case .invalidURL:
-            return NSLocalizedString("Failed to create url. Invalid URL format", comment: "")
+            return NSLocalizedString("Failed to create url. Invalid URL format", comment: "Network")
         case .invalidJSON:
-            return NSLocalizedString("Invalid JSON structure", comment: "")
+            return NSLocalizedString("Invalid JSON structure", comment: "Network")
         case .invalidAPIConfig:
-            return NSLocalizedString("Invalid API config", comment: "")
+            return NSLocalizedString("Invalid API config", comment: "Network")
         case .invalidResponseType:
-            return NSLocalizedString("Invalid response type", comment: "")
+            return NSLocalizedString("Invalid response type", comment: "Network")
+        case .unsupportedMappingTypes:
+            return NSLocalizedString("Unsupported mapping types", comment: "Network")
         }
     }
 }

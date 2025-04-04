@@ -12,7 +12,7 @@ protocol EditProfileViewProtocol: UIView, UIViewKeyboardScrollHandlingProtocol {
     var presenter: EditProfilePresenterProtocol? { get set }
 
     func showUserProfile(_ profile: UserProfileViewModelProtocol)
-    func showError(with message: String)
+    func showError(_ message: String)
     func setLoadingIndicator(isVisible: Bool)
 }
 

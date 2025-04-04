@@ -16,9 +16,7 @@ final class CoreDataManager {
         let container = NSPersistentContainer(name: "MyMovies")
         container.loadPersistentStores { _, error in
             if let error = error {
-                #if DEBUG
                 fatalError("Core Data stack failed: \(error)")
-                #endif
             }
         }
 
@@ -39,10 +37,14 @@ final class CoreDataManager {
     }
 
     // Helper function to save data
-    func saveContext() throws {
+    func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
-            try context.save()
+            do {
+                try context.save()
+            } catch {
+                print("Error saving Core Data context: \(error)")
+            }
         }
     }
 }

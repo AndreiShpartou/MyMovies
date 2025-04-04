@@ -106,8 +106,6 @@ extension MovieDetailsPresenter {
 extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
     func didFetchMovie(_ movie: MovieProtocol) {
         guard let movieDetailsViewModel = mapper.map(data: movie, to: MovieDetailsViewModel.self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map movie", underlying: nil))
-
             return
         }
 
@@ -117,8 +115,6 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
 
     func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
         guard let reviews = mapper.map(data: reviews, to: [ReviewViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map reviews", underlying: nil))
-
             return
         }
 
@@ -127,8 +123,6 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
 
     func didFetchSimilarMovies(_ movies: [MovieProtocol]) {
         guard let similarMovies = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map similar movies", underlying: nil))
-
             return
         }
 
@@ -143,7 +137,6 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
     }
 
     func didFailToFetchData(with error: Error) {
-        let appError = ErrorManager.toAppError(error)
-        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+        //
     }
 }

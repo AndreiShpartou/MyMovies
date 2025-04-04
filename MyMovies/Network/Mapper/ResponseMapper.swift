@@ -20,6 +20,8 @@ final class ResponseMapper: ResponseMapperProtocol {
         // Kinopoisk movie details
         case (is KinopoiskMoviesPagedResponse.Type, is Movie.Type):
             return map(data as! KinopoiskMoviesPagedResponse)[0] as! T
+//        case (is KinopoiskMovieResponse.Type, is Movie.Type):
+//            return mapToDetails(data as! KinopoiskMovieResponse) as! T
         // TMDB movie details
         case (is TMDBMovieResponse.Type, is Movie.Type):
             return map(data as! TMDBMovieResponse) as! T
@@ -43,10 +45,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         case (is KinopoiskPersonDetailedResponse.Type, is PersonDetailed.Type):
             return map(data as! KinopoiskPersonDetailedResponse) as! T
         default:
-            throw AppError.mappingError(
-                message: "Unsupported response mapping types \(responseType) -> \(entityType)",
-                underlying: nil
-            )
+            throw NetworkError.unsupportedMappingTypes
         }
     }
 
@@ -166,6 +165,70 @@ final class ResponseMapper: ResponseMapperProtocol {
             )
         }
     }
+
+//    // For details endpoint
+//    private func mapToDetails(_ data: KinopoiskMovieResponse) -> Movie {
+//        // Map brief similar movies data
+//        let similarMovies = mapSimilarMovies(data.similarMovies)
+//        // Map the underlying movie
+//        return Movie(
+//            id: data.id,
+//            title: data.name ?? data.alternativeName ?? "",
+//            alternativeTitle: data.alternativeName,
+//            description: data.description,
+//            shortDescription: data.shortDescription,
+//            status: data.status,
+//            releaseYear: String(data.year ?? Calendar.current.component(.year, from: Date())),
+//            runtime: String(data.movieLength ?? 0),
+//            voteAverage: (data.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : data.rating?.kp,
+//            genres: map(data.genres ?? []),
+//            countries: map(data.countries ?? []),
+//            persons: map(data.persons ?? []),
+//            poster: Movie.Cover(
+//                url: data.poster?.url,
+//                previewUrl: data.poster?.previewUrl
+//            ),
+//            backdrop: Movie.Cover(
+//                url: data.backdrop?.url,
+//                previewUrl: data.backdrop?.previewUrl
+//            ),
+//            similarMovies: similarMovies
+//        )
+//    }
+
+    // For details endpoint
+//    private func mapToDetails(_ data: KinopoiskMoviesPagedResponse) -> [Movie] {
+//        let movieArray = data.docs.map {
+//            // Map brief similar movies data
+//            let similarMovxies = mapSimilarMovies($0.similarMovies)
+//            // Map the underlying movie
+//            return Movie(
+//                id: $0.id,
+//                title: $0.name ?? $0.alternativeName ?? "",
+//                alternativeTitle: $0.alternativeName,
+//                description: $0.description,
+//                shortDescription: $0.shortDescription,
+//                status: $0.status,
+//                releaseYear: String($0.year ?? Calendar.current.component(.year, from: Date())),
+//                runtime: String($0.movieLength ?? 0),
+//                voteAverage: ($0.rating?.kp == 0) ? Double.random(in: 5.0...7.0) : $0.rating?.kp,
+//                genres: map($0.genres ?? []),
+//                countries: map($0.countries ?? []),
+//                persons: map($0.persons ?? []),
+//                poster: Movie.Cover(
+//                    url: $0.poster?.url,
+//                    previewUrl: $0.poster?.previewUrl
+//                ),
+//                backdrop: Movie.Cover(
+//                    url: $0.backdrop?.url,
+//                    previewUrl: $0.backdrop?.previewUrl
+//                ),
+//                similarMovies: similarMovies
+//            )
+//        }
+//
+//        return movieArray
+//    }
 
     // MARK: - Genres
     private func map(_ data: TMDBGenrePagedResponseProtocol) -> [Movie.Genre] {

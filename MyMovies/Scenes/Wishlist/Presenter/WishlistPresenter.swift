@@ -99,8 +99,6 @@ extension WishlistPresenter {
 extension WishlistPresenter: WishlistInteractorOutputProtocol {
     func didFetchWishlist(_ movies: [MovieProtocol]) {
         guard let favouriteMoviesViewModels = mapper.map(data: movies, to: [WishlistItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map movies", underlying: nil))
-
             return
         }
 
@@ -109,11 +107,9 @@ extension WishlistPresenter: WishlistInteractorOutputProtocol {
         view?.setLoadingIndicator(isVisible: false)
     }
 
-    func didFailToFetchData(with error: Error) {
+    func didFailToFetchData(error: Error) {
         // Handle error
-        let appError = ErrorManager.toAppError(error)
-        view?.showError(with: ErrorManager.toUserMessage(from: appError))
-
+        view?.showError(error: error)
         view?.setLoadingIndicator(isVisible: false)
     }
 }

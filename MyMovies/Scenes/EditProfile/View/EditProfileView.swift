@@ -116,7 +116,7 @@ final class EditProfileView: UIView, EditProfileViewProtocol {
         }
     }
 
-    func showError(with message: String) {
+    func showError(_ message: String) {
         guard let viewController = parentViewController else {
             return
         }

@@ -29,7 +29,8 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
 
     // MARK: - Public
     func fetchMovie() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.presenter?.didFetchMovie(self.movie)
         }
     }
@@ -69,20 +70,16 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     }
 
     func fetchIsMovieInList(listType: MovieListType) {
-        do {
-            let movieInList = try movieRepository.fetchMovieByID(
-                movie.id,
-                provider: provider.rawValue,
-                listType: listType.rawValue
-            )
+        let movieInList = movieRepository.fetchMovieByID(
+            movie.id,
+            provider: provider.rawValue,
+            listType: listType.rawValue
+        )
 
-            DispatchQueue.main.async { [weak self] in
-                self?.presenter?.didFetchIsMovieInList(movieInList != nil, listType: listType)
-            }
-        } catch {
-            DispatchQueue.main.async { [weak self] in
-                self?.presenter?.didFailToFetchData(with: error)
-            }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            self.presenter?.didFetchIsMovieInList(movieInList != nil, listType: listType)
         }
     }
 
@@ -93,27 +90,13 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
                 provider: provider.rawValue,
                 listType: MovieListType.favouriteMovies.rawValue,
                 orderIndex: 0
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    self?.presenter?.didFailToFetchData(with: error)
-                default:
-                    break
-                }
-            }
+            )
         } else {
             movieRepository.removeMovieFromList(
                 movie.id,
                 provider: provider.rawValue,
                 listName: MovieListType.favouriteMovies.rawValue
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    self?.presenter?.didFailToFetchData(with: error)
-                default:
-                    break
-                }
-            }
+            )
         }
     }
 
@@ -129,14 +112,14 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { detailedMovies in
+            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
                 DispatchQueue.main.async {
-                    self.presenter?.didFetchSimilarMovies(detailedMovies)
+                    self?.presenter?.didFetchSimilarMovies(detailedMovies)
                 }
             }
         case .failure(let error):
-            DispatchQueue.main.async {
-                self.presenter?.didFailToFetchData(with: error)
+            DispatchQueue.main.async { [weak self] in
+                self?.presenter?.didFailToFetchData(with: error)
             }
         }
     }

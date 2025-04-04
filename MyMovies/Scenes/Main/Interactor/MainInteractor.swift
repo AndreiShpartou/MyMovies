@@ -113,21 +113,13 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     // MARK: - Genres
     // Fetch genres
     func fetchMovieGenres() {
-        do {
-            // Check if there are any cached genres
-            let cachedGenres = try genreRepository.fetchGenres(provider: provider.rawValue)
-            if !cachedGenres.isEmpty {
-                DispatchQueue.main.async {
-                    // Immediately present to the user
-                    self.presenter?.didFetchMovieGenres(cachedGenres)
-                }
+        // Check if there are any cached genres
+        let cachedGenres = genreRepository.fetchGenres(provider: provider.rawValue)
+        if !cachedGenres.isEmpty {
+            // Immediately present to the user
+            presenter?.didFetchMovieGenres(cachedGenres)
 
-                return
-            }
-        } catch {
-            DispatchQueue.main.async {
-                self.presenter?.didFailToFetchData(with: error)
-            }
+            return
         }
 
         // If no cached data, fetch from API
@@ -141,16 +133,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
                 }
                 // Save to CoreData
                 if let movieGenres = genres as? [Movie.Genre] {
-                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue) { result in
-                        switch result {
-                        case .success:
-                            break
-                        case .failure(let error):
-                            DispatchQueue.main.async {
-                                self.presenter?.didFailToFetchData(with: error)
-                            }
-                        }
-                    }
+                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -181,33 +164,18 @@ extension MainInteractor {
         let now = Date().timeIntervalSince1970
         let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
 
-        // Check if there are any cached  CoreData movies if not stale
+        // Check if there are any cached movies if not stale
         if !isStale {
-            do {
-                let cachedMovies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
-                if !cachedMovies.isEmpty {
-                    // Immediately present to the user
-                    presentMovies(cachedMovies, for: type)
+            let cachedMovies = movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+            if !cachedMovies.isEmpty {
+                // Immediately present to the user
+                presentMovies(cachedMovies, for: type)
 
-                    return
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    self.presenter?.didFailToFetchData(with: error)
-                }
+                return
             }
         } else {
             // Delete stale movie memberships
-            movieRepository.clearMoviesForList(provider: provider.rawValue, listName: type.rawValue) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.presenter?.didFailToFetchData(with: error)
-                    }
-                default:
-                    break
-                }
-            }
+            movieRepository.clearMoviesForList(provider: provider.rawValue, listName: type.rawValue)
         }
 
         // If no cached data, fetch from API
@@ -236,8 +204,8 @@ extension MainInteractor {
                 }
             }
         case .failure(let error):
-            DispatchQueue.main.async {
-                self.presenter?.didFailToFetchData(with: error)
+            DispatchQueue.main.async { [weak self] in
+                self?.presenter?.didFailToFetchData(with: error)
             }
         }
     }
@@ -265,16 +233,7 @@ extension MainInteractor {
                 movies,
                 provider: provider.rawValue,
                 listType: type.rawValue
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.presenter?.didFailToFetchData(with: error)
-                    }
-                default:
-                    break
-                }
-            }
+            )
         }
 
         // Update lastUpdated for the list type
