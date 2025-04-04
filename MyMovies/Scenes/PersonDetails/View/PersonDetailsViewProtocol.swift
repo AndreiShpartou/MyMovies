@@ -14,7 +14,7 @@ protocol PersonDetailsViewProtocol: UIView {
     func showMovieGenres(_ genres: [GenreViewModelProtocol])
     func showPersonRelatedMovies(_ movies: [BriefMovieListItemViewModelProtocol])
     func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
-    func showError(_ error: Error)
+    func showError(with message: String)
 }
 
 protocol PersonDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelegate, GenresCollectionViewDelegate {
