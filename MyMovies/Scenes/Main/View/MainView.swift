@@ -148,9 +148,9 @@ final class MainView: UIView, MainViewProtocol {
         upcomingMoviesCollectionViewHandler.configure(with: movies)
         upcomingMoviesCollectionView.reloadData()
 
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             // Set initial page for the upcoming collection
-            self?.setupUpcomingMoviesInitialPage()
+            self.setupUpcomingMoviesInitialPage()
         }
     }
 
@@ -208,8 +208,14 @@ final class MainView: UIView, MainViewProtocol {
         }
     }
 
-    func showError(error: Error) {
-        //
+    func showError(with message: String) {
+        guard let viewController = parentViewController else {
+            return
+        }
+
+        // Present an alert to the user
+        let alert = getGlobalAlertController(for: message)
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -23,13 +23,13 @@ final class SignUpInteractor: SignUpInteractorProtocol {
             guard let self = self else { return }
 
             if let error = error {
-                self.presenter?.didFailToSignUp(error: error)
+                self.presenter?.didFailToSignUp(with: error)
 
                 return
             }
 
             guard let user = result?.user else {
-                self.presenter?.didFailToSignUp(error: AppError.unknownError(message: "Unable to create user"))
+                self.presenter?.didFailToSignUp(with: AppError.unknownError("Unable to create user"))
 
                 return
             }
@@ -45,7 +45,7 @@ final class SignUpInteractor: SignUpInteractorProtocol {
                 Firestore.firestore().collection("users").document(user.uid).setData(userData) { error in
                     if let error = error {
                         DispatchQueue.main.async {
-                            self.presenter?.didFailToSignUp(error: error)
+                            self.presenter?.didFailToSignUp(with: error)
                         }
                     } else {
                         DispatchQueue.main.async {

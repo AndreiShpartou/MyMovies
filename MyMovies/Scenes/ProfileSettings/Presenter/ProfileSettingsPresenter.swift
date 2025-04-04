@@ -60,7 +60,7 @@ final class ProfileSettingsPresenter: ProfileSettingsPresenterProtocol {
 extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            didFailToFetchData(with: AppError.customError(message: "Failed to load profile", comment: "Error message for failed profile load"))
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to load profile", underlying: nil))
 
             return
         }
@@ -75,7 +75,7 @@ extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
 
     func didFetchSettingsItems(_ sections: [ProfileSettingsSection]) {
         guard let sectionsViewModel = mapper.map(data: sections, to: [ProfileSettingsSectionViewModel].self) else {
-            didFailToFetchData(with: AppError.customError(message: "Failed to load settings", comment: "Error message for failed settings load"))
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map settings", underlying: nil))
 
             return
         }
@@ -93,7 +93,9 @@ extension ProfileSettingsPresenter: ProfileSettingsInteractorOutputProtocol {
     }
 
     func didFailToFetchData(with error: Error) {
-        view?.showError(error)
+        let appError = ErrorManager.toAppError(error)
+        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+
         view?.setLoadingIndicator(isVisible: false)
     }
 }

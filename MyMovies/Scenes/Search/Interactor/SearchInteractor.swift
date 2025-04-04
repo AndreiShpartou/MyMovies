@@ -179,21 +179,50 @@ class SearchInteractor: SearchInteractorProtocol {
             }
         }
 
-        let movies = movieRepository.fetchMoviesByGenre(
-            genre: genre,
-            provider: provider.rawValue,
-            listType: MovieListType.recentlySearchedMovies.rawValue
-        )
-        presenter?.didFetchRecentlySearchedMovies(movies)
+        do {
+            let movies = try movieRepository.fetchMoviesByGenre(
+                genre: genre,
+                provider: provider.rawValue,
+                listType: MovieListType.recentlySearchedMovies.rawValue
+            )
+
+            DispatchQueue.main.async {
+                self.presenter?.didFetchRecentlySearchedMovies(movies)
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
+        }
     }
 
     // MARK: - Private
     private func fetchGenresFromStorage() -> [GenreProtocol] {
-        return genreRepository.fetchGenres(provider: provider.rawValue)
+        do {
+            let genres = try genreRepository.fetchGenres(provider: provider.rawValue)
+
+            return genres
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
+
+            return []
+        }
     }
 
     private func fetchMoviesFromStorage(for listType: MovieListType) -> [MovieProtocol] {
-        return movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listType.rawValue)
+        do {
+            let movies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listType.rawValue)
+
+            return movies
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
+
+            return []
+        }
     }
 
     private func fetchGenres(completion: @escaping ([GenreProtocol]) -> Void) {
@@ -279,6 +308,13 @@ class SearchInteractor: SearchInteractorProtocol {
             provider: provider.rawValue,
             listType: MovieListType.recentlySearchedMovies.rawValue,
             orderIndex: 0
-        )
+        ) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                self?.presenter?.didFailToFetchData(with: error)
+            default:
+                break
+            }
+        }
     }
 }

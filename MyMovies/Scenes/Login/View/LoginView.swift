@@ -127,13 +127,13 @@ final class LoginView: UIView, LoginViewProtocol {
         }
     }
 
-    func showError(error: Error) {
+    func showError(with message: String) {
         guard let viewController = parentViewController else {
             return
         }
 
         // Present an alert to the user
-        let alert = getGlobalAlertController(for: error.localizedDescription)
+        let alert = getGlobalAlertController(for: message)
         viewController.present(alert, animated: true, completion: nil)
     }
 }

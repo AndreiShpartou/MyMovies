@@ -37,6 +37,8 @@ final class MovieListPresenter: MovieListPresenterProtocol {
 
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
         guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map Genre", underlying: nil))
+
             return
         }
 
@@ -58,6 +60,8 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         // Map to ViewModel
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map Genre", underlying: nil))
+
             return
         }
 
@@ -67,6 +71,8 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
     func didFetchMovieList(_ movies: [MovieProtocol]) {
         // Map to ViewModel
         guard let movieViewModels = mapper.map(data: movies, to: [MovieListItemViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map movies", underlying: nil))
+
             return
         }
 
@@ -76,6 +82,9 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
     }
 
     func didFailToFetchData(with error: Error) {
+        let appError = ErrorManager.toAppError(error)
+        view?.showError(with: ErrorManager.toUserMessage(from: appError))
+
         view?.setLoadingIndicator(isVisible: false)
     }
 }
