@@ -121,8 +121,8 @@ extension UserProfileObserver {
 
             let userProfile = UserProfile(
                 id: uid,
-                name: name,
                 email: email,
+                name: name,
                 profileImageURL: URL(string: data["profileImageURL"] as? String ?? "")
             )
 

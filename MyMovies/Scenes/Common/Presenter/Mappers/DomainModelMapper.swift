@@ -238,8 +238,8 @@ extension DomainModelMapper {
     private func map(_ data: UserProfileProtocol) -> UserProfileViewModelProtocol {
         return UserProfileViewModel(
             id: data.id,
-            name: data.name,
             email: data.email,
+            name: data.name,
             profileImageURL: data.profileImageURL
         )
     }

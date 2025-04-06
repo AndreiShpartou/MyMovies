@@ -74,8 +74,8 @@ extension EditProfileInteractor {
 
             currentUser = UserProfile(
                 id: uid,
-                name: name,
                 email: email,
+                name: name,
                 profileImageURL: URL(string: (userData["profileImageURL"] as? String ?? ""))
             )
 

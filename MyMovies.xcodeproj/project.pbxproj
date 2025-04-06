@@ -183,6 +183,11 @@
 		6C9CF9362DA14E540043CEFE /* MockSignUpInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9352DA14E540043CEFE /* MockSignUpInteractor.swift */; };
 		6C9CF9382DA150370043CEFE /* SignUpPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9372DA150370043CEFE /* SignUpPresenterTests.swift */; };
 		6C9CF93A2DA188860043CEFE /* MockSignUpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9392DA188860043CEFE /* MockSignUpRouter.swift */; };
+		6C9CF9402DA29B520043CEFE /* AuthServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF93F2DA29B520043CEFE /* AuthServiceProtocol.swift */; };
+		6C9CF9422DA2A4BA0043CEFE /* ProfileDocumentsStoreServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9412DA2A4BA0043CEFE /* ProfileDocumentsStoreServiceProtocol.swift */; };
+		6C9CF9442DA2A5410043CEFE /* ProfileDataStoreServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9432DA2A5410043CEFE /* ProfileDataStoreServiceProtocol.swift */; };
+		6C9CF9462DA2A6CE0043CEFE /* FirebaseAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9452DA2A6CE0043CEFE /* FirebaseAuthService.swift */; };
+		6C9CF9482DA2AE650043CEFE /* FirebaseFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9472DA2AE650043CEFE /* FirebaseFirestoreService.swift */; };
 		6C9F5F4B2D4BFD0100C722F1 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */; };
 		6CA2D87A2CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA2D8792CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift */; };
 		6CA2D87E2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA2D87D2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift */; };
@@ -469,6 +474,11 @@
 		6C9CF9352DA14E540043CEFE /* MockSignUpInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSignUpInteractor.swift; sourceTree = "<group>"; };
 		6C9CF9372DA150370043CEFE /* SignUpPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenterTests.swift; sourceTree = "<group>"; };
 		6C9CF9392DA188860043CEFE /* MockSignUpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSignUpRouter.swift; sourceTree = "<group>"; };
+		6C9CF93F2DA29B520043CEFE /* AuthServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthServiceProtocol.swift; sourceTree = "<group>"; };
+		6C9CF9412DA2A4BA0043CEFE /* ProfileDocumentsStoreServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDocumentsStoreServiceProtocol.swift; sourceTree = "<group>"; };
+		6C9CF9432DA2A5410043CEFE /* ProfileDataStoreServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataStoreServiceProtocol.swift; sourceTree = "<group>"; };
+		6C9CF9452DA2A6CE0043CEFE /* FirebaseAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuthService.swift; sourceTree = "<group>"; };
+		6C9CF9472DA2AE650043CEFE /* FirebaseFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFirestoreService.swift; sourceTree = "<group>"; };
 		6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		6CA2D8792CAD1C0D00CFC297 /* TMDBReviewsPagedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBReviewsPagedResponse.swift; sourceTree = "<group>"; };
 		6CA2D87D2CAD1D4500CFC297 /* TMDBReviewResponseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBReviewResponseProtocol.swift; sourceTree = "<group>"; };
@@ -791,8 +801,8 @@
 			children = (
 				6C59AF442C550A2B006A7BDB /* App */,
 				6C9CF93B2DA28AD20043CEFE /* Common */,
-				6C9CF93C2DA28C7E0043CEFE /* Services */,
 				6C59AF432C550A28006A7BDB /* Managers */,
+				6C9CF93C2DA28C7E0043CEFE /* Services */,
 				6C59AF342C54FCBD006A7BDB /* Scenes */,
 				6C59AF152C54F9E5006A7BDB /* SupportingFiles */,
 			);
@@ -1684,10 +1694,23 @@
 		6C9CF93D2DA28D520043CEFE /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
-				6CBB02842D9ACC4800CD4714 /* CloudinaryManager */,
+				6C9CF93F2DA29B520043CEFE /* AuthServiceProtocol.swift */,
+				6C9CF9412DA2A4BA0043CEFE /* ProfileDocumentsStoreServiceProtocol.swift */,
+				6C9CF9432DA2A5410043CEFE /* ProfileDataStoreServiceProtocol.swift */,
+				6C9CF93E2DA294D50043CEFE /* FirebaseFirestore */,
+				6CBB02842D9ACC4800CD4714 /* Cloudinary */,
 				6CBB02892D9C1BCF00CD4714 /* UserProfileObserver */,
 			);
 			path = UserProfile;
+			sourceTree = "<group>";
+		};
+		6C9CF93E2DA294D50043CEFE /* FirebaseFirestore */ = {
+			isa = PBXGroup;
+			children = (
+				6C9CF9452DA2A6CE0043CEFE /* FirebaseAuthService.swift */,
+				6C9CF9472DA2AE650043CEFE /* FirebaseFirestoreService.swift */,
+			);
+			path = FirebaseFirestore;
 			sourceTree = "<group>";
 		};
 		6CADCC512CE7582C003C06A3 /* DataPersistenceManager */ = {
@@ -1716,12 +1739,12 @@
 			path = CollectionViewHandlers;
 			sourceTree = "<group>";
 		};
-		6CBB02842D9ACC4800CD4714 /* CloudinaryManager */ = {
+		6CBB02842D9ACC4800CD4714 /* Cloudinary */ = {
 			isa = PBXGroup;
 			children = (
 				6CBB02852D9ACC8500CD4714 /* CloudinaryService.swift */,
 			);
-			path = CloudinaryManager;
+			path = Cloudinary;
 			sourceTree = "<group>";
 		};
 		6CBB02892D9C1BCF00CD4714 /* UserProfileObserver */ = {
@@ -2176,6 +2199,7 @@
 				6C8338662C5D06A2000D0399 /* MovieListRouterProtocol.swift in Sources */,
 				6C59AF582C55204A006A7BDB /* SearchView.swift in Sources */,
 				6C939A052C9C3B4D00699F49 /* BriefMovieListItemViewModelProtocol.swift in Sources */,
+				6C9CF9482DA2AE650043CEFE /* FirebaseFirestoreService.swift in Sources */,
 				6C9B29D02D672480000A5EF8 /* OnboardingRouter.swift in Sources */,
 				6C87B0652D5BA6C7003F44FC /* PersonDetailsViewProtocol.swift in Sources */,
 				6C25A1242D79AB5F00877F24 /* MovieCountryEntity+CoreDataProperties.swift in Sources */,
@@ -2201,6 +2225,7 @@
 				6C424F0F2C9417D00003F487 /* MovieListCollectionViewCell.swift in Sources */,
 				6C9C75932C6DFED0003E98FE /* GlobalFunctions.swift in Sources */,
 				6CC604D92C55805400241EF2 /* ProfileSettingsInteractor.swift in Sources */,
+				6C9CF9462DA2A6CE0043CEFE /* FirebaseAuthService.swift in Sources */,
 				6C9B29C82D67244B000A5EF8 /* OnboardingInteractor.swift in Sources */,
 				6C391E5D2D107F5100448CC5 /* TMDBPersonResponseProtocol.swift in Sources */,
 				6CCC4F772C5E4F0A00BA7B8D /* GenreCollectionViewCell.swift in Sources */,
@@ -2309,6 +2334,7 @@
 				6CF693C42D11589E00026B11 /* TMDBPersonsPagedResponse.swift in Sources */,
 				6CFCEB132CBAA36200126B38 /* EditProfileView.swift in Sources */,
 				6CEB59442CBBF9F0005062DC /* InsetLabel.swift in Sources */,
+				6C9CF9422DA2A4BA0043CEFE /* ProfileDocumentsStoreServiceProtocol.swift in Sources */,
 				6C41483E2C74EBBE004D55BA /* KinopoiskPagedResponseProtocol.swift in Sources */,
 				6C2082732D8818D80054DCFF /* WishlistCollectionViewCell.swift in Sources */,
 				6C9834562C76009C00C6D368 /* KinopoiskMovieResponseProtocol.swift in Sources */,
@@ -2366,7 +2392,9 @@
 				6C9F5F4B2D4BFD0100C722F1 /* AppError.swift in Sources */,
 				6C499C142D7745B00049D6F7 /* CoreDataManager.swift in Sources */,
 				6CCA04302D9417B600CA0F1C /* LoginPresenter.swift in Sources */,
+				6C9CF9442DA2A5410043CEFE /* ProfileDataStoreServiceProtocol.swift in Sources */,
 				6C83387C2C5D079F000D0399 /* WishlistPresenterProtocol.swift in Sources */,
+				6C9CF9402DA29B520043CEFE /* AuthServiceProtocol.swift in Sources */,
 				6C4CF78E2CA422FD00144866 /* MovieDetailsViewModel.swift in Sources */,
 				6C83385A2C5CE58E000D0399 /* SearchInteractorProtocol.swift in Sources */,
 				6C9B45ED2CB51B430053B8D7 /* UserProfileViewModel.swift in Sources */,

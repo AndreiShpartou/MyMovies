@@ -9,9 +9,9 @@ import UIKit
 
 struct UserProfileViewModel: UserProfileViewModelProtocol {
     let id: String
-    let name: String
-    let email: String
-    let profileImageURL: URL?
+    var email: String
+    var name: String?
+    var profileImageURL: URL?
 }
 
 struct ProfileSettingsSectionViewModel: ProfileSettingsSectionViewModelProtocol {

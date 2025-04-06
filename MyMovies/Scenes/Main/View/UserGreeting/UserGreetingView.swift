@@ -38,7 +38,7 @@ final class UserGreetingView: UIView, UserGreetingViewProtocol {
 
     // MARK: - Public
     func configure(_ profile: UserProfileViewModelProtocol) {
-        helloLabel.text = "Hello, \(profile.name)"
+        helloLabel.text = "Hello, \(profile.name ?? "")"
         avatarImageView.kf.setImage(with: profile.profileImageURL, placeholder: Asset.Avatars.signedUser.image)
     }
 
