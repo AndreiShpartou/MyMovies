@@ -1,5 +1,5 @@
 //
-//  NetworkManager.swift
+//  NetworkService.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 05/08/2024.
@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-class NetworkManager: NetworkManagerProtocol {
+class NetworkService: NetworkServiceProtocol {
 
-    static let shared = NetworkManager()
+    static let shared = NetworkService()
 
     var apiConfig: APIConfigurationProtocol? {
         return AppConfigurationManager.shared.appConfig?.apiConfig

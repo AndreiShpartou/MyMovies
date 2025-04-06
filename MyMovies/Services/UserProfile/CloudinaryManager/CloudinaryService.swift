@@ -1,5 +1,5 @@
 //
-//  CloudinaryManager.swift
+//  CloudinaryService.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 31/03/2025.
@@ -7,12 +7,12 @@
 
 import Cloudinary
 
-protocol CloudinaryManagerProtocol: AnyObject {
+protocol CloudinaryServiceProtocol: AnyObject {
     var cloudinary: CLDCloudinary { get }
 }
 
-class CloudinaryManager: CloudinaryManagerProtocol {
-    static let shared = CloudinaryManager()
+class CloudinaryService: CloudinaryServiceProtocol {
+    static let shared = CloudinaryService()
 
     let cloudinary: CLDCloudinary
 

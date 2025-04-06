@@ -16,7 +16,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
         }
     }
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkManager: NetworkServiceProtocol
     private let userProfileObserver: UserProfileObserverProtocol
 
     private var settingsSections: [ProfileSettingsSection] = []
@@ -24,7 +24,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
 
     // MARK: - Init
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        networkManager: NetworkServiceProtocol = NetworkService.shared,
         plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader(),
         userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
     ) {

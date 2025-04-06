@@ -10,7 +10,7 @@ import Foundation
 class SearchInteractor: SearchInteractorProtocol {
     weak var presenter: SearchInteractorOutputProtocol?
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkManager: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
@@ -18,7 +18,7 @@ class SearchInteractor: SearchInteractorProtocol {
     private var currentSearchToken: UUID?
 
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        networkManager: NetworkServiceProtocol = NetworkService.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
         movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {

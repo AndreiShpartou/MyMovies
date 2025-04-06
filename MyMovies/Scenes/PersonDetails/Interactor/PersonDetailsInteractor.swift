@@ -10,11 +10,11 @@ import Foundation
 final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     weak var presenter: PersonDetailsInteractorOutputProtocol?
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkManager: NetworkServiceProtocol
     private let personID: Int
 
     // MARK: - Init
-    init(personID: Int, networkManager: NetworkManagerProtocol = NetworkManager.shared) {
+    init(personID: Int, networkManager: NetworkServiceProtocol = NetworkService.shared) {
         self.networkManager = networkManager
         self.personID = personID
     }

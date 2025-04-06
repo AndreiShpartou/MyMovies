@@ -10,14 +10,14 @@ import Foundation
 final class MovieListInteractor: MovieListInteractorProtocol {
     weak var presenter: MovieListInteractorOutputProtocol?
     private var listType: MovieListType?
-    private let networkManager: NetworkManagerProtocol
+    private let networkManager: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
 
     // MARK: - Init
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        networkManager: NetworkServiceProtocol = NetworkService.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
         movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {

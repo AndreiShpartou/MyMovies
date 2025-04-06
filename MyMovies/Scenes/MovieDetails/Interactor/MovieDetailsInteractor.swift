@@ -10,7 +10,7 @@ import Foundation
 class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     weak var presenter: MovieDetailsInteractorOutputProtocol?
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkManager: NetworkServiceProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
     private var movie: MovieProtocol
@@ -18,7 +18,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     // MARK: - Init
     init(
         movie: MovieProtocol,
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        networkManager: NetworkServiceProtocol = NetworkService.shared,
         movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {
         self.movie = movie

@@ -12,14 +12,14 @@ import FirebaseFirestore
 final class EditProfileInteractor: EditProfileInteractorProtocol {
     weak var presenter: EditProfileInteractorOutputProtocol?
 
-    private let cloudinaryManager: CloudinaryManagerProtocol
+    private let cloudinaryManager: CloudinaryServiceProtocol
     private let firestoreDB = Firestore.firestore()
 
     // Store the fetched user profile
     private var currentUser: UserProfileProtocol?
 
     // MARK: - Init
-    init(cloudinaryManager: CloudinaryManagerProtocol = CloudinaryManager.shared) {
+    init(cloudinaryManager: CloudinaryServiceProtocol = CloudinaryService.shared) {
         self.cloudinaryManager = cloudinaryManager
     }
 

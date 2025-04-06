@@ -17,7 +17,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
     }
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkManager: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let userProfileObserver: UserProfileObserverProtocol
@@ -25,7 +25,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // MARK: - Init
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
+        networkManager: NetworkServiceProtocol = NetworkService.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
         movieRepository: MovieRepositoryProtocol = MovieRepository(),
         userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()

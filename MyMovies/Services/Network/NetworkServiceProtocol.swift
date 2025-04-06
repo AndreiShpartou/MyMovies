@@ -1,5 +1,5 @@
 //
-//  NetworkManagerProtocol.swift
+//  NetworkServiceProtocol.swift
 //  MyMovies
 //
 //  Created by Andrei Shpartou on 12/09/2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NetworkManagerProtocol {
+protocol NetworkServiceProtocol {
     func fetchMovies(type: MovieListType, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
     func fetchMovieDetails(for movie: MovieProtocol, type: MovieListType, completion: @escaping (Result<MovieProtocol, Error>) -> Void)
     func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void)
