@@ -1,0 +1,61 @@
+//
+//  MockAuthService.swift
+//  MyMoviesTests
+//
+//  Created by Andrei Shpartou on 07/04/2025.
+//
+
+import ObjectiveC
+@testable import MyMovies
+
+// MARK: - MockAuthService
+final class MockAuthService: AuthServiceProtocol {
+    var currentUser: UserProfileProtocol?
+    
+    var didCallCreateUser: Bool = false
+    var didCallSignIn: Bool = false
+    var didCallSignOut: Bool = false
+    var capturedEmail: String?
+    var capturedPassword: String?
+    
+    var shouldFailOnCreateUser = false
+    var shouldFailOnSignIn = false
+    var shouldFailOnSignOut = false
+
+    // MARK: - AuthServiceProtocol
+    func createUser(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void) {
+        didCallCreateUser = true
+        capturedEmail = email
+        capturedPassword = password
+        
+        if shouldFailOnCreateUser {
+            completion(.failure(AppError.customError(message: "Failed to create user", comment: "")))
+        } else {
+            completion(.success(UserProfile(id: "Mock_id", email: email, name: "MockUserName")))
+        }
+    }
+
+    func signIn(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void) {
+        didCallSignIn = true
+        capturedEmail = email
+        capturedPassword = password
+        
+        if shouldFailOnSignIn {
+            completion(.failure(AppError.customError(message: "Failed to sign in", comment: "")))
+        } else {
+            completion(.success(UserProfile(id: "Mock_id", email: email, name: "MockUserName")))
+        }
+    }
+    
+    func signOut() throws {
+        didCallSignOut = true
+        
+        if shouldFailOnSignOut {
+            throw AppError.customError(message: "Failed to sign out", comment: "")
+        }
+    }
+
+    // Observers
+    func addAuthStateDidChangeListener(_ listener: @escaping (UserProfile?) -> Void) -> NSObjectProtocol? { return nil }
+    func removeAuthStateDidChangeListener(_ handle: NSObjectProtocol) {}
+}

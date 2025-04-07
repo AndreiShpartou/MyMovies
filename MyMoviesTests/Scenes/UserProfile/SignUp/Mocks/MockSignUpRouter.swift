@@ -4,8 +4,7 @@
 //
 //  Created by Andrei Shpartou on 05/04/2025.
 //
-
-import XCTest
+import UIKit
 @testable import MyMovies
 
 final class MockSignUpRouter: SignUpRouterProtocol {
