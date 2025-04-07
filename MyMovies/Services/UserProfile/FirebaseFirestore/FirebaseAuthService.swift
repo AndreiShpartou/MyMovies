@@ -18,7 +18,7 @@ final class FirebaseAuthService: AuthServiceProtocol {
         return UserProfile(id: user.uid, email: email)
     }
 
-    func createUser(withEmail email: String, password: String, completion: @escaping (Result<UserProfileProtocol, Error>) -> Void) {
+    func createUser(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 completion(.failure(error))
@@ -31,7 +31,7 @@ final class FirebaseAuthService: AuthServiceProtocol {
         }
     }
 
-    func signIn(withEmail email: String, password: String, completion: @escaping (Result<UserProfileProtocol, Error>) -> Void) {
+    func signIn(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 completion(.failure(error))
@@ -50,7 +50,7 @@ final class FirebaseAuthService: AuthServiceProtocol {
 
     // MARK: - Observers
     @discardableResult
-    func addAuthStateDidChangeListener(_ listener: @escaping (UserProfileProtocol?) -> Void) -> NSObjectProtocol? {
+    func addAuthStateDidChangeListener(_ listener: @escaping (UserProfile?) -> Void) -> NSObjectProtocol? {
         return Auth.auth().addStateDidChangeListener { _, user in
             guard let user = user,
                   let email = user.email else {

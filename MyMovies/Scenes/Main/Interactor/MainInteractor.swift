@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol? {
@@ -17,7 +15,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
     }
 
-    private let networkManager: NetworkServiceProtocol
+    private let networkService: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let userProfileObserver: UserProfileObserverProtocol
@@ -25,16 +23,16 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // MARK: - Init
     init(
-        networkManager: NetworkServiceProtocol = NetworkService.shared,
+        networkService: NetworkServiceProtocol = NetworkService.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
         movieRepository: MovieRepositoryProtocol = MovieRepository(),
         userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
     ) {
-        self.networkManager = networkManager
+        self.networkService = networkService
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
         self.userProfileObserver = userProfileObserver
-        self.provider = networkManager.getProvider()
+        self.provider = networkService.getProvider()
     }
 
     // MARK: - UpcomingMovies
@@ -67,7 +65,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
             return
         }
 
-        networkManager.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
+        networkService.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .popularMovies, saveToStorage: false)
         }
     }
@@ -81,7 +79,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
             return
         }
 
-        networkManager.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
+        networkService.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .topRatedMovies, saveToStorage: false)
         }
     }
@@ -95,7 +93,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
             return
         }
 
-        networkManager.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
+        networkService.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies, saveToStorage: false)
         }
     }
@@ -131,7 +129,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
 
         // If no cached data, fetch from API
-        networkManager.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -211,7 +209,7 @@ extension MainInteractor {
         }
 
         // If no cached data, fetch from API
-        networkManager.fetchMovies(type: type) { [weak self] result in
+        networkService.fetchMovies(type: type) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
@@ -224,7 +222,7 @@ extension MainInteractor {
     ) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
+            networkService.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
                 guard let self = self else { return }
 
                 DispatchQueue.main.async {

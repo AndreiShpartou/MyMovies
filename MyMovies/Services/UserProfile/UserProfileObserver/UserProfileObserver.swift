@@ -4,10 +4,7 @@
 //
 //  Created by Andrei Shpartou on 01/04/2025.
 //
-
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 protocol UserProfileObserverProtocol: AnyObject {
     var delegate: UserProfileObserverDelegate? { get set }
@@ -27,26 +24,31 @@ protocol UserProfileObserverDelegate: AnyObject {
 final class UserProfileObserver: UserProfileObserverProtocol {
     weak var delegate: UserProfileObserverDelegate?
 
-    private var authListenerHandle: AuthStateDidChangeListenerHandle?
-    private var firestoreListener: ListenerRegistration?
-    private let firestoreDB: Firestore
+    private let authService: AuthServiceProtocol
+    private let profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol
+    private var authListenerHandle: NSObjectProtocol?
+    private var profileDocumentsListener: NSObjectProtocol?
 
-    init(firestoreDB: Firestore = Firestore.firestore()) {
-        self.firestoreDB = firestoreDB
+    init(
+        authService: AuthServiceProtocol = FirebaseAuthService(),
+        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol = FirebaseFirestoreService()
+    ) {
+        self.authService = authService
+        self.profileDocumentsStoreService = profileDocumentsStoreService
     }
 
     // MARK: - Public
     // Start observing FirebaseAuth and Firestore changes
     func startObserving() {
-        authListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+        authListenerHandle = authService.addAuthStateDidChangeListener { [weak self] userProfile in
             guard let self = self else { return }
 
-            if let user = user, let email = user.email {
-                // We have a signed-in user; set up Firestore listener if needed.
-                self.setupFirestoreListener(uid: user.uid, email: email)
+            if let userProfile = userProfile {
+                // We have a signed-in user; set up profileDocumentsListener if needed.
+                self.setupProfileDocumentsListener(uid: userProfile.id, email: userProfile.email)
             } else {
                 // User logged out or does not exist
-                self.removeFirestoreListener()
+                self.removeProfileDocumentsListener()
                 DispatchQueue.main.async {
                     self.delegate?.didLogOut()
                 }
@@ -55,85 +57,76 @@ final class UserProfileObserver: UserProfileObserverProtocol {
     }
 
     func fetchUserProfile() {
-        guard let user = Auth.auth().currentUser,
-              let email = user.email else { return }
+        guard let userProfile = authService.currentUser else { return }
 
-        getUserData(uid: user.uid, email: email)
+        getUserDocumentsData(uid: userProfile.id, email: userProfile.email)
     }
 
     // Stop observing
     func stopObserving() {
         if let authHandle = authListenerHandle {
-            Auth.auth().removeStateDidChangeListener(authHandle)
+            authService.removeAuthStateDidChangeListener(authHandle)
         }
-        removeFirestoreListener()
+        removeProfileDocumentsListener()
     }
 }
 
 // MARK: - Private
 extension UserProfileObserver {
-    private func setupFirestoreListener(uid: String, email: String) {
-        // If we already have a listener, do not attach another.
-        guard firestoreListener == nil else { return }
+    private func setupProfileDocumentsListener(uid: String, email: String) {
+        // If we already have a listener, do not attach another one.
+        guard profileDocumentsListener == nil else { return }
 
-        firestoreListener = firestoreDB.collection("users").document(uid).addSnapshotListener { [weak self] _, error in
-                guard let self = self else { return }
+        profileDocumentsListener = profileDocumentsStoreService.addSnapshotListener(collection: "users", document: uid) { [weak self] result in
+            guard let self = self else { return }
 
-                if let error = error {
-                    DispatchQueue.main.async {
-                        self.delegate?.didFailToFetchData(with: error)
-                    }
-                }
+            switch result {
+            case .success:
                 // Fetch the latest user data
-                self.getUserData(uid: uid, email: email)
+                self.getUserDocumentsData(uid: uid, email: email)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.delegate?.didFailToFetchData(with: error)
+                }
+            }
         }
     }
 
-    private func getUserData(uid: String, email: String) {
+    private func getUserDocumentsData(uid: String, email: String) {
         DispatchQueue.main.async {
+            // Update presenter to show loading indicator
             self.delegate?.didBeginProfileUpdate()
         }
 
-        firestoreDB.collection("users").document(uid).getDocument { [weak self] snapshot, error in
+        // Get the latest user profile document
+        profileDocumentsStoreService.getDocument(collection: "users", document: uid) { [weak self] result in
             guard let self = self else { return }
 
-            if let error = error {
+            switch result {
+            case .success(let userData):
+                let name = userData["name"] as? String
+                // User profile document exists and contains required fields
+                let userProfile = UserProfile(
+                    id: uid,
+                    email: email,
+                    name: name,
+                    profileImageURL: URL(string: userData["profileImageURL"] as? String ?? "")
+                )
+
+                DispatchQueue.main.async {
+                    self.delegate?.didFetchUserProfile(userProfile)
+                }
+
+            case .failure(let error):
                 DispatchQueue.main.async {
                     self.delegate?.didFailToFetchData(with: error)
                 }
-
-                return
-            }
-
-            guard let data = snapshot?.data(),
-                  let name = data["name"] as? String else {
-                DispatchQueue.main.async {
-                    let error = AppError.customError(
-                        message: "Failed to fetch user data",
-                        comment: "Missing user fields"
-                    )
-
-                    self.delegate?.didFailToFetchData(with: error)
-                }
-
-                return
-            }
-
-            let userProfile = UserProfile(
-                id: uid,
-                email: email,
-                name: name,
-                profileImageURL: URL(string: data["profileImageURL"] as? String ?? "")
-            )
-
-            DispatchQueue.main.async {
-                self.delegate?.didFetchUserProfile(userProfile)
             }
         }
     }
 
-    private func removeFirestoreListener() {
-        firestoreListener?.remove()
-        firestoreListener = nil
+    private func removeProfileDocumentsListener() {
+        profileDocumentsStoreService.removeSnapshotListener(profileDocumentsListener)
+        profileDocumentsListener = nil
     }
 }

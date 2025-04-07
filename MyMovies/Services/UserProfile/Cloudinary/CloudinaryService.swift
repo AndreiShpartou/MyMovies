@@ -7,14 +7,8 @@
 
 import Cloudinary
 
-protocol CloudinaryServiceProtocol: AnyObject {
-    var cloudinary: CLDCloudinary { get }
-}
-
-class CloudinaryService: CloudinaryServiceProtocol, ProfileDataStoreServiceProtocol {
-    static let shared = CloudinaryService()
-
-    let cloudinary: CLDCloudinary
+class CloudinaryService: ProfileDataStoreServiceProtocol {
+    private let cloudinary: CLDCloudinary
 
     init(configuration: CLDConfiguration = CLDConfiguration(cloudName: "dfe1lkbwt", apiKey: "445626447662862", apiSecret: "eUa65FGYdWeil5iwYk6shtcENso")) {
         self.cloudinary = CLDCloudinary(configuration: configuration)

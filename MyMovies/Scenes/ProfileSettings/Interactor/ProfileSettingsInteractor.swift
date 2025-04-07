@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
 
 final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     weak var presenter: ProfileSettingsInteractorOutputProtocol? {
@@ -16,7 +15,8 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
         }
     }
 
-    private let networkManager: NetworkServiceProtocol
+    private let networkService: NetworkServiceProtocol
+    private let authService: AuthServiceProtocol
     private let userProfileObserver: UserProfileObserverProtocol
 
     private var settingsSections: [ProfileSettingsSection] = []
@@ -24,11 +24,13 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
 
     // MARK: - Init
     init(
-        networkManager: NetworkServiceProtocol = NetworkService.shared,
+        networkService: NetworkServiceProtocol = NetworkService.shared,
+        authService: AuthServiceProtocol = FirebaseAuthService(),
         plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader(),
         userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
     ) {
-        self.networkManager = networkManager
+        self.networkService = networkService
+        self.authService = authService
         self.plistLoader = plistLoader
         self.userProfileObserver = userProfileObserver
     }
@@ -39,7 +41,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     }
 
     func fetchSettingsItems() {
-        networkManager.fetchSettingsSections { [weak self] result in
+        networkService.fetchSettingsSections { [weak self] result in
             switch result {
             case .success(let sections):
                 DispatchQueue.main.async {
@@ -65,7 +67,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
 
     func signOut() {
         do {
-            try Auth.auth().signOut()
+            try authService.signOut()
         } catch let signOutError as NSError {
             presenter?.didFailToFetchData(with: signOutError)
         }

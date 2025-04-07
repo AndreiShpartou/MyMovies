@@ -10,10 +10,10 @@ import Foundation
 protocol AuthServiceProtocol {
     var currentUser: UserProfileProtocol? { get }
 
-    func createUser(withEmail email: String, password: String, completion: @escaping (Result<UserProfileProtocol, Error>) -> Void)
-    func signIn(withEmail email: String, password: String, completion: @escaping (Result<UserProfileProtocol, Error>) -> Void)
+    func createUser(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void)
+    func signIn(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void)
     func signOut() throws
 
-    func addAuthStateDidChangeListener(_ listener: @escaping (UserProfileProtocol?) -> Void) -> NSObjectProtocol?
+    func addAuthStateDidChangeListener(_ listener: @escaping (UserProfile?) -> Void) -> NSObjectProtocol?
     func removeAuthStateDidChangeListener(_ handle: NSObjectProtocol)
 }

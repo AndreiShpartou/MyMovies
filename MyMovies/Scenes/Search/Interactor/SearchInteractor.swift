@@ -10,7 +10,7 @@ import Foundation
 class SearchInteractor: SearchInteractorProtocol {
     weak var presenter: SearchInteractorOutputProtocol?
 
-    private let networkManager: NetworkServiceProtocol
+    private let networkService: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
@@ -18,14 +18,14 @@ class SearchInteractor: SearchInteractorProtocol {
     private var currentSearchToken: UUID?
 
     init(
-        networkManager: NetworkServiceProtocol = NetworkService.shared,
+        networkService: NetworkServiceProtocol = NetworkService.shared,
         genreRepository: GenreRepositoryProtocol = GenreRepository(),
         movieRepository: MovieRepositoryProtocol = MovieRepository()
     ) {
-        self.networkManager = networkManager
+        self.networkService = networkService
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
-        self.provider = networkManager.getProvider()
+        self.provider = networkService.getProvider()
     }
 
     // MARK: - Public fetchInitialData
@@ -82,7 +82,7 @@ class SearchInteractor: SearchInteractorProtocol {
             }
         }
 
-        networkManager.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
+        networkService.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -95,7 +95,7 @@ class SearchInteractor: SearchInteractorProtocol {
                     return
                 }
 
-                self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { [weak self] detailedMovies in
+                self.networkService.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { [weak self] detailedMovies in
                     if let movie = detailedMovies.first {
                         DispatchQueue.main.async {
                             self?.presenter?.didFetchUpcomingMovies([movie])
@@ -128,7 +128,7 @@ class SearchInteractor: SearchInteractorProtocol {
         currentSearchToken = token
 
         // Perform person search
-        networkManager.searchPersons(query: query) { [weak self] result in
+        networkService.searchPersons(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
 
             switch result {
@@ -144,7 +144,7 @@ class SearchInteractor: SearchInteractorProtocol {
             }
         }
         // Perform movie search
-        networkManager.searchMovies(query: query) { [weak self] result in
+        networkService.searchMovies(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
 
             switch result {
@@ -226,7 +226,7 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     private func fetchGenres(completion: @escaping ([GenreProtocol]) -> Void) {
-        networkManager.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -242,7 +242,7 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     private func fetchUpcomingMovie(completion: @escaping (MovieProtocol?) -> Void) {
-        networkManager.fetchMovies(type: .upcomingMovies) { [weak self] result in
+        networkService.fetchMovies(type: .upcomingMovies) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -256,7 +256,7 @@ class SearchInteractor: SearchInteractorProtocol {
                     return
                 }
 
-                self.networkManager.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
+                self.networkService.fetchMoviesDetails(for: [movie], type: .upcomingMovies) { detailedMovies in
                     DispatchQueue.main.async {
                         completion(detailedMovies.first)
                     }
@@ -271,7 +271,7 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
-        networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
+        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -289,7 +289,7 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     private func fetchMoviesDetails(for movies: [MovieProtocol]) {
-        networkManager.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
+        networkService.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
             guard let self = self else { return }
 
             DispatchQueue.main.async {
