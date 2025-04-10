@@ -11,7 +11,7 @@ import XCTest
 final class SignUpPresenterTests: XCTestCase {
     // System Under Test (SUT)
     var presenter: SignUpPresenterProtocol!
-    // Mock Dependencies
+    // Mock dependencies
     var mockView: MockSignUpView!
     var mockInteractor: MockSignUpInteractor!
     var mockRouter: MockSignUpRouter!

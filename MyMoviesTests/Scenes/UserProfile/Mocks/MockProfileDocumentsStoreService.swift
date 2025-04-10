@@ -29,6 +29,8 @@ final class MockProfileDocumentsStoreService: ProfileDocumentsStoreServiceProtoc
         
         if shouldFailOnSetData {
             completion(AppError.customError(message: "Failed to set data", comment: ""))
+        } else {
+            completion(nil)
         }
     }
     
