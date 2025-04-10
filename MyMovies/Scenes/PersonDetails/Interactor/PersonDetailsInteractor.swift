@@ -14,7 +14,7 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     private let personID: Int
 
     // MARK: - Init
-    init(personID: Int, networkService: NetworkServiceProtocol = NetworkService.shared) {
+    init(personID: Int, networkService: NetworkServiceProtocol) {
         self.networkService = networkService
         self.personID = personID
     }

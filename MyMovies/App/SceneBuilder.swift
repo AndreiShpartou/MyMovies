@@ -25,7 +25,18 @@ protocol SceneBuilderProtocol: AnyObject {
 final class SceneBuilder: SceneBuilderProtocol {
     // MARK: - TabBarMainScenes
     static func buildHomeScene() -> UIViewController {
-        let interactor = MainInteractor()
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let genreRepository: GenreRepositoryProtocol? = ServiceLocator.shared.getService()
+        let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
+        let userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+
+        let interactor = MainInteractor(
+            networkService: networkService!,
+            genreRepository: genreRepository!,
+            movieRepository: movieRepository!,
+            userProfileObserver: userProfileObserver
+        )
+
         let router = MainRouter()
         let view = MainView()
         let presenter = MainPresenter(view: view, interactor: interactor, router: router)
@@ -40,12 +51,20 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildSearchScene() -> UIViewController {
-        let interactor = SearchInteractor()
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let genreRepository: GenreRepositoryProtocol? = ServiceLocator.shared.getService()
+        let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = SearchInteractor(
+            networkService: networkService!,
+            genreRepository: genreRepository!,
+            movieRepository: movieRepository!
+        )
+
         let router = SearchRouter()
         let view = SearchView()
         let presenter = SearchPresenter(view: view, interactor: interactor, router: router)
         let viewController = SearchViewController(searchView: view, presenter: presenter)
-
         router.viewController = viewController
         interactor.presenter = presenter
 
@@ -56,7 +75,18 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildProfileScene() -> UIViewController {
-        let interactor = ProfileSettingsInteractor()
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let authService: AuthServiceProtocol? = ServiceLocator.shared.getService()
+        let userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        let plistLoader: PlistConfigurationLoaderProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = ProfileSettingsInteractor(
+            networkService: networkService!,
+            authService: authService!,
+            userProfileObserver: userProfileObserver,
+            plistLoader: plistLoader!
+        )
+
         let router = ProfileRouter()
         let view = ProfileSettingsView()
         let presenter = ProfileSettingsPresenter(view: view, interactor: interactor, router: router)
@@ -72,7 +102,16 @@ final class SceneBuilder: SceneBuilderProtocol {
 
     // MARK: - SecondaryScenes
     static func buildMovieListScene(listType: MovieListType) -> UIViewController {
-        let interactor = MovieListInteractor()
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let genreRepository: GenreRepositoryProtocol? = ServiceLocator.shared.getService()
+        let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = MovieListInteractor(
+            networkService: networkService!,
+            genreRepository: genreRepository!,
+            movieRepository: movieRepository!
+        )
+
         let router = MovieListRouter()
         let view = MovieListView()
         let presenter = MovieListPresenter(view: view, interactor: interactor, router: router)
@@ -85,7 +124,15 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildMovieDetailsScene(for movie: MovieProtocol) -> UIViewController {
-        let interactor = MovieDetailsInteractor(movie: movie)
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = MovieDetailsInteractor(
+            movie: movie,
+            networkService: networkService!,
+            movieRepository: movieRepository!
+        )
+
         let router = MovieDetailsRouter()
         let view = MovieDetailsView()
         let presenter = MovieDetailsPresenter(view: view, interactor: interactor, router: router)
@@ -98,7 +145,13 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildPersonDetailsScene(for personID: Int) -> UIViewController {
-        let interactor = PersonDetailsInteractor(personID: personID)
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = PersonDetailsInteractor(
+            personID: personID,
+            networkService: networkService!
+        )
+
         let router = PersonDetailsRouter()
         let view = PersonDetailsView()
         let presenter = PersonDetailsPresenter(view: view, interactor: interactor, router: router)
@@ -118,7 +171,16 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildEditProfileScene() -> UIViewController {
-        let interactor = EditProfileInteractor()
+        let profileDataStoreService: ProfileDataStoreServiceProtocol? = ServiceLocator.shared.getService()
+        let authService: AuthServiceProtocol? = ServiceLocator.shared.getService()
+        let profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = EditProfileInteractor(
+            profileDataStoreService: profileDataStoreService!,
+            authService: authService!,
+            profileDocumentsStoreService: profileDocumentsStoreService!
+        )
+
         let router = EditProfileRouter()
         let view = EditProfileView()
         let presenter = EditProfilePresenter(view: view, interactor: interactor, router: router)
@@ -144,7 +206,14 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildWishlistScene() -> UIViewController {
-        let interactor = WishlistInteractor()
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = WishlistInteractor(
+            movieRepository: movieRepository!,
+            provider: networkService!.getProvider()
+        )
+
         let router = WishlistRouter()
         let view = WishlistView()
         let presenter = WishlistPresenter(view: view, interactor: interactor, router: router)
@@ -159,7 +228,10 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildSignInScene() -> UIViewController {
-        let interactor = LoginInteractor()
+        let authService: AuthServiceProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = LoginInteractor(authService: authService!)
+
         let router = LoginRouter()
         let view = LoginView()
         let presenter = LoginPresenter(view: view, interactor: interactor, router: router)
@@ -175,7 +247,14 @@ final class SceneBuilder: SceneBuilderProtocol {
     }
 
     static func buildSignUpScene() -> UIViewController {
-        let interactor = SignUpInteractor()
+        let authService: AuthServiceProtocol? = ServiceLocator.shared.getService()
+        let profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol? = ServiceLocator.shared.getService()
+
+        let interactor = SignUpInteractor(
+            authService: authService!,
+            profileDocumentsStoreService: profileDocumentsStoreService!
+        )
+
         let router = SignUpRouter()
         let view = SignUpView()
         let presenter = SignUpPresenter(view: view, interactor: interactor, router: router)

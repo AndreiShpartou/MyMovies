@@ -23,10 +23,10 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
 
     // MARK: - Init
     init(
-        networkService: NetworkServiceProtocol = NetworkService.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository(),
-        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        networkService: NetworkServiceProtocol,
+        genreRepository: GenreRepositoryProtocol,
+        movieRepository: MovieRepositoryProtocol,
+        userProfileObserver: UserProfileObserverProtocol
     ) {
         self.networkService = networkService
         self.genreRepository = genreRepository

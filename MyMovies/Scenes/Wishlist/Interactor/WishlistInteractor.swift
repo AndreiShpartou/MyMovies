@@ -16,8 +16,8 @@ class WishlistInteractor: WishlistInteractorProtocol {
 
     // MARK: - Init
     init(
-        movieRepository: MovieRepositoryProtocol = MovieRepository(),
-        provider: Provider = NetworkService.shared.getProvider()
+        movieRepository: MovieRepositoryProtocol,
+        provider: Provider
     ) {
         self.movieRepository = movieRepository
         self.provider = provider

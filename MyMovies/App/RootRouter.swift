@@ -25,9 +25,12 @@ final class RootRouter: RootRouterProtocol {
             networkHelper: NetworkHelper.shared,
             plistLoader: PlistConfigurationLoader()
         )
+        // Setup API depends on user location
         AppConfigurationManager.shared.setupMainConfiguration()
+        // Cache configuration
         AppConfigurationManager.shared.setupCacheConfiguration()
-        AppConfigurationManager.shared.setupFirebaseConfiguration()
+        // Set up default services via ServiceLocator
+        AppConfigurationManager.shared.configureDefaultServices()
 
         // Check if user has seen onboarding
         let hasSeenOnboardingKey = "hasSeenOnboarding"
@@ -65,7 +68,18 @@ final class RootRouter: RootRouterProtocol {
 
     // Background data prefetching.
     private static func backgroundPrefetchData() {
-        prefetchInteractor = MainInteractor()
+        let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let genreRepository: GenreRepositoryProtocol? = ServiceLocator.shared.getService()
+        let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
+        let userProfileObserver: UserProfileObserverProtocol? = ServiceLocator.shared.getService()
+
+        prefetchInteractor = MainInteractor(
+            networkService: networkService!,
+            genreRepository: genreRepository!,
+            movieRepository: movieRepository!,
+            userProfileObserver: userProfileObserver!
+        )
+
         DispatchQueue.global(qos: .background).async {
             prefetchInteractor?.prefetchData()
         }

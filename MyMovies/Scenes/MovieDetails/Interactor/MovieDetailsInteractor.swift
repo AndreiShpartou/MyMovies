@@ -18,8 +18,8 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     // MARK: - Init
     init(
         movie: MovieProtocol,
-        networkService: NetworkServiceProtocol = NetworkService.shared,
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        networkService: NetworkServiceProtocol,
+        movieRepository: MovieRepositoryProtocol
     ) {
         self.movie = movie
         self.networkService = networkService

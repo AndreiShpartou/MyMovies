@@ -17,9 +17,9 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
     // MARK: - Init
     init(
-        networkService: NetworkServiceProtocol = NetworkService.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        networkService: NetworkServiceProtocol,
+        genreRepository: GenreRepositoryProtocol,
+        movieRepository: MovieRepositoryProtocol
     ) {
         self.networkService = networkService
         self.genreRepository = genreRepository

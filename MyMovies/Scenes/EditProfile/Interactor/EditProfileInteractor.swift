@@ -19,9 +19,9 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
 
     // MARK: - Init
     init(
-        profileDataStoreService: ProfileDataStoreServiceProtocol = CloudinaryService(),
-        authService: AuthServiceProtocol = FirebaseAuthService(),
-        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol = FirebaseFirestoreService()
+        profileDataStoreService: ProfileDataStoreServiceProtocol,
+        authService: AuthServiceProtocol,
+        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol
     ) {
         self.profileDataStoreService = profileDataStoreService
         self.authService = authService

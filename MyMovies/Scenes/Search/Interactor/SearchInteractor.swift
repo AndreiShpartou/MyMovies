@@ -18,9 +18,9 @@ class SearchInteractor: SearchInteractorProtocol {
     private var currentSearchToken: UUID?
 
     init(
-        networkService: NetworkServiceProtocol = NetworkService.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        networkService: NetworkServiceProtocol,
+        genreRepository: GenreRepositoryProtocol,
+        movieRepository: MovieRepositoryProtocol
     ) {
         self.networkService = networkService
         self.genreRepository = genreRepository

@@ -15,8 +15,8 @@ final class SignUpInteractor: SignUpInteractorProtocol {
 
     // MARK: - Init
     init(
-        authService: AuthServiceProtocol = FirebaseAuthService(),
-        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol = FirebaseFirestoreService(),
+        authService: AuthServiceProtocol,
+        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol,
         presenter: SignUpInteractorOutputProtocol? = nil
     ) {
         self.authService = authService

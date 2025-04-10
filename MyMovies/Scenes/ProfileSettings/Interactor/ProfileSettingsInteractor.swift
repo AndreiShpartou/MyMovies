@@ -20,19 +20,19 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     private let userProfileObserver: UserProfileObserverProtocol
 
     private var settingsSections: [ProfileSettingsSection] = []
-    private var plistLoader: PlistConfigurationLoaderProtocol?
+    private var plistLoader: PlistConfigurationLoaderProtocol
 
     // MARK: - Init
     init(
-        networkService: NetworkServiceProtocol = NetworkService.shared,
-        authService: AuthServiceProtocol = FirebaseAuthService(),
-        plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader(),
-        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        networkService: NetworkServiceProtocol,
+        authService: AuthServiceProtocol,
+        userProfileObserver: UserProfileObserverProtocol,
+        plistLoader: PlistConfigurationLoaderProtocol
     ) {
         self.networkService = networkService
         self.authService = authService
-        self.plistLoader = plistLoader
         self.userProfileObserver = userProfileObserver
+        self.plistLoader = plistLoader
     }
 
     // MARK: - ProfileSettingsInteractorProtocol
@@ -57,8 +57,8 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     }
 
     func fetchDataForGeneralTextScene(for key: String) {
-        let details = plistLoader?.loadGeneralTextSceneData(for: key)
-        presenter?.didFetchDataForGenerelTextScene(labelText: details?.labelText, textViewText: details?.textViewText, title: details?.title)
+        let details = plistLoader.loadGeneralTextSceneData(for: key)
+        presenter?.didFetchDataForGenerelTextScene(labelText: details.labelText, textViewText: details.textViewText, title: details.title)
     }
 
     func getSettingsSectionItem(at indexPath: IndexPath) -> ProfileSettingsItem {

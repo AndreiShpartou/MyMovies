@@ -12,5 +12,5 @@ protocol AppConfigurationManagerProtocol {
     func configure(networkHelper: NetworkHelperProtocol, plistLoader: PlistConfigurationLoaderProtocol)
     func setupCacheConfiguration()
     func setupMainConfiguration()
-    func setupFirebaseConfiguration()
+    func configureDefaultServices()
 }

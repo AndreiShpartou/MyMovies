@@ -13,7 +13,7 @@ final class LoginInteractor: LoginInteractorProtocol {
     private let authService: AuthServiceProtocol
 
     init(
-        authService: AuthServiceProtocol = FirebaseAuthService(),
+        authService: AuthServiceProtocol,
         presenter: LoginInteractorOutputProtocol? = nil
     ) {
         self.authService = authService
