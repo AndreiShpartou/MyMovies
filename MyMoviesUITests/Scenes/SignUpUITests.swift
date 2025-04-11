@@ -31,6 +31,7 @@ final class SignUpUITests: XCTestCase {
         
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments.append("UITesting")
         app.launch()
     }
 
@@ -39,6 +40,6 @@ final class SignUpUITests: XCTestCase {
     }
 
     func testSignUp_Success() {
-        
+                        
     }
 }

@@ -15,7 +15,6 @@ final class SignUpInteractorTests: XCTestCase {
     var mockPresenter: MockSignUpPresenter!
     var mockAuthService: MockAuthService!
     var mockProfileDocumentsStoreService: MockProfileDocumentsStoreService!
-    
 
     override func setUp() {
         super.setUp()

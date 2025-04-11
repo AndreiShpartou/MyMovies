@@ -4,20 +4,18 @@
 //
 //  Created by Andrei Shpartou on 07/04/2025.
 //
-
-import ObjectiveC
-@testable import MyMovies
+import Foundation
 
 // MARK: - MockAuthService
 final class MockAuthService: AuthServiceProtocol {
     var currentUser: UserProfileProtocol?
-    
-    var didCallCreateUser: Bool = false
-    var didCallSignIn: Bool = false
-    var didCallSignOut: Bool = false
+
+    var didCallCreateUser = false
+    var didCallSignIn = false
+    var didCallSignOut = false
     var capturedEmail: String?
     var capturedPassword: String?
-    
+
     var shouldFailOnCreateUser = false
     var shouldFailOnSignIn = false
     var shouldFailOnSignOut = false
@@ -27,7 +25,7 @@ final class MockAuthService: AuthServiceProtocol {
         didCallCreateUser = true
         capturedEmail = email
         capturedPassword = password
-        
+
         if shouldFailOnCreateUser {
             completion(.failure(AppError.customError(message: "Failed to create user", comment: "")))
         } else {
@@ -39,17 +37,17 @@ final class MockAuthService: AuthServiceProtocol {
         didCallSignIn = true
         capturedEmail = email
         capturedPassword = password
-        
+
         if shouldFailOnSignIn {
             completion(.failure(AppError.customError(message: "Failed to sign in", comment: "")))
         } else {
             completion(.success(UserProfile(id: "Mock_id", email: email, name: "MockUserName")))
         }
     }
-    
+
     func signOut() throws {
         didCallSignOut = true
-        
+
         if shouldFailOnSignOut {
             throw AppError.customError(message: "Failed to sign out", comment: "")
         }

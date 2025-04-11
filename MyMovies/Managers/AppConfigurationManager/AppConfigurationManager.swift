@@ -75,6 +75,12 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         ServiceLocator.shared.addService(service: MovieRepository() as MovieRepositoryProtocol)
         // Utilities
         ServiceLocator.shared.addService(service: PlistConfigurationLoader() as PlistConfigurationLoaderProtocol)
+
+        // UITests mocking
+        if ProcessInfo.processInfo.arguments.contains("UITesting") {
+            ServiceLocator.shared.addService(service: MockAuthService() as AuthServiceProtocol)
+            ServiceLocator.shared.addService(service: MockProfileDocumentsStoreService() as ProfileDocumentsStoreServiceProtocol)
+        }
     }
 
     // MARK: - Private
