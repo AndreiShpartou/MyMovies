@@ -1708,8 +1708,8 @@
 				6CBCD4B12C578F8E00609EDF /* Extensions.swift */,
 				6C9CF9082D9C612E0043CEFE /* MainAppSections.swift */,
 				6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */,
-				6CBCD4B02C578F8300609EDF /* Helpers */,
 				6C63652E2DAE3B7600DA6522 /* AccessibilityIdentifier.swift */,
+				6CBCD4B02C578F8300609EDF /* Helpers */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1757,16 +1757,8 @@
 			children = (
 				6C9CF9302DA145F50043CEFE /* Login */,
 				6C9CF9312DA146090043CEFE /* SignUp */,
-				6C9CF94D2DA3C29E0043CEFE /* Mocks */,
 			);
 			path = UserProfile;
-			sourceTree = "<group>";
-		};
-		6C9CF94D2DA3C29E0043CEFE /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Mocks;
 			sourceTree = "<group>";
 		};
 		6CADCC512CE7582C003C06A3 /* DataPersistenceManager */ = {
