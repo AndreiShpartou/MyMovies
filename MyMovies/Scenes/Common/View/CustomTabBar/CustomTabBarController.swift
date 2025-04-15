@@ -30,6 +30,7 @@ extension CustomTabBarController {
     private func setupController() {
         // Replace the system tabBar with the custom one
         setValue(customTabBar, forKey: "tabBar")
+        customTabBar.accessibilityIdentifier = AccessibilityIdentifier.tabBar
 
         let homeVC = SceneBuilder.buildHomeScene()
         let searchVC = SceneBuilder.buildSearchScene()
@@ -47,6 +48,7 @@ extension CustomTabBarController {
         let searchItem = CustomTabBarItem(icon: UIImage(systemName: "magnifyingglass"), title: "Search")
         let wishlistItem = CustomTabBarItem(icon: UIImage(systemName: "heart"), title: "Wishlist")
         let profileItem = CustomTabBarItem(icon: UIImage(systemName: "person"), title: "Profile")
+        profileItem.accessibilityIdentifier = AccessibilityIdentifier.profileItem
 
         let items = [homeItem, searchItem, wishlistItem, profileItem]
         for (index, item) in items.enumerated() {

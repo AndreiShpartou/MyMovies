@@ -16,7 +16,7 @@ final class MockAuthService: AuthServiceProtocol {
     var capturedEmail: String?
     var capturedPassword: String?
 
-    var shouldFailOnCreateUser = false
+    var shouldFailOnCreateUser = ProcessInfo.processInfo.arguments.contains("MockAuthService_shouldFailOnCreateUser")
     var shouldFailOnSignIn = false
     var shouldFailOnSignOut = false
 

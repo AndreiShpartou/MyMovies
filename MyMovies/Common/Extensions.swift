@@ -213,7 +213,8 @@ extension UITextField {
         keyboardType: UIKeyboardType = .default,
         autocapitalizationType: UITextAutocapitalizationType = .none,
         isSecureTextEntry: Bool = false,
-        cornerRadius: CGFloat = 30
+        cornerRadius: CGFloat = 30,
+        accessibilityIdentifier: String? = nil
     ) -> UITextField {
         let textField = UITextField()
         textField.backgroundColor = .primaryBackground
@@ -224,6 +225,7 @@ extension UITextField {
         textField.autocapitalizationType = autocapitalizationType
         textField.autocorrectionType = .no
         textField.isSecureTextEntry = isSecureTextEntry
+        textField.accessibilityIdentifier = accessibilityIdentifier
         // Placeholder
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder ?? "",
@@ -322,7 +324,8 @@ extension UIButton {
         backgroundColor: UIColor? = nil,
         cornerRadius: CGFloat = 0,
         action: Selector,
-        target: Any?
+        target: Any?,
+        accessibilityIdentifier: String? = nil
     ) {
         self.init(type: .system)
         self.setTitle(title, for: .normal)
@@ -332,6 +335,7 @@ extension UIButton {
         self.titleLabel?.textAlignment = .center
         self.backgroundColor = backgroundColor
         self.layer.cornerRadius = cornerRadius
+        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.addTarget(target, action: action, for: .touchUpInside)
     }

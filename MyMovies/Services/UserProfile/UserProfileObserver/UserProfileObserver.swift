@@ -30,8 +30,8 @@ final class UserProfileObserver: UserProfileObserverProtocol {
     private var profileDocumentsListener: NSObjectProtocol?
 
     init(
-        authService: AuthServiceProtocol = FirebaseAuthService(),
-        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol = FirebaseFirestoreService()
+        authService: AuthServiceProtocol,
+        profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol
     ) {
         self.authService = authService
         self.profileDocumentsStoreService = profileDocumentsStoreService

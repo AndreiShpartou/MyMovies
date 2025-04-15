@@ -77,10 +77,7 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         ServiceLocator.shared.addService(service: PlistConfigurationLoader() as PlistConfigurationLoaderProtocol)
 
         // UITests mocking
-        if ProcessInfo.processInfo.arguments.contains("UITesting") {
-            ServiceLocator.shared.addService(service: MockAuthService() as AuthServiceProtocol)
-            ServiceLocator.shared.addService(service: MockProfileDocumentsStoreService() as ProfileDocumentsStoreServiceProtocol)
-        }
+        configureUITesting()
     }
 
     // MARK: - Private
@@ -115,7 +112,16 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         debugPrint("Configuration set up for country: \(country.rawValue)")
     }
 
-    func setupFirebaseConfiguration() {
+    private func setupFirebaseConfiguration() {
         FirebaseApp.configure()
+    }
+
+    private func configureUITesting() {
+        guard ProcessInfo.processInfo.arguments.contains("UITesting") else {
+            return
+        }
+
+        ServiceLocator.shared.addService(service: MockAuthService() as AuthServiceProtocol)
+        ServiceLocator.shared.addService(service: MockProfileDocumentsStoreService() as ProfileDocumentsStoreServiceProtocol)
     }
 }

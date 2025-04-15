@@ -28,7 +28,12 @@ final class SceneBuilder: SceneBuilderProtocol {
         let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
         let genreRepository: GenreRepositoryProtocol? = ServiceLocator.shared.getService()
         let movieRepository: MovieRepositoryProtocol? = ServiceLocator.shared.getService()
-        let userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        let authService: AuthServiceProtocol? = ServiceLocator.shared.getService()
+        let profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol? = ServiceLocator.shared.getService()
+        let userProfileObserver: UserProfileObserverProtocol = UserProfileObserver(
+            authService: authService!,
+            profileDocumentsStoreService: profileDocumentsStoreService!
+        )
 
         let interactor = MainInteractor(
             networkService: networkService!,
@@ -77,7 +82,11 @@ final class SceneBuilder: SceneBuilderProtocol {
     static func buildProfileScene() -> UIViewController {
         let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
         let authService: AuthServiceProtocol? = ServiceLocator.shared.getService()
-        let userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        let profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol? = ServiceLocator.shared.getService()
+        let userProfileObserver: UserProfileObserverProtocol = UserProfileObserver(
+            authService: authService!,
+            profileDocumentsStoreService: profileDocumentsStoreService!
+        )
         let plistLoader: PlistConfigurationLoaderProtocol? = ServiceLocator.shared.getService()
 
         let interactor = ProfileSettingsInteractor(

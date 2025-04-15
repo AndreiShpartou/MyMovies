@@ -81,6 +81,7 @@
 		6C63652B2DA99B6800DA6522 /* MockProfileDataStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF9502DA3C8400043CEFE /* MockProfileDataStoreService.swift */; };
 		6C63652C2DA99B6C00DA6522 /* MockProfileDocumentsStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF94E2DA3C8350043CEFE /* MockProfileDocumentsStoreService.swift */; };
 		6C63652D2DA99B6F00DA6522 /* MockAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF94A2DA3C0390043CEFE /* MockAuthService.swift */; };
+		6C63652F2DAE3B7600DA6522 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63652E2DAE3B7600DA6522 /* AccessibilityIdentifier.swift */; };
 		6C70EB272C6CB3CA004DA1A9 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */; };
 		6C74C91B2C738D200035BD14 /* NetworkHelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */; };
 		6C74C91E2C738D720035BD14 /* AppConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */; };
@@ -375,6 +376,7 @@
 		6C59AF592C552066006A7BDB /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		6C59AF5E2C553ACF006A7BDB /* MovieListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListRouter.swift; sourceTree = "<group>"; };
 		6C59AF602C553B2F006A7BDB /* MovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListPresenter.swift; sourceTree = "<group>"; };
+		6C63652E2DAE3B7600DA6522 /* AccessibilityIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifier.swift; sourceTree = "<group>"; };
 		6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelperProtocol.swift; sourceTree = "<group>"; };
 		6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationProtocol.swift; sourceTree = "<group>"; };
@@ -1707,6 +1709,7 @@
 				6C9CF9082D9C612E0043CEFE /* MainAppSections.swift */,
 				6C9F5F4A2D4BFD0100C722F1 /* AppError.swift */,
 				6CBCD4B02C578F8300609EDF /* Helpers */,
+				6C63652E2DAE3B7600DA6522 /* AccessibilityIdentifier.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2460,6 +2463,7 @@
 				6C9B29CA2D672460000A5EF8 /* OnboardingPresenterProtocol.swift in Sources */,
 				6CC604C12C557BFA00241EF2 /* MovieDetailsInteractor.swift in Sources */,
 				6CBB028B2D9C1C1300CD4714 /* UserProfileObserver.swift in Sources */,
+				6C63652F2DAE3B7600DA6522 /* AccessibilityIdentifier.swift in Sources */,
 				6CCA042E2D9417AB00CA0F1C /* LoginPresenterProtocol.swift in Sources */,
 				6C4148382C74715E004D55BA /* ResponseMapperProtocol.swift in Sources */,
 				6C59AF5F2C553ACF006A7BDB /* MovieListRouter.swift in Sources */,

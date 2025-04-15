@@ -21,7 +21,8 @@ final class UIPasswordTextField: UITextField {
 
     convenience init(
         placeholder: String?,
-        cornerRadius: CGFloat = Sizes.Large.cornerRadius
+        cornerRadius: CGFloat = Sizes.Large.cornerRadius,
+        accesssibilityIdentifier: String? = nil
     ) {
         self.init()
 
@@ -36,6 +37,7 @@ final class UIPasswordTextField: UITextField {
         self.returnKeyType = .done
         self.keyboardAppearance = .dark
         self.autocorrectionType = .no
+        self.accessibilityIdentifier = accesssibilityIdentifier
 
         self.attributedPlaceholder = NSAttributedString(
             string: placeholder ?? "",

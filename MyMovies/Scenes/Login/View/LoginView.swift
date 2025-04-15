@@ -102,7 +102,8 @@ final class LoginView: UIView, LoginViewProtocol {
         backgroundColor: .tintColor,
         cornerRadius: Sizes.Medium.cornerRadius,
         action: #selector(didTapSignUpButton),
-        target: self
+        target: self,
+        accessibilityIdentifier: AccessibilityIdentifier.loginScreenSignUpButton
     )
 
     // MARK: - Init
