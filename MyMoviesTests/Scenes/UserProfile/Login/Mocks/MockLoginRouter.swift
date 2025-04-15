@@ -25,10 +25,6 @@ final class MockLoginRouter: LoginRouterProtocol {
         didCallNavigateToSignUp = true
     }
     
-    func navigateToMainFlow() {
-        didCallNavigateToMainFlow = true
-    }
-    
     func dismissScene() {
         didCallDismissScene = true
     }

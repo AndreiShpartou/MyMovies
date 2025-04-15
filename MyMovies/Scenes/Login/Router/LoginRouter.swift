@@ -21,12 +21,6 @@ final class LoginRouter: LoginRouterProtocol {
         viewController?.navigationController?.pushViewController(signUpVC, animated: true)
     }
 
-    func navigateToMainFlow() {
-        let window = viewController?.view.window
-        // Switch to main flow
-        RootRouter.switchToMainFlow(in: window)
-    }
-
     func dismissScene() {
         viewController?.dismiss(animated: true)
     }
