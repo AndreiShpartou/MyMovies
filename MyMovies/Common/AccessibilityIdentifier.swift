@@ -11,7 +11,12 @@ enum AccessibilityIdentifier {
     static let tabBar = "tabBar"
     static let profileItem = "profileItem"
     static let profileSettingsSignInButton = "profileSettingsSignInButton"
+    // Login
+    static let loginEmailTextField = "loginEmailTextField"
+    static let loginPasswordTextField = "loginPasswordTextField"
+    static let loginScreenSignInButton = "loginScreenSignInButton"
     static let loginScreenSignUpButton = "loginScreenSignUpButton"
+    // SignUp
     static let signupFullNameTextField = "signupFullNameTextField"
     static let signupEmailTextField = "signupEmailTextField"
     static let signupPasswordTextField = "signupPasswordTextField"

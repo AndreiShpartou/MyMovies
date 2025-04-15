@@ -82,6 +82,7 @@
 		6C63652C2DA99B6C00DA6522 /* MockProfileDocumentsStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF94E2DA3C8350043CEFE /* MockProfileDocumentsStoreService.swift */; };
 		6C63652D2DA99B6F00DA6522 /* MockAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9CF94A2DA3C0390043CEFE /* MockAuthService.swift */; };
 		6C63652F2DAE3B7600DA6522 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63652E2DAE3B7600DA6522 /* AccessibilityIdentifier.swift */; };
+		6C6365312DAE680700DA6522 /* LoginUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365302DAE680700DA6522 /* LoginUITests.swift */; };
 		6C70EB272C6CB3CA004DA1A9 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */; };
 		6C74C91B2C738D200035BD14 /* NetworkHelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */; };
 		6C74C91E2C738D720035BD14 /* AppConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */; };
@@ -377,6 +378,7 @@
 		6C59AF5E2C553ACF006A7BDB /* MovieListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListRouter.swift; sourceTree = "<group>"; };
 		6C59AF602C553B2F006A7BDB /* MovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListPresenter.swift; sourceTree = "<group>"; };
 		6C63652E2DAE3B7600DA6522 /* AccessibilityIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifier.swift; sourceTree = "<group>"; };
+		6C6365302DAE680700DA6522 /* LoginUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUITests.swift; sourceTree = "<group>"; };
 		6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelperProtocol.swift; sourceTree = "<group>"; };
 		6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationProtocol.swift; sourceTree = "<group>"; };
@@ -1669,6 +1671,7 @@
 			isa = PBXGroup;
 			children = (
 				6C9CF9562DA79FF60043CEFE /* SignUpUITests.swift */,
+				6C6365302DAE680700DA6522 /* LoginUITests.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -2494,6 +2497,7 @@
 				6C9CF9572DA79FF60043CEFE /* SignUpUITests.swift in Sources */,
 				6C9CF9232D9FD6490043CEFE /* MyMoviesUITestsLaunchTests.swift in Sources */,
 				6C9CF9212D9FD6490043CEFE /* MyMoviesUITests.swift in Sources */,
+				6C6365312DAE680700DA6522 /* LoginUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
