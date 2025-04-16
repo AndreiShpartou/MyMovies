@@ -53,6 +53,9 @@ final class LoginPresenterTests: XCTestCase {
     }
     
     func testDidSignInSuccessfully_ShouldHideLoading() {
+        // given
+        // Sign in was successful
+        
         // when
         presenter.didSignInSuccessfully()
         
