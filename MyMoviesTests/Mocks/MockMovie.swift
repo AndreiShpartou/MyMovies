@@ -87,7 +87,7 @@ struct MockMovie: MovieProtocol {
 
         private(set) var rawName: String?
 
-        init(id: Int? = nil, name: String?) {
+        init(id: Int? = 0, name: String? = "MockGenre") {
             self.id = id
             self.rawName = name
         }
@@ -104,9 +104,9 @@ struct MockMovie: MovieProtocol {
     }
 
     struct Person: PersonProtocol {
-        var id: Int
+        var id: Int = 0
         var photo: String?
-        var name: String
+        var name: String = "MockPerson"
         var profession: String?
         var popularity: Float?
     }
