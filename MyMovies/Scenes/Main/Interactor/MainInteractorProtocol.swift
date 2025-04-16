@@ -11,14 +11,9 @@ protocol MainInteractorProtocol: AnyObject {
     var presenter: MainInteractorOutputProtocol? { get set }
 
     func fetchUserProfile()
-    func fetchUpcomingMovies()
     func fetchMovieGenres()
-    func fetchPopularMovies()
-    func fetchTopRatedMovies()
-    func fetchTheHighestGrossingMovies()
-    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol)
-    func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol)
-    func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol)
+    func fetchMovies(with type: MovieListType)
+    func fetchMoviesByGenre(_ genre: GenreProtocol, listType: MovieListType)
 }
 
 protocol PrefetchInteractorProtocol: AnyObject {
@@ -26,12 +21,14 @@ protocol PrefetchInteractorProtocol: AnyObject {
 }
 
 protocol MainInteractorOutputProtocol: AnyObject, UserProfileObserverDelegate {
-    func didFetchUpcomingMovies(_ movies: [MovieProtocol])
-    func didFetchMovieGenres(_ genres: [GenreProtocol])
-    func didFetchPopularMovies(_ movies: [MovieProtocol])
-    func didFetchTopRatedMovies(_ movies: [MovieProtocol])
-    func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol])
     func didFetchUserProfile(_ profile: UserProfileProtocol)
+    func didFetchMovieGenres(_ genres: [GenreProtocol])
+    func didFetchMovies(_ movies: [MovieProtocol], for type: MovieListType)
+//    func didFetchUpcomingMovies(_ movies: [MovieProtocol])
+//    func didFetchPopularMovies(_ movies: [MovieProtocol])
+//    func didFetchTopRatedMovies(_ movies: [MovieProtocol])
+//    func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol])
+
     func didBeginProfileUpdate()
     func didLogOut()
     func didFailToFetchData(with error: Error)

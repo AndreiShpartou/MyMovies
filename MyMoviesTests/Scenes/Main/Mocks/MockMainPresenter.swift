@@ -40,6 +40,10 @@ final class MockMainPresenter: MainInteractorOutputProtocol {
     func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
         didCallDidFetchTheHighestGrossingMoviesCallBack?(movies)
     }
+    
+    func didFetchMovies(_ movies: [MyMovies.MovieProtocol], for type: MyMovies.MovieListType) {
+        //
+    }
 }
 
 extension MockMainPresenter: UserProfileObserverDelegate {

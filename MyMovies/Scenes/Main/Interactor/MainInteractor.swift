@@ -35,77 +35,21 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         self.provider = networkService.getProvider()
     }
 
-    // MARK: - UpcomingMovies
-    // Fetch collection of movie premiers
-    func fetchUpcomingMovies() {
-        fetchMovies(type: .upcomingMovies)
+    // MARK: - Movies
+    func fetchMovies(with type: MovieListType) {
+        fetchMovies(type: type)
     }
 
-    // MARK: - PopularMovies
-    func fetchPopularMovies() {
-        fetchMovies(type: .popularMovies)
-    }
-
-    // MARK: - TopRatedMovies
-    func fetchTopRatedMovies() {
-        fetchMovies(type: .topRatedMovies)
-    }
-
-    // MARK: - TheHighestGrossingMovies
-    func fetchTheHighestGrossingMovies() {
-        fetchMovies(type: .theHighestGrossingMovies)
-    }
-
-    // Get popular movies filtered by genre
-    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
-        // Show movies from storing for default genre
-        if genre.name == "All" {
-            fetchMovies(type: .popularMovies)
-
-            return
-        }
-
-        networkService.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .popularMovies, saveToStorage: false)
-        }
-    }
-
-    // Get top rated movies filtered by genre
-    func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol) {
-        // Show movies from storing for default genre
-        if genre.name == "All" {
-            fetchMovies(type: .topRatedMovies)
-
-            return
-        }
-
-        networkService.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .topRatedMovies, saveToStorage: false)
-        }
-    }
-
-    // Get the highest grossing movies filtered by genre
-    func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol) {
-        // Show movies from storing for default genre
-        if genre.name == "All" {
-            fetchMovies(type: .theHighestGrossingMovies)
-
-            return
-        }
-
-        networkService.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies, saveToStorage: false)
-        }
+    // Movies filtered by genre
+    func fetchMoviesByGenre(_ genre: GenreProtocol, listType: MovieListType) {
+        fetchMoviesByGenre(genre, type: listType)
     }
 
     // Prefetch
     func prefetchData() {
         fetchUserProfile()
         fetchMovieGenres()
-        fetchUpcomingMovies()
-        fetchPopularMovies()
-        fetchTopRatedMovies()
-        fetchTheHighestGrossingMovies()
+        [.upcomingMovies, .popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach { fetchMovies(type: $0) }
     }
 
     // MARK: - Genres
@@ -214,6 +158,19 @@ extension MainInteractor {
         }
     }
 
+    private func fetchMoviesByGenre(_ genre: GenreProtocol, type: MovieListType) {
+        // Show movies from storing for default genre
+        if genre.name == "All" {
+            fetchMovies(type: type)
+
+            return
+        }
+
+        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
+            self?.handleMovieFetchResult(result, fetchType: type, saveToStorage: false)
+        }
+    }
+
     // Centralized handling of movie fetch results
     private func handleMovieFetchResult(
         _ result: Result<[MovieProtocol], Error>,
@@ -241,18 +198,7 @@ extension MainInteractor {
     }
 
     private func presentMovies(_ movies: [MovieProtocol], for type: MovieListType) {
-        switch type {
-        case .upcomingMovies:
-            presenter?.didFetchUpcomingMovies(movies)
-        case .popularMovies:
-            presenter?.didFetchPopularMovies(movies)
-        case .topRatedMovies:
-            presenter?.didFetchTopRatedMovies(movies)
-        case .theHighestGrossingMovies:
-            presenter?.didFetchTheHighestGrossingMovies(movies)
-        default:
-            break
-        }
+        presenter?.didFetchMovies(movies, for: type)
     }
 
     private func saveMoviesToStorage(_ movies: [MovieProtocol], type: MovieListType) {

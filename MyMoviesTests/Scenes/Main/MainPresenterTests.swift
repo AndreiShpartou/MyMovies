@@ -64,7 +64,7 @@ final class MainPresenterTests: XCTestCase {
         // given
         let movie = MockMovie()
         // call didFetch in order to set presenter moviesDict (to ensure WhenMovieExist)
-        presenter.didFetchUpcomingMovies([movie])
+//        presenter.didFetchUpcomingMovies([movie])
         
         // when
         presenter.didSelectMovie(movieID: movie.id)

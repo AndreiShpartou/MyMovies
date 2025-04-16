@@ -29,6 +29,14 @@ final class MockMainInteractor: MainInteractorProtocol {
     
     
     // MARK: - MainInteractorProtocol
+    func fetchMovies(with type: MovieListType) {
+        //
+    }
+    
+    func fetchMoviesByGenre(_ genre: MyMovies.GenreProtocol, listType: MyMovies.MovieListType) {
+        //
+    }
+    
     func fetchUserProfile() {
         didCallFetchUserProfile = true
     }
