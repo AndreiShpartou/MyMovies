@@ -47,16 +47,16 @@ final class MainPresenterTests: XCTestCase {
         XCTAssertTrue(mockInteractor.didCallFetchMovieGenres, "Presenter should call interactor to fetch movie genres")
         XCTAssertEqual(mockView.loadingStates[.genres], true, "Loading indicator for genres section should be visible")
         // Upcoming movies
-        XCTAssertTrue(mockInteractor.didCallFetchUpcomingMovies, "Presenter should call interactor to fetch upcoming movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.upcomingMovies], true, "Presenter should call interactor to fetch upcoming movies")
         XCTAssertEqual(mockView.loadingStates[.upcomingMovies], true, "Loading indicator for upcoming movies section should be visible")
         // Popular movies
-        XCTAssertTrue(mockInteractor.didCallFetchPopularMovies, "Presenter should call interactor to fetch popular movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.popularMovies], true, "Presenter should call interactor to fetch popular movies")
         XCTAssertEqual(mockView.loadingStates[.popularMovies], true, "Loading indicator for popular movies section should be visible")
         // Top rated movies
-        XCTAssertTrue(mockInteractor.didCallFetchTopRatedMovies, "Presenter should call interactor to fetch top rated movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.topRatedMovies], true, "Presenter should call interactor to fetch top rated movies")
         XCTAssertEqual(mockView.loadingStates[.topRatedMovies], true, "Loading indicator for top rated movies section should be visible")
         // The highest grossing movies
-        XCTAssertTrue(mockInteractor.didCallFetchTheHighestGrossingMovies, "Presenter should call interactor to fetch highest grossing movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.theHighestGrossingMovies], true, "Presenter should call interactor to fetch highest grossing movies")
         XCTAssertEqual(mockView.loadingStates[.theHighestGrossingMovies], true, "Loading indicator for highest grossing movies section should be visible")
     }
 
@@ -64,7 +64,7 @@ final class MainPresenterTests: XCTestCase {
         // given
         let movie = MockMovie()
         // call didFetch in order to set presenter moviesDict (to ensure WhenMovieExist)
-//        presenter.didFetchUpcomingMovies([movie])
+        presenter.didFetchMovies([movie], for: .upcomingMovies)
         
         // when
         presenter.didSelectMovie(movieID: movie.id)
@@ -93,18 +93,18 @@ final class MainPresenterTests: XCTestCase {
         presenter.didSelectGenre(genre)
 
         // then
-        // Sections should be fetched with filtering and all loading indicators should be visible
+        // Sections should be fetched with genre filtering and all loading indicators should be visible
         // Popular movies
-        XCTAssertTrue(mockInteractor.didCallFetchPopularMoviesWithGenreFiltering, "Presenter should call interactor to fetch popular movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.popularMovies], true, "Presenter should call interactor to fetch popular movies")
         XCTAssertEqual(mockView.loadingStates[.popularMovies], true, "Loading indicator for popular movies section should be visible")
         // Top rated movies
-        XCTAssertTrue(mockInteractor.didCallFetchTopRatedMoviesWithGenreFiltering, "Presenter should call interactor to fetch top rated movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.topRatedMovies], true, "Presenter should call interactor to fetch top rated movies")
         XCTAssertEqual(mockView.loadingStates[.topRatedMovies], true, "Loading indicator for top rated movies section should be visible")
         // The highest grossing movies
-        XCTAssertTrue(mockInteractor.didCallFetchTheHighestGrossingMoviesWithGenreFiltering, "Presenter should call interactor to fetch highest grossing movies")
+        XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.theHighestGrossingMovies], true, "Presenter should call interactor to fetch highest grossing movies")
         XCTAssertEqual(mockView.loadingStates[.theHighestGrossingMovies], true, "Loading indicator for highest grossing movies section should be visible")
     }
-    
+
     func testDidTapSeeAll_ShouldNavigateToMovieList() {
         // given
         let listType: MovieListType = .upcomingMovies

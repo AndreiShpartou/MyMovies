@@ -47,6 +47,7 @@ final class MainPresenter: MainPresenterProtocol {
         [.upcomingMovies, .popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach {
             interactor.fetchMovies(with: $0)
         }
+        // User profile will be fetched automatically during profile observer setup (in the interactor)
     }
 
     func didSelectMovie(movieID: Int) {
@@ -84,17 +85,6 @@ final class MainPresenter: MainPresenterProtocol {
 
 // MARK: - MainInteractorOutputProtocol
 extension MainPresenter: MainInteractorOutputProtocol {
-    func didFetchUserProfile(_ profile: UserProfileProtocol) {
-        guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to load profile", underlying: nil))
-
-            return
-        }
-
-        view?.showUserProfile(profileViewModel)
-        setLoading(for: .userProfile, isLoading: false)
-    }
-    
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to map genres", underlying: nil))
@@ -119,6 +109,17 @@ extension MainPresenter: MainInteractorOutputProtocol {
         default:
             break
         }
+    }
+
+    func didFetchUserProfile(_ profile: UserProfileProtocol) {
+        guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to load profile", underlying: nil))
+
+            return
+        }
+
+        view?.showUserProfile(profileViewModel)
+        setLoading(for: .userProfile, isLoading: false)
     }
 
     func didBeginProfileUpdate() {
@@ -146,7 +147,7 @@ extension MainPresenter {
         // Notify the view
         view?.setLoadingIndicator(for: section, isVisible: isLoading)
     }
-    
+
     private func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
         guard let upcomingMovieViewModels = mapper.map(data: movies, to: [UpcomingMovieViewModel].self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to map upcoming movies", underlying: nil))

@@ -10,39 +10,20 @@ import Foundation
 
 // MARK: - MockPresenter
 final class MockMainPresenter: MainInteractorOutputProtocol {
-    var didCallDidFetchUpcomingMoviesCallBack: (([MovieProtocol]) -> Void)?
     var didCallDidFetchMovieGenresCallBack: (([GenreProtocol]) -> Void)?
-    var didCallDidFetchPopularMoviesCallBack: (([MovieProtocol]) -> Void)?
-    var didCallDidFetchTopRatedMoviesCallBack: (([MovieProtocol]) -> Void)?
-    var didCallDidFetchTheHighestGrossingMoviesCallBack: (([MovieProtocol]) -> Void)?
+    var didCallDidFetchMoviesCallBack: (([MovieProtocol]) -> Void)?
     var didCallDidFetchUserProfileCallBack: ((UserProfileProtocol) -> Void)?
-    var didCallDidBefinProfileUpdate: Bool = false
+    var didCallDidBeginProfileUpdate: Bool = false
     var didCallDidLogOut: Bool = false
     var didCallDidFailToFetchDataCallBack: ((Error) -> Void)?
     
     // MARK: - MainInteractorOutputProtocol
-    func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
-        didCallDidFetchUpcomingMoviesCallBack?(movies)
-    }
-    
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         didCallDidFetchMovieGenresCallBack?(genres)
     }
     
-    func didFetchPopularMovies(_ movies: [MovieProtocol]) {
-        didCallDidFetchPopularMoviesCallBack?(movies)
-    }
-    
-    func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
-        didCallDidFetchTopRatedMoviesCallBack?(movies)
-    }
-    
-    func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
-        didCallDidFetchTheHighestGrossingMoviesCallBack?(movies)
-    }
-    
-    func didFetchMovies(_ movies: [MyMovies.MovieProtocol], for type: MyMovies.MovieListType) {
-        //
+    func didFetchMovies(_ movies: [MovieProtocol], for type: MovieListType) {
+        didCallDidFetchMoviesCallBack?(movies)
     }
 }
 
@@ -52,7 +33,7 @@ extension MockMainPresenter: UserProfileObserverDelegate {
     }
     
     func didBeginProfileUpdate() {
-        didCallDidBefinProfileUpdate = true
+        didCallDidBeginProfileUpdate = true
     }
     func didLogOut() {
         didCallDidLogOut = true

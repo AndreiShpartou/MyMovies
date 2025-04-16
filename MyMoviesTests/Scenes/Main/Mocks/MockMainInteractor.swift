@@ -11,65 +11,30 @@ import Foundation
 // MARK: - MockInteractor
 final class MockMainInteractor: MainInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol?
-    
-    var didCallFetchUserProfile: Bool = false
-    var didCallFetchUpcomingMovies: Bool = false
+
+    var didCallFetchMoviesForType: [MovieListType: Bool] = [:]
     var didCallFetchMovieGenres: Bool = false
-    var didCallFetchPopularMovies: Bool = false
-    var didCallFetchTopRatedMovies: Bool = false
-    var didCallFetchTheHighestGrossingMovies: Bool = false
-    var didCallFetchPopularMoviesWithGenreFiltering: Bool = false
-    var didCallFetchTopRatedMoviesWithGenreFiltering: Bool = false
-    var didCallFetchTheHighestGrossingMoviesWithGenreFiltering: Bool = false
+    var didCallFetchUserProfile: Bool = false
 
     // MARK: - Init
     init(presenter: MainInteractorOutputProtocol? = nil) {
         self.presenter = presenter
     }
     
-    
     // MARK: - MainInteractorProtocol
-    func fetchMovies(with type: MovieListType) {
-        //
-    }
-    
-    func fetchMoviesByGenre(_ genre: MyMovies.GenreProtocol, listType: MyMovies.MovieListType) {
-        //
-    }
-    
-    func fetchUserProfile() {
-        didCallFetchUserProfile = true
-    }
-    
-    func fetchUpcomingMovies() {
-        didCallFetchUpcomingMovies = true
-    }
-    
     func fetchMovieGenres() {
         didCallFetchMovieGenres = true
     }
-    
-    func fetchPopularMovies() {
-        didCallFetchPopularMovies = true
+
+    func fetchMovies(with type: MovieListType) {
+        didCallFetchMoviesForType[type] = true
     }
     
-    func fetchTopRatedMovies() {
-        didCallFetchTopRatedMovies = true
+    func fetchMoviesByGenre(_ genre: GenreProtocol, listType: MovieListType) {
+        didCallFetchMoviesForType[listType] = true
     }
-    
-    func fetchTheHighestGrossingMovies() {
-        didCallFetchTheHighestGrossingMovies = true
-    }
-    
-    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
-        didCallFetchPopularMoviesWithGenreFiltering = true
-    }
-    
-    func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol) {
-        didCallFetchTopRatedMoviesWithGenreFiltering = true
-    }
-    
-    func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol) {
-        didCallFetchTheHighestGrossingMoviesWithGenreFiltering = true
+
+    func fetchUserProfile() {
+        didCallFetchUserProfile = true
     }
 }
