@@ -19,6 +19,8 @@ final class MockGenreRepository: GenreRepositoryProtocol {
     var fetchGenresShouldReturnError: Bool = false
     var saveGenresShouldReturnError: Bool = false
     
+    var stubbedGenres: [MockMovie.Genre] = []
+    
     // MARK: - GenreRepositoryProtocol
     func fetchGenres(provider: String) throws -> [GenreProtocol] {
         didCallFetchGenres = true
@@ -27,7 +29,7 @@ final class MockGenreRepository: GenreRepositoryProtocol {
         if fetchGenresShouldReturnError {
             throw NSError(domain: "fetchGenres Error", code: 0, userInfo: nil)
         } else {
-            return [MockMovie.Genre()]
+            return stubbedGenres
         }
     }
 

@@ -33,6 +33,8 @@ final class MockMovieRepository: MovieRepositoryProtocol {
     var fetchMoviesByGenreShouldReturnError: Bool = false
     var clearMoviesForListShouldReturnError: Bool = false
     var removeMovieFromListShouldReturnError: Bool = false
+    
+    var stubbedMovies: [MockMovie] = []
 
     // MARK: - MovieRepositoryProtocol
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -83,7 +85,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         if fetchMoviesByListShouldReturnError {
             throw NSError(domain: "fetchMoviesByList Error", code: 0, userInfo: nil)
         } else {
-            return [MockMovie()]
+            return stubbedMovies
         }
     }
     
@@ -96,7 +98,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         if fetchMoviesByGenreShouldReturnError {
             throw NSError(domain: "fetchMoviesByGenre Error", code: 0, userInfo: nil)
         } else {
-            return [MockMovie()]
+            return stubbedMovies
         }
     }
     

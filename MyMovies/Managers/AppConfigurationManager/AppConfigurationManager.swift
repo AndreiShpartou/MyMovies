@@ -67,8 +67,12 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         ServiceLocator.shared.addService(service: NetworkService.shared as NetworkServiceProtocol)
         // Auth and UserProfile data
         setupFirebaseConfiguration()
-        ServiceLocator.shared.addService(service: FirebaseAuthService() as AuthServiceProtocol)
-        ServiceLocator.shared.addService(service: FirebaseFirestoreService() as ProfileDocumentsStoreServiceProtocol)
+        let authService = FirebaseAuthService()
+        let profileDocumentsStoreService = FirebaseFirestoreService()
+        let userProfileObserver = UserProfileObserver(authService: authService, profileDocumentsStoreService: profileDocumentsStoreService)
+        ServiceLocator.shared.addService(service: authService as AuthServiceProtocol)
+        ServiceLocator.shared.addService(service: profileDocumentsStoreService as ProfileDocumentsStoreServiceProtocol)
+        ServiceLocator.shared.addService(service: userProfileObserver as UserProfileObserverProtocol)
         ServiceLocator.shared.addService(service: CloudinaryService() as ProfileDataStoreServiceProtocol)
         // CoreData
         ServiceLocator.shared.addService(service: GenreRepository() as GenreRepositoryProtocol)

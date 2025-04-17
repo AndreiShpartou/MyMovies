@@ -20,18 +20,21 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     private let movieRepository: MovieRepositoryProtocol
     private let userProfileObserver: UserProfileObserverProtocol
     private let provider: Provider
+    private let staleSeconds: TimeInterval
 
     // MARK: - Init
     init(
         networkService: NetworkServiceProtocol,
         genreRepository: GenreRepositoryProtocol,
         movieRepository: MovieRepositoryProtocol,
-        userProfileObserver: UserProfileObserverProtocol
+        userProfileObserver: UserProfileObserverProtocol,
+        staleSeconds: TimeInterval = 86400
     ) {
         self.networkService = networkService
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
         self.userProfileObserver = userProfileObserver
+        self.staleSeconds = staleSeconds
         self.provider = networkService.getProvider()
     }
 
@@ -81,16 +84,15 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
                 DispatchQueue.main.async {
                     self.presenter?.didFetchMovieGenres(genres)
                 }
+
                 // Save to CoreData
-                if let movieGenres = genres as? [Movie.Genre] {
-                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue) { result in
-                        switch result {
-                        case .success:
-                            break
-                        case .failure(let error):
-                            DispatchQueue.main.async {
-                                self.presenter?.didFailToFetchData(with: error)
-                            }
+                self.genreRepository.saveGenres(genres, provider: self.provider.rawValue) { result in
+                    switch result {
+                    case .success:
+                        break
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.presenter?.didFailToFetchData(with: error)
                         }
                     }
                 }
@@ -121,7 +123,7 @@ extension MainInteractor {
         let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
         let lastUpdated = UserDefaults.standard.double(forKey: lastUpdateKey)
         let now = Date().timeIntervalSince1970
-        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
+        let isStale = (now - lastUpdated) > (staleSeconds) // 24 hours in seconds
 
         // Check if there are any cached  CoreData movies if not stale
         if !isStale {
@@ -182,9 +184,7 @@ extension MainInteractor {
             networkService.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
                 guard let self = self else { return }
 
-                DispatchQueue.main.async {
-                    self.presentMovies(detailedMovies, for: fetchType)
-                }
+                self.presentMovies(detailedMovies, for: fetchType)
 
                 if saveToStorage {
                     self.saveMoviesToStorage(detailedMovies, type: fetchType)
@@ -198,26 +198,26 @@ extension MainInteractor {
     }
 
     private func presentMovies(_ movies: [MovieProtocol], for type: MovieListType) {
-        presenter?.didFetchMovies(movies, for: type)
+        DispatchQueue.main.async {
+            self.presenter?.didFetchMovies(movies, for: type)
+        }
     }
 
     private func saveMoviesToStorage(_ movies: [MovieProtocol], type: MovieListType) {
         // Save to CoreData
-        if let movies = movies as? [Movie] {
-            // Store movies with new list membership
-            movieRepository.storeMoviesForList(
-                movies,
-                provider: provider.rawValue,
-                listType: type.rawValue
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.presenter?.didFailToFetchData(with: error)
-                    }
-                default:
-                    break
+        // Store movies with new list membership
+        movieRepository.storeMoviesForList(
+            movies,
+            provider: provider.rawValue,
+            listType: type.rawValue
+        ) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
                 }
+            default:
+                break
             }
         }
 

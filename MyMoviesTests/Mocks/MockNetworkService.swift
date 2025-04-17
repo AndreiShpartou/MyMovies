@@ -28,7 +28,6 @@ final class MockNetworkService: NetworkServiceProtocol {
     var capturedMovies: [MovieProtocol]?
     var capturedMoviesIDs: [Int]?
     var capturedPersonID: Int?
-    var capturedGenreID: Int?
     var capturedGenre: GenreProtocol?
     var capturedReviews: [MovieReviewProtocol]?
     var capturedMovieID: Int?
@@ -45,6 +44,9 @@ final class MockNetworkService: NetworkServiceProtocol {
     var fetchGenresShouldReturnError: Bool = false
     var fetchSearchMoviesShouldReturnError: Bool = false
     var fetchSearchPersonsShouldReturnError: Bool = false
+    
+    var stubbedGenres: [GenreProtocol] = []
+    var stubbedMovies: [MovieProtocol] = []
 
     // MARK: - NetworkServiceProtocol
     // MARK: - Movies
@@ -55,7 +57,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchMoviesShouldReturnError {
             completion(.failure(NSError(domain: "fetchMovies Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockMovie()]))
+            completion(.success(stubbedMovies))
         }
     }
     
@@ -67,7 +69,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchMovieDetailsShouldReturnError {
             completion(.failure(NSError(domain: "fetchMovieDetails Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(MockMovie()))
+            completion(.success(movie))
         }
     }
     
@@ -76,7 +78,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         capturedMovies = movies
         capturedMovieListType = type
         
-        completion([MockMovie()])
+        completion(stubbedMovies)
     }
     
     func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
@@ -86,7 +88,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchMoviesDetailsByIDShouldReturnError {
             completion(.failure(NSError(domain: "fetchMoviesDetailsByID Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockMovie()]))
+            completion(.success(stubbedMovies))
         }
     }
     
@@ -98,7 +100,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchMoviesByGenreShouldReturnError {
             completion(.failure(NSError(domain: "fetchMoviesByGenre Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockMovie()]))
+            completion(.success(stubbedMovies))
         }
     }
     
@@ -121,7 +123,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchPersonRelatedMoviesShouldReturnError {
             completion(.failure(NSError(domain: "fetchPersonRelatedMovies Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockMovie()]))
+            completion(.success(stubbedMovies))
         }
     }
     
@@ -132,7 +134,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchGenresShouldReturnError {
             completion(.failure(NSError(domain: "fetchGenres Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockMovie.Genre()]))
+            completion(.success(stubbedGenres))
         }
         
     }
@@ -156,7 +158,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchSearchMoviesShouldReturnError {
             completion(.failure(NSError(domain: "fetchSearchMovies Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockMovie()]))
+            completion(.success(stubbedMovies))
         }
     }
     

@@ -31,6 +31,7 @@ final class MainPresenterTests: XCTestCase {
         mockView = nil
         mockInteractor = nil
         mockRouter = nil
+        presenter = nil
 
         super.tearDown()
     }
