@@ -106,6 +106,10 @@
 		6C6365602DB157B800DA6522 /* MockMovieDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63655F2DB157B800DA6522 /* MockMovieDetailsRouter.swift */; };
 		6C6365622DB1589000DA6522 /* MockMovieDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365612DB1589000DA6522 /* MockMovieDetailsPresenter.swift */; };
 		6C6365642DB15A5400DA6522 /* MockMovieDetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365632DB15A5400DA6522 /* MockMovieDetailsInteractor.swift */; };
+		6C6365682DB15BB600DA6522 /* MockMovieListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365672DB15BB600DA6522 /* MockMovieListView.swift */; };
+		6C63656A2DB15CF800DA6522 /* MockMovieListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365692DB15CF800DA6522 /* MockMovieListRouter.swift */; };
+		6C63656C2DB166FF00DA6522 /* MockMovieListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63656B2DB166FF00DA6522 /* MockMovieListPresenter.swift */; };
+		6C63656E2DB1686600DA6522 /* MockMovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63656D2DB1686600DA6522 /* MockMovieListInteractor.swift */; };
 		6C70EB272C6CB3CA004DA1A9 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */; };
 		6C74C91B2C738D200035BD14 /* NetworkHelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */; };
 		6C74C91E2C738D720035BD14 /* AppConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */; };
@@ -425,6 +429,10 @@
 		6C63655F2DB157B800DA6522 /* MockMovieDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDetailsRouter.swift; sourceTree = "<group>"; };
 		6C6365612DB1589000DA6522 /* MockMovieDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDetailsPresenter.swift; sourceTree = "<group>"; };
 		6C6365632DB15A5400DA6522 /* MockMovieDetailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieDetailsInteractor.swift; sourceTree = "<group>"; };
+		6C6365672DB15BB600DA6522 /* MockMovieListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieListView.swift; sourceTree = "<group>"; };
+		6C6365692DB15CF800DA6522 /* MockMovieListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieListRouter.swift; sourceTree = "<group>"; };
+		6C63656B2DB166FF00DA6522 /* MockMovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieListPresenter.swift; sourceTree = "<group>"; };
+		6C63656D2DB1686600DA6522 /* MockMovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieListInteractor.swift; sourceTree = "<group>"; };
 		6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelperProtocol.swift; sourceTree = "<group>"; };
 		6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationProtocol.swift; sourceTree = "<group>"; };
@@ -1379,6 +1387,25 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		6C6365652DB15B8700DA6522 /* MovieList */ = {
+			isa = PBXGroup;
+			children = (
+				6C6365662DB15B9100DA6522 /* Mocks */,
+			);
+			path = MovieList;
+			sourceTree = "<group>";
+		};
+		6C6365662DB15B9100DA6522 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				6C6365672DB15BB600DA6522 /* MockMovieListView.swift */,
+				6C6365692DB15CF800DA6522 /* MockMovieListRouter.swift */,
+				6C63656B2DB166FF00DA6522 /* MockMovieListPresenter.swift */,
+				6C63656D2DB1686600DA6522 /* MockMovieListInteractor.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		6C74C9142C735B2A0035BD14 /* tmdb */ = {
 			isa = PBXGroup;
 			children = (
@@ -1759,8 +1786,9 @@
 		6C9CF92C2DA047690043CEFE /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				6C63655B2DB153DA00DA6522 /* MovieDetails */,
 				6C63653F2DAE7CA800DA6522 /* Main */,
+				6C6365652DB15B8700DA6522 /* MovieList */,
+				6C63655B2DB153DA00DA6522 /* MovieDetails */,
 				6C9CF94C2DA3C2880043CEFE /* UserProfile */,
 			);
 			path = Scenes;
@@ -2608,6 +2636,7 @@
 				6C6365422DAEB40800DA6522 /* MockMainView.swift in Sources */,
 				6C6365602DB157B800DA6522 /* MockMovieDetailsRouter.swift in Sources */,
 				6C6365582DAFA8E100DA6522 /* MockPersonDetailed.swift in Sources */,
+				6C6365682DB15BB600DA6522 /* MockMovieListView.swift in Sources */,
 				6C6365462DAEBD0800DA6522 /* MockMainPresenter.swift in Sources */,
 				6C6365562DAFA0AA00DA6522 /* MockGenreRepository.swift in Sources */,
 				6C6365342DAE6EAD00DA6522 /* MockLoginView.swift in Sources */,
@@ -2615,6 +2644,9 @@
 				6C6365482DAEC4F700DA6522 /* MockMainInteractor.swift in Sources */,
 				6C9CF9362DA14E540043CEFE /* MockSignUpInteractor.swift in Sources */,
 				6C6365502DAF9F2400DA6522 /* MainInteractorTests.swift in Sources */,
+				6C63656E2DB1686600DA6522 /* MockMovieListInteractor.swift in Sources */,
+				6C63656C2DB166FF00DA6522 /* MockMovieListPresenter.swift in Sources */,
+				6C63656A2DB15CF800DA6522 /* MockMovieListRouter.swift in Sources */,
 				6C6365382DAE6EC400DA6522 /* MockLoginInteractor.swift in Sources */,
 				6C6365362DAE6EBA00DA6522 /* MockLoginPresenter.swift in Sources */,
 				6C9CF9532DA3D2480043CEFE /* MockSignUpPresenter.swift in Sources */,
