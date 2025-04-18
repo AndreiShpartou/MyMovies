@@ -17,25 +17,35 @@ final class MockMovieDetailsInteractor: MovieDetailsInteractorProtocol {
     var didCallFetchSimilarMovies = false
     var didCallFetchIsMovieInList = false
     var didCallToggleFavouriteStatus = false
+    
+    var movie: MockMovie?
+    var reviews: [MockReview]?
+    var similarMovies: [MockMovie]?
+    var isfavourite = false
 
     // MARK: - MovieDetailsInteractorProtocol
     func fetchMovie() {
         didCallFetchMovie = true
+        presenter?.didFetchMovie(movie!)
     }
     
     func fetchReviews() {
         didCallFetchReviews = true
+        presenter?.didFetchReviews(reviews!)
     }
     
     func fetchSimilarMovies() {
         didCallFetchSimilarMovies = true
+        presenter?.didFetchSimilarMovies(similarMovies!)
     }
     
     func fetchIsMovieInList(listType: MovieListType) {
         didCallFetchIsMovieInList = true
+        presenter?.didFetchIsMovieInList(true, listType: listType)
     }
     
     func toggleFavouriteStatus(isFavourite: Bool) {
         didCallToggleFavouriteStatus = true
+        self.isfavourite = isFavourite
     }
 }
