@@ -36,6 +36,7 @@ final class MockNetworkService: NetworkServiceProtocol {
     
     var fetchMoviesShouldReturnError: Bool = false
     var fetchMovieDetailsShouldReturnError: Bool = false
+    var fetchMoviesDetailsShouldReturnError: Bool = false
     var fetchMoviesDetailsByIDShouldReturnError: Bool = false
     var fetchMoviesByGenreShouldReturnError: Bool = false
     var fetchPersonDetailsShouldReturnError: Bool = false
@@ -47,6 +48,7 @@ final class MockNetworkService: NetworkServiceProtocol {
     
     var stubbedGenres: [GenreProtocol] = []
     var stubbedMovies: [MovieProtocol] = []
+    var stubbedReviews: [MovieReviewProtocol] = []
 
     // MARK: - NetworkServiceProtocol
     // MARK: - Movies
@@ -147,7 +149,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchReviewsShouldReturnError {
             completion(.failure(NSError(domain: "fetchReviews Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockReview()]))
+            completion(.success(stubbedReviews))
         }
     }
 

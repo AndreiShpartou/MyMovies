@@ -43,7 +43,7 @@ struct MockMovie: MovieProtocol {
     private let moviePersons: [Person]
     private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
     private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
-    private let arrayofSimilarMovies: [Movie]? // Kinopoisk: similarMovies // TMDB: distinct endpoint
+    private let arrayofSimilarMovies: [MockMovie]? // Kinopoisk: similarMovies // TMDB: distinct endpoint
 
     init(
         id: Int = 1,
@@ -60,7 +60,7 @@ struct MockMovie: MovieProtocol {
         persons: [Person] = [],
         poster: Cover? = nil,
         backdrop: Cover? = nil,
-        similarMovies: [Movie]? = nil
+        similarMovies: [MockMovie]? = nil
     ) {
         self.id = id
         self.title = title
