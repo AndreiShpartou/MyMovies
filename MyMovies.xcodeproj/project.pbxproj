@@ -112,6 +112,7 @@
 		6C63656E2DB1686600DA6522 /* MockMovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63656D2DB1686600DA6522 /* MockMovieListInteractor.swift */; };
 		6C6365702DB2345D00DA6522 /* MovieDetailsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63656F2DB2345D00DA6522 /* MovieDetailsPresenterTests.swift */; };
 		6C6365722DB2583500DA6522 /* MovieDetailsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365712DB2583500DA6522 /* MovieDetailsInteractorTests.swift */; };
+		6C6365742DB27AB900DA6522 /* MovieListPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6365732DB27AB900DA6522 /* MovieListPresenterTests.swift */; };
 		6C70EB272C6CB3CA004DA1A9 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */; };
 		6C74C91B2C738D200035BD14 /* NetworkHelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */; };
 		6C74C91E2C738D720035BD14 /* AppConfigurationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */; };
@@ -437,6 +438,7 @@
 		6C63656D2DB1686600DA6522 /* MockMovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieListInteractor.swift; sourceTree = "<group>"; };
 		6C63656F2DB2345D00DA6522 /* MovieDetailsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsPresenterTests.swift; sourceTree = "<group>"; };
 		6C6365712DB2583500DA6522 /* MovieDetailsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsInteractorTests.swift; sourceTree = "<group>"; };
+		6C6365732DB27AB900DA6522 /* MovieListPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListPresenterTests.swift; sourceTree = "<group>"; };
 		6C70EB262C6CB3CA004DA1A9 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		6C74C91A2C738D200035BD14 /* NetworkHelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelperProtocol.swift; sourceTree = "<group>"; };
 		6C74C91D2C738D720035BD14 /* AppConfigurationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationProtocol.swift; sourceTree = "<group>"; };
@@ -1396,6 +1398,7 @@
 		6C6365652DB15B8700DA6522 /* MovieList */ = {
 			isa = PBXGroup;
 			children = (
+				6C6365732DB27AB900DA6522 /* MovieListPresenterTests.swift */,
 				6C6365662DB15B9100DA6522 /* Mocks */,
 			);
 			path = MovieList;
@@ -2656,6 +2659,7 @@
 				6C63656C2DB166FF00DA6522 /* MockMovieListPresenter.swift in Sources */,
 				6C63656A2DB15CF800DA6522 /* MockMovieListRouter.swift in Sources */,
 				6C6365382DAE6EC400DA6522 /* MockLoginInteractor.swift in Sources */,
+				6C6365742DB27AB900DA6522 /* MovieListPresenterTests.swift in Sources */,
 				6C6365362DAE6EBA00DA6522 /* MockLoginPresenter.swift in Sources */,
 				6C9CF9532DA3D2480043CEFE /* MockSignUpPresenter.swift in Sources */,
 				6C9CF9552DA3D5B50043CEFE /* SignUpInteractorTests.swift in Sources */,

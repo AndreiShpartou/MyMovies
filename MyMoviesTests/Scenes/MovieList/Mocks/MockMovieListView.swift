@@ -12,34 +12,31 @@ import UIKit
 final class MockMovieListView: UIView, MovieListViewProtocol {
     weak var delegate: MovieListViewInteractionDelegate?
 
-    var didCallShowMovieGenres = false
-    var didCallShowMovieList = false
+    var didCallShowMovieGenresCallBack: (([GenreViewModelProtocol]) -> Void)?
+    var didCallShowMovieListCallBack: (([MovieListItemViewModelProtocol]) -> Void)?
     var didCallShowError = false
     var didCallSetLoadingIndicator = false
 
-    var didCallShowMovieGenresWith: [GenreViewModelProtocol]?
-    var didCallShowMovieListWith: [MovieListItemViewModelProtocol]?
-    var didCallSetLoadingIndicatorWith: Bool?
-    var didCallShowErrorWith: String?
+    var capturedIndicatorState: Bool?
+    var capturedError: String?
+
 
     // MARK: - MovieListViewProtocol
     func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
-        didCallShowMovieGenres = true
-        didCallShowMovieGenresWith = genres
+        didCallShowMovieGenresCallBack?(genres)
     }
 
     func showMovieList(_ movies: [MovieListItemViewModelProtocol]) {
-        didCallShowMovieList = true
-        didCallShowMovieListWith = movies
+        didCallShowMovieListCallBack?(movies)
     }
 
     func setLoadingIndicator(isVisible: Bool) {
         didCallSetLoadingIndicator = true
-        didCallSetLoadingIndicatorWith = isVisible
+        capturedIndicatorState = isVisible
     }
 
     func showError(with message: String) {
         didCallShowError = true
-        didCallShowErrorWith = message
+        capturedError = message
     }
 }
