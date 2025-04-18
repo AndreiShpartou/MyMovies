@@ -39,6 +39,47 @@ final class MainPresenterTests: XCTestCase {
     // MARK: - Tests
     func testViewDidLoad_ShouldFetchAllSectionsAndSetLoading() {
         // given
+        mockInteractor.movieGenres = [MockMovie.Genre(), MockMovie.Genre()]
+        mockInteractor.movies = [MockMovie(), MockMovie(), MockMovie()]
+        mockInteractor.userProfile = UserProfile(id: "mock", email: "mock@email.com")
+        
+        let expectationForGenres = expectation(description: "Should fetch movie genres within 0.3 seconds")
+        let expectationForUpcomingMovies = expectation(description: "Should fetch upcoming movies within 0.3 seconds")
+        let expectationForPopularMovies = expectation(description: "Should fetch popular movies within 0.3 seconds")
+        let expectationForTopRatedMovies = expectation(description: "Should fetch top rated movies within 0.3 seconds")
+        let expectationForTheHighestGrossingMovies = expectation(description: "Should fetch highest grossing movies within 0.3 seconds")
+        
+        mockView.didCallShowMovieGenresCallBack = { [weak self] genres in
+            // The initial count has to be decreased by 1 with the default "All" genres value
+            XCTAssertEqual(genres.count - 1, self?.mockInteractor.movieGenres?.count, "View should get genres from presenter")
+            XCTAssertEqual(self?.mockView.loadingStates[.genres], false, "Loading indicator for genres section shouldn't be visible")
+            expectationForGenres.fulfill()
+        }
+        
+        mockView.didCallShowUpcomingMoviesCallBack = { [weak self] movies in
+            XCTAssertEqual(movies.count, self?.mockInteractor.movies?.count, "View should get upcoming movies from presenter")
+            XCTAssertEqual(self?.mockView.loadingStates[.upcomingMovies], false, "Loading indicator for upcoming movies section shouldn't be visible")
+            expectationForUpcomingMovies.fulfill()
+        }
+        
+        mockView.didCallShowPopularMoviesCallBack = { [weak self] movies in
+            XCTAssertEqual(movies.count, self?.mockInteractor.movies?.count, "View should get popular movies from presenter")
+            XCTAssertEqual(self?.mockView.loadingStates[.popularMovies], false, "Loading indicator for popular movies section shouldn't be visible")
+            expectationForPopularMovies.fulfill()
+        }
+        
+        mockView.didCallShowTopRatedMoviesCallBack = { [weak self] movies in
+            XCTAssertEqual(movies.count, self?.mockInteractor.movies?.count, "View should get top rated movies from presenter")
+            XCTAssertEqual(self?.mockView.loadingStates[.topRatedMovies], false, "Loading indicator for top rated movies section shouldn't be visible")
+            expectationForTopRatedMovies.fulfill()
+        }
+        
+        mockView.didCallShowTheHighestGrossingMoviesCallBack = { [weak self] movies in
+            XCTAssertEqual(movies.count, self?.mockInteractor.movies?.count, "View should get highest grossing movies from presenter")
+            XCTAssertEqual(self?.mockView.loadingStates[.theHighestGrossingMovies], false, "Loading indicator for highest grossing movies section shouldn't be visible")
+            expectationForTheHighestGrossingMovies.fulfill()
+        }
+        
         // when
         presenter.viewDidLoad()
         
@@ -47,6 +88,7 @@ final class MainPresenterTests: XCTestCase {
         // Genres
         XCTAssertTrue(mockInteractor.didCallFetchMovieGenres, "Presenter should call interactor to fetch movie genres")
         XCTAssertEqual(mockView.loadingStates[.genres], true, "Loading indicator for genres section should be visible")
+        
         // Upcoming movies
         XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.upcomingMovies], true, "Presenter should call interactor to fetch upcoming movies")
         XCTAssertEqual(mockView.loadingStates[.upcomingMovies], true, "Loading indicator for upcoming movies section should be visible")
@@ -59,6 +101,8 @@ final class MainPresenterTests: XCTestCase {
         // The highest grossing movies
         XCTAssertEqual(mockInteractor.didCallFetchMoviesForType[.theHighestGrossingMovies], true, "Presenter should call interactor to fetch highest grossing movies")
         XCTAssertEqual(mockView.loadingStates[.theHighestGrossingMovies], true, "Loading indicator for highest grossing movies section should be visible")
+        
+        wait(for: [expectationForGenres, expectationForUpcomingMovies, expectationForPopularMovies, expectationForTopRatedMovies, expectationForTheHighestGrossingMovies], timeout: 0.3)
     }
 
     func testDidSelectMovie_ShouldShowMovieDetails_WhenMovieExist() {

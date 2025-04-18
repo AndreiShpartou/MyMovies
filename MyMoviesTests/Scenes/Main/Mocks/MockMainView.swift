@@ -12,23 +12,18 @@ import UIKit
 final class MockMainView: UIView, MainViewProtocol {
     weak var delegate: MainViewDelegate?
     
-    var didCallShowUpcomingMovies: Bool = false
+    var didCallShowUpcomingMoviesCallBack: (([UpcomingMovieViewModelProtocol]) -> Void)?
     var didCallScrollToUpcomingMovieItem: Bool = false
-    var didCallShowPopularMovies: Bool = false
-    var didCallShowTopRatedMovies: Bool = false
-    var didCallShowTheHighestGrossingMovies: Bool = false
-    var didCallShowMovieGenres: Bool = false
+    var didCallShowPopularMoviesCallBack: (([BriefMovieListItemViewModelProtocol]) -> Void)?
+    var didCallShowTopRatedMoviesCallBack: (([BriefMovieListItemViewModelProtocol]) -> Void)?
+    var didCallShowTheHighestGrossingMoviesCallBack: (([BriefMovieListItemViewModelProtocol]) -> Void)?
+    var didCallShowMovieGenresCallBack: (([GenreViewModelProtocol]) -> Void)?
     var didCallShowUserProfile: Bool = false
     var didCallDidLogOut: Bool = false
     var didCallShowError: Bool = false
-    
-    var didCallShowUpcomingMoviesWith: [UpcomingMovieViewModelProtocol]?
-    var didCallShowPopularMoviesWith: [BriefMovieListItemViewModelProtocol]?
-    var didCallShowTopRatedMoviesWith: [BriefMovieListItemViewModelProtocol]?
-    var didCallShowTheHighestGrossingMoviesWith: [BriefMovieListItemViewModelProtocol]?
-    var didCallShowMovieGenresWith: [GenreViewModelProtocol]?
-    var didCallShowUserProfileWith: UserProfileViewModelProtocol?
-    var errorMessage: String?
+
+    var capturedUserProfile: UserProfileViewModelProtocol?
+    var capturedError: String?
     var loadingStates: [MainAppSection: Bool] = [
         .userProfile: false,
         .upcomingMovies: false,
@@ -39,8 +34,7 @@ final class MockMainView: UIView, MainViewProtocol {
     
     // MARK: - MainViewProtocol
     func showUpcomingMovies(_ movies: [UpcomingMovieViewModelProtocol]) {
-        didCallShowUpcomingMovies = true
-        didCallShowUpcomingMoviesWith = movies
+        didCallShowUpcomingMoviesCallBack?(movies)
     }
     
     func scrollToUpcomingMovieItem(_ index: Int) {
@@ -48,28 +42,24 @@ final class MockMainView: UIView, MainViewProtocol {
     }
     
     func showPopularMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
-        didCallShowPopularMovies = true
-        didCallShowPopularMoviesWith = movies
+        didCallShowPopularMoviesCallBack?(movies)
     }
     
     func showTopRatedMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
-        didCallShowTopRatedMovies = true
-        didCallShowTopRatedMoviesWith = movies
+        didCallShowTopRatedMoviesCallBack?(movies)
     }
     
     func showTheHighestGrossingMovies(_ movies: [BriefMovieListItemViewModelProtocol]) {
-        didCallShowTheHighestGrossingMovies = true
-        didCallShowTheHighestGrossingMoviesWith = movies
+        didCallShowTheHighestGrossingMoviesCallBack?(movies)
     }
     
     func showMovieGenres(_ genres: [GenreViewModelProtocol]) {
-        didCallShowMovieGenres = true
-        didCallShowMovieGenresWith = genres
+        didCallShowMovieGenresCallBack?(genres)
     }
     
     func showUserProfile(_ user: UserProfileViewModelProtocol) {
         didCallShowUserProfile = true
-        didCallShowUserProfileWith = user
+        capturedUserProfile = user
     }
     
     func didLogOut() {
@@ -82,6 +72,6 @@ final class MockMainView: UIView, MainViewProtocol {
     
     func showError(with messsage: String) {
         didCallShowError = true
-        errorMessage = messsage
+        capturedError = messsage
     }
 }

@@ -15,6 +15,10 @@ final class MockMainInteractor: MainInteractorProtocol {
     var didCallFetchMoviesForType: [MovieListType: Bool] = [:]
     var didCallFetchMovieGenres: Bool = false
     var didCallFetchUserProfile: Bool = false
+    
+    var movies: [MockMovie]?
+    var movieGenres: [MockMovie.Genre]?
+    var userProfile: UserProfile?
 
     // MARK: - Init
     init(presenter: MainInteractorOutputProtocol? = nil) {
@@ -24,10 +28,18 @@ final class MockMainInteractor: MainInteractorProtocol {
     // MARK: - MainInteractorProtocol
     func fetchMovieGenres() {
         didCallFetchMovieGenres = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.presenter?.didFetchMovieGenres(self.movieGenres!)
+        }
     }
 
     func fetchMovies(with type: MovieListType) {
         didCallFetchMoviesForType[type] = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.presenter?.didFetchMovies(self.movies!, for: type)
+        }
     }
     
     func fetchMoviesByGenre(_ genre: GenreProtocol, listType: MovieListType) {
@@ -36,5 +48,6 @@ final class MockMainInteractor: MainInteractorProtocol {
 
     func fetchUserProfile() {
         didCallFetchUserProfile = true
+        presenter?.didFetchUserProfile(userProfile!)
     }
 }

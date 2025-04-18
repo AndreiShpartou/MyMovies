@@ -92,8 +92,8 @@ extension MainPresenter: MainInteractorOutputProtocol {
             return
         }
 
-        view?.showMovieGenres(genreViewModels)
         setLoading(for: .genres, isLoading: false)
+        view?.showMovieGenres(genreViewModels)
     }
 
     func didFetchMovies(_ movies: [MovieProtocol], for type: MovieListType) {
@@ -118,8 +118,8 @@ extension MainPresenter: MainInteractorOutputProtocol {
             return
         }
 
-        view?.showUserProfile(profileViewModel)
         setLoading(for: .userProfile, isLoading: false)
+        view?.showUserProfile(profileViewModel)
     }
 
     func didBeginProfileUpdate() {
@@ -127,16 +127,15 @@ extension MainPresenter: MainInteractorOutputProtocol {
     }
 
     func didLogOut() {
-        view?.didLogOut()
         setLoading(for: .userProfile, isLoading: false)
+        view?.didLogOut()
     }
 
     func didFailToFetchData(with error: Error) {
         // Handle error
+        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
         let appError = ErrorManager.toAppError(error)
         view?.showError(with: ErrorManager.toUserMessage(from: appError))
-
-        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
     }
 }
 
@@ -155,9 +154,9 @@ extension MainPresenter {
             return
         }
         // Update the view with the fetched data
+        setLoading(for: .upcomingMovies, isLoading: false)
         view?.showUpcomingMovies(upcomingMovieViewModels)
         moviesDict[.upcomingMovies] = movies
-        setLoading(for: .upcomingMovies, isLoading: false)
     }
 
     private func didFetchPopularMovies(_ movies: [MovieProtocol]) {
@@ -167,9 +166,9 @@ extension MainPresenter {
             return
         }
 
+        setLoading(for: .popularMovies, isLoading: false)
         view?.showPopularMovies(popularMovieViewModels)
         moviesDict[.popularMovies] = movies
-        setLoading(for: .popularMovies, isLoading: false)
     }
 
     private func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
@@ -179,9 +178,9 @@ extension MainPresenter {
             return
         }
 
+        setLoading(for: .topRatedMovies, isLoading: false)
         view?.showTopRatedMovies(topRatedMovieViewModels)
         moviesDict[.topRatedMovies] = movies
-        setLoading(for: .topRatedMovies, isLoading: false)
     }
 
     private func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
@@ -191,8 +190,8 @@ extension MainPresenter {
             return
         }
 
+        setLoading(for: .theHighestGrossingMovies, isLoading: false)
         view?.showTheHighestGrossingMovies(theHighestGrossingMovieViewModels)
         moviesDict[.theHighestGrossingMovies] = movies
-        setLoading(for: .theHighestGrossingMovies, isLoading: false)
     }
 }
