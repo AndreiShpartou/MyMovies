@@ -9,8 +9,8 @@ import UIKit
 
 protocol UserProfileViewModelProtocol {
     var id: String { get}
-    var name: String { get }
     var email: String { get }
+    var name: String? { get }
     var profileImageURL: URL? { get }
 }
 

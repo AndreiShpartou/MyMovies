@@ -76,15 +76,14 @@ extension MovieListPresenter: MovieListInteractorOutputProtocol {
             return
         }
 
+        view?.setLoadingIndicator(isVisible: false)
         view?.showMovieList(movieViewModels)
         self.movies = movies
-        view?.setLoadingIndicator(isVisible: false)
     }
 
     func didFailToFetchData(with error: Error) {
+        view?.setLoadingIndicator(isVisible: false)
         let appError = ErrorManager.toAppError(error)
         view?.showError(with: ErrorManager.toUserMessage(from: appError))
-
-        view?.setLoadingIndicator(isVisible: false)
     }
 }

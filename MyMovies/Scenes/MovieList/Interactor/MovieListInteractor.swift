@@ -10,21 +10,21 @@ import Foundation
 final class MovieListInteractor: MovieListInteractorProtocol {
     weak var presenter: MovieListInteractorOutputProtocol?
     private var listType: MovieListType?
-    private let networkManager: NetworkManagerProtocol
+    private let networkService: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
 
     // MARK: - Init
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        networkService: NetworkServiceProtocol,
+        genreRepository: GenreRepositoryProtocol,
+        movieRepository: MovieRepositoryProtocol
     ) {
-        self.networkManager = networkManager
+        self.networkService = networkService
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
-        provider = networkManager.getProvider()
+        provider = networkService.getProvider()
     }
 
     // MARK: - Genres
@@ -83,7 +83,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
 
         // Default API filtering
-        networkManager.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
+        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
@@ -106,7 +106,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             }
         }
 
-        networkManager.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] result in
             switch result {
             case .success(let genres):
                 DispatchQueue.main.async {
@@ -139,7 +139,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
 
         // If no cached data, fetch from API
-        networkManager.fetchMovies(type: type) { [weak self] result in
+        networkService.fetchMovies(type: type) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
@@ -180,7 +180,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     }
 
     private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
-        networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
+        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let detailedMovies):
@@ -199,7 +199,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     }
 
     private func fetchMoviesDetails(for movies: [MovieProtocol]) {
-        networkManager.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
+        networkService.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
             DispatchQueue.main.async {
                 self?.presenter?.didFetchMovieList(detailedMovies)
             }

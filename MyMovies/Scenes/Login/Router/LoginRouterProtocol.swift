@@ -11,6 +11,5 @@ protocol LoginRouterProtocol: AnyObject {
     var viewController: UIViewController? { get set }
 
     func navigateToSignUp()
-    func navigateToMainFlow()
     func dismissScene()
 }

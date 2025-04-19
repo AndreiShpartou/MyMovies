@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
 
 final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     weak var presenter: ProfileSettingsInteractorOutputProtocol? {
@@ -16,21 +15,24 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
         }
     }
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkService: NetworkServiceProtocol
+    private let authService: AuthServiceProtocol
     private let userProfileObserver: UserProfileObserverProtocol
 
     private var settingsSections: [ProfileSettingsSection] = []
-    private var plistLoader: PlistConfigurationLoaderProtocol?
+    private var plistLoader: PlistConfigurationLoaderProtocol
 
     // MARK: - Init
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        plistLoader: PlistConfigurationLoaderProtocol? = PlistConfigurationLoader(),
-        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        networkService: NetworkServiceProtocol,
+        authService: AuthServiceProtocol,
+        userProfileObserver: UserProfileObserverProtocol,
+        plistLoader: PlistConfigurationLoaderProtocol
     ) {
-        self.networkManager = networkManager
-        self.plistLoader = plistLoader
+        self.networkService = networkService
+        self.authService = authService
         self.userProfileObserver = userProfileObserver
+        self.plistLoader = plistLoader
     }
 
     // MARK: - ProfileSettingsInteractorProtocol
@@ -39,7 +41,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     }
 
     func fetchSettingsItems() {
-        networkManager.fetchSettingsSections { [weak self] result in
+        networkService.fetchSettingsSections { [weak self] result in
             switch result {
             case .success(let sections):
                 DispatchQueue.main.async {
@@ -55,8 +57,8 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
     }
 
     func fetchDataForGeneralTextScene(for key: String) {
-        let details = plistLoader?.loadGeneralTextSceneData(for: key)
-        presenter?.didFetchDataForGenerelTextScene(labelText: details?.labelText, textViewText: details?.textViewText, title: details?.title)
+        let details = plistLoader.loadGeneralTextSceneData(for: key)
+        presenter?.didFetchDataForGenerelTextScene(labelText: details.labelText, textViewText: details.textViewText, title: details.title)
     }
 
     func getSettingsSectionItem(at indexPath: IndexPath) -> ProfileSettingsItem {
@@ -65,7 +67,7 @@ final class ProfileSettingsInteractor: ProfileSettingsInteractorProtocol {
 
     func signOut() {
         do {
-            try Auth.auth().signOut()
+            try authService.signOut()
         } catch let signOutError as NSError {
             presenter?.didFailToFetchData(with: signOutError)
         }

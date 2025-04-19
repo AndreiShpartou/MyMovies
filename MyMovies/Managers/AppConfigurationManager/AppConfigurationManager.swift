@@ -62,8 +62,26 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         imageCache.diskStorage.config.expiration = .days(7)
     }
 
-    func setupFirebaseConfiguration() {
-        FirebaseApp.configure()
+    func configureDefaultServices() {
+        // Network
+        ServiceLocator.shared.addService(service: NetworkService.shared as NetworkServiceProtocol)
+        // Auth and UserProfile data
+        setupFirebaseConfiguration()
+        let authService = FirebaseAuthService()
+        let profileDocumentsStoreService = FirebaseFirestoreService()
+        let userProfileObserver = UserProfileObserver(authService: authService, profileDocumentsStoreService: profileDocumentsStoreService)
+        ServiceLocator.shared.addService(service: authService as AuthServiceProtocol)
+        ServiceLocator.shared.addService(service: profileDocumentsStoreService as ProfileDocumentsStoreServiceProtocol)
+        ServiceLocator.shared.addService(service: userProfileObserver as UserProfileObserverProtocol)
+        ServiceLocator.shared.addService(service: CloudinaryService() as ProfileDataStoreServiceProtocol)
+        // CoreData
+        ServiceLocator.shared.addService(service: GenreRepository() as GenreRepositoryProtocol)
+        ServiceLocator.shared.addService(service: MovieRepository() as MovieRepositoryProtocol)
+        // Utilities
+        ServiceLocator.shared.addService(service: PlistConfigurationLoader() as PlistConfigurationLoaderProtocol)
+
+        // UITests mocking
+        configureUITesting()
     }
 
     // MARK: - Private
@@ -96,5 +114,18 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
 
         appConfig = AppConfiguration(apiConfig: apiConfig, language: country.language)
         debugPrint("Configuration set up for country: \(country.rawValue)")
+    }
+
+    private func setupFirebaseConfiguration() {
+        FirebaseApp.configure()
+    }
+
+    private func configureUITesting() {
+        guard ProcessInfo.processInfo.arguments.contains("UITesting") else {
+            return
+        }
+
+        ServiceLocator.shared.addService(service: MockAuthService() as AuthServiceProtocol)
+        ServiceLocator.shared.addService(service: MockProfileDocumentsStoreService() as ProfileDocumentsStoreServiceProtocol)
     }
 }
