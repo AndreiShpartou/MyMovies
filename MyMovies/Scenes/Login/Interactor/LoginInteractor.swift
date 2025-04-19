@@ -6,27 +6,31 @@
 //
 
 import Foundation
-import FirebaseAuth
 
 final class LoginInteractor: LoginInteractorProtocol {
     weak var presenter: LoginInteractorOutputProtocol?
 
-    init(presenter: LoginInteractorOutputProtocol? = nil) {
+    private let authService: AuthServiceProtocol
+
+    init(
+        authService: AuthServiceProtocol,
+        presenter: LoginInteractorOutputProtocol? = nil
+    ) {
+        self.authService = authService
         self.presenter = presenter
     }
 
     // MARK: - Public
     func signIn(withEmail: String, password: String) {
-        Auth.auth().signIn(withEmail: withEmail, password: password) { [weak self] _, error in
+        authService.signIn(withEmail: withEmail, password: password) { [weak self] result in
             guard let self = self else { return }
 
-            if let error = error {
+            switch result {
+            case .success:
+                self.presenter?.didSignInSuccessfully()
+            case .failure(let error):
                 self.presenter?.didFailToSignIn(with: error)
-
-                return
             }
-
-            self.presenter?.didSignInSuccessfully()
         }
     }
 }

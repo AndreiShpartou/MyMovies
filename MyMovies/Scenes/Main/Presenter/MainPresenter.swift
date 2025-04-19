@@ -37,20 +37,17 @@ final class MainPresenter: MainPresenterProtocol {
 
     // MARK: - Public
     func viewDidLoad() {
-        setLoading(for: .genres, isLoading: true)
+        // Set loading indicator for sections
+        [.genres, .upcomingMovies, .popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach {
+            setLoading(for: $0, isLoading: true)
+        }
+        // Fetch genres
         interactor.fetchMovieGenres()
-
-        setLoading(for: .upcomingMovies, isLoading: true)
-        interactor.fetchUpcomingMovies()
-
-        setLoading(for: .popularMovies, isLoading: true)
-        interactor.fetchPopularMovies()
-
-        setLoading(for: .topRatedMovies, isLoading: true)
-        interactor.fetchTopRatedMovies()
-
-        setLoading(for: .theHighestGrossingMovies, isLoading: true)
-        interactor.fetchTheHighestGrossingMovies()
+        // Fetch movies by type
+        [.upcomingMovies, .popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach {
+            interactor.fetchMovies(with: $0)
+        }
+        // User profile will be fetched automatically during profile observer setup (in the interactor)
     }
 
     func didSelectMovie(movieID: Int) {
@@ -67,14 +64,14 @@ final class MainPresenter: MainPresenterProtocol {
             return
         }
 
-        setLoading(for: .popularMovies, isLoading: true)
-        interactor.fetchPopularMoviesWithGenresFiltering(genre: movieGenre)
-
-        setLoading(for: .topRatedMovies, isLoading: true)
-        interactor.fetchTopRatedMoviesWithGenresFiltering(genre: movieGenre)
-
-        setLoading(for: .theHighestGrossingMovies, isLoading: true)
-        interactor.fetchTheHighestGrossingMoviesWithGenresFiltering(genre: movieGenre)
+        // Set loading indicator for sections
+        [.popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach {
+            setLoading(for: $0, isLoading: true)
+        }
+        // Fetch movies with genre filtering
+        [.popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach {
+            interactor.fetchMoviesByGenre(movieGenre, listType: $0)
+        }
     }
 
     func didTapSeeAllButton(listType: MovieListType) {
@@ -88,19 +85,6 @@ final class MainPresenter: MainPresenterProtocol {
 
 // MARK: - MainInteractorOutputProtocol
 extension MainPresenter: MainInteractorOutputProtocol {
-
-    func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
-        guard let upcomingMovieViewModels = mapper.map(data: movies, to: [UpcomingMovieViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map upcoming movies", underlying: nil))
-
-            return
-        }
-        // Update the view with the fetched data
-        view?.showUpcomingMovies(upcomingMovieViewModels)
-        moviesDict[.upcomingMovies] = movies
-        setLoading(for: .upcomingMovies, isLoading: false)
-    }
-
     func didFetchMovieGenres(_ genres: [GenreProtocol]) {
         guard let genreViewModels = mapper.map(data: genres, to: [GenreViewModel].self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to map genres", underlying: nil))
@@ -108,44 +92,23 @@ extension MainPresenter: MainInteractorOutputProtocol {
             return
         }
 
-        view?.showMovieGenres(genreViewModels)
         setLoading(for: .genres, isLoading: false)
+        view?.showMovieGenres(genreViewModels)
     }
 
-    func didFetchPopularMovies(_ movies: [MovieProtocol]) {
-        guard let popularMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map popular movies", underlying: nil))
-
-            return
+    func didFetchMovies(_ movies: [MovieProtocol], for type: MovieListType) {
+        switch type {
+        case .upcomingMovies:
+            didFetchUpcomingMovies(movies)
+        case .popularMovies:
+            didFetchPopularMovies(movies)
+        case .topRatedMovies:
+            didFetchTopRatedMovies(movies)
+        case .theHighestGrossingMovies:
+            didFetchTheHighestGrossingMovies(movies)
+        default:
+            break
         }
-
-        view?.showPopularMovies(popularMovieViewModels)
-        moviesDict[.popularMovies] = movies
-        setLoading(for: .popularMovies, isLoading: false)
-    }
-
-    func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
-        guard let topRatedMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map top rated movies", underlying: nil))
-
-            return
-        }
-
-        view?.showTopRatedMovies(topRatedMovieViewModels)
-        moviesDict[.topRatedMovies] = movies
-        setLoading(for: .topRatedMovies, isLoading: false)
-    }
-
-    func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
-        guard let theHighestGrossingMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
-            didFailToFetchData(with: AppError.mappingError(message: "Failed to map the highest grossing movies", underlying: nil))
-
-            return
-        }
-
-        view?.showTheHighestGrossingMovies(theHighestGrossingMovieViewModels)
-        moviesDict[.theHighestGrossingMovies] = movies
-        setLoading(for: .theHighestGrossingMovies, isLoading: false)
     }
 
     func didFetchUserProfile(_ profile: UserProfileProtocol) {
@@ -155,8 +118,8 @@ extension MainPresenter: MainInteractorOutputProtocol {
             return
         }
 
-        view?.showUserProfile(profileViewModel)
         setLoading(for: .userProfile, isLoading: false)
+        view?.showUserProfile(profileViewModel)
     }
 
     func didBeginProfileUpdate() {
@@ -164,16 +127,15 @@ extension MainPresenter: MainInteractorOutputProtocol {
     }
 
     func didLogOut() {
-        view?.didLogOut()
         setLoading(for: .userProfile, isLoading: false)
+        view?.didLogOut()
     }
 
     func didFailToFetchData(with error: Error) {
         // Handle error
+        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
         let appError = ErrorManager.toAppError(error)
         view?.showError(with: ErrorManager.toUserMessage(from: appError))
-
-        loadingStates.forEach { setLoading(for: $0.key, isLoading: false) }
     }
 }
 
@@ -183,5 +145,53 @@ extension MainPresenter {
         loadingStates[section] = isLoading
         // Notify the view
         view?.setLoadingIndicator(for: section, isVisible: isLoading)
+    }
+
+    private func didFetchUpcomingMovies(_ movies: [MovieProtocol]) {
+        guard let upcomingMovieViewModels = mapper.map(data: movies, to: [UpcomingMovieViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map upcoming movies", underlying: nil))
+
+            return
+        }
+        // Update the view with the fetched data
+        setLoading(for: .upcomingMovies, isLoading: false)
+        view?.showUpcomingMovies(upcomingMovieViewModels)
+        moviesDict[.upcomingMovies] = movies
+    }
+
+    private func didFetchPopularMovies(_ movies: [MovieProtocol]) {
+        guard let popularMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map popular movies", underlying: nil))
+
+            return
+        }
+
+        setLoading(for: .popularMovies, isLoading: false)
+        view?.showPopularMovies(popularMovieViewModels)
+        moviesDict[.popularMovies] = movies
+    }
+
+    private func didFetchTopRatedMovies(_ movies: [MovieProtocol]) {
+        guard let topRatedMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map top rated movies", underlying: nil))
+
+            return
+        }
+
+        setLoading(for: .topRatedMovies, isLoading: false)
+        view?.showTopRatedMovies(topRatedMovieViewModels)
+        moviesDict[.topRatedMovies] = movies
+    }
+
+    private func didFetchTheHighestGrossingMovies(_ movies: [MovieProtocol]) {
+        guard let theHighestGrossingMovieViewModels = mapper.map(data: movies, to: [BriefMovieListItemViewModel].self) else {
+            didFailToFetchData(with: AppError.mappingError(message: "Failed to map the highest grossing movies", underlying: nil))
+
+            return
+        }
+
+        setLoading(for: .theHighestGrossingMovies, isLoading: false)
+        view?.showTheHighestGrossingMovies(theHighestGrossingMovieViewModels)
+        moviesDict[.theHighestGrossingMovies] = movies
     }
 }

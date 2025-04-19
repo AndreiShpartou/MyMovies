@@ -44,7 +44,8 @@ final class LoginView: UIView, LoginViewProtocol {
     private let emailTextField: UITextField = .createBorderedTextField(
         placeholder: "Your Email",
         keyboardType: .emailAddress,
-        cornerRadius: 15
+        cornerRadius: 15,
+        accessibilityIdentifier: AccessibilityIdentifier.loginEmailTextField
     )
 
     private let emailWarningLabel: UILabel = .createLabel(
@@ -61,7 +62,8 @@ final class LoginView: UIView, LoginViewProtocol {
 
     private let passwordTextField: UITextField = UIPasswordTextField(
         placeholder: "Your Password",
-        cornerRadius: 15
+        cornerRadius: 15,
+        accesssibilityIdentifier: AccessibilityIdentifier.loginPasswordTextField
     )
 
     private let passwordWarningLabel: UILabel = .createLabel(
@@ -85,7 +87,8 @@ final class LoginView: UIView, LoginViewProtocol {
         backgroundColor: .secondaryGreen,
         cornerRadius: Sizes.Medium.cornerRadius,
         action: #selector(didTapSignInButton),
-        target: self
+        target: self,
+        accessibilityIdentifier: AccessibilityIdentifier.loginScreenSignInButton
     )
 
     private let dontHaveAnAccountLabel: UILabel = .createLabel(
@@ -102,7 +105,8 @@ final class LoginView: UIView, LoginViewProtocol {
         backgroundColor: .tintColor,
         cornerRadius: Sizes.Medium.cornerRadius,
         action: #selector(didTapSignUpButton),
-        target: self
+        target: self,
+        accessibilityIdentifier: AccessibilityIdentifier.loginScreenSignUpButton
     )
 
     // MARK: - Init

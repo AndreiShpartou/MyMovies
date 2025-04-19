@@ -58,7 +58,8 @@ final class ProfileSettingsView: UIView, ProfileSettingsViewProtocol {
         backgroundColor: .primarySoft,
         cornerRadius: Sizes.Medium.cornerRadius,
         action: #selector(didTapSignInButton),
-        target: self
+        target: self,
+        accessibilityIdentifier: AccessibilityIdentifier.profileSettingsSignInButton
     )
 
     private lazy var signOutButton = UIButton(

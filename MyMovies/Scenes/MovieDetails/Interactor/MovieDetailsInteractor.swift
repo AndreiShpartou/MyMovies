@@ -10,7 +10,7 @@ import Foundation
 class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     weak var presenter: MovieDetailsInteractorOutputProtocol?
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkService: NetworkServiceProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
     private var movie: MovieProtocol
@@ -18,13 +18,13 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     // MARK: - Init
     init(
         movie: MovieProtocol,
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        movieRepository: MovieRepositoryProtocol = MovieRepository()
+        networkService: NetworkServiceProtocol,
+        movieRepository: MovieRepositoryProtocol
     ) {
         self.movie = movie
-        self.networkManager = networkManager
+        self.networkService = networkService
         self.movieRepository = movieRepository
-        self.provider = networkManager.getProvider()
+        self.provider = networkService.getProvider()
     }
 
     // MARK: - Public
@@ -35,7 +35,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     }
 
     func fetchReviews() {
-        networkManager.fetchReviews(for: movie.id) { [weak self] result in
+        networkService.fetchReviews(for: movie.id) { [weak self] result in
             switch result {
             case .success(let reviews):
                 DispatchQueue.main.async {
@@ -62,7 +62,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
             )
         } else {
             // Use a distinct endpoint for the TMDB API
-            networkManager.fetchMovies(type: type) { [weak self] result in
+            networkService.fetchMovies(type: type) { [weak self] result in
                 self?.handleMovieFetchResult(result, fetchType: type)
             }
         }
@@ -119,7 +119,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
 
     // MARK: - Private
     private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], fetchType: MovieListType) {
-        networkManager.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
+        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
             self.handleMovieFetchResult(result, fetchType: fetchType)
         }
@@ -129,7 +129,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { detailedMovies in
+            networkService.fetchMoviesDetails(for: movies, type: fetchType) { detailedMovies in
                 DispatchQueue.main.async {
                     self.presenter?.didFetchSimilarMovies(detailedMovies)
                 }

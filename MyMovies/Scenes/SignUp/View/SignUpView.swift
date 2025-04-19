@@ -40,7 +40,8 @@ final class SignUpView: UIView, SignUpViewProtocol {
     private let fulllNameTextField: UITextField = .createBorderedTextField(
         placeholder: "Full Name",
         keyboardType: .default,
-        cornerRadius: 15
+        cornerRadius: 15,
+        accessibilityIdentifier: AccessibilityIdentifier.signupFullNameTextField
     )
 
     private let fullNameWarningLabel: UILabel = .createLabel(
@@ -58,7 +59,8 @@ final class SignUpView: UIView, SignUpViewProtocol {
     private let emailTextField: UITextField = .createBorderedTextField(
         placeholder: "Example@mail.com",
         keyboardType: .emailAddress,
-        cornerRadius: 15
+        cornerRadius: 15,
+        accessibilityIdentifier: AccessibilityIdentifier.signupEmailTextField
     )
 
     private let emailWarningLabel: UILabel = .createLabel(
@@ -75,7 +77,8 @@ final class SignUpView: UIView, SignUpViewProtocol {
 
     private let passwordTextField: UITextField = UIPasswordTextField(
         placeholder: "At Least 6 Characters",
-        cornerRadius: 15
+        cornerRadius: 15,
+        accesssibilityIdentifier: AccessibilityIdentifier.signupPasswordTextField
     )
 
     private let passwordWarningLabel: UILabel = .createLabel(
@@ -92,7 +95,8 @@ final class SignUpView: UIView, SignUpViewProtocol {
         backgroundColor: .tintColor,
         cornerRadius: Sizes.Medium.cornerRadius,
         action: #selector(didTapSignUpButton),
-        target: self
+        target: self,
+        accessibilityIdentifier: AccessibilityIdentifier.signupScreenSignupButton
     )
 
     // Indicators

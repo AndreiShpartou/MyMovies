@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
 
 final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     weak var presenter: MainInteractorOutputProtocol? {
@@ -17,97 +15,44 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
     }
 
-    private let networkManager: NetworkManagerProtocol
+    private let networkService: NetworkServiceProtocol
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let userProfileObserver: UserProfileObserverProtocol
     private let provider: Provider
+    private let staleSeconds: TimeInterval
 
     // MARK: - Init
     init(
-        networkManager: NetworkManagerProtocol = NetworkManager.shared,
-        genreRepository: GenreRepositoryProtocol = GenreRepository(),
-        movieRepository: MovieRepositoryProtocol = MovieRepository(),
-        userProfileObserver: UserProfileObserverProtocol = UserProfileObserver()
+        networkService: NetworkServiceProtocol,
+        genreRepository: GenreRepositoryProtocol,
+        movieRepository: MovieRepositoryProtocol,
+        userProfileObserver: UserProfileObserverProtocol,
+        staleSeconds: TimeInterval = 86400
     ) {
-        self.networkManager = networkManager
+        self.networkService = networkService
         self.genreRepository = genreRepository
         self.movieRepository = movieRepository
         self.userProfileObserver = userProfileObserver
-        self.provider = networkManager.getProvider()
+        self.staleSeconds = staleSeconds
+        self.provider = networkService.getProvider()
     }
 
-    // MARK: - UpcomingMovies
-    // Fetch collection of movie premiers
-    func fetchUpcomingMovies() {
-        fetchMovies(type: .upcomingMovies)
+    // MARK: - Movies
+    func fetchMovies(with type: MovieListType) {
+        fetchMovies(type: type)
     }
 
-    // MARK: - PopularMovies
-    func fetchPopularMovies() {
-        fetchMovies(type: .popularMovies)
-    }
-
-    // MARK: - TopRatedMovies
-    func fetchTopRatedMovies() {
-        fetchMovies(type: .topRatedMovies)
-    }
-
-    // MARK: - TheHighestGrossingMovies
-    func fetchTheHighestGrossingMovies() {
-        fetchMovies(type: .theHighestGrossingMovies)
-    }
-
-    // Get popular movies filtered by genre
-    func fetchPopularMoviesWithGenresFiltering(genre: GenreProtocol) {
-        // Show movies from storing for default genre
-        if genre.name == "All" {
-            fetchMovies(type: .popularMovies)
-
-            return
-        }
-
-        networkManager.fetchMoviesByGenre(type: .popularMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .popularMovies, saveToStorage: false)
-        }
-    }
-
-    // Get top rated movies filtered by genre
-    func fetchTopRatedMoviesWithGenresFiltering(genre: GenreProtocol) {
-        // Show movies from storing for default genre
-        if genre.name == "All" {
-            fetchMovies(type: .topRatedMovies)
-
-            return
-        }
-
-        networkManager.fetchMoviesByGenre(type: .topRatedMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .topRatedMovies, saveToStorage: false)
-        }
-    }
-
-    // Get the highest grossing movies filtered by genre
-    func fetchTheHighestGrossingMoviesWithGenresFiltering(genre: GenreProtocol) {
-        // Show movies from storing for default genre
-        if genre.name == "All" {
-            fetchMovies(type: .theHighestGrossingMovies)
-
-            return
-        }
-
-        networkManager.fetchMoviesByGenre(type: .theHighestGrossingMovies, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: .theHighestGrossingMovies, saveToStorage: false)
-        }
+    // Movies filtered by genre
+    func fetchMoviesByGenre(_ genre: GenreProtocol, listType: MovieListType) {
+        fetchMoviesByGenre(genre, type: listType)
     }
 
     // Prefetch
     func prefetchData() {
         fetchUserProfile()
         fetchMovieGenres()
-        fetchUpcomingMovies()
-        fetchPopularMovies()
-        fetchTopRatedMovies()
-        fetchTheHighestGrossingMovies()
+        [.upcomingMovies, .popularMovies, .topRatedMovies, .theHighestGrossingMovies].forEach { fetchMovies(type: $0) }
     }
 
     // MARK: - Genres
@@ -131,7 +76,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
 
         // If no cached data, fetch from API
-        networkManager.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -139,16 +84,15 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
                 DispatchQueue.main.async {
                     self.presenter?.didFetchMovieGenres(genres)
                 }
+
                 // Save to CoreData
-                if let movieGenres = genres as? [Movie.Genre] {
-                    self.genreRepository.saveGenres(movieGenres, provider: self.provider.rawValue) { result in
-                        switch result {
-                        case .success:
-                            break
-                        case .failure(let error):
-                            DispatchQueue.main.async {
-                                self.presenter?.didFailToFetchData(with: error)
-                            }
+                self.genreRepository.saveGenres(genres, provider: self.provider.rawValue) { result in
+                    switch result {
+                    case .success:
+                        break
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.presenter?.didFailToFetchData(with: error)
                         }
                     }
                 }
@@ -179,7 +123,7 @@ extension MainInteractor {
         let lastUpdateKey = "lastUpdated_\(type.rawValue)_\(provider.rawValue)"
         let lastUpdated = UserDefaults.standard.double(forKey: lastUpdateKey)
         let now = Date().timeIntervalSince1970
-        let isStale = (now - lastUpdated) > (86400) // 24 hours in seconds
+        let isStale = (now - lastUpdated) > (staleSeconds) // 24 hours in seconds
 
         // Check if there are any cached  CoreData movies if not stale
         if !isStale {
@@ -211,8 +155,21 @@ extension MainInteractor {
         }
 
         // If no cached data, fetch from API
-        networkManager.fetchMovies(type: type) { [weak self] result in
+        networkService.fetchMovies(type: type) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
+        }
+    }
+
+    private func fetchMoviesByGenre(_ genre: GenreProtocol, type: MovieListType) {
+        // Show movies from storing for default genre
+        if genre.name == "All" {
+            fetchMovies(type: type)
+
+            return
+        }
+
+        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
+            self?.handleMovieFetchResult(result, fetchType: type, saveToStorage: false)
         }
     }
 
@@ -224,12 +181,10 @@ extension MainInteractor {
     ) {
         switch result {
         case .success(let movies):
-            networkManager.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
+            networkService.fetchMoviesDetails(for: movies, type: fetchType) { [weak self] detailedMovies in
                 guard let self = self else { return }
 
-                DispatchQueue.main.async {
-                    self.presentMovies(detailedMovies, for: fetchType)
-                }
+                self.presentMovies(detailedMovies, for: fetchType)
 
                 if saveToStorage {
                     self.saveMoviesToStorage(detailedMovies, type: fetchType)
@@ -243,37 +198,26 @@ extension MainInteractor {
     }
 
     private func presentMovies(_ movies: [MovieProtocol], for type: MovieListType) {
-        switch type {
-        case .upcomingMovies:
-            presenter?.didFetchUpcomingMovies(movies)
-        case .popularMovies:
-            presenter?.didFetchPopularMovies(movies)
-        case .topRatedMovies:
-            presenter?.didFetchTopRatedMovies(movies)
-        case .theHighestGrossingMovies:
-            presenter?.didFetchTheHighestGrossingMovies(movies)
-        default:
-            break
+        DispatchQueue.main.async {
+            self.presenter?.didFetchMovies(movies, for: type)
         }
     }
 
     private func saveMoviesToStorage(_ movies: [MovieProtocol], type: MovieListType) {
         // Save to CoreData
-        if let movies = movies as? [Movie] {
-            // Store movies with new list membership
-            movieRepository.storeMoviesForList(
-                movies,
-                provider: provider.rawValue,
-                listType: type.rawValue
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.presenter?.didFailToFetchData(with: error)
-                    }
-                default:
-                    break
+        // Store movies with new list membership
+        movieRepository.storeMoviesForList(
+            movies,
+            provider: provider.rawValue,
+            listType: type.rawValue
+        ) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self?.presenter?.didFailToFetchData(with: error)
                 }
+            default:
+                break
             }
         }
 
