@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ipifyAccessToken</key>
-	<string>b04a3b11e3a99a</string>
+	<key>IpifyAccessToken</key>
+	<string>$(IPIFY_ACCESS_TOKEN)</string>
 	<key>RU_MovieAPI</key>
 	<dict>
 		<key>BaseURL</key>
@@ -11,7 +11,7 @@
 		<key>Authorization</key>
 		<dict>
 			<key>X-API-KEY</key>
-			<string>RH9700B-VAJ47JC-P92YAMQ-5WRVNRQ</string>
+			<string>$(KINOPOISK_X_API_KEY)</string>
 		</dict>
 		<key>Provider</key>
 		<string>kinopoisk</string>
@@ -52,7 +52,7 @@
 		<key>Authorization</key>
 		<dict>
 			<key>Authorization</key>
-			<string>Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2M2MWUzNDBkMjY5MDNhZWU0ZjY0ZGE3ZTVjNGI5NSIsIm5iZiI6MTcyNDA1ODA3Mi4zNDc1MTksInN1YiI6IjY2YjRjZGFhODE1NGZiNDUyODQyMjg4YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wxlmh7O1rcBNf12LzB_s-N_1itju1p4RNpUEuSp0FIo</string>
+			<string>$(TMDB_ACCESS_TOKEN)</string>
 		</dict>
 		<key>Provider</key>
 		<string>tmdb</string>
@@ -84,7 +84,16 @@
 			<string>/3/search/person</string>
 		</dict>
 	</dict>
-	<key>aboutUs</key>
+	<key>Cloudinary</key>
+	<dict>
+		<key>apiSecret</key>
+		<string>$(CLOUDINARY_API_SECRET)</string>
+		<key>apiKey</key>
+		<string>$(CLOUDINARY_API_KEY)</string>
+		<key>cloudName</key>
+		<string>$(CLOUDINARY_CLOUD_NAME)</string>
+	</dict>
+	<key>AboutUs</key>
 	<dict>
 		<key>labelText</key>
 		<string>Welcome to MyMovies App!</string>
@@ -110,7 +119,7 @@
 		<key>title</key>
 		<string>About Us</string>
 	</dict>
-	<key>legalAndPolicies</key>
+	<key>LegalAndPolicies</key>
 	<dict>
 		<key>labelText</key>
 		<string>Terms</string>

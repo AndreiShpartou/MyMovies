@@ -1,0 +1,9 @@
+//
+//  Release.xcconfig
+//  MyMovies
+//
+//  Created by Andrei Shpartou on 21/04/2025.
+//
+
+#include "Pods/Target Support Files/Pods-MyMovies/Pods-MyMovies.release.xcconfig"
+#include "Config/Secrets.xcconfig"

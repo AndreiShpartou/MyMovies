@@ -10,7 +10,13 @@ import Cloudinary
 class CloudinaryService: ProfileDataStoreServiceProtocol {
     private let cloudinary: CLDCloudinary
 
-    init(configuration: CLDConfiguration = CLDConfiguration(cloudName: "dfe1lkbwt", apiKey: "445626447662862", apiSecret: "eUa65FGYdWeil5iwYk6shtcENso")) {
+    init(cloudinaryAuth: CloudinaryAuth?) {
+        let configuration = CLDConfiguration(
+            cloudName: cloudinaryAuth?.cloudName ?? "",
+            apiKey: cloudinaryAuth?.apiKey,
+            apiSecret: cloudinaryAuth?.apiSecret
+        )
+
         self.cloudinary = CLDCloudinary(configuration: configuration)
     }
 
@@ -29,4 +35,10 @@ class CloudinaryService: ProfileDataStoreServiceProtocol {
             }
         })
     }
+}
+
+struct CloudinaryAuth {
+    let cloudName: String
+    let apiKey: String
+    let apiSecret: String
 }

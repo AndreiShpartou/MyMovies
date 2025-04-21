@@ -16,6 +16,7 @@ class NetworkService: NetworkServiceProtocol {
         return AppConfigurationManager.shared.appConfig?.apiConfig
     }
 
+    private lazy var provider = apiConfig?.getProvider() ?? .kinopoisk
     private let mapper: ResponseMapperProtocol = ResponseMapper()
 
     private init() {}
@@ -177,7 +178,7 @@ class NetworkService: NetworkServiceProtocol {
 
     // MARK: - Provider
     func getProvider() -> Provider {
-        return apiConfig?.getProvider() ?? .kinopoisk
+        return provider
     }
 
     // MARK: - Private PerformRequest
@@ -237,7 +238,7 @@ class NetworkService: NetworkServiceProtocol {
                 serializationDuration: TimeInterval(0),
                 result: .success(cachedData)
             )
-            handleResponse(afResponse, ofType: responseType, completion: completion)
+            handleResponse(afResponse, ofType: responseType, cacheKey: nil, completion: completion)
 
             return
         }
@@ -246,21 +247,35 @@ class NetworkService: NetworkServiceProtocol {
         let headers = HTTPHeaders(apiConfig.authorizationHeader())
         // Do network
         AF.request(url, parameters: parameters, encoding: encoding, headers: headers).responseData { [weak self] response in
-            self?.handleResponse(response, ofType: responseType, completion: completion)
-            self?.handleCaching(for: response, with: cacheKey)
+            self?.handleResponse(response, ofType: responseType, cacheKey: cacheKey, completion: completion)
         }
     }
     // MARK: - HandleResponse
     private func handleResponse<T: Codable>(
         _ response: AFDataResponse<Data>,
         ofType responseType: Codable.Type,
+        cacheKey: String?,
         completion: @escaping (Result<T, Error>) -> Void
     ) {
+        // Check for 403 / Public token's limits
+        if provider == .kinopoisk,
+           let statusCode = response.response?.statusCode,
+           statusCode == 403 {
+            completion(.failure(CustomNetworkError.forbidden))
+
+            return
+        }
+
         switch response.result {
         case .success(let data):
             do {
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
                 let mappedData = try mapper.map(data: decodedResponse, from: responseType, to: T.self)
+                // Update cache
+                if let cacheKey = cacheKey {
+                    APICache.shared.store(data, for: cacheKey)
+                }
+
                 completion(.success(mappedData))
             } catch let decodingError as DecodingError {
                 debugPrint(decodingError)
@@ -310,15 +325,5 @@ class NetworkService: NetworkServiceProtocol {
         let combined = "\(base)?\(sortedParams)"
 
         return combined
-    }
-
-    private func handleCaching(for response: AFDataResponse<Data>, with key: String) {
-        // TODO: handle the case of expired request limit for kinopoisk
-        switch response.result {
-        case .success(let data):
-            APICache.shared.store(data, for: key)
-        case .failure:
-            break
-        }
     }
 }
