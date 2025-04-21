@@ -73,7 +73,8 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         ServiceLocator.shared.addService(service: authService as AuthServiceProtocol)
         ServiceLocator.shared.addService(service: profileDocumentsStoreService as ProfileDocumentsStoreServiceProtocol)
         ServiceLocator.shared.addService(service: userProfileObserver as UserProfileObserverProtocol)
-        ServiceLocator.shared.addService(service: CloudinaryService() as ProfileDataStoreServiceProtocol)
+        let cloudinaryAuth = plistLoader?.loadCloudinaryConfig()
+        ServiceLocator.shared.addService(service: CloudinaryService(cloudinaryAuth: cloudinaryAuth) as ProfileDataStoreServiceProtocol)
         // CoreData
         ServiceLocator.shared.addService(service: GenreRepository() as GenreRepositoryProtocol)
         ServiceLocator.shared.addService(service: MovieRepository() as MovieRepositoryProtocol)
