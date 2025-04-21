@@ -66,6 +66,7 @@ enum CustomNetworkError: Error, LocalizedError {
     case invalidJSON
     case invalidAPIConfig
     case invalidResponseType
+    case forbidden
 
     var errorDescription: String? {
         switch self {
@@ -81,6 +82,8 @@ enum CustomNetworkError: Error, LocalizedError {
             return NSLocalizedString("Invalid API config", comment: "")
         case .invalidResponseType:
             return NSLocalizedString("Invalid response type", comment: "")
+        case .forbidden:
+            return NSLocalizedString("You've used up your daily limit of requests. To get more requests, upgrade your rate in the @kinopoiskdev_bot", comment: "")
         }
     }
 }

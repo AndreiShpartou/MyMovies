@@ -7,7 +7,7 @@
 	<key>RU_MovieAPI</key>
 	<dict>
 		<key>BaseURL</key>
-		<string>$(KINOPOISK_X_API_KEY)</string>
+		<string>https://api.kinopoisk.dev</string>
 		<key>Authorization</key>
 		<dict>
 			<key>X-API-KEY</key>
