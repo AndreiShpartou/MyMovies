@@ -38,7 +38,7 @@ final class NetworkHelper: NetworkHelperProtocol {
     }
 
     func getCountry(for ip: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let accessToken = Bundle.main.object(forInfoDictionaryKey: "ipifyAccessToken") as? String else {
+        guard let accessToken = Bundle.main.object(forInfoDictionaryKey: "IpifyAccessToken") as? String else {
             return
         }
 

@@ -42,9 +42,9 @@ enum ProfileSettingsItem: CaseIterable {
     var plistkey: String? {
         switch self {
         case .legalAndPolicies:
-            return "legalAndPolicies"
+            return "LegalAndPolicies"
         case .aboutUs:
-            return "aboutUs"
+            return "AboutUs"
         default:
             return nil
         }

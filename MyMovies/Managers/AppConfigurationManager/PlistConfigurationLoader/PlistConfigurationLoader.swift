@@ -40,4 +40,15 @@ final class PlistConfigurationLoader: PlistConfigurationLoaderProtocol {
 
         return GeneralDetails(labelText: labelText, textViewText: textViewText, title: title)
     }
+
+    func loadCloudinaryConfig() -> CloudinaryAuth? {
+        guard let configDict = Bundle.main.object(forInfoDictionaryKey: "Cloudinary") as? [String: Any],
+              let cloudName = configDict["cloudName"] as? String,
+              let apiKey = configDict["apiKey"] as? String,
+              let apiSecret = configDict["apiSecret"] as? String else {
+            return nil
+        }
+
+        return CloudinaryAuth(cloudName: cloudName, apiKey: apiKey, apiSecret: apiSecret)
+    }
 }
