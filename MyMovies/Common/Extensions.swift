@@ -562,4 +562,6 @@ extension String {
 extension Notification.Name {
     static let favouritesAdded = Notification.Name("favouritesAdded")
     static let favouritesRemoved = Notification.Name("favouritesRemoved")
+    static let activeTabBarItemTapped = Notification.Name("activeTabBarItemTapped")
+    static let activeTabBarItemRootVCTapped = Notification.Name("activeTabBarItemRootVCTapped")
 }

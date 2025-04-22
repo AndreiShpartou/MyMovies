@@ -16,6 +16,7 @@ class CustomTabBarController: UITabBarController {
     }
 
     private let customTabBar = CustomTabBar()
+    private var previousNavigationController: UINavigationController?
 
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -40,6 +41,7 @@ extension CustomTabBarController {
         viewControllers = [homeVC, searchVC, wishlistVC, profileVC]
 
         setupCustomTabBarItems()
+        previousNavigationController = homeVC as? UINavigationController
     }
 
     private func setupCustomTabBarItems() {
@@ -71,5 +73,34 @@ extension CustomTabBarController {
         let index = tappedItem.tag
         // Switch the system tab bar's selection
         selectedIndex = index
+        // Send notifications
+        tabBarControllerDidSelect()
+    }
+}
+
+// MARK: - Notifications
+extension CustomTabBarController {
+    private func tabBarControllerDidSelect() {
+        guard let currentNavigationController = viewControllers?[selectedIndex] as? UINavigationController else {
+            return
+        }
+
+        guard previousNavigationController == currentNavigationController else {
+            previousNavigationController = currentNavigationController
+            return
+        }
+
+        if let currentViewController = currentNavigationController.topViewController,
+           currentViewController == currentNavigationController.viewControllers.first {
+            NotificationCenter.default.post(
+                name: .activeTabBarItemRootVCTapped,
+                object: nil
+            )
+        } else {
+//            NotificationCenter.default.post(
+//                name: .activeTabBarItemTapped,
+//                object: nil
+//            )
+        }
     }
 }
