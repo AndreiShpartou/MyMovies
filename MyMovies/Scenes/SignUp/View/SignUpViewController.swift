@@ -36,14 +36,13 @@ final class SignUpViewController: UIViewController, SignUpViewControllerProtocol
         super.viewDidLoad()
 
         setupViewController()
-        setupNavigationBar()
         presenter.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.isNavigationBarHidden = false
+        setupNavigationBar()
 
         // Setup notification observers
         NotificationCenter.default.addObserver(
@@ -86,6 +85,7 @@ extension SignUpViewController {
     }
 
     private func setupNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
         // Setting the custom title font
         navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         // Custom left button

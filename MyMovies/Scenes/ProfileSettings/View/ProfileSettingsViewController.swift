@@ -39,12 +39,22 @@ final class ProfileSettingsViewController: UIViewController {
         setupViewController()
         presenter.viewDidLoad()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        setupNavigationBar()
+    }
 }
 
 // MARK: - Setup
 extension ProfileSettingsViewController {
     private func setupViewController() {
         profileSettingsView.delegate = self
+    }
+
+    private func setupNavigationBar() {
+        navigationController?.isNavigationBarHidden = true
         navigationItem.title = NSLocalizedString("Profile", comment: "Profile settings")
         navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         tabBarController?.title = nil

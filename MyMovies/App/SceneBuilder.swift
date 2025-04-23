@@ -74,7 +74,6 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-//        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }
@@ -250,7 +249,6 @@ final class SceneBuilder: SceneBuilderProtocol {
         interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.isNavigationBarHidden = true
 
         return navigationController
     }

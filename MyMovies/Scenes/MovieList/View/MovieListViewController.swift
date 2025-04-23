@@ -41,16 +41,22 @@ final class MovieListViewController: UIViewController {
         // The initial data loading
         presenter.viewDidLoad(listType: movieListType)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        setupNavigationBar()
+    }
 }
 
 // MARK: - Setup
 extension MovieListViewController {
     private func setupViewController() {
         movieListView.delegate = self
-        setupNavigationBar()
     }
 
     private func setupNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
         title = movieListType.title
         // Setting the custom title font
         navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()

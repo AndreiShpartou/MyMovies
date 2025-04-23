@@ -281,6 +281,26 @@ extension UIImageView {
     }
 }
 
+// MARK: - UINavigationController
+// Allow default swipe back while using the custom back button
+extension UINavigationController: UIGestureRecognizerDelegate {
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        // Allow gesture if there’s something to pop
+        return viewControllers.count > 1
+    }
+
+    // To make it works also with ScrollView
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
+
 // MARK: - UIBarButtonItem
 extension UIBarButtonItem {
     static func createCustomBackBarButtonItem(action: Selector, target: Any?) -> UIBarButtonItem {
