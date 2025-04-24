@@ -40,10 +40,14 @@ extension TextInfoGeneralViewController {
     }
 
     private func setupNavigationController() {
-        if let isNavigationBarHidden = navigationController?.isNavigationBarHidden,
-            !isNavigationBarHidden {
+        if isBeingPresented {
+            navigationController?.isNavigationBarHidden = true
+        } else {
+            navigationController?.isNavigationBarHidden = false
             textInfoView.hideDefaultTitle()
+            // Setting the custom title font
             navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
+            // Custom left button
             navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
         }
     }
