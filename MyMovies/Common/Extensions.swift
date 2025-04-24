@@ -416,6 +416,8 @@ extension UISearchBar {
             return searchBar
         }
 
+        let leftIconView = textField.leftView as? UIImageView
+        leftIconView?.tintColor = .textColorWhiteGrey
         textField.backgroundColor = .primarySoft
         textField.layer.cornerRadius = textFieldCornedRadius
         textField.layer.borderWidth = textFieldBorderWidth
