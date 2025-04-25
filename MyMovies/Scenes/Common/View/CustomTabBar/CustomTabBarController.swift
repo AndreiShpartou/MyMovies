@@ -71,10 +71,16 @@ extension CustomTabBarController {
         guard let tappedItem = gesture.view as? CustomTabBarItem else { return }
 
         let index = tappedItem.tag
-        // Switch the system tab bar's selection
-        selectedIndex = index
-        // Send notifications
-        tabBarControllerDidSelect()
+        if index == selectedIndex {
+            if let currentNavigationController = self.viewControllers?[index] as? UINavigationController {
+                currentNavigationController.popToRootViewController(animated: true)
+            }
+        } else {
+            // Switch the system tab bar's selection
+            selectedIndex = index
+            // Send notifications
+            tabBarControllerDidSelect()
+        }
     }
 }
 
@@ -96,11 +102,6 @@ extension CustomTabBarController {
                 name: .activeTabBarItemRootVCTapped,
                 object: nil
             )
-        } else {
-//            NotificationCenter.default.post(
-//                name: .activeTabBarItemTapped,
-//                object: nil
-//            )
         }
     }
 }
