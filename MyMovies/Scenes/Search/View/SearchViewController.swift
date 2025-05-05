@@ -44,6 +44,13 @@ final class SearchViewController: UIViewController, SearchViewControllerProtocol
         super.viewWillAppear(animated)
 
         navigationController?.isNavigationBarHidden = true
+        addShortLivedObservers()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeShortLivedObservers()
     }
 }
 
@@ -51,6 +58,35 @@ final class SearchViewController: UIViewController, SearchViewControllerProtocol
 extension SearchViewController {
     private func setupViewController() {
         searchView.delegate = self
+    }
+}
+
+// MARK: - ActionMethods
+extension SearchViewController {
+    @objc
+    private func didTapActiveTabBarItem() {
+        // Handle active tab bar item
+        searchView.setNilValueForScrollOffset()
+    }
+}
+
+// MARK: - Helpers
+extension SearchViewController {
+    private func addShortLivedObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didTapActiveTabBarItem),
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
+    }
+
+    private func removeShortLivedObservers() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
     }
 }
 

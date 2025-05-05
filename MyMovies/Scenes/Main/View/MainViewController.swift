@@ -45,6 +45,13 @@ final class MainViewController: UIViewController, MainViewControllerProtocol {
         super.viewWillAppear(animated)
 
         navigationController?.isNavigationBarHidden = true
+        addShortLivedObservers()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeShortLivedObservers()
     }
 }
 
@@ -52,6 +59,35 @@ final class MainViewController: UIViewController, MainViewControllerProtocol {
 extension MainViewController {
     private func setupViewController() {
         mainView.delegate = self
+    }
+}
+
+// MARK: - ActionMethods
+extension MainViewController {
+    @objc
+    private func didTapActiveTabBarItem() {
+        // Handle active tab bar item
+        mainView.setNilValueForScrollOffset()
+    }
+}
+
+// MARK: - Helpers
+extension MainViewController {
+    private func addShortLivedObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didTapActiveTabBarItem),
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
+    }
+
+    private func removeShortLivedObservers() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
     }
 }
 

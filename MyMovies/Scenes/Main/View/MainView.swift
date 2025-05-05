@@ -208,6 +208,10 @@ final class MainView: UIView, MainViewProtocol {
         }
     }
 
+    func setNilValueForScrollOffset() {
+        scrollView.setContentOffset(.zero, animated: true)
+    }
+
     func showError(with message: String) {
         guard let viewController = parentViewController else {
             return

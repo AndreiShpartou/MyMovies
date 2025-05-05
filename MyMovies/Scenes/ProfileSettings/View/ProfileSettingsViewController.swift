@@ -44,6 +44,13 @@ final class ProfileSettingsViewController: UIViewController {
         super.viewWillAppear(animated)
 
         setupNavigationBar()
+        addShortLivedObservers()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeShortLivedObservers()
     }
 }
 
@@ -58,6 +65,35 @@ extension ProfileSettingsViewController {
         navigationItem.title = NSLocalizedString("Profile", comment: "Profile settings")
         navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         tabBarController?.title = nil
+    }
+}
+
+// MARK: - ActionMethods
+extension ProfileSettingsViewController {
+    @objc
+    private func didTapActiveTabBarItem() {
+        // Handle active tab bar item
+        profileSettingsView.setNilValueForScrollOffset()
+    }
+}
+
+// MARK: - Helpers
+extension ProfileSettingsViewController {
+    private func addShortLivedObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didTapActiveTabBarItem),
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
+    }
+
+    private func removeShortLivedObservers() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
     }
 }
 

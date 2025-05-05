@@ -13,6 +13,7 @@ protocol WishlistViewProtocol: UIView {
     func showMovies(_ movies: [WishlistItemViewModelProtocol])
     func removeMovie(at index: Int)
     func setLoadingIndicator(isVisible: Bool)
+    func setNilValueForScrollOffset()
     func showError(with message: String)
 }
 

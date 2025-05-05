@@ -19,6 +19,7 @@ protocol MainViewProtocol: UIView {
     func showUserProfile(_ user: UserProfileViewModelProtocol)
     func didLogOut()
     func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
+    func setNilValueForScrollOffset()
     func showError(with messsage: String)
 }
 

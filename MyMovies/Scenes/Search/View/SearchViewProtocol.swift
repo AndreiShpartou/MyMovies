@@ -19,6 +19,7 @@ protocol SearchViewProtocol: UIView {
     func hideAllElements()
     func setInitialElements(isHidden: Bool)
     func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
+    func setNilValueForScrollOffset()
     func showError(with message: String)
 }
 

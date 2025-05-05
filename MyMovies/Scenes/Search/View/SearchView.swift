@@ -237,6 +237,10 @@ final class SearchView: UIView, SearchViewProtocol {
         }
     }
 
+    func setNilValueForScrollOffset() {
+        scrollView.setContentOffset(.zero, animated: true)
+    }
+
     func showError(with message: String) {
         guard let viewController = parentViewController else {
             return
