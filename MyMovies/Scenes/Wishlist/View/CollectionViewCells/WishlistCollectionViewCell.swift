@@ -78,8 +78,13 @@ final class WishlistCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: WishlistItemViewModelProtocol) {
+        applyBlurEffect(to: posterImageView)
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image) { [weak self] _ in
+            guard let self = self else { return }
+            removeBlurEffect(from: self.posterImageView)
+        }
+
         self.movieID = movie.id
-        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         titleLabel.text = movie.title
         genreLabel.text = movie.genre
         ratingStackView.ratingLabel.text = movie.voteAverage

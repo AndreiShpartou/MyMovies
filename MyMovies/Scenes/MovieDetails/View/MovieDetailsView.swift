@@ -157,8 +157,18 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
 
     // MARK: - MovieDetailsViewProtocol
     func showDetailedMovie(_ movie: MovieDetailsViewModelProtocol) {
-        backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
-        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
+        applyBlurEffect(to: backdropImageView)
+        backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image) { [weak self] _ in
+            guard let self = self else { return }
+            removeBlurEffect(from: self.backdropImageView)
+        }
+
+        applyBlurEffect(to: posterImageView)
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image) { [weak self] _ in
+            guard let self = self else { return }
+            removeBlurEffect(from: self.posterImageView)
+        }
+
         alternativeTitle.text = movie.alternativeTitle
         yearStackView.label.text = movie.releaseYear
         runtimeStackView.label.text = movie.runtime
