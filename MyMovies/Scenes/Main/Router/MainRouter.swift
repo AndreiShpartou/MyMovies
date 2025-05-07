@@ -32,4 +32,10 @@ final class MainRouter: MainRouterProtocol {
             tabBarController.selectedIndex = 2
         }
     }
+
+    func navigateToSearchScene() {
+        if let tabBarController = viewController?.tabBarController {
+            tabBarController.selectedIndex = 1
+        }
+    }
 }

@@ -319,6 +319,7 @@ extension MainView {
         popularMoviesCollectionViewHandler.delegate = delegate
         topRatedMoviesCollectionViewHandler.delegate = delegate
         theHighestGrossingCollectionViewHandler.delegate = delegate
+        searchBar.delegate = delegate
     }
 }
 

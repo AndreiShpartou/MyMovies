@@ -115,3 +115,22 @@ extension MainViewController: MainViewDelegate {
         presenter.didTapFavouriteButton()
     }
 }
+
+// MARK: - UISearchBarDelegate
+extension MainViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        presentSearchScene(searchBar)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        presentSearchScene(searchBar)
+    }
+
+    private func presentSearchScene(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+
+        DispatchQueue.main.async { [weak self] in
+            self?.presenter.presentSearchScene()
+        }
+    }
+}
