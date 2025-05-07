@@ -126,7 +126,7 @@ extension UICollectionView {
         collectionView.backgroundColor = backgroundColor
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.decelerationRate = .fast
+        collectionView.decelerationRate = .normal
         cellTypesDict.forEach {
             collectionView.register($0.value, forCellWithReuseIdentifier: $0.key)
         }
