@@ -111,14 +111,14 @@ extension TextInfoGeneralView {
         }
 
         closeButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
+            make.leading.equalTo(safeAreaLayoutGuide).offset(16)
             make.centerY.equalTo(titleLabel)
             make.width.height.equalTo(24)
         }
 
         label.snp.makeConstraints { make in
             make.leading.trailing.equalTo(safeAreaLayoutGuide).offset(16)
-            textLabelTopConstraint = make.top.equalTo(titleLabel.snp.bottom).offset(16).constraint
+            textLabelTopConstraint = make.top.equalTo(titleLabel.snp.bottom).offset(24).constraint
             make.height.greaterThanOrEqualTo(20).priority(.low)
         }
 

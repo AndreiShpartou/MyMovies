@@ -19,10 +19,11 @@ protocol MainViewProtocol: UIView {
     func showUserProfile(_ user: UserProfileViewModelProtocol)
     func didLogOut()
     func setLoadingIndicator(for section: MainAppSection, isVisible: Bool)
+    func setNilValueForScrollOffset()
     func showError(with messsage: String)
 }
 
-protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, UpcomingMoviesCollectionViewDelegate, UserGreetingViewDelegate {
+protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, UpcomingMoviesCollectionViewDelegate, UserGreetingViewDelegate, UISearchBarDelegate {
     func didSelectMovie(movieID: Int)
     func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didTapSeeAllButton(listType: MovieListType)

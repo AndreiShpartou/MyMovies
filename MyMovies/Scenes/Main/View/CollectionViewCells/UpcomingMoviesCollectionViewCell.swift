@@ -61,10 +61,20 @@ final class UpcomingMoviesCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: UpcomingMovieViewModelProtocol) {
-        backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image)
-        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
         titleLabel.text = movie.title
         shortDescriptionLabel.text = movie.shortDescription
+
+        applyBlurEffect(to: backdropImageView)
+        backdropImageView.kf.setImage(with: movie.backdropURL, placeholder: Asset.DefaultCovers.defaultBackdrop.image) { [weak self] _ in
+            guard let self = self else { return }
+            removeBlurEffect(from: self.backdropImageView)
+        }
+
+        applyBlurEffect(to: posterImageView)
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image) { [weak self] _ in
+            guard let self = self else { return }
+            removeBlurEffect(from: self.posterImageView)
+        }
     }
 }
 

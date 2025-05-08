@@ -45,6 +45,14 @@ final class WishlistViewController: UIViewController {
         super.viewWillAppear(animated)
 
         navigationController?.isNavigationBarHidden = true
+
+        addShortLivedObservers()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeShortLivedObservers()
     }
 }
 
@@ -52,6 +60,35 @@ final class WishlistViewController: UIViewController {
 extension WishlistViewController {
     private func setupViewController() {
         wishlistView.delegate = self
+    }
+}
+
+// MARK: - ActionMethods
+extension WishlistViewController {
+    @objc
+    private func didTapActiveTabBarItem() {
+        // Handle active tab bar item
+        wishlistView.setNilValueForScrollOffset()
+    }
+}
+
+// MARK: - Helpers
+extension WishlistViewController {
+    private func addShortLivedObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didTapActiveTabBarItem),
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
+    }
+
+    private func removeShortLivedObservers() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .activeTabBarItemRootVCTapped,
+            object: nil
+        )
     }
 }
 

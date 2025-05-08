@@ -75,6 +75,10 @@ final class WishlistView: UIView, WishlistViewProtocol {
         }
     }
 
+    func setNilValueForScrollOffset() {
+        collectionView.setContentOffset(.zero, animated: true)
+    }
+
     func showError(with message: String) {
         func showError(with message: String) {
             guard let viewController = parentViewController else {

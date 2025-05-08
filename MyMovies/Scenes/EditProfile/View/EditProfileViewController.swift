@@ -43,6 +43,8 @@ class EditProfileViewController: UIViewController, EditProfileViewControllerProt
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        setupNavigationController()
+
         // Setup notification observers
         NotificationCenter.default.addObserver(
             self,
@@ -82,10 +84,10 @@ extension EditProfileViewController {
     private func setupViewController() {
         title = "Edit Profile"
         editProfileView.delegate = self
-        setupNavigationController()
     }
 
     private func setupNavigationController() {
+        navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
     }

@@ -38,4 +38,6 @@ final class MockMainRouter: MainRouterProtocol {
     func navigateToWishlist() {
         didCallNavigateToWishlist = true
     }
+    
+    func navigateToSearchScene() {}
 }

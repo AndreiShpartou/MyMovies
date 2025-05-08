@@ -115,3 +115,22 @@ func getGlobalAlertController(for message: String) -> UIAlertController {
 
     return alert
 }
+
+// MARK: - ImageView depiction
+func applyBlurEffect(to imageView: UIImageView) {
+    imageView.layoutIfNeeded()
+
+    let blurEffect = UIBlurEffect(style: .dark)
+    let blurEffectView = UIVisualEffectView(effect: blurEffect)
+    blurEffectView.frame = imageView.bounds
+    blurEffectView.alpha = 0.5
+
+    imageView.addSubview(blurEffectView)
+}
+
+func removeBlurEffect(from imageView: UIImageView) {
+    imageView.subviews.forEach {
+        guard $0 is UIVisualEffectView else { return }
+        $0.removeFromSuperview()
+    }
+}
