@@ -17,4 +17,5 @@ protocol MainPresenterProtocol: AnyObject {
     func didSelectMovie(movieID: Int)
     func didTapSeeAllButton(listType: MovieListType)
     func didTapFavouriteButton()
+    func presentSearchScene()
 }

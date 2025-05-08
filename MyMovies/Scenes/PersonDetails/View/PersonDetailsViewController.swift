@@ -39,16 +39,22 @@ final class PersonDetailsViewController: UIViewController, PersonDetailsViewCont
         setupViewController()
         presenter.viewDidLoad()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        setupNavigationBar()
+    }
 }
 
 // MARK: - Setup
 extension PersonDetailsViewController {
     private func setupViewController() {
         personDetailsView.delegate = self
-        setupNavigationBar()
     }
 
     private func setupNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
         // Setting the custom title font
         navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
         // Custom left button

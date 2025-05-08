@@ -80,7 +80,12 @@ final class MovieListCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public
     func configure(with movie: MovieListItemViewModelProtocol) {
-        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image)
+        applyBlurEffect(to: posterImageView)
+        posterImageView.kf.setImage(with: movie.posterURL, placeholder: Asset.DefaultCovers.defaultPoster.image) { [weak self] _ in
+            guard let self = self else { return }
+            removeBlurEffect(from: self.posterImageView)
+        }
+
         ratingStackView.ratingLabel.text = movie.voteAverage
         titleLabel.text = movie.title
         yearStackView.label.text = movie.releaseYear

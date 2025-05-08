@@ -74,4 +74,6 @@ final class MockMainView: UIView, MainViewProtocol {
         didCallShowError = true
         capturedError = messsage
     }
+    
+    func setNilValueForScrollOffset() {}
 }

@@ -14,6 +14,7 @@ protocol ProfileSettingsViewProtocol: UIView {
     func showSettingsItems(_ items: [ProfileSettingsSectionViewModelProtocol])
     func showSignOutItems()
     func setLoadingIndicator(isVisible: Bool)
+    func setNilValueForScrollOffset()
     func showError(with message: String)
 }
 

@@ -81,6 +81,10 @@ final class MainPresenter: MainPresenterProtocol {
     func didTapFavouriteButton() {
         router.navigateToWishlist()
     }
+
+    func presentSearchScene() {
+        router.navigateToSearchScene()
+    }
 }
 
 // MARK: - MainInteractorOutputProtocol

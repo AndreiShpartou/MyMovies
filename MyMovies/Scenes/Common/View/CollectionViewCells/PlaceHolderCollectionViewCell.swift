@@ -15,9 +15,8 @@ class PlaceHolderCollectionViewCell: UICollectionViewCell {
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhiteGrey
     )
-    private let placeholderImageView: UIImageView = .createImageView(
-        contentMode: .scaleAspectFill
-    )
+
+    private var placeholderImageView: UIImageView = .createImageView(contentMode: .scaleAspectFill)
 
     // MARK: - Init
     override init(frame: CGRect) {

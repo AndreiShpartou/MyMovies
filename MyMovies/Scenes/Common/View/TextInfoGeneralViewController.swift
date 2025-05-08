@@ -13,13 +13,18 @@ final class TextInfoGeneralViewController: UIViewController {
     // MARK: - LifeCycle
     override func loadView() {
         view = textInfoView
-        textInfoView.delegate = self
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewController()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        setupNavigationController()
     }
 
     // MARK: - Public
@@ -31,14 +36,18 @@ final class TextInfoGeneralViewController: UIViewController {
 // MARK: - Setup
 extension TextInfoGeneralViewController {
     private func setupViewController() {
-        setupNavigationController()
+        textInfoView.delegate = self
     }
 
     private func setupNavigationController() {
-        if let isNavigationBarHidden = navigationController?.isNavigationBarHidden,
-            !isNavigationBarHidden {
+        if isBeingPresented {
+            navigationController?.isNavigationBarHidden = true
+        } else {
+            navigationController?.isNavigationBarHidden = false
             textInfoView.hideDefaultTitle()
+            // Setting the custom title font
             navigationController?.navigationBar.titleTextAttributes = getNavigationBarTitleAttributes()
+            // Custom left button
             navigationItem.leftBarButtonItem = .createCustomBackBarButtonItem(action: #selector(backButtonTapped), target: self)
         }
     }

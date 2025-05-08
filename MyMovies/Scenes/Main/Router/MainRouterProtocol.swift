@@ -13,4 +13,5 @@ protocol MainRouterProtocol: AnyObject {
     func navigateToMovieDetails(with movie: MovieProtocol)
     func navigateToMovieList(type: MovieListType)
     func navigateToWishlist()
+    func navigateToSearchScene()
 }
