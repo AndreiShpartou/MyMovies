@@ -132,6 +132,13 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
                 return
             }
+            // If no cached data and type is "Recently Searched Movies", don't invoke API
+            if type == .recentlySearchedMovies {
+                DispatchQueue.main.async {
+                    self.presenter?.didFetchMovieList([])
+                }
+                return
+            }
         } catch {
             DispatchQueue.main.async {
                 self.presenter?.didFailToFetchData(with: error)
