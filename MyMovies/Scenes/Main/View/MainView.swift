@@ -399,7 +399,7 @@ extension MainView: UIScrollViewDelegate {
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(0.93)
         } else {
             searchBarContainerView.snp.updateConstraints { make in
-                make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(8)
+                make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom)
             }
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
         }
@@ -461,12 +461,12 @@ extension MainView {
     private func setupSearchBarConstraints() {
         searchBarContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(8)
-            make.height.equalTo(60)
+            make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom)
+            make.height.equalTo(68)
         }
 
         searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().offset(-16)
         }

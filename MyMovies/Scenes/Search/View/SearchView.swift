@@ -403,7 +403,7 @@ extension SearchView: UIScrollViewDelegate {
             }
         } else {
             searchBarContainerView.snp.updateConstraints { make in
-                make.top.greaterThanOrEqualToSuperview().offset(8)
+                make.top.greaterThanOrEqualToSuperview()
             }
         }
     }
@@ -457,13 +457,13 @@ extension SearchView {
     private func setupSearchBarConstraints() {
         searchBarContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.greaterThanOrEqualToSuperview().offset(8)
-            make.height.equalTo(60)
+            make.top.greaterThanOrEqualToSuperview()
+            make.height.equalTo(68)
         }
 
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
             make.bottom.equalToSuperview().offset(-16)
         }
     }

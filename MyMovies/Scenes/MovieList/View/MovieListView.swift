@@ -127,7 +127,7 @@ extension MovieListView {
     private func setupConstraints() {
         genresCollection.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalTo(safeAreaLayoutGuide).inset(16)
+            make.top.equalTo(safeAreaLayoutGuide).inset(8)
             make.height.equalTo(40)
         }
 
