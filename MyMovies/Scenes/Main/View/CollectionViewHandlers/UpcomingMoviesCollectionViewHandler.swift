@@ -22,10 +22,10 @@ final class UpcomingMoviesCollectionViewHandler: NSObject {
     }
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSourcex
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return max(movies.count, 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -74,8 +74,11 @@ extension UpcomingMoviesCollectionViewHandler: UIScrollViewDelegate {
 // MARK: - Helpers
 extension UpcomingMoviesCollectionViewHandler {
     private func calculateItemSize(for collectionView: UICollectionView) -> CGSize {
-        let itemWidth = collectionView.bounds.width * 0.8
+        var itemWidth = collectionView.bounds.width * 0.8
         let itemHeight = collectionView.bounds.height
+        if movies.isEmpty {
+            itemWidth = collectionView.bounds.width
+        }
 
         return CGSize(width: itemWidth, height: itemHeight)
     }

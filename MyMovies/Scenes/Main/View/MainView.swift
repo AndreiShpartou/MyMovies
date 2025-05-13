@@ -49,12 +49,15 @@ final class MainView: UIView, MainViewProtocol {
     private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellTypesDict: [UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self]
+        cellTypesDict: [
+            UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
     private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
 
-    // Genres section
+    // Genres section.
     private let genresLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
