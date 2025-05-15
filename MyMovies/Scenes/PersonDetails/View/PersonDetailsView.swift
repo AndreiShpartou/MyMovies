@@ -238,7 +238,6 @@ extension PersonDetailsView {
 
         contentView.snp.makeConstraints { make in
             make.edges.width.equalToSuperview()
-            make.bottom.equalTo(relatedMoviesCollectionView).offset(16)
         }
     }
 
@@ -292,6 +291,7 @@ extension PersonDetailsView {
             make.leading.trailing.equalToSuperview().inset(4)
             make.top.equalTo(relatedMoviesLabel.snp.bottom).offset(8)
             make.height.equalTo(300)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 

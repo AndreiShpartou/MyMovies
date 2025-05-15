@@ -21,8 +21,8 @@ final class MovieDetailsRouter: MovieDetailsRouterProtocol {
     }
 
     func navigateToPersonDetails(with personID: Int) {
-        let movieDetailsVC = SceneBuilder.buildPersonDetailsScene(for: personID)
-        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
+        let personDetailsVC = SceneBuilder.buildPersonDetailsScene(for: personID)
+        viewController?.navigationController?.pushViewController(personDetailsVC, animated: true)
     }
 
     func navigateToMovieList(type: MovieListType) {
