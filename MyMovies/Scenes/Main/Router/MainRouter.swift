@@ -17,13 +17,11 @@ final class MainRouter: MainRouterProtocol {
 
     func navigateToMovieDetails(with movie: MovieProtocol) {
         let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
-        viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }
 
     func navigateToMovieList(type: MovieListType) {
         let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
-        viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieListVC, animated: true)
     }
 
