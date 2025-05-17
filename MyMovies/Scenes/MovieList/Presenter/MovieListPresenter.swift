@@ -36,7 +36,7 @@ final class MovieListPresenter: MovieListPresenterProtocol {
     }
 
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
-        guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+        guard let movieGenre = mapper.map(data: genre, to: Genre.self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to map Genre", underlying: nil))
 
             return

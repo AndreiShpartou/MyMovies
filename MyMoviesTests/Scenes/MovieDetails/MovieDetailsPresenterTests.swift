@@ -81,7 +81,7 @@ final class MovieDetailsPresenterTests: XCTestCase {
     
     func testDidTapDidSelectPerson_ShouldNavigateToPersonDetails() {
         // given
-        let person = MockMovie.Person()
+        let person = MockPerson()
         // when
         presenter.didSelectPerson(personID: person.id)
         

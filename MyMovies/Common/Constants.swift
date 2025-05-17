@@ -53,7 +53,7 @@ enum FontSize {
 }
 
 enum DefaultValue {
-    static let genre: GenreProtocol = Movie.Genre(id: nil, name: "all")
+    static let genre: GenreProtocol = Genre(id: nil, name: "all")
 }
 
 enum NotificationKeys {

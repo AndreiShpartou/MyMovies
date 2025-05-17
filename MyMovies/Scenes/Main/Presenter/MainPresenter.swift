@@ -60,7 +60,7 @@ final class MainPresenter: MainPresenterProtocol {
     }
 
     func didSelectGenre(_ genre: GenreViewModelProtocol) {
-        guard let movieGenre = mapper.map(data: genre, to: Movie.Genre.self) else {
+        guard let movieGenre = mapper.map(data: genre, to: Genre.self) else {
             return
         }
 

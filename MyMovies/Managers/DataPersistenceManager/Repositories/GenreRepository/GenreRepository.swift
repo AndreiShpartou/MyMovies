@@ -38,7 +38,7 @@ final class GenreRepository: GenreRepositoryProtocol {
         let result = try mainContext.fetch(request)
         // Convert to domain model
         return result.map { entity in
-            Movie.Genre(
+            Genre(
                 id: Int(entity.id),
                 name: entity.name
             )

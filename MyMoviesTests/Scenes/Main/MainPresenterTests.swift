@@ -39,7 +39,7 @@ final class MainPresenterTests: XCTestCase {
     // MARK: - Tests
     func testViewDidLoad_ShouldFetchAllSectionsAndSetLoading() {
         // given
-        mockInteractor.movieGenres = [MockMovie.Genre(), MockMovie.Genre()]
+        mockInteractor.movieGenres = [MockGenre(), MockGenre()]
         mockInteractor.movies = [MockMovie(), MockMovie(), MockMovie()]
         mockInteractor.userProfile = UserProfile(id: "mock", email: "mock@email.com")
         

@@ -17,7 +17,7 @@ final class MockMovieListInteractor: MovieListInteractorProtocol {
     var didCallFetchMovieListWithGenresFiltering = false
     
     var movies: [MockMovie]?
-    var genres: [MockMovie.Genre]?
+    var genres: [MockGenre]?
 
     // MARK: - MovieListInteractorProtocol
     func fetchMovieGenres(type: MovieListType) {

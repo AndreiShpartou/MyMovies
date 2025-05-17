@@ -529,7 +529,7 @@ extension MovieRepository {
         )
     }
 
-    private func mapGenres(_ entity: MovieEntity) -> [Movie.Genre] {
+    private func mapGenres(_ entity: MovieEntity) -> [Genre] {
         // bridging: "movieGenres" -> [MovieGenreEntity]
         guard let bridgingSet = entity.movieGenres as? Set<MovieGenreEntity> else {
             return []
@@ -541,14 +541,14 @@ extension MovieRepository {
         return sorted.compactMap {
             guard let gengre = $0.genre else { return nil }
 
-            return Movie.Genre(
+            return Genre(
                 id: Int(gengre.id),
                 name: gengre.name
             )
         }
     }
 
-    private func mapCountries(_ entity: MovieEntity) -> [Movie.ProductionCountry] {
+    private func mapCountries(_ entity: MovieEntity) -> [ProductionCountry] {
         guard let bridgingSet = entity.movieCountries as? Set<MovieCountryEntity> else {
             return []
         }
@@ -557,11 +557,11 @@ extension MovieRepository {
         return sorted.compactMap {
             guard let country = $0.country else { return nil }
 
-            return Movie.ProductionCountry(name: country.name, fullName: country.fullName)
+            return ProductionCountry(name: country.name, fullName: country.fullName)
         }
     }
 
-    private func mapPersons(_ entity: MovieEntity) -> [Movie.Person] {
+    private func mapPersons(_ entity: MovieEntity) -> [Person] {
         guard let bridgingSet = entity.moviePersons as? Set<MoviePersonEntity> else {
             return []
         }
@@ -569,7 +569,7 @@ extension MovieRepository {
 
         return sorted.compactMap {
             guard let person = $0.person else { return nil }
-            return Movie.Person(
+            return Person(
                 id: Int(person.id),
                 photo: person.photo,
                 name: person.name,
@@ -579,10 +579,10 @@ extension MovieRepository {
         }
     }
 
-    private func mapPoster(_ urlString: String?) -> Movie.Cover? {
+    private func mapPoster(_ urlString: String?) -> Cover? {
         guard let urlString = urlString else { return nil }
 
-        return Movie.Cover(url: urlString, previewUrl: nil)
+        return Cover(url: urlString, previewUrl: nil)
     }
 
     private func mapSimilars(_ entity: MovieEntity) -> [Movie]? {

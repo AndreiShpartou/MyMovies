@@ -40,7 +40,7 @@ final class MovieListPresenterTests: XCTestCase {
     func testViewDidLoad_ShouldFetchGenresFetchMovies() {
         // given
         let listType = MovieListType.upcomingMovies
-        mockInteractor.genres = [MockMovie.Genre(), MockMovie.Genre()]
+        mockInteractor.genres = [MockGenre(), MockGenre()]
         mockInteractor.movies = [MockMovie(), MockMovie(), MockMovie()]
         
         let expectationForGenres = expectation(description: "Should call didCallShowMovieGenresCallBack within 0.3 seconds")
