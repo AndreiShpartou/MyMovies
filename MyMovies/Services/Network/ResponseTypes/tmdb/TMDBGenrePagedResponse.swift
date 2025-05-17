@@ -8,13 +8,5 @@
 import Foundation
 
 struct TMDBGenrePagedResponse: TMDBGenrePagedResponseProtocol {
-    var genres: [TMDBGenreResponseProtocol] {
-        return movieGenres
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case movieGenres = "genres"
-    }
-
-    private let movieGenres: [TMDBMovieResponse.Genre]
+    var genres: [TMDBGenreResponse]
 }

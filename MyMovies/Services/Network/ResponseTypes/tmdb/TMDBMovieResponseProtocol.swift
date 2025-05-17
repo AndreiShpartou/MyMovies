@@ -18,9 +18,9 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
     var runtime: Int? { get }
     var voteAverage: Double? { get }
     var genreIds: [Int]? { get }
-    var genres: [TMDBGenreResponseProtocol]? { get }
-    var countries: [TMDBCountryResponseProtocol]? { get }
-    var credits: TMDBCreditsResponseProtocol? { get }
+    var genres: [TMDBGenreResponse]? { get }
+    var countries: [TMDBCountryResponse]? { get }
+    var credits: TMDBCreditsResponse? { get }
     var posterPath: String? { get }
     var backdropPath: String? { get }
 
@@ -39,6 +39,6 @@ protocol TMDBCountryResponseProtocol: Codable {
 }
 
 protocol TMDBCreditsResponseProtocol: Codable {
-    var cast: [TMDBPersonResponseProtocol]? { get }
-    var crew: [TMDBPersonResponseProtocol]? { get }
+    var cast: [TMDBPersonResponse]? { get }
+    var crew: [TMDBPersonResponse]? { get }
 }

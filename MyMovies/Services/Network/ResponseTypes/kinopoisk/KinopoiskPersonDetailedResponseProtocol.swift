@@ -14,6 +14,6 @@ protocol KinopoiskPersonDetailedResponseProtocol: Codable {
     var enName: String? { get }
     var birthday: String? { get }
     var death: String? { get }
-    var birthPlace: [CommonValueProtocol]? { get }
-    var profession: [CommonValueProtocol]? { get }
+    var birthPlace: [CommonValue]? { get }
+    var profession: [CommonValue]? { get }
 }

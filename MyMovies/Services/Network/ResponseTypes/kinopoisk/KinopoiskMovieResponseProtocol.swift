@@ -19,13 +19,13 @@ protocol KinopoiskMovieResponseProtocol: PagedResponseResultProtocol {
     var slogan: String? { get }
     var status: String? { get set }
     var movieLength: Int? { get }
-    var poster: KinopoiskCoverResponseProtocol? { get }
-    var backdrop: KinopoiskCoverResponseProtocol? { get }
-    var genres: [KinopoiskGenreResponseProtocol]? { get }
-    var countries: [KinopoiskCountryResponseProtocol]? { get }
-    var persons: [KinopoiskPersonResponseProtocol]? { get }
-    var rating: KinopoiskRatingResponseProtocol? { get }
-    var similarMovies: [KinopoiskMovieResponseProtocol]? { get }
+    var poster: KinopoiskCoverResponse? { get }
+    var backdrop: KinopoiskCoverResponse? { get }
+    var genres: [KinopoiskGenreResponse]? { get }
+    var countries: [KinopoiskCountryResponse]? { get }
+    var persons: [KinopoiskPersonResponse]? { get }
+    var rating: KinopoiskRatingResponse? { get }
+    var similarMovies: [KinopoiskMovieResponse]? { get }
 }
 
 protocol KinopoiskGenreResponseProtocol: Codable {

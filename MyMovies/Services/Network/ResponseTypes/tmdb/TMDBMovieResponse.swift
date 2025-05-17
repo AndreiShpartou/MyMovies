@@ -20,59 +20,9 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var posterPath: String?
     var backdropPath: String?
     var genreIds: [Int]?
-    var genres: [TMDBGenreResponseProtocol]? {
-        return movieGenres
-    }
-    var countries: [TMDBCountryResponseProtocol]? {
-        return movieCountries
-    }
-    var credits: TMDBCreditsResponseProtocol? {
-        return movieCredits
-    }
-
-    private let movieGenres: [TMDBMovieResponse.Genre]?
-    private let movieCountries: [TMDBMovieResponse.Country]?
-    private let movieCredits: TMDBMovieResponse.Credits?
-
-    struct Genre: TMDBGenreResponseProtocol {
-        var id: Int
-        var name: String?
-    }
-
-    struct Country: TMDBCountryResponseProtocol {
-        var iso_3166_1: String
-        var name: String
-    }
-
-    struct Credits: TMDBCreditsResponseProtocol {
-        var cast: [TMDBPersonResponseProtocol]? {
-            return movieCast
-        }
-        var crew: [TMDBPersonResponseProtocol]? {
-            return movieCrew
-        }
-
-        private let movieCast: [TMDBPersonResponse]?
-        private let movieCrew: [TMDBPersonResponse]?
-
-        enum CodingKeys: String, CodingKey {
-            case movieCast = "cast"
-            case movieCrew = "crew"
-        }
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case id, title, overview, runtime, tagline, status
-        case voteAverage = "vote_average"
-        case posterPath = "poster_path"
-        case backdropPath = "backdrop_path"
-        case originalTitle = "original_title"
-        case releaseDate = "release_date"
-        case genreIds = "genre_ids"
-        case movieGenres = "genres"
-        case movieCountries = "production_countries"
-        case movieCredits = "credits"
-    }
+    var genres: [TMDBGenreResponse]?
+    var countries: [TMDBCountryResponse]?
+    var credits: TMDBCreditsResponse?
 
     // MARK: - Public
     func posterURL(size: PosterSize = .w780) -> String? {
@@ -90,4 +40,19 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
 
         return ImageURLBuilder.buildURL(for: backdropPath, size: size)
     }
+}
+
+struct TMDBGenreResponse: TMDBGenreResponseProtocol {
+    var id: Int
+    var name: String?
+}
+
+struct TMDBCountryResponse: TMDBCountryResponseProtocol {
+    var iso_3166_1: String
+    var name: String
+}
+
+struct TMDBCreditsResponse: TMDBCreditsResponseProtocol {
+    var cast: [TMDBPersonResponse]?
+    var crew: [TMDBPersonResponse]?
 }
