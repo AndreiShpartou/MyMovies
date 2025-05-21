@@ -165,9 +165,9 @@ final class NetworkService: NetworkServiceProtocol {
         }
     }
 
-    func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
-        searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[Person], Error>) in
-            completion(result.map { $0 as [PersonProtocol] })
+    func searchPersons<T: PersonProtocol>(query: String, completion: @escaping (Result<[T], Error>) -> Void) {
+        searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[T], Error>) in
+            completion(result.map { $0 as [T] })
         }
     }
 

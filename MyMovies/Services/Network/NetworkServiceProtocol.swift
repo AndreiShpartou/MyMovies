@@ -21,7 +21,7 @@ protocol NetworkServiceProtocol {
     func fetchSettingsSections(completion: @escaping (Result<[ProfileSettingsSection], Error>) -> Void)
     // Search
     func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
-    func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void)
+    func searchPersons<T: PersonProtocol>(query: String, completion: @escaping (Result<[T], Error>) -> Void)
     // Provider
     func getProvider() -> Provider
 }

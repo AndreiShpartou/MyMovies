@@ -164,14 +164,14 @@ final class MockNetworkService: NetworkServiceProtocol {
         }
     }
     
-    func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
+    func searchPersons<T: PersonProtocol>(query: String, completion: @escaping (Result<[T], Error>) -> Void) {
         didCallSearchPersons = true
         capturedSearchPersonsQuery = query
         
         if fetchSearchPersonsShouldReturnError {
             completion(.failure(NSError(domain: "fetchSearchPersons Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockPerson()]))
+            completion(.success([MockPerson() as! T]))
         }
     }
     

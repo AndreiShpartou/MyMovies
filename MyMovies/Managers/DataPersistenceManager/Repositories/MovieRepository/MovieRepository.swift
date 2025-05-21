@@ -418,7 +418,7 @@ extension MovieRepository {
         }
     }
 
-    private func findOrCreatePersonEntity(for personDomain: PersonProtocol, provider: String, context: NSManagedObjectContext) -> PersonEntity {
+    private func findOrCreatePersonEntity<T: PersonProtocol>(for personDomain: T, provider: String, context: NSManagedObjectContext) -> PersonEntity {
         let request: NSFetchRequest<PersonEntity> = PersonEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "id == %d", Int64(personDomain.id)),
