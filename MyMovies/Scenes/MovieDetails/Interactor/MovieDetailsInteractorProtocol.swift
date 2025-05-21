@@ -19,7 +19,7 @@ protocol MovieDetailsInteractorProtocol: AnyObject {
 
 protocol MovieDetailsInteractorOutputProtocol: AnyObject {
     func didFetchMovie(_ movie: MovieProtocol)
-    func didFetchReviews(_ reviews: [MovieReviewProtocol])
+    func didFetchReviews(_ reviews: [MovieReview])
     func didFetchSimilarMovies(_ movies: [MovieProtocol])
     func didFailToFetchData(with error: Error)
     func didFetchIsMovieInList(_ isInList: Bool, listType: MovieListType)

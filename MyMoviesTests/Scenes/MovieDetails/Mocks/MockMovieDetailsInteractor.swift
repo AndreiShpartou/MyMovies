@@ -19,7 +19,7 @@ final class MockMovieDetailsInteractor: MovieDetailsInteractorProtocol {
     var didCallToggleFavouriteStatus = false
     
     var movie: MockMovie?
-    var reviews: [MockReview]?
+    var reviews: [MovieReview]?
     var similarMovies: [MockMovie]?
     var isfavourite = false
 

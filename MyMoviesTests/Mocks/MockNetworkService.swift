@@ -29,7 +29,7 @@ final class MockNetworkService: NetworkServiceProtocol {
     var capturedMoviesIDs: [Int]?
     var capturedPersonID: Int?
     var capturedGenre: GenreProtocol?
-    var capturedReviews: [MovieReviewProtocol]?
+    var capturedReviews: [MovieReview]?
     var capturedMovieID: Int?
     var capturedSearchMoviesQuery: String?
     var capturedSearchPersonsQuery: String?
@@ -48,7 +48,7 @@ final class MockNetworkService: NetworkServiceProtocol {
     
     var stubbedGenres: [GenreProtocol] = []
     var stubbedMovies: [MovieProtocol] = []
-    var stubbedReviews: [MovieReviewProtocol] = []
+    var stubbedReviews: [MovieReview] = []
 
     // MARK: - NetworkServiceProtocol
     // MARK: - Movies
@@ -142,7 +142,7 @@ final class MockNetworkService: NetworkServiceProtocol {
     }
     
     // MARK: - Other
-    func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReviewProtocol], Error>) -> Void) {
+    func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReview], Error>) -> Void) {
         didCallFetchReviews = true
         capturedMovieID = movieID
         

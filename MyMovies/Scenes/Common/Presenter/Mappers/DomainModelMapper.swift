@@ -30,7 +30,7 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         case (let data as MovieProtocol, is UpcomingMovieViewModel.Type):
             return mapToUpcoming(data) as? Y
         // Reviews
-        case (let data as [MovieReviewProtocol], is [ReviewViewModel].Type):
+        case (let data as [MovieReview], is [ReviewViewModel].Type):
             return mapToReviews(data) as? Y
         // Persons
         case (let data as [PersonProtocol], is [PersonViewModel].Type):
@@ -168,7 +168,7 @@ extension DomainModelMapper {
         )
     }
 
-    private func mapToReviews(_ data: [MovieReviewProtocol]) -> [ReviewViewModelProtocol] {
+    private func mapToReviews(_ data: [MovieReview]) -> [ReviewViewModelProtocol] {
         let reviews: [ReviewViewModelProtocol] = data.map {
             ReviewViewModel(author: $0.author, review: $0.review)
         }

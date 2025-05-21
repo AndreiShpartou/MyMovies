@@ -62,7 +62,7 @@ final class MovieDetailsInteractorTests: XCTestCase {
     
     func testFetchReviews_WithNetworkServiceSuccess_ShouldReturnReviews() {
         // given
-        mockNetworkService.stubbedReviews = [MockReview()]
+        mockNetworkService.stubbedReviews = [MovieReview(author: "MockAuthor", review: "MockReview")]
         mockNetworkService.fetchReviewsShouldReturnError = false
         
         let expectation = expectation(description: "Should call didCallFetchReviewsCallBack during 0.3 seconds")
