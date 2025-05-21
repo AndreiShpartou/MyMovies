@@ -13,7 +13,7 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
     var router: PersonDetailsRouterProtocol
 
     private let mapper: DomainModelMapperProtocol
-    private var person: PersonDetailedProtocol?
+    private var person: PersonDetailed?
     private var personRelatedMovies: [MovieProtocol] = []
     private var loadingStates: [MainAppSection: Bool] = [
         .rootView: false,
@@ -75,7 +75,7 @@ final class PersonDetailsPresenter: PersonDetailsPresenterProtocol {
 
 // MARK: - PeroonDetailsInteractorOutputProtocol
 extension PersonDetailsPresenter: PersonDetailsInteractorOutputProtocol {
-    func didFetchPersonDetails(_ person: PersonDetailedProtocol) {
+    func didFetchPersonDetails(_ person: PersonDetailed) {
         guard let personViewModel = mapper.map(data: person, to: PersonDetailedViewModel.self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to map Person", underlying: nil))
 

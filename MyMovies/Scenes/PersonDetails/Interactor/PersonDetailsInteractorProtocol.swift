@@ -17,7 +17,7 @@ protocol PersonDetailsInteractorProtocol: AnyObject {
 }
 
 protocol PersonDetailsInteractorOutputProtocol: AnyObject {
-    func didFetchPersonDetails(_ person: PersonDetailedProtocol)
+    func didFetchPersonDetails(_ person: PersonDetailed)
     func didFetchMovieGenres(_ genres: [GenreProtocol])
     func didFetchPersonRelatedMovies(_ movies: [MovieProtocol])
     func didFailToFetchData(with error: Error)

@@ -35,7 +35,7 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         // Persons
         case (let data as [PersonProtocol], is [PersonViewModel].Type):
             return map(data) as? Y
-        case (let data as PersonDetailedProtocol, is PersonDetailedViewModel.Type):
+        case (let data as PersonDetailed, is PersonDetailedViewModel.Type):
             return map(data) as? Y
         // GenresToViewModel
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
@@ -206,8 +206,8 @@ extension DomainModelMapper {
         }
     }
 
-    // PersonDetailedProtocol -> PersonDetailedViewModelProtocol
-    private func map(_ data: PersonDetailedProtocol) -> PersonDetailedViewModelProtocol {
+    // PersonDetailed -> PersonDetailedViewModelProtocol
+    private func map(_ data: PersonDetailed) -> PersonDetailedViewModelProtocol {
         return PersonDetailedViewModel(
             id: data.id,
             name: data.name,
