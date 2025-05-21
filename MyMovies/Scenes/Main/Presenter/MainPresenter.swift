@@ -115,7 +115,7 @@ extension MainPresenter: MainInteractorOutputProtocol {
         }
     }
 
-    func didFetchUserProfile(_ profile: UserProfileProtocol) {
+    func didFetchUserProfile(_ profile: UserProfile) {
         guard let profileViewModel = mapper.map(data: profile, to: UserProfileViewModel.self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to load profile", underlying: nil))
 

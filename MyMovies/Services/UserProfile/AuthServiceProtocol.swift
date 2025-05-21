@@ -8,7 +8,7 @@
 import Foundation
 
 protocol AuthServiceProtocol {
-    var currentUser: UserProfileProtocol? { get }
+    var currentUser: UserProfile? { get }
 
     func createUser(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void)
     func signIn(withEmail email: String, password: String, completion: @escaping (Result<UserProfile, Error>) -> Void)

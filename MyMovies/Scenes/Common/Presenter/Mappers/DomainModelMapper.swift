@@ -44,7 +44,7 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         case (let data as GenreViewModelProtocol, is Genre.Type):
             return map(data) as? Y
         // UserProfileToViewModel
-        case (let data as UserProfileProtocol, is UserProfileViewModel.Type):
+        case (let data as UserProfile, is UserProfileViewModel.Type):
             return map(data) as? Y
         // SettingsToViewModel
         case (let data as [ProfileSettingsSection], is [ProfileSettingsSectionViewModel].Type):
@@ -235,7 +235,7 @@ extension DomainModelMapper {
     }
 
     //  UserProfileProtocol -> UserProfileViewModelProtocol
-    private func map(_ data: UserProfileProtocol) -> UserProfileViewModelProtocol {
+    private func map(_ data: UserProfile) -> UserProfileViewModelProtocol {
         return UserProfileViewModel(
             id: data.id,
             email: data.email,

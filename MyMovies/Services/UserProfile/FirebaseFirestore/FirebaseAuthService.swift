@@ -9,7 +9,7 @@ import FirebaseAuth
 
 final class FirebaseAuthService: AuthServiceProtocol {
     // MARK: - AuthServic
-    var currentUser: UserProfileProtocol? {
+    var currentUser: UserProfile? {
         guard let user = Auth.auth().currentUser,
               let email = user.email else {
             return nil
