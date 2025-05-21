@@ -13,9 +13,9 @@ protocol MovieRepositoryProtocol {
     func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void)
     func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String, completion: @escaping (Result<Void, Error>) -> Void)
     // Fetch
-    func fetchMovieByID(_ id: Int, provider: String, listType: String) throws -> MovieProtocol?
-    func fetchMoviesByList(provider: String, listType: String) throws -> [MovieProtocol]
-    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) throws -> [MovieProtocol]
+    func fetchMovieByID<T: MovieProtocol>(_ id: Int, provider: String, listType: String) throws -> T?
+    func fetchMoviesByList<T: MovieProtocol>(provider: String, listType: String) throws -> [T]
+    func fetchMoviesByGenre<T: GenreProtocol, Y: MovieProtocol>(genre: T, provider: String, listType: String) throws -> [Y]
     // Clear movie memberships
     func clearMoviesForList(provider: String, listName: String, completion: @escaping (Result<Void, Error>) -> Void)
     func removeMovieFromList(_ movieID: Int, provider: String, listName: String, completion: @escaping (Result<Void, Error>) -> Void)
@@ -108,22 +108,22 @@ final class MovieRepository: MovieRepositoryProtocol {
 
     // MARK: - Fetching
     // Fetching from the main context (sync)
-    func fetchMovieByID(_ id: Int, provider: String, listType: String) throws -> MovieProtocol? {
+    func fetchMovieByID<T: MovieProtocol>(_ id: Int, provider: String, listType: String) throws -> T? {
         let movieEntity = try fetchMovieEntityById(Int64(id), provider: provider, listType: listType)
         guard let movieEntity = movieEntity else { return nil }
 
-        return mapToMovieProtocol(movieEntity)
+        return mapToMovieProtocol(movieEntity) as? T
     }
 
-    func fetchMoviesByList(provider: String, listType: String) throws -> [MovieProtocol] {
+    func fetchMoviesByList<T: MovieProtocol>(provider: String, listType: String) throws -> [T] {
         let movieEntities = try fetchMovieEntitiesByList(listType: listType, provider: provider)
 
-        return movieEntities.compactMap { mapToMovieProtocol($0) }
+        return movieEntities.compactMap { mapToMovieProtocol($0) as? T }
     }
 
-    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) throws -> [MovieProtocol] {
+    func fetchMoviesByGenre<T: GenreProtocol, Y: MovieProtocol>(genre: T, provider: String, listType: String) throws -> [Y] {
         // Get all movies by list
-        let moviesByList = try fetchMoviesByList(provider: provider, listType: listType)
+        let moviesByList: [Y] = try fetchMoviesByList(provider: provider, listType: listType)
         // Get all movies by genre
         let moviesByGenre = moviesByList.filter { movie in
             movie.genres.contains(where: { ($0.id == genre.id) && ($0.name == genre.name) })
@@ -396,7 +396,7 @@ extension MovieRepository {
         }
     }
 
-    private func findOrCreateGenreEntity(for genreDomain: GenreProtocol, provider: String, context: NSManagedObjectContext) -> GenreEntity {
+    private func findOrCreateGenreEntity<T: GenreProtocol>(for genreDomain: T, provider: String, context: NSManagedObjectContext) -> GenreEntity {
         let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "id == %d", genreDomain.id ?? 0),
@@ -509,7 +509,7 @@ extension MovieRepository {
 
 // MARK: - Mapping
 extension MovieRepository {
-    private func mapToMovieProtocol(_ entity: MovieEntity) -> MovieProtocol {
+    private func mapToMovieProtocol(_ entity: MovieEntity) -> Movie {
         return Movie(
             id: Int(entity.id),
             title: entity.title,

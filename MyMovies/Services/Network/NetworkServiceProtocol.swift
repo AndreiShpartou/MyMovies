@@ -15,8 +15,8 @@ protocol NetworkServiceProtocol {
     func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
     func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailed, Error>) -> Void)
     func fetchPersonRelatedMovies(for personID: Int, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
-    func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
-    func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void)
+    func fetchMoviesByGenre<T: GenreProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[MovieProtocol], Error>) -> Void)
+    func fetchGenres<T: GenreProtocol>(completion: @escaping (Result<[T], Error>) -> Void)
     func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReview], Error>) -> Void)
     func fetchSettingsSections(completion: @escaping (Result<[ProfileSettingsSection], Error>) -> Void)
     // Search

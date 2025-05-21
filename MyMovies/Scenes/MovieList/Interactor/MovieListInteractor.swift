@@ -65,7 +65,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         if type == .recentlySearchedMovies {
             do {
                 // Custom filtering from the local storage
-                let movies = try movieRepository.fetchMoviesByGenre(
+                let movies: [Movie] = try movieRepository.fetchMoviesByGenre(
                     genre: genre,
                     provider: provider.rawValue,
                     listType: type.rawValue
@@ -91,7 +91,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     // MARK: - Private
     private func fetchGenres() {
         do {
-            let localGenres = try genreRepository.fetchGenres(provider: provider.rawValue)
+            let localGenres: [Genre] = try genreRepository.fetchGenres(provider: provider.rawValue)
             if !localGenres.isEmpty {
                 DispatchQueue.main.async {
                     // Immediately present to the user
@@ -106,7 +106,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             }
         }
 
-        networkService.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] (result: Result<[Genre], Error>) in
             switch result {
             case .success(let genres):
                 DispatchQueue.main.async {
@@ -123,7 +123,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     // Check if there are any cached movies
     private func fetchMovies(type: MovieListType) {
         do {
-            let cachedMovies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+            let cachedMovies: [Movie] = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
             if !cachedMovies.isEmpty {
                 // Immediately present to the user
                 DispatchQueue.main.async {

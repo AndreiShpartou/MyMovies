@@ -36,7 +36,7 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     func fetchMovieGenres() {
-        networkService.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] (result: Result<[Genre], Error>) in
             switch result {
             case .success(let genres):
                 DispatchQueue.main.async {

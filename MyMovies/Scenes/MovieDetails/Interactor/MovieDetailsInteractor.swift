@@ -70,7 +70,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
 
     func fetchIsMovieInList(listType: MovieListType) {
         do {
-            let movieInList = try movieRepository.fetchMovieByID(
+            let movieInList: Movie? = try movieRepository.fetchMovieByID(
                 movie.id,
                 provider: provider.rawValue,
                 listType: listType.rawValue

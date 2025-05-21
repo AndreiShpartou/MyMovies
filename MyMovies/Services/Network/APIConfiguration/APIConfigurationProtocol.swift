@@ -13,6 +13,6 @@ protocol APIConfigurationProtocol {
     func responseType(for endpoint: Endpoint) -> Codable.Type?
     func authorizationHeader() -> [String: String]
     func defaultQueryParameters(for endpoint: Endpoint) -> [String: Any]
-    func genreFilteringQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any]
+    func genreFilteringQueryParameters<T: GenreProtocol>(for genre: T, endpoint: Endpoint) -> [String: Any]
     func getProvider() -> Provider
 }

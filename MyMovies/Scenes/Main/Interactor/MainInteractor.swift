@@ -60,7 +60,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     func fetchMovieGenres() {
         do {
             // Check if there are any cached genres
-            let cachedGenres = try genreRepository.fetchGenres(provider: provider.rawValue)
+            let cachedGenres: [Genre] = try genreRepository.fetchGenres(provider: provider.rawValue)
             if !cachedGenres.isEmpty {
                 DispatchQueue.main.async {
                     // Immediately present to the user
@@ -76,7 +76,7 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
         }
 
         // If no cached data, fetch from API
-        networkService.fetchGenres { [weak self] result in
+        networkService.fetchGenres { [weak self] (result: Result<[Genre], Error>) in
             guard let self = self else { return }
 
             switch result {
@@ -128,7 +128,7 @@ extension MainInteractor {
         // Check if there are any cached  CoreData movies if not stale
         if !isStale {
             do {
-                let cachedMovies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
+                let cachedMovies: [Movie] = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: type.rawValue)
                 if !cachedMovies.isEmpty {
                     // Immediately present to the user
                     presentMovies(cachedMovies, for: type)

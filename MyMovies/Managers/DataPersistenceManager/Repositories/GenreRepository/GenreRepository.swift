@@ -9,8 +9,8 @@ import Foundation
 import CoreData
 
 protocol GenreRepositoryProtocol {
-    func fetchGenres(provider: String) throws -> [GenreProtocol]
-    func saveGenres(_ genres: [GenreProtocol], provider: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func fetchGenres<T: GenreProtocol>(provider: String) throws -> [T]
+    func saveGenres<T: GenreProtocol>(_ genres: [T], provider: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class GenreRepository: GenreRepositoryProtocol {
@@ -29,7 +29,7 @@ final class GenreRepository: GenreRepositoryProtocol {
 
     // MARK: - Fetching
     // Fetching from the main context
-    func fetchGenres(provider: String) throws -> [GenreProtocol] {
+    func fetchGenres<T: GenreProtocol>(provider: String) throws -> [T] {
         let request: NSFetchRequest<GenreEntity> = GenreEntity.fetchRequest()
         // Filter by provider to store separate sets (tmdb or kinopoisk)
         request.predicate = NSPredicate(format: "provider == %@", provider)
@@ -37,17 +37,17 @@ final class GenreRepository: GenreRepositoryProtocol {
 
         let result = try mainContext.fetch(request)
         // Convert to domain model
-        return result.map { entity in
+        return result.compactMap { entity in
             Genre(
                 id: Int(entity.id),
                 name: entity.name
-            )
+            ) as? T
         }
     }
 
     // MARK: - Saving
     // Save news genres in a background context: clear old ones beforehand
-    func saveGenres(_ genres: [GenreProtocol], provider: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func saveGenres<T: GenreProtocol>(_ genres: [T], provider: String, completion: @escaping (Result<Void, Error>) -> Void) {
         let bgContext = backgroundContextMaker()
         bgContext.perform {
             do {
@@ -72,8 +72,8 @@ final class GenreRepository: GenreRepositoryProtocol {
     }
 
     // MARK: - Private findOrCreateGenreEntity
-    private func findOrCreateGenreEntity(
-        for genreDomain: GenreProtocol,
+    private func findOrCreateGenreEntity<T: GenreProtocol>(
+        for genreDomain: T,
         provider: String,
         orderIndex: Int16,
         context: NSManagedObjectContext
