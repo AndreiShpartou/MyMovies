@@ -104,7 +104,7 @@ final class MovieDetailsInteractorTests: XCTestCase {
     
     func testFetchSimilarMovies_WithNetworkServiceSuccess_AndDetailsById_ShouldReturnMovies() {
         // given
-        let mockMovie = MockMovie(id: 1, similarMovies: [Movie(id: 1, title: "MockSimilar")])
+        let mockMovie = MockMovie(id: 1, similarMovies: [MockMovie(id: 2)])
         interactor = MovieDetailsInteractor(
             movie: mockMovie,
             networkService: mockNetworkService,

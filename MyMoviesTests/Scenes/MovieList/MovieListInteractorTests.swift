@@ -48,7 +48,7 @@ final class MovieListInteractorTests: XCTestCase {
     // MARK: - Tests Genres Success
     func testFetchGenres_WithCachedGenresSuccess_ShouldReturnCachedGenres() {
         // given
-        mockGenreRepository.stubbedGenres = [MockGenre()]
+        mockGenreRepository.stubbedGenres = [MockMovie.Genre()]
         mockGenreRepository.fetchGenresShouldReturnError = false
         let listType = MovieListType.popularMovies
         
@@ -72,7 +72,7 @@ final class MovieListInteractorTests: XCTestCase {
         // given
         mockGenreRepository.stubbedGenres = []
         mockGenreRepository.fetchGenresShouldReturnError = false
-        mockNetworkService.stubbedGenres = [MockGenre()]
+        mockNetworkService.stubbedGenres = [MockMovie.Genre()]
         mockNetworkService.fetchGenresShouldReturnError = false
         let listType = MovieListType.popularMovies
         
@@ -95,7 +95,7 @@ final class MovieListInteractorTests: XCTestCase {
     func testFetchGenres_WithRepositoryError_ShouldReturnError_AndFetchFromNetwork() {
         // given
         mockGenreRepository.fetchGenresShouldReturnError = true
-        mockNetworkService.stubbedGenres = [MockGenre()]
+        mockNetworkService.stubbedGenres = [MockMovie.Genre()]
         mockNetworkService.fetchGenresShouldReturnError = false
         let listType = MovieListType.popularMovies
         
@@ -195,7 +195,7 @@ final class MovieListInteractorTests: XCTestCase {
     func testFetchMoviListWithGenreFiltering_WithNetworkSuccess_ShouldReturnMovies() {
         // given
         let listType = MovieListType.popularMovies
-        let genre = MockGenre()
+        let genre = MockMovie.Genre()
 
         mockMovieRepository.stubbedMovies = []
         mockNetworkService.fetchMoviesShouldReturnError = true

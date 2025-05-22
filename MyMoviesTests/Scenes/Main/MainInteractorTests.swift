@@ -55,7 +55,7 @@ final class MainInteractorTests: XCTestCase {
     // MARK: - Tests Genres Success
     func testFetchGenres_WithCachedGenresSuccess_ShouldReturnCachedGenres() {
         // given
-        mockGenreRepository.stubbedGenres = [MockGenre()]
+        mockGenreRepository.stubbedGenres = [MockMovie.Genre()]
         mockGenreRepository.fetchGenresShouldReturnError = false
 
         let expectation = expectation(description: "Should call didCallDidFetchMovieGenresCallBack during 0.3 seconds")
@@ -77,7 +77,7 @@ final class MainInteractorTests: XCTestCase {
         // given
         mockGenreRepository.stubbedGenres = []
         mockGenreRepository.fetchGenresShouldReturnError = false
-        mockNetworkService.stubbedGenres = [MockGenre()]
+        mockNetworkService.stubbedGenres = [MockMovie.Genre()]
         mockNetworkService.fetchGenresShouldReturnError = false
         
         let expectation = expectation(description: "Should call didCallDidFetchMovieGenresCallBack during 0.3 seconds")
@@ -101,7 +101,7 @@ final class MainInteractorTests: XCTestCase {
     func testFetchGenres_WithRepositoryError_ShouldReturnError_AndFetchFromNetwork() {
         // given
         mockGenreRepository.fetchGenresShouldReturnError = true
-        mockNetworkService.stubbedGenres = [MockGenre()]
+        mockNetworkService.stubbedGenres = [MockMovie.Genre()]
         mockNetworkService.fetchGenresShouldReturnError = false
         
         // Should return error from repository
@@ -153,7 +153,7 @@ final class MainInteractorTests: XCTestCase {
         mockGenreRepository.stubbedGenres = []
         mockGenreRepository.fetchGenresShouldReturnError = false
         mockGenreRepository.saveGenresShouldReturnError = true
-        mockNetworkService.stubbedGenres = [MockGenre()]
+        mockNetworkService.stubbedGenres = [MockMovie.Genre()]
         mockNetworkService.fetchGenresShouldReturnError = false
         
         let expectationForError = expectation(description: "Should call didCallDidFailToFetchDataCallBack during 0.3 seconds")
@@ -276,7 +276,7 @@ final class MainInteractorTests: XCTestCase {
         mockNetworkService.stubbedMovies = [MockMovie()]
         mockNetworkService.fetchMoviesByGenreShouldReturnError = false
         let type = MovieListType.upcomingMovies
-        let genre = MockGenre()
+        let genre = MockMovie.Genre()
         
         // Should return movies from network
         let expectationForPresenting = expectation(description: "Should call didCallDidFetchMoviesCallBack during 0.3 seconds")

@@ -171,7 +171,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchSearchPersonsShouldReturnError {
             completion(.failure(NSError(domain: "fetchSearchPersons Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success([MockPerson()]))
+            completion(.success([MockMovie.Person()]))
         }
     }
     

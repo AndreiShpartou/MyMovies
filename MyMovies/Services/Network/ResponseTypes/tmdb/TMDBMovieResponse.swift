@@ -23,17 +23,6 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var genres: [TMDBGenreResponse]?
     var countries: [TMDBCountryResponse]?
     var credits: TMDBCreditsResponse?
-    
-    enum CodingKeys: String, CodingKey {
-            case id, title, overview, runtime, tagline, status, genres, credits
-            case voteAverage = "vote_average"
-            case posterPath = "poster_path"
-            case backdropPath = "backdrop_path"
-            case originalTitle = "original_title"
-            case releaseDate = "release_date"
-            case genreIds = "genre_ids"
-            case countries = "production_countries"
-        }
 
     // MARK: - Public
     func posterURL(size: PosterSize = .w780) -> String? {

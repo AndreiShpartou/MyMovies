@@ -17,12 +17,31 @@ struct Movie: MovieProtocol {
     let releaseYear: String? // TMDB: release_date -> map, Kinopoisk: year -> map)
     let runtime: String?  // TMDB: runtime, Kinopoisk: movieLength
     let voteAverage: Double? //  TMDB: vote_average, Kinopoisk: rating.kp
-    var genres: [Genre]
-    var countries: [ProductionCountry]
-    var persons: [Person]
-    var poster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
-    var backdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
-    var similarMovies: [Movie]? // Kinopoisk: similarMovies // TMDB: distinct endpoint
+    var genres: [GenreProtocol] {
+        return movieGenres
+    }
+    var countries: [CountryProtocol] {
+        return productionCountries
+    }
+    var persons: [PersonProtocol] {
+        return moviePersons
+    }
+    var poster: CoverProtocol? {
+        return moviePoster
+    }
+    var backdrop: CoverProtocol? {
+        return movieBackdrop
+    }
+    var similarMovies: [MovieProtocol]? {
+        return arrayofSimilarMovies
+    }
+
+    private let movieGenres: [Genre]
+    private let productionCountries: [ProductionCountry]
+    private let moviePersons: [Person]
+    private let moviePoster: Cover? // TMDB: poster_path / Kinopoisk: poster.url
+    private let movieBackdrop: Cover? // TMDB: backdrop_path / Kinopoisk: backdrop.url
+    private let arrayofSimilarMovies: [Movie]? // Kinopoisk: similarMovies // TMDB: distinct endpoint
 
     init(
         id: Int,
@@ -50,43 +69,43 @@ struct Movie: MovieProtocol {
         self.releaseYear = releaseYear
         self.runtime = runtime
         self.voteAverage = voteAverage
-        self.genres = genres
-        self.countries = countries
-        self.persons = persons
-        self.poster = poster
-        self.backdrop = backdrop
-        self.similarMovies = similarMovies
-    }
-}
-
-struct Genre: GenreProtocol {
-    let id: Int? // TMDB
-    var name: String? {
-        return rawName?.capitalizingFirstLetter()
+        self.movieGenres = genres
+        self.productionCountries = countries
+        self.moviePersons = persons
+        self.moviePoster = poster
+        self.movieBackdrop = backdrop
+        self.arrayofSimilarMovies = similarMovies
     }
 
-    private(set) var rawName: String?
+    struct Genre: GenreProtocol {
+        let id: Int? // TMDB
+        var name: String? {
+            return rawName?.capitalizingFirstLetter()
+        }
 
-    init(id: Int? = nil, name: String?) {
-        self.id = id
-        self.rawName = name
+        private(set) var rawName: String?
+
+        init(id: Int? = nil, name: String?) {
+            self.id = id
+            self.rawName = name
+        }
     }
-}
 
-struct Cover: CoverProtocol {
-    let url: String?
-    let previewUrl: String?
-}
+    struct Cover: CoverProtocol {
+        let url: String?
+        let previewUrl: String?
+    }
 
-struct ProductionCountry: CountryProtocol {
-    let name: String
-    let fullName: String
-}
+    struct ProductionCountry: CountryProtocol {
+        let name: String
+        let fullName: String
+    }
 
-struct Person: PersonProtocol {
-    var id: Int
-    var photo: String?
-    var name: String
-    var profession: String?
-    var popularity: Float?
+    struct Person: PersonProtocol {
+        var id: Int
+        var photo: String?
+        var name: String
+        var profession: String?
+        var popularity: Float?
+    }
 }

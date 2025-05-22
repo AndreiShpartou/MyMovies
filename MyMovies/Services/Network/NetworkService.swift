@@ -127,7 +127,7 @@ final class NetworkService: NetworkServiceProtocol {
     // MARK: - Genres
     // Get the list of official genres for movies
     func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
-        performRequest(for: .genres) { (result: Result<[Genre], Error>) in
+        performRequest(for: .genres) { (result: Result<[Movie.Genre], Error>) in
             switch result {
             case .success(let genres):
                 completion(.success(genres))
@@ -171,7 +171,7 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     func searchPersons(query: String, completion: @escaping (Result<[PersonProtocol], Error>) -> Void) {
-        searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[Person], Error>) in
+        searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[Movie.Person], Error>) in
             completion(result.map { $0 as [PersonProtocol] })
         }
     }

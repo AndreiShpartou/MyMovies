@@ -17,12 +17,12 @@ protocol MovieProtocol: Codable {
     var releaseYear: String? { get }
     var runtime: String? { get }
     var voteAverage: Double? { get }
-    var genres: [Genre] { get }
-    var countries: [ProductionCountry] { get }
-    var persons: [Person] { get }
-    var poster: Cover? { get }
-    var backdrop: Cover? { get }
-    var similarMovies: [Movie]? { get }
+    var genres: [GenreProtocol] { get }
+    var countries: [CountryProtocol] { get }
+    var persons: [PersonProtocol] { get }
+    var poster: CoverProtocol? { get }
+    var backdrop: CoverProtocol? { get }
+    var similarMovies: [MovieProtocol]? { get }
 }
 
 protocol GenreProtocol: Codable {

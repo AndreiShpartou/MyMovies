@@ -17,7 +17,7 @@ final class MockMainInteractor: MainInteractorProtocol {
     var didCallFetchUserProfile: Bool = false
     
     var movies: [MockMovie]?
-    var movieGenres: [MockGenre]?
+    var movieGenres: [MockMovie.Genre]?
     var userProfile: UserProfile?
 
     // MARK: - Init

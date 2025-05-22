@@ -41,7 +41,7 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
         // GenresToDomainModel
-        case (let data as GenreViewModelProtocol, is Genre.Type):
+        case (let data as GenreViewModelProtocol, is Movie.Genre.Type):
             return map(data) as? Y
         // UserProfileToViewModel
         case (let data as UserProfileProtocol, is UserProfileViewModel.Type):
@@ -249,6 +249,6 @@ extension DomainModelMapper {
 extension DomainModelMapper {
     // GenreViewModelProtocol -> GenreProtocol
     private func map(_ data: GenreViewModelProtocol) -> GenreProtocol {
-        return Genre(id: data.id, name: data.name.lowercased())
+        return Movie.Genre(id: data.id, name: data.name.lowercased())
     }
 }
