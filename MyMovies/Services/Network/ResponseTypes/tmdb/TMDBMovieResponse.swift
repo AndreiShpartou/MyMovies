@@ -23,7 +23,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var genres: [TMDBGenreResponse]?
     var countries: [TMDBCountryResponse]?
     var credits: TMDBCreditsResponse?
-
+    
     enum CodingKeys: String, CodingKey {
             case id, title, overview, runtime, tagline, status, genres, credits
             case voteAverage = "vote_average"

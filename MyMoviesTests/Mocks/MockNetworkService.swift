@@ -107,14 +107,14 @@ final class MockNetworkService: NetworkServiceProtocol {
     }
     
     // MARK: - PersonDetails
-    func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailed, Error>) -> Void) {
+    func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailedProtocol, Error>) -> Void) {
         didCallFetchPersonDetails = true
         capturedPersonID = personID
         
         if fetchPersonDetailsShouldReturnError {
             completion(.failure(NSError(domain: "fetchPersonDetails Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(PersonDetailed(id: 0, name: "MockPersonDetailed")))
+            completion(.success(MockPersonDetailed()))
         }
     }
     

@@ -100,7 +100,7 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - PersonDetails
     // Get details for a specific person
-    func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailed, Error>) -> Void) {
+    func fetchPersonDetails(for personID: Int, completion: @escaping (Result<PersonDetailedProtocol, Error>) -> Void) {
         performRequest(for: .personDetails(id: personID)) { (result: Result<PersonDetailed, Error>) in
             switch result {
             case .success(let personDetails):
