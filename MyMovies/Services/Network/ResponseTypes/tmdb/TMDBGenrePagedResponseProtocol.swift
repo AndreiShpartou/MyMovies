@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TMDBGenrePagedResponseProtocol: Codable {
-    var genres: [TMDBGenreResponse] { get }
+    var genres: [TMDBGenreResponseProtocol] { get }
 }

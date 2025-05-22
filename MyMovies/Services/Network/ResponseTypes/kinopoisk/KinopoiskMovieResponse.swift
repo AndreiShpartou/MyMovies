@@ -19,28 +19,61 @@ struct KinopoiskMovieResponse: KinopoiskMovieResponseProtocol {
     var slogan: String?
     var status: String?
     var movieLength: Int?
-    var poster: KinopoiskCoverResponse?
-    var backdrop: KinopoiskCoverResponse?
-    var genres: [KinopoiskGenreResponse]?
-    var countries: [KinopoiskCountryResponse]?
-    var persons: [KinopoiskPersonResponse]?
-    var rating: KinopoiskRatingResponse?
-    var similarMovies: [KinopoiskMovieResponse]?
-}
+    var poster: KinopoiskCoverResponseProtocol? {
+        moviePoster
+    }
+    var backdrop: KinopoiskCoverResponseProtocol? {
+        return movieBackdrop
+    }
+    var genres: [KinopoiskGenreResponseProtocol]? {
+        return movieGenres
+    }
+    var countries: [KinopoiskCountryResponseProtocol]? {
+        return movieCountries
+    }
+    var persons: [KinopoiskPersonResponseProtocol]? {
+        return moviePersons
+    }
+    var rating: KinopoiskRatingResponseProtocol? {
+        return movieRating
+    }
+    var similarMovies: [KinopoiskMovieResponseProtocol]? {
+        return arrayofSimilarMovies
+    }
 
-struct KinopoiskCoverResponse: KinopoiskCoverResponseProtocol {
-    var url: String?
-    var previewUrl: String?
-}
+    private let moviePoster: KinopoiskMovieResponse.Cover?
+    private let movieBackdrop: KinopoiskMovieResponse.Cover?
+    private let movieGenres: [KinopoiskMovieResponse.Genre]?
+    private let movieCountries: [KinopoiskMovieResponse.Country]?
+    private let moviePersons: [KinopoiskPersonResponse]?
+    private let movieRating: KinopoiskMovieResponse.Rating?
+    private let arrayofSimilarMovies: [KinopoiskMovieResponse]?
 
-struct KinopoiskGenreResponse: KinopoiskGenreResponseProtocol {
-    let name: String
-}
+    struct Cover: KinopoiskCoverResponseProtocol {
+        var url: String?
+        var previewUrl: String?
+    }
 
-struct KinopoiskCountryResponse: KinopoiskCountryResponseProtocol {
-    let name: String
-}
+    struct Genre: KinopoiskGenreResponseProtocol {
+        let name: String
+    }
 
-struct KinopoiskRatingResponse: KinopoiskRatingResponseProtocol {
-    var kp: Double?
+    struct Country: KinopoiskCountryResponseProtocol {
+        let name: String
+    }
+
+    struct Rating: KinopoiskRatingResponseProtocol {
+        var kp: Double?
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, alternativeName, enName, type, year, description, shortDescription, movieLength, status
+        case moviePoster = "poster"
+        case movieBackdrop = "backdrop"
+        case movieGenres = "genres"
+        case movieRating = "rating"
+        case movieCountries = "countries"
+        case moviePersons = "persons"
+        case arrayofSimilarMovies = "similarMovies"
+    }
 }

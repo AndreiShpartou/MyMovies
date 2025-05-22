@@ -26,8 +26,8 @@ final class ResponseMapper: ResponseMapperProtocol {
         // genres
         case (is TMDBGenrePagedResponse.Type, is [Movie.Genre].Type):
             return map(data as! TMDBGenrePagedResponse) as! T
-        case (is [KinopoiskGenreResponse].Type, is [Movie.Genre].Type):
-            return map(data as! [KinopoiskGenreResponse]) as! T
+        case (is [KinopoiskMovieResponse.Genre].Type, is [Movie.Genre].Type):
+            return map(data as! [KinopoiskMovieResponse.Genre]) as! T
         // reviews
         case (is TMDBReviewsPagedResponse.Type, is [MovieReview].Type):
             return map(data as! TMDBReviewsPagedResponse) as! T
@@ -91,7 +91,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             url: data.backdropURL(size: .w780),
             previewUrl: data.backdropURL(size: .w300)
         )
-        let persons: [TMDBPersonResponse] = (data.credits?.cast ?? []) + (data.credits?.crew ?? [])
+        let persons: [TMDBPersonResponseProtocol] = (data.credits?.cast ?? []) + (data.credits?.crew ?? [])
 
         return Movie(
             id: data.id,
@@ -144,7 +144,7 @@ final class ResponseMapper: ResponseMapperProtocol {
     }
 
     // Map KinopoiskMovieResponse to [Movie]?
-    private func mapSimilarMovies(_ similarMovies: [KinopoiskMovieResponse]?) -> [Movie]? {
+    private func mapSimilarMovies(_ similarMovies: [KinopoiskMovieResponseProtocol]?) -> [Movie]? {
         // Get the similar movies id to onward fetching via the details endpoint
         return similarMovies?.map { similarMovie in
             Movie(
@@ -168,13 +168,13 @@ final class ResponseMapper: ResponseMapperProtocol {
     }
 
     // MARK: - Genres
-    private func map(_ data: TMDBGenrePagedResponse) -> [Movie.Genre] {
+    private func map(_ data: TMDBGenrePagedResponseProtocol) -> [Movie.Genre] {
         return data.genres.map {
             return Movie.Genre(id: $0.id, name: $0.name)
         }
     }
 
-    private func map(_ data: [KinopoiskGenreResponse]) -> [Movie.Genre] {
+    private func map(_ data: [KinopoiskGenreResponseProtocol]) -> [Movie.Genre] {
         return data.map {
             return Movie.Genre(name: $0.name)
         }
@@ -186,20 +186,20 @@ final class ResponseMapper: ResponseMapperProtocol {
         }
     }
 
-    private func map(_ data: [TMDBGenreResponse]) -> [Movie.Genre] {
+    private func map(_ data: [TMDBGenreResponseProtocol]) -> [Movie.Genre] {
         return data.map {
             Movie.Genre(id: $0.id, name: $0.name)
         }
     }
 
     // MARK: - Countries
-    private func map(_ data: [TMDBCountryResponse]) -> [Movie.ProductionCountry] {
+    private func map(_ data: [TMDBCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
             Movie.ProductionCountry(name: $0.iso_3166_1, fullName: $0.name)
         }
     }
 
-    private func map(_ data: [KinopoiskCountryResponse]) -> [Movie.ProductionCountry] {
+    private func map(_ data: [KinopoiskCountryResponseProtocol]) -> [Movie.ProductionCountry] {
         return data.map {
             Movie.ProductionCountry(name: $0.name, fullName: $0.name)
         }
@@ -214,7 +214,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         return map(data.docs)
     }
 
-    private func map(_ data: [TMDBPersonResponse]) -> [Movie.Person] {
+    private func map(_ data: [TMDBPersonResponseProtocol]) -> [Movie.Person] {
         let persons = data.map {
             Movie.Person(
                 id: $0.id,
@@ -232,7 +232,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         return Array(sortedPersons)
     }
 
-    private func map(_ data: [KinopoiskPersonResponse]) -> [Movie.Person] {
+    private func map(_ data: [KinopoiskPersonResponseProtocol]) -> [Movie.Person] {
         let persons: [Movie.Person] = data.compactMap {
             guard let id = $0.id else {
                 return nil
@@ -258,7 +258,7 @@ final class ResponseMapper: ResponseMapperProtocol {
     }
 
     // MARK: - Person Detailed
-    private func map(_ data: TMDBPersonDetailedResponse) -> PersonDetailed {
+    private func map(_ data: TMDBPersonDetailedResponseProtocol) -> PersonDetailed {
         return PersonDetailed(
             id: data.id,
             name: data.name,
@@ -270,7 +270,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         )
     }
 
-    private func map(_ data: KinopoiskPersonDetailedResponse) -> PersonDetailed {
+    private func map(_ data: KinopoiskPersonDetailedResponseProtocol) -> PersonDetailed {
         return PersonDetailed(
             id: data.id,
             name: data.name == nil ? data.enName ?? "" : data.name ?? "",

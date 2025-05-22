@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-final class NetworkService: NetworkServiceProtocol {
+class NetworkService: NetworkServiceProtocol {
 
     static let shared = NetworkService()
 

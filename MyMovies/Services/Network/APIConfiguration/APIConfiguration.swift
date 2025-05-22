@@ -163,7 +163,7 @@ struct APIConfiguration: APIConfigurationProtocol {
         case (.tmdb, .genres):
             return TMDBGenrePagedResponse.self
         case (.kinopoisk, .genres):
-            return [KinopoiskGenreResponse].self
+            return [KinopoiskMovieResponse.Genre].self
         case (.tmdb, .movieList(type: .upcomingMovies)),
             (.tmdb, .movieList(type: .popularMovies)),
             (.tmdb, .movieList(type: .topRatedMovies)),
