@@ -26,7 +26,7 @@ class WishlistInteractor: WishlistInteractorProtocol {
     // MARK: - Public
     func fetchWishlist() {
         do {
-            let favouriteMovies: [Movie] = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listName)
+            let favouriteMovies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listName)
             DispatchQueue.main.async { [weak self] in
                 self?.presenter?.didFetchWishlist(favouriteMovies)
             }

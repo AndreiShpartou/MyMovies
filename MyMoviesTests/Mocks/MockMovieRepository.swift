@@ -64,7 +64,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         }
     }
     
-    func fetchMovieByID<T: MovieProtocol>(_ id: Int, provider: String, listType: String) throws -> T? {
+    func fetchMovieByID(_ id: Int, provider: String, listType: String) throws -> MovieProtocol? {
         didCallFetchMovieByID = true
         capturedMovieID = id
         capturedProvider = provider
@@ -73,11 +73,11 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         if fetchMovieByIDShouldReturnError {
             throw NSError(domain: "fetchMovieByID Error", code: 0, userInfo: nil)
         } else {
-            return MockMovie() as? T
+            return MockMovie()
         }
     }
     
-    func fetchMoviesByList<T: MovieProtocol>(provider: String, listType: String) throws -> [T] {
+    func fetchMoviesByList(provider: String, listType: String) throws -> [MovieProtocol] {
         didCallFetchMoviesByList = true
         capturedProvider = provider
         capturedListType = listType
@@ -85,11 +85,11 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         if fetchMoviesByListShouldReturnError {
             throw NSError(domain: "fetchMoviesByList Error", code: 0, userInfo: nil)
         } else {
-            return stubbedMovies as! [T]
+            return stubbedMovies
         }
     }
     
-    func fetchMoviesByGenre<T: GenreProtocol, Y: MovieProtocol>(genre: T, provider: String, listType: String) throws -> [Y] {
+    func fetchMoviesByGenre(genre: GenreProtocol, provider: String, listType: String) throws -> [MovieProtocol] {
         didCallFetchMoviesByGenre = true
         capturedGenre = genre
         capturedProvider = provider
@@ -98,7 +98,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         if fetchMoviesByGenreShouldReturnError {
             throw NSError(domain: "fetchMoviesByGenre Error", code: 0, userInfo: nil)
         } else {
-            return stubbedMovies as! [Y]
+            return stubbedMovies
         }
     }
     

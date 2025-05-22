@@ -93,7 +93,7 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // MARK: - MoviesFilteredByGenre
-    func fetchMoviesByGenre<T: GenreProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         let queryParameters = getGenreQueryParameters(for: genre, endpoint: type.endpoint)
         fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
     }
@@ -126,8 +126,8 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - Genres
     // Get the list of official genres for movies
-    func fetchGenres<T: GenreProtocol>(completion: @escaping (Result<[T], Error>) -> Void) {
-        performRequest(for: .genres) { (result: Result<[T], Error>) in
+    func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
+        performRequest(for: .genres) { (result: Result<[Genre], Error>) in
             switch result {
             case .success(let genres):
                 completion(.success(genres))
@@ -167,7 +167,7 @@ final class NetworkService: NetworkServiceProtocol {
 
     func searchPersons<T: PersonProtocol>(query: String, completion: @escaping (Result<[T], Error>) -> Void) {
         searchItems(endpoint: .searchPersons(query: query)) { (result: Result<[T], Error>) in
-            completion(result)
+            completion(result.map { $0 as [T] })
         }
     }
 
@@ -297,7 +297,7 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // MARK: - GenreFiltering
-    private func getGenreQueryParameters<T: GenreProtocol>(for genre: T, endpoint: Endpoint) -> [String: Any] {
+    private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
         return apiConfig?.genreFilteringQueryParameters(for: genre, endpoint: endpoint) ?? [:]
     }
 

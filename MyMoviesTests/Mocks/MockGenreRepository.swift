@@ -22,18 +22,18 @@ final class MockGenreRepository: GenreRepositoryProtocol {
     var stubbedGenres: [MockGenre] = []
     
     // MARK: - GenreRepositoryProtocol
-    func fetchGenres<T: GenreProtocol>(provider: String) throws -> [T] {
+    func fetchGenres(provider: String) throws -> [GenreProtocol] {
         didCallFetchGenres = true
         capturedProvider = provider
         
         if fetchGenresShouldReturnError {
             throw NSError(domain: "fetchGenres Error", code: 0, userInfo: nil)
         } else {
-            return stubbedGenres as! [T]
+            return stubbedGenres
         }
     }
 
-    func saveGenres<T: GenreProtocol>(_ genres: [T], provider: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func saveGenres(_ genres: [GenreProtocol], provider: String, completion: @escaping (Result<Void, Error>) -> Void) {
         didCallSaveGenres = true
         capturedProvider = provider
         capturedGenres = genres

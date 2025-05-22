@@ -180,7 +180,7 @@ class SearchInteractor: SearchInteractorProtocol {
         }
 
         do {
-            let movies: [Movie] = try movieRepository.fetchMoviesByGenre(
+            let movies = try movieRepository.fetchMoviesByGenre(
                 genre: genre,
                 provider: provider.rawValue,
                 listType: MovieListType.recentlySearchedMovies.rawValue
@@ -199,7 +199,7 @@ class SearchInteractor: SearchInteractorProtocol {
     // MARK: - Private
     private func fetchGenresFromStorage() -> [GenreProtocol] {
         do {
-            let genres: [Genre] = try genreRepository.fetchGenres(provider: provider.rawValue)
+            let genres = try genreRepository.fetchGenres(provider: provider.rawValue)
 
             return genres
         } catch {
@@ -213,7 +213,7 @@ class SearchInteractor: SearchInteractorProtocol {
 
     private func fetchMoviesFromStorage(for listType: MovieListType) -> [MovieProtocol] {
         do {
-            let movies: [Movie] = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listType.rawValue)
+            let movies = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listType.rawValue)
 
             return movies
         } catch {
@@ -226,7 +226,7 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     private func fetchGenres(completion: @escaping ([GenreProtocol]) -> Void) {
-        networkService.fetchGenres { [weak self] (result: Result<[Genre], Error>) in
+        networkService.fetchGenres { [weak self] result in
             guard let self = self else { return }
 
             switch result {

@@ -127,7 +127,7 @@ struct APIConfiguration: APIConfigurationProtocol {
         return getQueryParameters(for: endpoint, and: provider)
     }
 
-    func genreFilteringQueryParameters<T: GenreProtocol>(for genre: T, endpoint: Endpoint) -> [String: Any] {
+    func genreFilteringQueryParameters(for genre: GenreProtocol, endpoint: Endpoint) -> [String: Any] {
         return getGenreQueryParameters(for: genre, endpoint: endpoint, and: provider)
     }
 
@@ -254,7 +254,7 @@ struct APIConfiguration: APIConfigurationProtocol {
         }
     }
 
-    private func getGenreQueryParameters<T: GenreProtocol>(for genre: T, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
+    private func getGenreQueryParameters(for genre: GenreProtocol, endpoint: Endpoint, and provider: Provider) -> [String: Any] {
         switch (provider, endpoint) {
         case (.tmdb, .movieList(type: .upcomingMovies)),
             (.tmdb, .movieList(type: .popularMovies)),

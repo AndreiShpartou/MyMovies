@@ -94,7 +94,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         }
     }
     
-    func fetchMoviesByGenre<T: GenreProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchMoviesByGenre(type: MovieListType, genre: GenreProtocol, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         didCallFetchMoviesByGenre = true
         capturedGenre = genre
         capturedMovieListType = type
@@ -130,13 +130,13 @@ final class MockNetworkService: NetworkServiceProtocol {
     }
     
     // MARK: - Genres
-    func fetchGenres<T: GenreProtocol>(completion: @escaping (Result<[T], Error>) -> Void) {
+    func fetchGenres(completion: @escaping (Result<[GenreProtocol], Error>) -> Void) {
         didCallFetchGenres = true
         
         if fetchGenresShouldReturnError {
             completion(.failure(NSError(domain: "fetchGenres Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedGenres as! [T]))
+            completion(.success(stubbedGenres))
         }
         
     }
