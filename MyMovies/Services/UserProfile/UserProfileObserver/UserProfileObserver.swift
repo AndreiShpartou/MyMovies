@@ -15,7 +15,7 @@ protocol UserProfileObserverProtocol: AnyObject {
 }
 
 protocol UserProfileObserverDelegate: AnyObject {
-    func didFetchUserProfile(_ user: UserProfile)
+    func didFetchUserProfile(_ user: UserProfileProtocol)
     func didFailToFetchData(with error: Error)
     func didBeginProfileUpdate()
     func didLogOut()

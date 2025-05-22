@@ -15,7 +15,7 @@ final class EditProfileInteractor: EditProfileInteractorProtocol {
     private let profileDocumentsStoreService: ProfileDocumentsStoreServiceProtocol
 
     // Store the fetched user profile
-    private var currentUser: UserProfile?
+    private var currentUser: UserProfileProtocol?
 
     // MARK: - Init
     init(

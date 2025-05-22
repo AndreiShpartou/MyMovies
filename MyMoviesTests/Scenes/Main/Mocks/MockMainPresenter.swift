@@ -12,7 +12,7 @@ import Foundation
 final class MockMainPresenter: MainInteractorOutputProtocol {
     var didCallDidFetchMovieGenresCallBack: (([GenreProtocol]) -> Void)?
     var didCallDidFetchMoviesCallBack: (([MovieProtocol]) -> Void)?
-    var didCallDidFetchUserProfileCallBack: ((UserProfile) -> Void)?
+    var didCallDidFetchUserProfileCallBack: ((UserProfileProtocol) -> Void)?
     var didCallDidBeginProfileUpdate: Bool = false
     var didCallDidLogOut: Bool = false
     var didCallDidFailToFetchDataCallBack: ((Error) -> Void)?
@@ -28,7 +28,7 @@ final class MockMainPresenter: MainInteractorOutputProtocol {
 }
 
 extension MockMainPresenter: UserProfileObserverDelegate {
-    func didFetchUserProfile(_ profile: UserProfile) {
+    func didFetchUserProfile(_ profile: UserProfileProtocol) {
         didCallDidFetchUserProfileCallBack?(profile)
     }
     

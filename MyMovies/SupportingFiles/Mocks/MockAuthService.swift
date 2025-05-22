@@ -8,7 +8,7 @@ import Foundation
 
 // MARK: - MockAuthService
 final class MockAuthService: AuthServiceProtocol {
-    var currentUser: UserProfile?
+    var currentUser: UserProfileProtocol?
 
     var didCallCreateUser = false
     var didCallSignIn = false

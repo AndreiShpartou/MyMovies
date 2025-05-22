@@ -15,7 +15,7 @@ protocol EditProfileInteractorProtocol {
 }
 
 protocol EditProfileInteractorOutputProtocol: AnyObject {
-    func didFetchUserProfile(_ profile: UserProfile)
+    func didFetchUserProfile(_ profile: UserProfileProtocol)
     func didFailToFetchData(with error: Error)
     func didFinishProfileUpdate()
     func didCloseWithNoChanges()
