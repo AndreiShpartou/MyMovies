@@ -441,7 +441,7 @@ extension MovieRepository {
         }
     }
 
-    private func findOrCreateCountryEntity<T: CountryProtocol>(for countryDomain: T, context: NSManagedObjectContext) -> CountryEntity {
+    private func findOrCreateCountryEntity(for countryDomain: CountryProtocol, context: NSManagedObjectContext) -> CountryEntity {
         // Possibly identify by name if you want to unify countries
         let request: NSFetchRequest<CountryEntity> = CountryEntity.fetchRequest()
         request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
