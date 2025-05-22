@@ -128,7 +128,7 @@ class SearchInteractor: SearchInteractorProtocol {
         currentSearchToken = token
 
         // Perform person search
-        networkService.searchPersons(query: query) { [weak self] (result: Result<[Person], Error>) in
+        networkService.searchPersons(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
 
             switch result {
