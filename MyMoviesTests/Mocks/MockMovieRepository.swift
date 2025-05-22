@@ -37,7 +37,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
     var stubbedMovies: [MockMovie] = []
 
     // MARK: - MovieRepositoryProtocol
-    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void) {
+    func storeMovieForList<T: MovieProtocol>(_ movie: T, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         didCallstoreMovieForList = true
         capturedMovie = movie
         capturedProvider = provider
@@ -51,7 +51,7 @@ final class MockMovieRepository: MovieRepositoryProtocol {
         }
     }
     
-    func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func storeMoviesForList<T: MovieProtocol>(_ movies: [T], provider: String, listType: String, completion: @escaping (Result<Void, Error>) -> Void) {
         didCallStoreMoviesForList = true
         capturedMovies = movies
         capturedProvider = provider

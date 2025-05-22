@@ -155,7 +155,7 @@ extension MainInteractor {
         }
 
         // If no cached data, fetch from API
-        networkService.fetchMovies(type: type) { [weak self] result in
+        networkService.fetchMovies(type: type) { [weak self] (result: Result<[Movie], Error>) in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
@@ -168,14 +168,14 @@ extension MainInteractor {
             return
         }
 
-        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
+        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] (result: Result<[Movie], Error>) in
             self?.handleMovieFetchResult(result, fetchType: type, saveToStorage: false)
         }
     }
 
     // Centralized handling of movie fetch results
     private func handleMovieFetchResult(
-        _ result: Result<[MovieProtocol], Error>,
+        _ result: Result<[Movie], Error>,
         fetchType: MovieListType,
         saveToStorage: Bool = true
     ) {
@@ -197,13 +197,13 @@ extension MainInteractor {
         }
     }
 
-    private func presentMovies(_ movies: [MovieProtocol], for type: MovieListType) {
+    private func presentMovies(_ movies: [Movie], for type: MovieListType) {
         DispatchQueue.main.async {
             self.presenter?.didFetchMovies(movies, for: type)
         }
     }
 
-    private func saveMoviesToStorage(_ movies: [MovieProtocol], type: MovieListType) {
+    private func saveMoviesToStorage(_ movies: [Movie], type: MovieListType) {
         // Save to CoreData
         // Store movies with new list membership
         movieRepository.storeMoviesForList(

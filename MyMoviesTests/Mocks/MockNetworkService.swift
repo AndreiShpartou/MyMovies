@@ -52,18 +52,18 @@ final class MockNetworkService: NetworkServiceProtocol {
 
     // MARK: - NetworkServiceProtocol
     // MARK: - Movies
-    func fetchMovies(type: MovieListType, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchMovies<T: MovieProtocol>(type: MovieListType, completion: @escaping (Result<[T], Error>) -> Void) {
         didCallFetchMovies = true
         capturedMovieListType = type
         
         if fetchMoviesShouldReturnError {
             completion(.failure(NSError(domain: "fetchMovies Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedMovies))
+            completion(.success(stubbedMovies as! [T]))
         }
     }
     
-    func fetchMovieDetails(for movie: MovieProtocol, type: MovieListType, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
+    func fetchMovieDetails<T: MovieProtocol>(for movie: T, type: MovieListType, completion: @escaping (Result<T, Error>) -> Void) {
         didCallFetchMovieDetails = true
         capturedMovie = movie
         capturedMovieListType = type
@@ -75,26 +75,26 @@ final class MockNetworkService: NetworkServiceProtocol {
         }
     }
     
-    func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void) {
+    func fetchMoviesDetails<T: MovieProtocol>(for movies: [T], type: MovieListType, completion: @escaping ([T]) -> Void) {
         didCallFetchMoviesDetails = true
         capturedMovies = movies
         capturedMovieListType = type
         
-        completion(stubbedMovies)
+        completion(stubbedMovies as! [T])
     }
     
-    func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchMoviesDetails<T: MovieProtocol>(for ids: [Int], defaultValue: [T], completion: @escaping (Result<[T], Error>) -> Void) {
         didCallFetchMoviesDetailsByID = true
         capturedMoviesIDs = ids
         
         if fetchMoviesDetailsByIDShouldReturnError {
             completion(.failure(NSError(domain: "fetchMoviesDetailsByID Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedMovies))
+            completion(.success(stubbedMovies as! [T]))
         }
     }
     
-    func fetchMoviesByGenre<T: GenreProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchMoviesByGenre<T: GenreProtocol, Y: MovieProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[Y], Error>) -> Void) {
         didCallFetchMoviesByGenre = true
         capturedGenre = genre
         capturedMovieListType = type
@@ -102,7 +102,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchMoviesByGenreShouldReturnError {
             completion(.failure(NSError(domain: "fetchMoviesByGenre Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedMovies))
+            completion(.success(stubbedMovies as! [Y]))
         }
     }
     
@@ -118,14 +118,14 @@ final class MockNetworkService: NetworkServiceProtocol {
         }
     }
     
-    func fetchPersonRelatedMovies(for personID: Int, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func fetchPersonRelatedMovies<T: MovieProtocol>(for personID: Int, completion: @escaping (Result<[T], Error>) -> Void) {
         didCallFetchPersonRelatedMovies = true
         capturedPersonID = personID
         
         if fetchPersonRelatedMoviesShouldReturnError {
             completion(.failure(NSError(domain: "fetchPersonRelatedMovies Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedMovies))
+            completion(.success(stubbedMovies as! [T]))
         }
     }
     
@@ -136,7 +136,7 @@ final class MockNetworkService: NetworkServiceProtocol {
         if fetchGenresShouldReturnError {
             completion(.failure(NSError(domain: "fetchGenres Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedGenres as! [T]))
+            completion(.success(stubbedGenres))
         }
         
     }
@@ -153,14 +153,14 @@ final class MockNetworkService: NetworkServiceProtocol {
         }
     }
 
-    func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+    func searchMovies<T: MovieProtocol>(query: String, completion: @escaping (Result<[T], Error>) -> Void) {
         didCallSearchMovies = true
         capturedSearchMoviesQuery = query
         
         if fetchSearchMoviesShouldReturnError {
             completion(.failure(NSError(domain: "fetchSearchMovies Error", code: 0, userInfo: nil)))
         } else {
-            completion(.success(stubbedMovies))
+            completion(.success(stubbedMovies as! [T]))
         }
     }
     
