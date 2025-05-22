@@ -11,7 +11,7 @@ import Foundation
 // MARK: - MockPresenter
 final class MockMovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
     var didCallFetchMovieCallBack: ((MovieProtocol) -> Void)?
-    var didCallFetchReviewsCallBack: (([MovieReview]) -> Void)?
+    var didCallFetchReviewsCallBack: (([MovieReviewProtocol]) -> Void)?
     var didCallFetchSimilarMoviesCallBack: (([MovieProtocol]) -> Void)?
     var didCallFetchIsMovieInListCallBack: ((Bool, MovieListType) -> Void)?
     var didCallFetchErrorCallBack: ((Error) -> Void)?
@@ -21,7 +21,7 @@ final class MockMovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
         didCallFetchMovieCallBack?(movie)
     }
 
-    func didFetchReviews(_ reviews: [MovieReview]) {
+    func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
         didCallFetchReviewsCallBack?(reviews)
     }
 

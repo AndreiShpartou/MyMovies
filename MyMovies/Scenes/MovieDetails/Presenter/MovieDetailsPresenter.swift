@@ -115,7 +115,7 @@ extension MovieDetailsPresenter: MovieDetailsInteractorOutputProtocol {
         self.movieID = movie.id
     }
 
-    func didFetchReviews(_ reviews: [MovieReview]) {
+    func didFetchReviews(_ reviews: [MovieReviewProtocol]) {
         guard let reviews = mapper.map(data: reviews, to: [ReviewViewModel].self) else {
             didFailToFetchData(with: AppError.mappingError(message: "Failed to map reviews", underlying: nil))
 

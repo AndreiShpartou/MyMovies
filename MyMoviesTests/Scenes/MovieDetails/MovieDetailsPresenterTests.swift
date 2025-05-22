@@ -40,7 +40,7 @@ final class MovieDetailsPresenterTests: XCTestCase {
     func testViewDidLoad_ShouldFetchAllMovieData() {
         // given
         mockInteractor.movie = MockMovie()
-        mockInteractor.reviews = [MovieReview(author: "MockAuthor", review: "MockReview")]
+        mockInteractor.reviews = [MockReview()]
         mockInteractor.similarMovies = [MockMovie()]
         // when
         presenter.viewDidLoad()

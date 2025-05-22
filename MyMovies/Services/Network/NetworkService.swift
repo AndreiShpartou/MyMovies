@@ -138,7 +138,7 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // MARK: - Reviews
-    func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReview], Error>) -> Void) {
+    func fetchReviews(for movieID: Int, completion: @escaping (Result<[MovieReviewProtocol], Error>) -> Void) {
         performRequest(for: .reviews(id: movieID)) { (result: Result<[MovieReview], Error>) in
             switch result {
             case .success(let reviews):
