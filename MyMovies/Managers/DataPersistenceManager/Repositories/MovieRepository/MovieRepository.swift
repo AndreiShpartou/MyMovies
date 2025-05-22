@@ -10,8 +10,8 @@ import CoreData
 
 protocol MovieRepositoryProtocol {
     // Store
-    func storeMovieForList<T: MovieProtocol>(_ movie: T, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void)
-    func storeMoviesForList<T: MovieProtocol>(_ movies: [T], provider: String, listType: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func storeMovieForList(_ movie: MovieProtocol, provider: String, listType: String, orderIndex: Int, completion: @escaping (Result<Void, Error>) -> Void)
+    func storeMoviesForList(_ movies: [MovieProtocol], provider: String, listType: String, completion: @escaping (Result<Void, Error>) -> Void)
     // Fetch
     func fetchMovieByID<T: MovieProtocol>(_ id: Int, provider: String, listType: String) throws -> T?
     func fetchMoviesByList<T: MovieProtocol>(provider: String, listType: String) throws -> [T]
@@ -36,8 +36,8 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // MARK: - Saving
-    func storeMovieForList<T: MovieProtocol>(
-        _ movie: T,
+    func storeMovieForList(
+        _ movie: MovieProtocol,
         provider: String,
         listType: String,
         orderIndex: Int,
@@ -78,8 +78,8 @@ final class MovieRepository: MovieRepositoryProtocol {
     }
 
     // Store multiple movies
-    func storeMoviesForList<T: MovieProtocol>(
-        _ movies: [T],
+    func storeMoviesForList(
+        _ movies: [MovieProtocol],
         provider: String,
         listType: String,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -200,8 +200,8 @@ final class MovieRepository: MovieRepositoryProtocol {
 // MARK: - Private
 extension MovieRepository {
     // MARK: - StoreMovieNoSave
-    private func storeSingleMovieForListNoSave<T: MovieProtocol>(
-        _ movie: T,
+    private func storeSingleMovieForListNoSave(
+        _ movie: MovieProtocol,
         provider: String,
         listType: String,
         orderIndex: Int,

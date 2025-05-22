@@ -83,7 +83,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
 
         // Default API filtering
-        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] (result: Result<[Movie], Error>) in
+        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
             self?.handleMovieFetchResult(result, fetchType: type)
         }
     }
@@ -152,7 +152,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     }
 
     // Centralized handling of movie fetch results
-    private func handleMovieFetchResult(_ result: Result<[Movie], Error>, fetchType: MovieListType) {
+    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
             self.fetchDetails(for: movies, fetchType: fetchType)
@@ -163,7 +163,7 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
     }
 
-    private func fetchDetails(for movies: [Movie], fetchType: MovieListType) {
+    private func fetchDetails(for movies: [MovieProtocol], fetchType: MovieListType) {
         switch fetchType {
         case .searchedMovies:
             // Kinopoisk API doesn't contain movie details in search results
@@ -186,8 +186,8 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
     }
 
-    private func fetchMoviesDetails(for ids: [Int], defaultValue: [Movie]) {
-        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] (result: Result<[Movie], Error>) in
+    private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
+        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let detailedMovies):
@@ -205,8 +205,8 @@ final class MovieListInteractor: MovieListInteractorProtocol {
         }
     }
 
-    private func fetchMoviesDetails(for movies: [Movie]) {
-        networkService.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] (detailedMovies: [Movie]) in
+    private func fetchMoviesDetails(for movies: [MovieProtocol]) {
+        networkService.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
             DispatchQueue.main.async {
                 self?.presenter?.didFetchMovieList(detailedMovies)
             }

@@ -12,36 +12,36 @@ final class DomainModelMapper: DomainModelMapperProtocol {
         switch (data, returnType) {
         // MoviesToViewModel
         // UpcomingMovies
-        case (let data as [Movie], is [UpcomingMovieViewModel].Type):
+        case (let data as [MovieProtocol], is [UpcomingMovieViewModel].Type):
             return mapToUpcoming(data) as? Y
         // Popular movies
-        case (let data as [Movie], is [BriefMovieListItemViewModel].Type):
+        case (let data as [MovieProtocol], is [BriefMovieListItemViewModel].Type):
             return mapToBriefList(data) as? Y
-        case (let data as [Movie], is [WishlistItemViewModel].Type):
+        case (let data as [MovieProtocol], is [WishlistItemViewModel].Type):
             return mapToWishlistItem(data) as? Y
         // MovieList
-        case (let data as [Movie], is [MovieListItemViewModel].Type):
+        case (let data as [MovieProtocol], is [MovieListItemViewModel].Type):
             return mapToList(data) as? Y
-        case (let data as Movie, is MovieListItemViewModel.Type):
+        case (let data as MovieProtocol, is MovieListItemViewModel.Type):
             return mapToList(data) as? Y
         // MovieDetails
-        case (let data as Movie, is MovieDetailsViewModel.Type):
+        case (let data as MovieProtocol, is MovieDetailsViewModel.Type):
             return mapToDetails(data) as? Y
-        case (let data as Movie, is UpcomingMovieViewModel.Type):
+        case (let data as MovieProtocol, is UpcomingMovieViewModel.Type):
             return mapToUpcoming(data) as? Y
         // Reviews
         case (let data as [MovieReview], is [ReviewViewModel].Type):
             return mapToReviews(data) as? Y
         // Persons
-        case (let data as [Person], is [PersonViewModel].Type):
+        case (let data as [PersonProtocol], is [PersonViewModel].Type):
             return map(data) as? Y
         case (let data as PersonDetailed, is PersonDetailedViewModel.Type):
             return map(data) as? Y
         // GenresToViewModel
-        case (let data as [Genre], is [GenreViewModel].Type):
+        case (let data as [GenreProtocol], is [GenreViewModel].Type):
             return map(data) as? Y
         // GenresToDomainModel
-        case (let data as GenreViewModel, is Genre.Type):
+        case (let data as GenreViewModelProtocol, is Genre.Type):
             return map(data) as? Y
         // UserProfileToViewModel
         case (let data as UserProfile, is UserProfileViewModel.Type):
@@ -57,9 +57,9 @@ final class DomainModelMapper: DomainModelMapperProtocol {
 
 // MARK: - ToViewModel
 extension DomainModelMapper {
-    // [Movie] -> [UpcomingMovieViewModel]
-    private func mapToUpcoming(_ data: [Movie]) -> [UpcomingMovieViewModel] {
-        let movieViewModels = data.map {
+    // [MovieProtocol] -> [UpcomingMovieViewModelProtocol]
+    private func mapToUpcoming(_ data: [MovieProtocol]) -> [UpcomingMovieViewModelProtocol] {
+        let movieViewModels: [UpcomingMovieViewModel] = data.map {
             return UpcomingMovieViewModel(
                 id: $0.id,
                 title: $0.title,
@@ -72,8 +72,8 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
-    // Movie -> UpcomingMovieViewModel
-    private func mapToUpcoming(_ data: Movie) -> UpcomingMovieViewModel {
+    // MovieProtocol -> UpcomingMovieViewModelProtocol
+    private func mapToUpcoming(_ data: MovieProtocol) -> UpcomingMovieViewModelProtocol {
         return UpcomingMovieViewModel(
             id: data.id,
             title: data.title,
@@ -83,9 +83,9 @@ extension DomainModelMapper {
         )
     }
 
-    // Movie -> BriefMovieListItemViewModel
-    private func mapToBriefList(_ data: [Movie]) -> [BriefMovieListItemViewModel] {
-        let movieViewModels = data.map {
+    // MovieProtocol -> BriefMovieListItemViewModelProtocol
+    private func mapToBriefList(_ data: [MovieProtocol]) -> [BriefMovieListItemViewModelProtocol] {
+        let movieViewModels: [BriefMovieListItemViewModel] = data.map {
             return BriefMovieListItemViewModel(
                 id: $0.id,
                 title: $0.title,
@@ -98,9 +98,9 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
-    // Movie -> WishlistItemViewModel
-    private func mapToWishlistItem(_ data: [Movie]) -> [WishlistItemViewModel] {
-        let movieViewModels = data.map {
+    // MovieProtocol -> WishlistItemViewModelProtocol
+    private func mapToWishlistItem(_ data: [MovieProtocol]) -> [WishlistItemViewModelProtocol] {
+        let movieViewModels: [WishlistItemViewModel] = data.map {
             return WishlistItemViewModel(
                 id: $0.id,
                 title: $0.title,
@@ -114,9 +114,9 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
-    // [Movie] -> [MovieListViewModel]
-    private func mapToList(_ data: [Movie]) -> [MovieListItemViewModel] {
-        let movieViewModels = data.map {
+    // [MovieProtocol] -> [MovieListViewModelProtocol]
+    private func mapToList(_ data: [MovieProtocol]) -> [MovieListItemViewModelProtocol] {
+        let movieViewModels: [MovieListItemViewModel] = data.map {
             let runtime = ($0.runtime == "0" || $0.runtime == nil) ? String(Int.random(in: 90...120)) : $0.runtime!
             return MovieListItemViewModel(
                 id: $0.id,
@@ -133,8 +133,8 @@ extension DomainModelMapper {
         return movieViewModels
     }
 
-    // Movie -> MovieListViewModel
-    private func mapToList(_ data: Movie) -> MovieListItemViewModel {
+    // MovieProtocol -> MovieListViewModelProtocol
+    private func mapToList(_ data: MovieProtocol) -> MovieListItemViewModelProtocol {
             let runtime = (data.runtime == "0" || data.runtime == nil) ? String(Int.random(in: 90...120)) : data.runtime!
             return MovieListItemViewModel(
                 id: data.id,
@@ -148,8 +148,8 @@ extension DomainModelMapper {
             )
     }
 
-    // Movie -> MovieDetailsViewModel
-    private func mapToDetails(_ data: Movie) -> MovieDetailsViewModel {
+    // MovieProtocol -> MovieDetailsViewModelProtocol
+    private func mapToDetails(_ data: MovieProtocol) -> MovieDetailsViewModelProtocol {
         let runtime = (data.runtime == "0" || data.runtime == nil) ? String(Int.random(in: 90...120)) : data.runtime!
         return MovieDetailsViewModel(
             id: data.id,
@@ -168,18 +168,17 @@ extension DomainModelMapper {
         )
     }
 
-    // MovieReview -> ReviewViewModel
-    private func mapToReviews(_ data: [MovieReview]) -> [ReviewViewModel] {
-        let reviews = data.map {
+    private func mapToReviews(_ data: [MovieReview]) -> [ReviewViewModelProtocol] {
+        let reviews: [ReviewViewModelProtocol] = data.map {
             ReviewViewModel(author: $0.author, review: $0.review)
         }
 
         return reviews
     }
 
-    // Genre -> GenreViewModel
-    private func map(_ data: [Genre], addDefaultValue: Bool = true) -> [GenreViewModel] {
-        var genreViewModels: [GenreViewModel] = data.compactMap {
+    // GenreProtocol -> GenreViewModelProtocol
+    private func map(_ data: [GenreProtocol], addDefaultValue: Bool = true) -> [GenreViewModelProtocol] {
+        var genreViewModels: [GenreViewModelProtocol] = data.compactMap {
             guard let name = $0.name else {
                 return nil
             }
@@ -194,8 +193,8 @@ extension DomainModelMapper {
         return genreViewModels
     }
 
-    // [Person] -> [PersonViewModel]
-    private func map(_ data: [Person]) -> [PersonViewModel] {
+    // [PersonProtocol] -> [PersonViewModelProtocol]
+    private func map(_ data: [PersonProtocol]) -> [PersonViewModelProtocol] {
         return data.map {
             PersonViewModel(
                 id: $0.id,
@@ -207,8 +206,8 @@ extension DomainModelMapper {
         }
     }
 
-    // PersonDetailed -> PersonDetailedViewModel
-    private func map(_ data: PersonDetailed) -> PersonDetailedViewModel {
+    // PersonDetailed -> PersonDetailedViewModelProtocol
+    private func map(_ data: PersonDetailed) -> PersonDetailedViewModelProtocol {
         return PersonDetailedViewModel(
             id: data.id,
             name: data.name,
@@ -220,13 +219,13 @@ extension DomainModelMapper {
         )
     }
 
-    //  [Country] -> [CountryViewModel]
-    private func map(_ data: [ProductionCountry]) -> [CountryViewModel] {
+    //  [CountryProtocol] -> [CountryViewModelProtocol]
+    private func map(_ data: [CountryProtocol]) -> [CountryViewModelProtocol] {
         return data.map { CountryViewModel(name: $0.fullName) }
     }
 
-    //  [ProfileSettingsSection] -> [ProfileSettingsSectionViewModel]
-    private func map(_ data: [ProfileSettingsSection]) -> [ProfileSettingsSectionViewModel] {
+    //  [ProfileSettingsSection] -> [ProfileSettingsSectionViewModelProtocol]
+    private func map(_ data: [ProfileSettingsSection]) -> [ProfileSettingsSectionViewModelProtocol] {
         return data.map {
             let items = $0.items.map {
                 ProfileSettingsItemViewModel(icon: $0.icon, title: $0.title)
@@ -235,8 +234,8 @@ extension DomainModelMapper {
         }
     }
 
-    //  UserProfile -> UserProfileViewModel
-    private func map(_ data: UserProfile) -> UserProfileViewModel {
+    //  UserProfileProtocol -> UserProfileViewModelProtocol
+    private func map(_ data: UserProfile) -> UserProfileViewModelProtocol {
         return UserProfileViewModel(
             id: data.id,
             email: data.email,
@@ -249,7 +248,7 @@ extension DomainModelMapper {
 // MARK: - ToDomainModel
 extension DomainModelMapper {
     // GenreViewModelProtocol -> GenreProtocol
-    private func map(_ data: GenreViewModel) -> Genre {
+    private func map(_ data: GenreViewModelProtocol) -> GenreProtocol {
         return Genre(id: data.id, name: data.name.lowercased())
     }
 }

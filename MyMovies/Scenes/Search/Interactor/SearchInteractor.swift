@@ -33,8 +33,8 @@ class SearchInteractor: SearchInteractorProtocol {
         // Fetch genres, upcoming movie
         let dispatchGroup = DispatchGroup()
 
-        var fetchedGenres: [Genre] = []
-        var fetchedUpcomingMovie: Movie?
+        var fetchedGenres: [GenreProtocol] = []
+        var fetchedUpcomingMovie: MovieProtocol?
 
         // Fetching genres
         let cachedGenres = fetchGenresFromStorage()
@@ -82,7 +82,7 @@ class SearchInteractor: SearchInteractorProtocol {
             }
         }
 
-        networkService.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] (result: Result<[Movie], Error>) in
+        networkService.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -144,7 +144,7 @@ class SearchInteractor: SearchInteractorProtocol {
             }
         }
         // Perform movie search
-        networkService.searchMovies(query: query) { [weak self] (result: Result<[Movie], Error>) in
+        networkService.searchMovies(query: query) { [weak self] result in
             guard let self = self, self.currentSearchToken == token else { return }
 
             switch result {
@@ -197,7 +197,7 @@ class SearchInteractor: SearchInteractorProtocol {
     }
 
     // MARK: - Private
-    private func fetchGenresFromStorage() -> [Genre] {
+    private func fetchGenresFromStorage() -> [GenreProtocol] {
         do {
             let genres: [Genre] = try genreRepository.fetchGenres(provider: provider.rawValue)
 
@@ -211,7 +211,7 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    private func fetchMoviesFromStorage(for listType: MovieListType) -> [Movie] {
+    private func fetchMoviesFromStorage(for listType: MovieListType) -> [MovieProtocol] {
         do {
             let movies: [Movie] = try movieRepository.fetchMoviesByList(provider: provider.rawValue, listType: listType.rawValue)
 
@@ -225,7 +225,7 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    private func fetchGenres(completion: @escaping ([Genre]) -> Void) {
+    private func fetchGenres(completion: @escaping ([GenreProtocol]) -> Void) {
         networkService.fetchGenres { [weak self] (result: Result<[Genre], Error>) in
             guard let self = self else { return }
 
@@ -241,8 +241,8 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    private func fetchUpcomingMovie(completion: @escaping (Movie?) -> Void) {
-        networkService.fetchMovies(type: .upcomingMovies) { [weak self] (result: Result<[Movie], Error>) in
+    private func fetchUpcomingMovie(completion: @escaping (MovieProtocol?) -> Void) {
+        networkService.fetchMovies(type: .upcomingMovies) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -270,8 +270,8 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    private func fetchMoviesDetails(for ids: [Int], defaultValue: [Movie]) {
-        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] (result: Result<[Movie], Error>) in
+    private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol]) {
+        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -288,8 +288,8 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    private func fetchMoviesDetails(for movies: [Movie]) {
-        networkService.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] (detailedMovies: [Movie]) in
+    private func fetchMoviesDetails(for movies: [MovieProtocol]) {
+        networkService.fetchMoviesDetails(for: movies, type: .searchedMovies(query: "")) { [weak self] detailedMovies in
             guard let self = self else { return }
 
             DispatchQueue.main.async {
@@ -302,7 +302,7 @@ class SearchInteractor: SearchInteractorProtocol {
         }
     }
 
-    private func storeRecentlySearchedMovie(for movie: Movie) {
+    private func storeRecentlySearchedMovie(for movie: MovieProtocol) {
         movieRepository.storeMovieForList(
             movie,
             provider: provider.rawValue,

@@ -62,7 +62,7 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
             )
         } else {
             // Use a distinct endpoint for the TMDB API
-            networkService.fetchMovies(type: type) { [weak self] (result: Result<[Movie], Error>) in
+            networkService.fetchMovies(type: type) { [weak self] result in
                 self?.handleMovieFetchResult(result, fetchType: type)
             }
         }
@@ -118,15 +118,15 @@ class MovieDetailsInteractor: MovieDetailsInteractorProtocol {
     }
 
     // MARK: - Private
-    private func fetchMoviesDetails(for ids: [Int], defaultValue: [Movie], fetchType: MovieListType) {
-        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] (result: Result<[Movie], Error>) in
+    private func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], fetchType: MovieListType) {
+        networkService.fetchMoviesDetails(for: ids, defaultValue: defaultValue) { [weak self] result in
             guard let self = self else { return }
             self.handleMovieFetchResult(result, fetchType: fetchType)
         }
     }
 
     // Centralized handling of movie fetch results
-    private func handleMovieFetchResult(_ result: Result<[Movie], Error>, fetchType: MovieListType) {
+    private func handleMovieFetchResult(_ result: Result<[MovieProtocol], Error>, fetchType: MovieListType) {
         switch result {
         case .success(let movies):
             networkService.fetchMoviesDetails(for: movies, type: fetchType) { detailedMovies in

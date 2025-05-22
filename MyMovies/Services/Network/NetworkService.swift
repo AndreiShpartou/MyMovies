@@ -23,14 +23,14 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - FetchMovies
     // Fetch list of movies by type
-    func fetchMovies<T: MovieProtocol>(type: MovieListType, completion: @escaping (Result<[T], Error>) -> Void) {
+    func fetchMovies(type: MovieListType, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         fetchMoviesWithParameters(type: type, completion: completion)
     }
 
     // MARK: - MovieDetails
     // Get movie details for a specific movie
-    func fetchMovieDetails<T: MovieProtocol>(for movie: T, type: MovieListType, completion: @escaping (Result<T, Error>) -> Void) {
-        performRequest(for: .movieDetails(id: movie.id, type: type), defaultValue: movie as? T) { (result: Result<T, Error>) in
+    func fetchMovieDetails(for movie: MovieProtocol, type: MovieListType, completion: @escaping (Result<MovieProtocol, Error>) -> Void) {
+        performRequest(for: .movieDetails(id: movie.id, type: type), defaultValue: movie as? Movie) { (result: Result<Movie, Error>) in
             switch result {
             case .success(let movie):
                 completion(.success(movie))
@@ -41,8 +41,8 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // Get movie details for each movie in the array (separate requests for each movie)
-    func fetchMoviesDetails<T: MovieProtocol>(for movies: [T], type: MovieListType, completion: @escaping ([T]) -> Void) {
-        var detailedMoviesDict: [Int: T] = [:]
+    func fetchMoviesDetails(for movies: [MovieProtocol], type: MovieListType, completion: @escaping ([MovieProtocol]) -> Void) {
+        var detailedMoviesDict: [Int: MovieProtocol] = [:]
         let dispatchGroup = DispatchGroup()
 
         movies.forEach { movie in
@@ -70,14 +70,14 @@ final class NetworkService: NetworkServiceProtocol {
 
     // Get movie details by array of id (single request for all movies)
     // For now, only Kinopoisk API supported
-    func fetchMoviesDetails<T: MovieProtocol>(for ids: [Int], defaultValue: [T], completion: @escaping (Result<[T], Error>) -> Void) {
+    func fetchMoviesDetails(for ids: [Int], defaultValue: [MovieProtocol], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         guard !ids.isEmpty else {
             completion(.success(defaultValue))
             return
         }
 
         let encoding = URLEncoding(arrayEncoding: .noBrackets)
-        performRequest(for: .moviesDetails(ids: ids), defaultValue: defaultValue as? [T], encoding: encoding) { (result: Result<[T], Error>) in
+        performRequest(for: .moviesDetails(ids: ids), defaultValue: defaultValue as? [Movie], encoding: encoding) { (result: Result<[Movie], Error>) in
             switch result {
             case .success(let movies):
                 // Movie details may appear in a different order. Therefore, we have to sort them
@@ -93,7 +93,7 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // MARK: - MoviesFilteredByGenre
-    func fetchMoviesByGenre<T: GenreProtocol, Y: MovieProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[Y], Error>) -> Void) {
+    func fetchMoviesByGenre<T: GenreProtocol>(type: MovieListType, genre: T, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
         let queryParameters = getGenreQueryParameters(for: genre, endpoint: type.endpoint)
         fetchMoviesWithParameters(type: type, parameters: queryParameters, completion: completion)
     }
@@ -113,8 +113,8 @@ final class NetworkService: NetworkServiceProtocol {
 
     // MARK: - PersonRelatedMovies
     // Get movies related to a specific person
-    func fetchPersonRelatedMovies<T: MovieProtocol>(for personID: Int, completion: @escaping (Result<[T], Error>) -> Void) {
-        performRequest(for: .personRelatedMovies(id: personID)) { (result: Result<[T], Error>) in
+    func fetchPersonRelatedMovies(for personID: Int, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: .personRelatedMovies(id: personID)) { (result: Result<[Movie], Error>) in
             switch result {
             case .success(let movies):
                 completion(.success(movies))
@@ -159,9 +159,9 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // MARK: - Search
-    func searchMovies<T: MovieProtocol>(query: String, completion: @escaping (Result<[T], Error>) -> Void) {
-        searchItems(endpoint: .searchMovies(query: query)) { (result: Result<[T], Error>) in
-            completion(result)
+    func searchMovies(query: String, completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        searchItems(endpoint: .searchMovies(query: query)) { (result: Result<[Movie], Error>) in
+            completion(result.map { $0 as [MovieProtocol] })
         }
     }
 
@@ -285,8 +285,8 @@ final class NetworkService: NetworkServiceProtocol {
     }
 
     // MARK: - MoviesWithParameters
-    private func fetchMoviesWithParameters<T: MovieProtocol>(type: MovieListType, parameters: [String: Any] = [:], completion: @escaping (Result<[T], Error>) -> Void) {
-        performRequest(for: type.endpoint, queryParameters: parameters) { (result: Result<[T], Error>) in
+    private func fetchMoviesWithParameters(type: MovieListType, parameters: [String: Any] = [:], completion: @escaping (Result<[MovieProtocol], Error>) -> Void) {
+        performRequest(for: type.endpoint, queryParameters: parameters) { (result: Result<[Movie], Error>) in
             switch result {
             case .success(let movies):
                 completion(.success(movies))

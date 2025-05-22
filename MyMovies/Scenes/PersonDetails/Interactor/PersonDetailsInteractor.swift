@@ -51,7 +51,7 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     func fetchPersonRelatedMovies() {
-        networkService.fetchPersonRelatedMovies(for: personID) { [weak self] (result: Result<[Movie], Error>) in
+        networkService.fetchPersonRelatedMovies(for: personID) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let movies):
@@ -66,7 +66,7 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
 
     func fetchPersonRelatedMoviesWithGenresFiltering(for genre: GenreProtocol) {
         let type = MovieListType.personRelatedMovies(id: personID)
-        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] (result: Result<[Movie], Error>) in
+        networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let movies):
@@ -82,8 +82,8 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
 
 // MARK: - Private
 extension PersonDetailsInteractor {
-    private func fetchMoviesDetails(for movies: [Movie]) {
-        networkService.fetchMoviesDetails(for: movies, type: .personRelatedMovies(id: personID)) { [weak self] (detailedMovies: [Movie]) in
+    private func fetchMoviesDetails(for movies: [MovieProtocol]) {
+        networkService.fetchMoviesDetails(for: movies, type: .personRelatedMovies(id: personID)) { [weak self] detailedMovies in
             DispatchQueue.main.async {
                 self?.presenter?.didFetchPersonRelatedMovies(detailedMovies)
             }
