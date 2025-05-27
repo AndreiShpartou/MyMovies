@@ -211,6 +211,7 @@ extension MovieRepository {
 
         // Fill / update fields
         movieEntity.title = movie.title
+        movieEntity.homePage = movie.homePage
         movieEntity.alternativeTitle = movie.alternativeTitle
         movieEntity.movieDescription = movie.description
         movieEntity.movieShortDescription = movie.shortDescription
@@ -513,6 +514,7 @@ extension MovieRepository {
         return Movie(
             id: Int(entity.id),
             title: entity.title,
+            homePage: entity.homePage,
             alternativeTitle: entity.alternativeTitle,
             description: entity.movieDescription,
             shortDescription: entity.movieShortDescription,

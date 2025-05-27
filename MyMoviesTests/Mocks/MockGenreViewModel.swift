@@ -10,5 +10,5 @@ import Foundation
 
 struct MockGenreViewModel: GenreViewModelProtocol {
     var id: Int? = 0
-    var name: String = "MockGenre"
+    let name: String = "MockGenre"
 }

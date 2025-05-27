@@ -9,7 +9,7 @@ import UIKit
 
 struct UserProfileViewModel: UserProfileViewModelProtocol {
     let id: String
-    var email: String
+    let email: String
     var name: String?
     var profileImageURL: URL?
 }

@@ -16,6 +16,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
     }
 
     private var movieID: Int?
+    private var homePage: URL?
 
     // Story line “Read More” functionality preferences
     private var isExpanded = false
@@ -78,7 +79,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         alignment: .fill
     )
     private lazy var trailerButton: UIButton = createTrailerButton()
-    private lazy var shareButton: UIButton = createShareButton()
+    private lazy var homePageButton: UIButton = createHomePageButton()
     // Story line section
     private let storyLineLabel: UILabel = .createLabel(
         font: Typography.SemiBold.title,
@@ -176,6 +177,7 @@ final class MovieDetailsView: UIView, MovieDetailsViewProtocol {
         ratingStackView.ratingLabel.text = movie.voteAverage
         storyTextView.text = movie.description
         movieID = movie.id
+        homePage = movie.homePage
         // Countries
         configureCountries(movie.countries)
         // Genres
@@ -237,7 +239,7 @@ extension MovieDetailsView {
         descriptionStackView.addArrangedSubview(genreStackView)
         // Buttons
         buttonsStackView.addArrangedSubview(trailerButton)
-        buttonsStackView.addArrangedSubview(shareButton)
+        buttonsStackView.addArrangedSubview(homePageButton)
         // Handlers
         setupHandlers()
     }
@@ -306,7 +308,17 @@ extension MovieDetailsView {
         guard let movieID = movieID else {
             return
         }
+
         delegate?.didTapSeeAllButton(listType: .similarMovies(id: movieID))
+    }
+
+    @objc
+    private func didTapHomePageButton() {
+        guard let url = homePage else {
+            return
+        }
+
+        delegate?.didTapHomePageButton(url: url)
     }
 }
 
@@ -348,8 +360,9 @@ extension MovieDetailsView {
         return button
     }
 
-    private func createShareButton() -> UIButton {
+    private func createHomePageButton() -> UIButton {
         let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(didTapHomePageButton), for: .touchUpInside)
         button.backgroundColor = .primarySoft
         button.setImage(Asset.Icons.share.image, for: .normal)
         button.tintColor = .primaryBlueAccent
@@ -520,7 +533,7 @@ extension MovieDetailsView {
             make.width.equalTo(130)
         }
 
-        shareButton.snp.makeConstraints { make in
+        homePageButton.snp.makeConstraints { make in
             make.width.equalTo(50)
         }
     }

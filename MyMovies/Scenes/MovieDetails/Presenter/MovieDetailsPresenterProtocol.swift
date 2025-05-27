@@ -18,4 +18,5 @@ protocol MovieDetailsPresenterProtocol: AnyObject {
     func didSelectMovie(movieID: Int)
     func didSelectPerson(personID: Int)
     func didTapFavouriteButton()
+    func didTapHomePageButton(url: URL)
 }

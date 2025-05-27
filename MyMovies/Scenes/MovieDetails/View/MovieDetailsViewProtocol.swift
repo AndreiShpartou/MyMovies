@@ -21,4 +21,5 @@ protocol MovieDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelega
     func didSelectReview(_ author: String?, review: String?)
     func didTapSeeAllButton(listType: MovieListType)
     func updateFavouriteButtonState(isSelected: Bool)
+    func didTapHomePageButton(url: URL)
 }
