@@ -10,6 +10,7 @@ import Kingfisher
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
+import Alamofire
 
 // MARK: - AppConfigurationManager
 final class AppConfigurationManager: AppConfigurationManagerProtocol {
@@ -49,8 +50,9 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         let result = group.wait(timeout: .now() + timeoutInterval)
         if result == .timedOut {
             // Handle timeout - set networkError API URL
+            AF.cancelAllRequests()
             debugPrint("Timed out while setting up the API")
-            setupDefaultConfiguration()
+            // setupDefaultConfiguration() - default config will be set automatically after AF is cancelled
         }
     }
 
@@ -65,6 +67,7 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
     func configureDefaultServices() {
         // Network
         ServiceLocator.shared.addService(service: NetworkService.shared as NetworkServiceProtocol)
+        setupAlamofireConfiguration()
         // Auth and UserProfile data
         setupFirebaseConfiguration()
         let authService = FirebaseAuthService()
@@ -119,6 +122,10 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
 
     private func setupFirebaseConfiguration() {
         FirebaseApp.configure()
+    }
+
+    private func setupAlamofireConfiguration() {
+        AF.sessionConfiguration.timeoutIntervalForRequest = 180
     }
 
     private func configureUITesting() {

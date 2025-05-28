@@ -68,7 +68,7 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
         isFavourite.toggle()
         interactor.toggleFavouriteStatus(isFavourite: isFavourite)
     }
-    
+
     func didTapHomePageButton(url: URL) {
         UIApplication.shared.open(url)
     }

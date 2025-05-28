@@ -107,7 +107,7 @@ extension MovieDetailsViewController: MovieDetailsViewDelegate {
     func updateFavouriteButtonState(isSelected: Bool) {
         favouriteButton.isSelected = isSelected
     }
-    
+
     func didTapHomePageButton(url: URL) {
         presenter.didTapHomePageButton(url: url)
     }
