@@ -62,6 +62,8 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         imageCache.memoryStorage.config.totalCostLimit = 100 * 1024 * 1024 // 100 MB
         imageCache.diskStorage.config.sizeLimit = 300 * 1024 * 1024 // 300 MB
         imageCache.diskStorage.config.expiration = .days(7)
+        // setup Kingfisher timeout for image downloading
+        KingfisherManager.shared.downloader.downloadTimeout = 300
     }
 
     func configureDefaultServices() {
