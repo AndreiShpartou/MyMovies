@@ -127,7 +127,7 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
     }
 
     private func setupAlamofireConfiguration() {
-        AF.sessionConfiguration.timeoutIntervalForRequest = 180
+        AF.sessionConfiguration.timeoutIntervalForRequest = 300
     }
 
     private func configureUITesting() {

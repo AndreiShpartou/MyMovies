@@ -14,6 +14,8 @@ final class MovieListInteractor: MovieListInteractorProtocol {
     private let genreRepository: GenreRepositoryProtocol
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
+    // Token to track the current genre filtering requests
+    private var currentGenreFilteringToken = UUID()
 
     // MARK: - Init
     init(
@@ -55,6 +57,10 @@ final class MovieListInteractor: MovieListInteractorProtocol {
             return
         }
 
+        // Set up current request token
+        let currentRequestToken = UUID()
+        currentGenreFilteringToken = currentRequestToken
+
         // Show movies from storing for default genre
         if genre.name == "All" {
             fetchMovies(type: type)
@@ -84,7 +90,12 @@ final class MovieListInteractor: MovieListInteractorProtocol {
 
         // Default API filtering
         networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: type)
+            guard let self = self,
+                  self.currentGenreFilteringToken == currentRequestToken else {
+                return
+            }
+
+            self.handleMovieFetchResult(result, fetchType: type)
         }
     }
 
