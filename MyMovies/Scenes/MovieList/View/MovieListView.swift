@@ -104,6 +104,7 @@ extension MovieListView {
         // movies
         movieListCollection.delegate = moviesCollectionViewHandler
         movieListCollection.dataSource = moviesCollectionViewHandler
+        movieListCollection.prefetchDataSource = moviesCollectionViewHandler
         // genres
         genresCollection.delegate = genresCollectionHandler
         genresCollection.dataSource = genresCollectionHandler

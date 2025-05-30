@@ -306,6 +306,7 @@ extension SearchView {
         upcomingMovieCollectionViewHandler.delegate = delegate
         upcomingMovieCollectionView.delegate = upcomingMovieCollectionViewHandler
         upcomingMovieCollectionView.dataSource = upcomingMovieCollectionViewHandler
+        upcomingMovieCollectionView.prefetchDataSource = upcomingMovieCollectionViewHandler
 
         recentlySearchedCollectionViewHandler.delegate = delegate
         recentlySearchedCollectionView.delegate = recentlySearchedCollectionViewHandler
@@ -318,6 +319,7 @@ extension SearchView {
         discoveredMoviesCollectionViewHandler.delegate = delegate
         discoveredMoviesCollectionView.delegate = discoveredMoviesCollectionViewHandler
         discoveredMoviesCollectionView.dataSource = discoveredMoviesCollectionViewHandler
+        discoveredMoviesCollectionView.prefetchDataSource = discoveredMoviesCollectionViewHandler
     }
 
     private func updateDelegates() {

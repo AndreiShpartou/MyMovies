@@ -5,6 +5,7 @@
 //  Created by Andrei Shpartou on 08/08/2024.
 //
 import UIKit
+import Kingfisher
 
 protocol UpcomingMoviesCollectionViewDelegate: AnyObject {
     func didSelectMovie(movieID: Int)
@@ -44,6 +45,18 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
 
             return cell
         }
+    }
+}
+
+// MARK: - UICollectionViewDataSourcePefetching
+extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        let urlsToPrefetch: [URL] = indexPaths.flatMap {
+            let movie = movies[$0.row]
+            return [movie.backdropURL, movie.posterURL].compactMap { $0 }
+        }
+
+        ImagePrefetcher(urls: urlsToPrefetch).start()
     }
 }
 

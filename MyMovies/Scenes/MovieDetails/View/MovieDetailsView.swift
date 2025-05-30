@@ -251,6 +251,7 @@ extension MovieDetailsView {
         reviewsCollectionView.dataSource = reviewsCollectionViewHandler
         similarMoviesCollectionView.dataSource = similarMoviesCollectionViewHandler
         similarMoviesCollectionView.delegate = similarMoviesCollectionViewHandler
+        similarMoviesCollectionView.prefetchDataSource = similarMoviesCollectionViewHandler
     }
 
     private func updateDelegates() {

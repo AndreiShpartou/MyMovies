@@ -272,18 +272,22 @@ extension MainView {
         // Movie lists
         upcomingMoviesCollectionView.delegate = upcomingMoviesCollectionViewHandler
         upcomingMoviesCollectionView.dataSource = upcomingMoviesCollectionViewHandler
+        upcomingMoviesCollectionView.prefetchDataSource = upcomingMoviesCollectionViewHandler
         // Genres
         genresCollectionView.delegate = genresCollectionViewHandler
         genresCollectionView.dataSource = genresCollectionViewHandler
         // Popular movies
         popularMoviesCollectionView.delegate = popularMoviesCollectionViewHandler
         popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
+        popularMoviesCollectionView.prefetchDataSource = popularMoviesCollectionViewHandler
         // Top rated movies
         topRatedMoviesCollectionView.delegate = topRatedMoviesCollectionViewHandler
         topRatedMoviesCollectionView.dataSource = topRatedMoviesCollectionViewHandler
+        topRatedMoviesCollectionView.prefetchDataSource = topRatedMoviesCollectionViewHandler
         // The highest grossing movies
         theHighestGrossingMoviesCollectionView.delegate = theHighestGrossingCollectionViewHandler
         theHighestGrossingMoviesCollectionView.dataSource = theHighestGrossingCollectionViewHandler
+        theHighestGrossingMoviesCollectionView.prefetchDataSource = theHighestGrossingCollectionViewHandler
         // Scroll
         scrollView.delegate = self
     }
