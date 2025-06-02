@@ -216,7 +216,8 @@ final class MainView: UIView, MainViewProtocol {
     }
 
     func showError(with message: String) {
-        guard let viewController = parentViewController else {
+        guard let viewController = parentViewController,
+              viewController.presentedViewController == nil else {
             return
         }
 
