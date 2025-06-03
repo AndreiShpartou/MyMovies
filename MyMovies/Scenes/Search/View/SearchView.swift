@@ -242,7 +242,8 @@ final class SearchView: UIView, SearchViewProtocol {
     }
 
     func showError(with message: String) {
-        guard let viewController = parentViewController else {
+        guard let viewController = parentViewController,
+              viewController.presentedViewController == nil else {
             return
         }
 
@@ -306,6 +307,7 @@ extension SearchView {
         upcomingMovieCollectionViewHandler.delegate = delegate
         upcomingMovieCollectionView.delegate = upcomingMovieCollectionViewHandler
         upcomingMovieCollectionView.dataSource = upcomingMovieCollectionViewHandler
+        upcomingMovieCollectionView.prefetchDataSource = upcomingMovieCollectionViewHandler
 
         recentlySearchedCollectionViewHandler.delegate = delegate
         recentlySearchedCollectionView.delegate = recentlySearchedCollectionViewHandler
@@ -318,6 +320,7 @@ extension SearchView {
         discoveredMoviesCollectionViewHandler.delegate = delegate
         discoveredMoviesCollectionView.delegate = discoveredMoviesCollectionViewHandler
         discoveredMoviesCollectionView.dataSource = discoveredMoviesCollectionViewHandler
+        discoveredMoviesCollectionView.prefetchDataSource = discoveredMoviesCollectionViewHandler
     }
 
     private func updateDelegates() {
@@ -403,7 +406,7 @@ extension SearchView: UIScrollViewDelegate {
             }
         } else {
             searchBarContainerView.snp.updateConstraints { make in
-                make.top.greaterThanOrEqualToSuperview().offset(8)
+                make.top.greaterThanOrEqualToSuperview()
             }
         }
     }
@@ -457,13 +460,13 @@ extension SearchView {
     private func setupSearchBarConstraints() {
         searchBarContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.greaterThanOrEqualToSuperview().offset(8)
-            make.height.equalTo(60)
+            make.top.greaterThanOrEqualToSuperview()
+            make.height.equalTo(68)
         }
 
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
             make.bottom.equalToSuperview().offset(-16)
         }
     }

@@ -15,7 +15,9 @@ class SearchInteractor: SearchInteractorProtocol {
     private let movieRepository: MovieRepositoryProtocol
     private let provider: Provider
     // Token to track the current search request
-    private var currentSearchToken: UUID?
+    private var currentSearchToken = UUID()
+    // Token to track the current genre filtering requests
+    private var currentGenreFilteringToken = UUID()
 
     init(
         networkService: NetworkServiceProtocol,
@@ -72,6 +74,10 @@ class SearchInteractor: SearchInteractorProtocol {
 
     // Get upcoming movies filtered by genre
     func fetchUpcomingMoviesWithGenresFiltering(genre: GenreProtocol) {
+        // Set up current request token
+        let currentRequestToken = UUID()
+        currentGenreFilteringToken = currentRequestToken
+
         if genre.name == "All" {
             let cachedMovies = fetchMoviesFromStorage(for: .upcomingMovies)
             if !cachedMovies.isEmpty {
@@ -83,7 +89,10 @@ class SearchInteractor: SearchInteractorProtocol {
         }
 
         networkService.fetchMoviesByGenre(type: .upcomingMovies, genre: genre) { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self,
+                  self.currentGenreFilteringToken == currentRequestToken else {
+                return
+            }
 
             switch result {
             case .success(let movies):

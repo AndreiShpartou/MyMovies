@@ -18,6 +18,7 @@ extension MovieEntity {
     @NSManaged public var alternativeTitle: String?
     @NSManaged public var backdropUrl: String?
     @NSManaged public var id: Int64
+    @NSManaged public var homePage: String?
     @NSManaged public var lastUpdated: Date?
     @NSManaged public var movieDescription: String?
     @NSManaged public var movieShortDescription: String?

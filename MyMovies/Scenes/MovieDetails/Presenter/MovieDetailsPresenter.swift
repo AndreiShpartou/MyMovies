@@ -5,7 +5,7 @@
 //  Created by Andrei Shpartou on 27/07/2024.
 //
 
-import Foundation
+import UIKit
 
 final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     weak var view: MovieDetailsViewProtocol?
@@ -67,6 +67,10 @@ final class MovieDetailsPresenter: MovieDetailsPresenterProtocol {
     func didTapFavouriteButton() {
         isFavourite.toggle()
         interactor.toggleFavouriteStatus(isFavourite: isFavourite)
+    }
+
+    func didTapHomePageButton(url: URL) {
+        UIApplication.shared.open(url)
     }
 
     deinit {

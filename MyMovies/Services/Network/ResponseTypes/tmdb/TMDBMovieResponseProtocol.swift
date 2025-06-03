@@ -11,6 +11,7 @@ protocol TMDBMovieResponseProtocol: PagedResponseResultProtocol {
     var id: Int { get }
     var title: String { get }
     var originalTitle: String? { get }
+    var homePage: String? { get }
     var overview: String? { get }
     var status: String? { get }
     var tagline: String? { get }

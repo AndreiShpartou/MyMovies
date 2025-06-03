@@ -17,19 +17,16 @@ final class MovieDetailsRouter: MovieDetailsRouterProtocol {
 
     func navigateToMovieDetails(with movie: MovieProtocol) {
         let movieDetailsVC = SceneBuilder.buildMovieDetailsScene(for: movie)
-        viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
     }
 
     func navigateToPersonDetails(with personID: Int) {
-        let movieDetailsVC = SceneBuilder.buildPersonDetailsScene(for: personID)
-        viewController?.navigationController?.isNavigationBarHidden = false
-        viewController?.navigationController?.pushViewController(movieDetailsVC, animated: true)
+        let personDetailsVC = SceneBuilder.buildPersonDetailsScene(for: personID)
+        viewController?.navigationController?.pushViewController(personDetailsVC, animated: true)
     }
 
     func navigateToMovieList(type: MovieListType) {
         let movieListVC = SceneBuilder.buildMovieListScene(listType: type)
-        viewController?.navigationController?.isNavigationBarHidden = false
         viewController?.navigationController?.pushViewController(movieListVC, animated: true)
     }
 

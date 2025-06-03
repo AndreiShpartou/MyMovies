@@ -80,7 +80,8 @@ final class MovieListView: UIView, MovieListViewProtocol {
     }
 
     func showError(with message: String) {
-        guard let viewController = parentViewController else {
+        guard let viewController = parentViewController,
+              viewController.presentedViewController == nil else {
             return
         }
 
@@ -104,6 +105,7 @@ extension MovieListView {
         // movies
         movieListCollection.delegate = moviesCollectionViewHandler
         movieListCollection.dataSource = moviesCollectionViewHandler
+        movieListCollection.prefetchDataSource = moviesCollectionViewHandler
         // genres
         genresCollection.delegate = genresCollectionHandler
         genresCollection.dataSource = genresCollectionHandler
@@ -127,7 +129,7 @@ extension MovieListView {
     private func setupConstraints() {
         genresCollection.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
-            make.top.equalTo(safeAreaLayoutGuide).inset(16)
+            make.top.equalTo(safeAreaLayoutGuide).inset(8)
             make.height.equalTo(40)
         }
 

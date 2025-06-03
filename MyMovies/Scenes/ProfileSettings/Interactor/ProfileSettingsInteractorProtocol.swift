@@ -16,9 +16,6 @@ protocol ProfileSettingsInteractorProtocol: AnyObject {
 }
 
 protocol ProfileSettingsInteractorOutputProtocol: AnyObject, UserProfileObserverDelegate {
-    func didFetchUserProfile(_ profile: UserProfileProtocol)
     func didFetchSettingsItems(_ sections: [ProfileSettingsSection])
-    func didFailToFetchData(with error: Error)
     func didFetchDataForGenerelTextScene(labelText: String?, textViewText: String?, title: String?)
-    func didLogOut()
 }

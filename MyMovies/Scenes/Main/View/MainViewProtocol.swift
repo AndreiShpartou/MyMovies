@@ -24,8 +24,5 @@ protocol MainViewProtocol: UIView {
 }
 
 protocol MainViewDelegate: AnyObject, GenresCollectionViewDelegate, BriefMovieDescriptionHandlerDelegate, UpcomingMoviesCollectionViewDelegate, UserGreetingViewDelegate, UISearchBarDelegate {
-    func didSelectMovie(movieID: Int)
-    func didSelectGenre(_ genre: GenreViewModelProtocol)
     func didTapSeeAllButton(listType: MovieListType)
-    func didScrollUpcomingMoviesItemTo(_ index: Int)
 }

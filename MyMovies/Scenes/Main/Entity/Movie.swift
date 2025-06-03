@@ -10,6 +10,7 @@ import Foundation
 struct Movie: MovieProtocol {
     let id: Int // id
     let title: String // TMDB: title, Kinopoisk: name
+    let homePage: String?
     let alternativeTitle: String? // TMDB: original_title, Kinopoisk: alternativeName
     let description: String? // TMDB: overview, Kinopoisk: description
     let shortDescription: String? // TMDB: tagline, Kinopoisk: shortDescription
@@ -46,6 +47,7 @@ struct Movie: MovieProtocol {
     init(
         id: Int,
         title: String,
+        homePage: String? = "",
         alternativeTitle: String? = "",
         description: String? = "",
         shortDescription: String? = "",
@@ -62,6 +64,7 @@ struct Movie: MovieProtocol {
     ) {
         self.id = id
         self.title = title
+        self.homePage = homePage
         self.alternativeTitle = alternativeTitle
         self.description = description
         self.shortDescription = shortDescription

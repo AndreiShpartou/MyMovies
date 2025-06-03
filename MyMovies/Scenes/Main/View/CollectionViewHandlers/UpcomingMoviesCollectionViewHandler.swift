@@ -5,6 +5,7 @@
 //  Created by Andrei Shpartou on 08/08/2024.
 //
 import UIKit
+import Kingfisher
 
 protocol UpcomingMoviesCollectionViewDelegate: AnyObject {
     func didSelectMovie(movieID: Int)
@@ -22,10 +23,10 @@ final class UpcomingMoviesCollectionViewHandler: NSObject {
     }
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSourcex
 extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return max(movies.count, 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -44,6 +45,18 @@ extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSource {
 
             return cell
         }
+    }
+}
+
+// MARK: - UICollectionViewDataSourcePefetching
+extension UpcomingMoviesCollectionViewHandler: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        let urlsToPrefetch: [URL] = indexPaths.flatMap {
+            let movie = movies[$0.row]
+            return [movie.backdropURL, movie.posterURL].compactMap { $0 }
+        }
+
+        ImagePrefetcher(urls: urlsToPrefetch).start()
     }
 }
 
@@ -74,8 +87,11 @@ extension UpcomingMoviesCollectionViewHandler: UIScrollViewDelegate {
 // MARK: - Helpers
 extension UpcomingMoviesCollectionViewHandler {
     private func calculateItemSize(for collectionView: UICollectionView) -> CGSize {
-        let itemWidth = collectionView.bounds.width * 0.8
+        var itemWidth = collectionView.bounds.width * 0.8
         let itemHeight = collectionView.bounds.height
+        if movies.isEmpty {
+            itemWidth = collectionView.bounds.width
+        }
 
         return CGSize(width: itemWidth, height: itemHeight)
     }

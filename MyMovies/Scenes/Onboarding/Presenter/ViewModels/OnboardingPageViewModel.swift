@@ -8,7 +8,7 @@
 import Foundation
 
 struct OnboardingPageViewModel: OnboardingPageViewModelProtocol {
-    var title: String
-    var description: String
+    let title: String
+    let description: String
     var lottieFileName: String?
 }

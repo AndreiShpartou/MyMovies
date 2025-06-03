@@ -49,12 +49,15 @@ final class MainView: UIView, MainViewProtocol {
     private let upcomingMoviesCollectionView: UICollectionView = .createCommonCollectionView(
         // overridden in the UpcomingMoviesCollectionViewHandler
         itemSize: CGSize(width: 50, height: 50),
-        cellTypesDict: [UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self]
+        cellTypesDict: [
+            UpcomingMoviesCollectionViewCell.identifier: UpcomingMoviesCollectionViewCell.self,
+            PlaceHolderCollectionViewCell.identifier: PlaceHolderCollectionViewCell.self
+        ]
     )
     private lazy var upComingMoviesPageControl: UIPageControl = createUpcomingMoviesPageControl()
     private lazy var upcomingMoviesCollectionViewHandler = UpcomingMoviesCollectionViewHandler()
 
-    // Genres section
+    // Genres section.
     private let genresLabel: UILabel = .createLabel(
         font: Typography.SemiBold.largeTitle,
         textColor: .textColorWhite,
@@ -213,7 +216,8 @@ final class MainView: UIView, MainViewProtocol {
     }
 
     func showError(with message: String) {
-        guard let viewController = parentViewController else {
+        guard let viewController = parentViewController,
+              viewController.presentedViewController == nil else {
             return
         }
 
@@ -269,18 +273,22 @@ extension MainView {
         // Movie lists
         upcomingMoviesCollectionView.delegate = upcomingMoviesCollectionViewHandler
         upcomingMoviesCollectionView.dataSource = upcomingMoviesCollectionViewHandler
+        upcomingMoviesCollectionView.prefetchDataSource = upcomingMoviesCollectionViewHandler
         // Genres
         genresCollectionView.delegate = genresCollectionViewHandler
         genresCollectionView.dataSource = genresCollectionViewHandler
         // Popular movies
         popularMoviesCollectionView.delegate = popularMoviesCollectionViewHandler
         popularMoviesCollectionView.dataSource = popularMoviesCollectionViewHandler
+        popularMoviesCollectionView.prefetchDataSource = popularMoviesCollectionViewHandler
         // Top rated movies
         topRatedMoviesCollectionView.delegate = topRatedMoviesCollectionViewHandler
         topRatedMoviesCollectionView.dataSource = topRatedMoviesCollectionViewHandler
+        topRatedMoviesCollectionView.prefetchDataSource = topRatedMoviesCollectionViewHandler
         // The highest grossing movies
         theHighestGrossingMoviesCollectionView.delegate = theHighestGrossingCollectionViewHandler
         theHighestGrossingMoviesCollectionView.dataSource = theHighestGrossingCollectionViewHandler
+        theHighestGrossingMoviesCollectionView.prefetchDataSource = theHighestGrossingCollectionViewHandler
         // Scroll
         scrollView.delegate = self
     }
@@ -399,7 +407,7 @@ extension MainView: UIScrollViewDelegate {
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(0.93)
         } else {
             searchBarContainerView.snp.updateConstraints { make in
-                make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(8)
+                make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom)
             }
             searchBarContainerView.backgroundColor = searchBarContainerView.backgroundColor?.withAlphaComponent(1)
         }
@@ -461,12 +469,12 @@ extension MainView {
     private func setupSearchBarConstraints() {
         searchBarContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom).offset(8)
-            make.height.equalTo(60)
+            make.top.greaterThanOrEqualTo(userGreetingView.snp.bottom)
+            make.height.equalTo(68)
         }
 
         searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().offset(-16)
         }

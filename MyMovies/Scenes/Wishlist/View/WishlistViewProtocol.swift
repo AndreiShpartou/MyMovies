@@ -17,6 +17,4 @@ protocol WishlistViewProtocol: UIView {
     func showError(with message: String)
 }
 
-protocol WishlistViewDelegate: AnyObject, WishlistCollectionViewHandlerDelegate {
-    func didSelectMovie(movieID: Int)
-}
+protocol WishlistViewDelegate: AnyObject, WishlistCollectionViewHandlerDelegate {}

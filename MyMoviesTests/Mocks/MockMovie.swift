@@ -12,6 +12,7 @@ import Foundation
 struct MockMovie: MovieProtocol {
     let id: Int // id
     let title: String // TMDB: title, Kinopoisk: name
+    let homePage: String?
     let alternativeTitle: String? // TMDB: original_title, Kinopoisk: alternativeName
     let description: String? // TMDB: overview, Kinopoisk: description
     let shortDescription: String? // TMDB: tagline, Kinopoisk: shortDescription
@@ -48,6 +49,7 @@ struct MockMovie: MovieProtocol {
     init(
         id: Int = 1,
         title: String = "MockMovie",
+        homePage: String? = "",
         alternativeTitle: String? = "",
         description: String? = "",
         shortDescription: String? = "",
@@ -64,6 +66,7 @@ struct MockMovie: MovieProtocol {
     ) {
         self.id = id
         self.title = title
+        self.homePage = homePage
         self.alternativeTitle = alternativeTitle
         self.description = description
         self.shortDescription = shortDescription
