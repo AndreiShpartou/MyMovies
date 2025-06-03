@@ -11,6 +11,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
     var id: Int
     var title: String
     var originalTitle: String?
+    var homePage: String?
     var overview: String?
     var status: String?
     var tagline: String?
@@ -63,6 +64,7 @@ struct TMDBMovieResponse: TMDBMovieResponseProtocol {
 
     enum CodingKeys: String, CodingKey {
         case id, title, overview, runtime, tagline, status
+        case homePage = "homepage"
         case voteAverage = "vote_average"
         case posterPath = "poster_path"
         case backdropPath = "backdrop_path"

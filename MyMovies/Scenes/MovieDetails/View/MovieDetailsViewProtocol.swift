@@ -20,7 +20,6 @@ protocol MovieDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelega
     func didFetchTitle(_ title: String?)
     func didSelectReview(_ author: String?, review: String?)
     func didTapSeeAllButton(listType: MovieListType)
-    func didSelectMovie(movieID: Int)
-    func didSelectPerson(personID: Int)
     func updateFavouriteButtonState(isSelected: Bool)
+    func didTapHomePageButton(url: URL)
 }

@@ -10,6 +10,7 @@ import Kingfisher
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
+import Alamofire
 
 // MARK: - AppConfigurationManager
 final class AppConfigurationManager: AppConfigurationManagerProtocol {
@@ -49,8 +50,9 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         let result = group.wait(timeout: .now() + timeoutInterval)
         if result == .timedOut {
             // Handle timeout - set networkError API URL
+            AF.cancelAllRequests()
             debugPrint("Timed out while setting up the API")
-            setupDefaultConfiguration()
+            // setupDefaultConfiguration() - default config will be set automatically after AF is cancelled
         }
     }
 
@@ -58,13 +60,16 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
         // setup Kingfisher caching
         let imageCache = ImageCache.default
         imageCache.memoryStorage.config.totalCostLimit = 100 * 1024 * 1024 // 100 MB
-        imageCache.diskStorage.config.sizeLimit = 500 * 1024 * 1024 // 500 MB
+        imageCache.diskStorage.config.sizeLimit = 300 * 1024 * 1024 // 300 MB
         imageCache.diskStorage.config.expiration = .days(7)
+        // setup Kingfisher timeout for image downloading
+        KingfisherManager.shared.downloader.downloadTimeout = 300
     }
 
     func configureDefaultServices() {
         // Network
         ServiceLocator.shared.addService(service: NetworkService.shared as NetworkServiceProtocol)
+        setupAlamofireConfiguration()
         // Auth and UserProfile data
         setupFirebaseConfiguration()
         let authService = FirebaseAuthService()
@@ -119,6 +124,10 @@ final class AppConfigurationManager: AppConfigurationManagerProtocol {
 
     private func setupFirebaseConfiguration() {
         FirebaseApp.configure()
+    }
+
+    private func setupAlamofireConfiguration() {
+        AF.sessionConfiguration.timeoutIntervalForRequest = 300
     }
 
     private func configureUITesting() {

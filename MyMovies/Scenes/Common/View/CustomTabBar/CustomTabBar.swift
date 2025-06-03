@@ -60,6 +60,11 @@ extension CustomTabBar {
         backgroundColor = .primaryBackground
         isTranslucent = false
         barTintColor = .primaryBackground
+        // Navigation bar appearance
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 

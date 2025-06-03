@@ -12,6 +12,8 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
 
     private let networkService: NetworkServiceProtocol
     private let personID: Int
+    // Token to track the current genre filtering requests
+    private var currentGenreFilteringToken = UUID()
 
     // MARK: - Init
     init(personID: Int, networkService: NetworkServiceProtocol) {
@@ -65,9 +67,17 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     func fetchPersonRelatedMoviesWithGenresFiltering(for genre: GenreProtocol) {
+        // Set up current request token
+        let currentRequestToken = UUID()
+        currentGenreFilteringToken = currentRequestToken
+
         let type = MovieListType.personRelatedMovies(id: personID)
         networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
-            guard let self = self else { return }
+            guard let self = self,
+                  self.currentGenreFilteringToken == currentRequestToken else {
+                return
+            }
+
             switch result {
             case .success(let movies):
                 self.fetchMoviesDetails(for: movies)

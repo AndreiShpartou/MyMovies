@@ -16,7 +16,4 @@ protocol MovieListViewProtocol: UIView {
     func showError(with message: String)
 }
 
-protocol MovieListViewInteractionDelegate: AnyObject, GenresCollectionViewDelegate, MovieListCollectionViewDelegate {
-    func didSelectGenre(_ genre: GenreViewModelProtocol)
-    func didSelectMovie(movieID: Int)
-}
+protocol MovieListViewInteractionDelegate: AnyObject, GenresCollectionViewDelegate, MovieListCollectionViewDelegate {}

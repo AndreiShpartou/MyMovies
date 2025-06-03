@@ -81,7 +81,8 @@ final class WishlistView: UIView, WishlistViewProtocol {
 
     func showError(with message: String) {
         func showError(with message: String) {
-            guard let viewController = parentViewController else {
+            guard let viewController = parentViewController,
+                  viewController.presentedViewController == nil else {
                 return
             }
 

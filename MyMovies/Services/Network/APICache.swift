@@ -13,8 +13,11 @@ final class APICache {
 
     private let cache = NSCache<NSString, CacheItem>()
     private let defaultTTL: TimeInterval = 60 * 60 // Time-to-live 1 hour
+    private let maxMemorySize: Int = 50 * 1024 * 1024 // 50 MB
 
-    private init() {}
+    private init() {
+        cache.totalCostLimit = maxMemorySize
+    }
 
     // Store raw data for a given key
     func store(_ data: Data, for key: String, ttl: TimeInterval? = nil) {

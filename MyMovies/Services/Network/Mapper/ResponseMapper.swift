@@ -65,6 +65,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             return Movie(
                 id: $0.id,
                 title: $0.title,
+                homePage: $0.homePage,
                 alternativeTitle: $0.originalTitle,
                 description: $0.overview,
                 shortDescription: $0.tagline,
@@ -96,6 +97,7 @@ final class ResponseMapper: ResponseMapperProtocol {
         return Movie(
             id: data.id,
             title: data.title,
+            homePage: data.homePage,
             alternativeTitle: data.originalTitle,
             description: data.overview,
             shortDescription: data.tagline,
@@ -120,6 +122,7 @@ final class ResponseMapper: ResponseMapperProtocol {
             return Movie(
                 id: $0.id,
                 title: $0.name ?? $0.alternativeName ?? "",
+                homePage: String("https://www.kinopoisk.ru/film/\(String($0.id))/"),
                 alternativeTitle: $0.alternativeName,
                 description: $0.description,
                 shortDescription: $0.shortDescription,

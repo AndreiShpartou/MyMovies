@@ -8,8 +8,8 @@
 import Foundation
 
 struct PersonDetailedViewModel: PersonDetailedViewModelProtocol {
-    var id: Int
-    var name: String
+    let id: Int
+    let name: String
     var photo: URL?
     var birthDay: String?
     var birthPlace: String?

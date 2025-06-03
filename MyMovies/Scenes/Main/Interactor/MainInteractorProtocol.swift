@@ -23,8 +23,4 @@ protocol PrefetchInteractorProtocol: AnyObject {
 protocol MainInteractorOutputProtocol: AnyObject, UserProfileObserverDelegate {
     func didFetchMovieGenres(_ genres: [GenreProtocol])
     func didFetchMovies(_ movies: [MovieProtocol], for type: MovieListType)
-    func didFetchUserProfile(_ profile: UserProfileProtocol)
-    func didBeginProfileUpdate()
-    func didLogOut()
-    func didFailToFetchData(with error: Error)
 }

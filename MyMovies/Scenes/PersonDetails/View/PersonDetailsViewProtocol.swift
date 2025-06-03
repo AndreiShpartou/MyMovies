@@ -19,6 +19,4 @@ protocol PersonDetailsViewProtocol: UIView {
 
 protocol PersonDetailsViewDelegate: AnyObject, BriefMovieDescriptionHandlerDelegate, GenresCollectionViewDelegate {
     func didTapSeeAllButton()
-    func didSelectGenre(_ genre: GenreViewModelProtocol)
-    func didSelectMovie(movieID: Int)
 }

@@ -4,9 +4,8 @@
 //
 //  Created by Andrei Shpartou on 13/09/2024.
 //
-
-import Foundation
 import UIKit
+import Kingfisher
 
 protocol MovieListCollectionViewDelegate: AnyObject {
     func didSelectMovie(movieID: Int)
@@ -45,6 +44,14 @@ extension MovieListCollectionViewHandler: UICollectionViewDataSource {
 
             return cell
         }
+    }
+}
+
+// MARK: - UICollectionViewDataSourcePefetching
+extension MovieListCollectionViewHandler: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        let urlsToPrefetch: [URL] = indexPaths.compactMap { movies[$0.row].posterURL }
+        ImagePrefetcher(urls: urlsToPrefetch).start()
     }
 }
 

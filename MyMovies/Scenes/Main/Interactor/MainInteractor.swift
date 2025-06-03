@@ -21,6 +21,8 @@ final class MainInteractor: MainInteractorProtocol, PrefetchInteractorProtocol {
     private let userProfileObserver: UserProfileObserverProtocol
     private let provider: Provider
     private let staleSeconds: TimeInterval
+    // Tokens to track the current genre filtering requests
+    private var currentGenreFilteringTokens: [MovieListType: UUID] = [:]
 
     // MARK: - Init
     init(
@@ -161,6 +163,10 @@ extension MainInteractor {
     }
 
     private func fetchMoviesByGenre(_ genre: GenreProtocol, type: MovieListType) {
+        // Set up current request token
+        let currentRequestToken = UUID()
+        currentGenreFilteringTokens[type] = currentRequestToken
+
         // Show movies from storing for default genre
         if genre.name == "All" {
             fetchMovies(type: type)
@@ -169,7 +175,12 @@ extension MainInteractor {
         }
 
         networkService.fetchMoviesByGenre(type: type, genre: genre) { [weak self] result in
-            self?.handleMovieFetchResult(result, fetchType: type, saveToStorage: false)
+            guard let self = self,
+                  self.currentGenreFilteringTokens[type] == currentRequestToken else {
+                return
+            }
+
+            self.handleMovieFetchResult(result, fetchType: type, saveToStorage: false)
         }
     }
 
