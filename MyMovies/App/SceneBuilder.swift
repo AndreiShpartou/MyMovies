@@ -154,10 +154,12 @@ final class SceneBuilder: SceneBuilderProtocol {
 
     static func buildPersonDetailsScene(for personID: Int) -> UIViewController {
         let networkService: NetworkServiceProtocol? = ServiceLocator.shared.getService()
+        let genreRepository: GenreRepositoryProtocol? = ServiceLocator.shared.getService()
 
         let interactor = PersonDetailsInteractor(
             personID: personID,
-            networkService: networkService!
+            networkService: networkService!,
+            genreRepository: genreRepository!
         )
 
         let router = PersonDetailsRouter()

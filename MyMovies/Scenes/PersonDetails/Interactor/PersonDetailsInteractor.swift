@@ -12,13 +12,21 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
 
     private let networkService: NetworkServiceProtocol
     private let personID: Int
+    private let genreRepository: GenreRepositoryProtocol
+    private let provider: Provider
     // Token to track the current genre filtering requests
     private var currentGenreFilteringToken = UUID()
 
     // MARK: - Init
-    init(personID: Int, networkService: NetworkServiceProtocol) {
+    init(
+        personID: Int,
+        networkService: NetworkServiceProtocol,
+        genreRepository: GenreRepositoryProtocol
+    ) {
         self.networkService = networkService
         self.personID = personID
+        self.genreRepository = genreRepository
+        self.provider = networkService.getProvider()
     }
 
     // MARK: - Public
@@ -38,6 +46,22 @@ final class PersonDetailsInteractor: PersonDetailsInteractorProtocol {
     }
 
     func fetchMovieGenres() {
+        do {
+            let localGenres = try genreRepository.fetchGenres(provider: provider.rawValue)
+            if !localGenres.isEmpty {
+                DispatchQueue.main.async {
+                    // Immediately present to the user
+                    self.presenter?.didFetchMovieGenres(localGenres)
+                }
+
+                return
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.presenter?.didFailToFetchData(with: error)
+            }
+        }
+
         networkService.fetchGenres { [weak self] result in
             switch result {
             case .success(let genres):
