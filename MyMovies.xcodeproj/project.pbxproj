@@ -2290,7 +2290,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" = \"Debug\" ]; then\n    if which swiftlint >/dev/null; then\n      swiftlint\n    else\n      echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n      exit 1\n    fi\nfi\n";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Debug\" ]; then\n    if which swiftlint >/dev/null; then\n      swiftlint\n    else\n      echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n    fi\nfi\n";
 		};
 		8881B0051E86809C303DCCF1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2322,9 +2322,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MyMovies/Pods-MyMovies-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
