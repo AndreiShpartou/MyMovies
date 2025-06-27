@@ -2290,7 +2290,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" = \"Debug\" ]; then\n    if which swiftlint >/dev/null; then\n      swiftlint\n    else\n      echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n    fi\nfi\n";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Debug\" ]; then\n    if which swiftlint >/dev/null; then\n      swiftlint\n    else\n      echo \"warning: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n    fi\nfi\n";
 		};
 		8881B0051E86809C303DCCF1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
